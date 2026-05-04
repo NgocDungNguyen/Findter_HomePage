@@ -44,6 +44,26 @@
                 transform: translateY(0);
             }
         }
+        .modal-overlay {
+            animation: fadeIn 0.2s ease;
+        }
+        .modal-content {
+            animation: slideInUp 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
     </style>
 </head>
 <body class="bg-[#f1f2f4] h-screen flex flex-col overflow-hidden text-[#303030]">
@@ -163,55 +183,58 @@
                                         <!-- Step 1: Activate app embed (REDESIGNED) -->
                                         <div class="border border-gray-100 rounded-lg overflow-hidden">
                                             <div class="flex items-center gap-5 p-3 group transition-colors">
-                                                <div class="step-checkbox w-6 h-6 shrink-0 rounded-full border-2 border-dashed border-gray-400 bg-white flex items-center justify-center cursor-pointer hover:border-gray-600 transition-colors" data-step="1">
+                                                <div id="step1-checkbox" class="step-checkbox w-6 h-6 shrink-0 rounded-full border-2 border-dashed border-gray-400 bg-white flex items-center justify-center cursor-pointer hover:border-gray-600 transition-colors" data-step="1">
                                                     <i class="fas fa-check text-[11px] text-transparent"></i>
                                                 </div>
                                                 <div class="flex-1 flex items-center cursor-pointer guide-step-toggle" data-target="step-content-1">
-                                                    <h4 class="font-semibold text-[14px] text-[#303030] flex-1">Activate app embed in theme</h4>
+                                                    <h4 class="font-semibold text-[14px] text-[#303030] flex-1">Activate App Embed in Theme (<a href="https://flintverse.gitbook.io/docs/findter-custom-filter-search/user-guide/app-activation-and-preview/app-activation-in-store" target="_blank" class="font-bold text-green-600 underline hover:text-green-800">Guideline Here</a>)</h4>
                                                     <i class="fas fa-chevron-up text-gray-400 text-xs transition-transform duration-200 ml-2"></i>
                                                 </div>
                                             </div>
                                             <div id="step-content-1" class="pl-14 pr-4 pb-4">
-                                                <!-- Line 1: Activation Guideline Here -->
-                                                <p class="text-[13px] text-[#303030] mb-2">
-                                                    Activation Guideline <a href="https://flintverse.gitbook.io/docs/findter-custom-filter-search/user-guide/app-activation-and-preview/app-activation-in-store" target="_blank" class="text-blue-600 font-bold underline hover:text-blue-800">Here</a>.
+                                                
+                                                <!-- Line 1: Recommended note (UPDATED) -->
+                                                <p class="text-[13px] text-[#303030] mb-4">
+                                                    Please choose a duplicate/draft theme to test the app before going live.
                                                 </p>
                                                 
-                                                <!-- Line 2: Recommended note -->
-                                                <p class="text-[13px] text-[#303030] mb-3">
-                                                    <strong>Recommended:</strong> Choose a duplicate/draft theme to test the app before going live.
-                                                </p>
-                                                
-                                                <!-- Line 3: Step 1: Theme Selection + Dropdown (REDUCED GAP) -->
-                                                <div class="flex flex-wrap items-center gap-x-2 gap-y-2 mb-3">
+                                                <!-- Line 2: Step 1: Theme Selection + Button (INITIAL STATE) -->
+                                                <div id="step1-initial" class="flex flex-wrap items-center gap-x-2 gap-y-2 mb-3">
                                                     <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
                                                     <span class="text-[13px] text-gray-700">Theme Selection</span>
-                                                    <select id="theme-select" class="border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50 bg-white outline-none w-44 ml-1">
-                                                        <option value="" disabled selected>-- Select a theme --</option>
-                                                        <option value="Horizon v1">Horizon v1</option>
-                                                        <option value="Horizon v2">Horizon v2</option>
-                                                        <option value="Dawn">Dawn</option>
-                                                    </select>
+                                                    <button id="select-theme-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-gray-50 transition-colors shadow-sm ml-1">
+                                                        Select a theme
+                                                        <i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
+                                                    </button>
                                                 </div>
-                                                
-                                                <!-- Line 4: Step 2 instructions -->
-                                                <p class="text-[13px] text-[#303030] mb-3">
-                                                    <strong>Step 2:</strong> Go to Theme Editor > App Embeds > Enable the "Search & Filter core" (Findter) > Save the Theme
-                                                </p>
-                                                
-                                                <!-- Line 5: Enable App in Theme Editor button -->
-                                                <button id="enable-editor-btn" class="bg-gray-300 text-gray-500 rounded-[6px] px-4 py-1.5 text-[13px] font-medium shadow-sm transition-all cursor-not-allowed" disabled>
-                                                    Enable App in Theme Editor
-                                                </button>
-                                                
-                                                <p class="text-[12px] text-gray-500 mt-3">
-                                                    <i class="fas fa-info-circle mr-1"></i> Select your theme first, then click the button above to proceed.
-                                                </p>
+
+                                                <!-- Line 3: Completed state (HIDDEN initially) -->
+                                                <div id="step1-completed" class="hidden mb-3">
+                                                    <div class="flex flex-wrap items-center gap-x-2 gap-y-2 mb-3">
+                                                        <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
+                                                        <span class="text-[13px] text-gray-700">Theme Selection</span>
+                                                        <div class="inline-flex items-center gap-2 border border-green-300 bg-green-50 rounded-[6px] px-3 py-1.5 ml-1">
+                                                            <i class="fas fa-check-circle text-green-600 text-sm"></i>
+                                                            <span id="selected-theme-display" class="text-[13px] font-medium text-green-800"></span>
+                                                            <button id="change-theme-btn" class="text-[11px] text-blue-600 underline hover:text-blue-800 font-medium">Change</button>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Line 4: Step 2 instructions -->
+                                                    <p class="text-[13px] text-[#303030] mb-3">
+                                                        <strong>Step 2:</strong> Go to Theme Editor > App Embeds > Enable the "Search & Filter core" (Findter) > Save the Theme
+                                                    </p>
+                                                    
+                                                    <!-- Line 5: Enable App in Theme Editor button -->
+                                                    <button id="enable-editor-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors shadow-sm">
+                                                        Enable App in Theme Editor
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <!-- Step 2: Set up custom filters -->
-                                        <div class="border border-gray-100 rounded-lg overflow-hidden">
+                                        <!-- Step 2: Set up custom filters (VISIBLE FROM START) -->
+                                        <div id="step2-container" class="border border-gray-100 rounded-lg overflow-hidden">
                                             <div class="flex items-center gap-5 p-3 group transition-colors">
                                                 <div class="step-checkbox w-6 h-6 shrink-0 rounded-full border-2 border-dashed border-gray-400 bg-white flex items-center justify-center cursor-pointer hover:border-gray-600 transition-colors" data-step="2">
                                                     <i class="fas fa-check text-[11px] text-transparent"></i>
@@ -305,6 +328,73 @@
 
     <!-- Floating Chat Icon -->
     <div class="fixed bottom-6 right-6 z-50"><button class="w-[50px] h-[50px] bg-[#bd2130] rounded-full shadow-lg flex items-center justify-center text-white hover:bg-red-800 transition-colors"><i class="fas fa-search text-xl"></i></button></div>
+
+    <!-- Theme Selection Modal -->
+    <div id="theme-modal" class="fixed inset-0 z-[100] hidden">
+        <div class="modal-overlay absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeThemeModal()"></div>
+        <div class="modal-content absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg pointer-events-auto max-h-[90vh] flex flex-col">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-[16px] font-semibold text-[#303030]">Select Your Theme</h3>
+                    <button onclick="closeThemeModal()" class="text-gray-400 hover:text-gray-600 transition-colors p-1">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+                
+                <!-- Modal Body -->
+                <div class="px-6 py-5 overflow-y-auto flex-1">
+                    <!-- Notice at top -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-5">
+                        <p class="text-[13px] text-[#303030] leading-relaxed">
+                            This is the list of themes that our app currently supports: 
+                            <a href="https://flintverse.gitbook.io/docs/findter-custom-filter-search/user-guide/app-activation-and-preview/app-activation-in-store" target="_blank" class="font-bold text-blue-600 underline hover:text-blue-800">this list</a>.
+                            If you don't see your theme in the list, please return to live chat so we can assist you.
+                        </p>
+                    </div>
+                    
+                    <!-- Theme Selection Section -->
+                    <div class="mb-4">
+                        <label class="block text-[14px] font-semibold text-[#303030] mb-2">Theme Selection</label>
+                        <select id="modal-theme-select" class="w-full border border-gray-300 rounded-[8px] px-4 py-2.5 text-[14px] text-[#303030] hover:bg-gray-50 bg-white outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                            <option value="" disabled selected>-- Select a theme --</option>
+                            <option value="Horizon v1">Horizon v1</option>
+                            <option value="Horizon v2">Horizon v2</option>
+                            <option value="Dawn">Dawn</option>
+                            <option value="Craft">Craft</option>
+                            <option value="Sense">Sense</option>
+                            <option value="Taste">Taste</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Orange Notice (Hidden until theme selected) -->
+                    <div id="modal-warning-notice" class="hidden bg-orange-50 border border-orange-200 rounded-lg p-4">
+                        <div class="flex items-start gap-3">
+                            <div class="w-7 h-7 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 shrink-0 mt-0.5">
+                                <i class="fas fa-info-circle text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-[13px] text-orange-800 font-semibold mb-1">Here's how our app may affect your store:</p>
+                                <p class="text-[13px] text-orange-700 leading-relaxed">
+                                    Our app uses its own product grid (not Shopify's), so your collection page will change. We offer free customization to keep your theme's functions.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal Footer -->
+                <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
+                    <button onclick="closeThemeModal()" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">
+                        Cancel
+                    </button>
+                    <button id="modal-save-btn" disabled class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         // ---------- NOTICE BOX GENERATOR ----------
@@ -449,30 +539,84 @@
                 }
             });
         });
-        
-        // ---------- STEP 1: THEME SELECTION + ENABLE EDITOR BUTTON LOGIC ----------
-        const themeSelect = document.getElementById('theme-select');
-        const enableEditorBtn = document.getElementById('enable-editor-btn');
-        
-        function updateEnableButtonState() {
-            const selectedValue = themeSelect.value;
-            if (selectedValue && selectedValue !== "") {
-                enableEditorBtn.disabled = false;
-                enableEditorBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
-                enableEditorBtn.classList.add('bg-[#303030]', 'hover:bg-[#4a4a4a]', 'text-white', 'cursor-pointer');
+
+        // ---------- THEME MODAL LOGIC ----------
+        const selectThemeBtn = document.getElementById('select-theme-btn');
+        const changeThemeBtn = document.getElementById('change-theme-btn');
+        const themeModal = document.getElementById('theme-modal');
+        const modalThemeSelect = document.getElementById('modal-theme-select');
+        const modalSaveBtn = document.getElementById('modal-save-btn');
+        const modalWarningNotice = document.getElementById('modal-warning-notice');
+
+        let selectedTheme = '';
+
+        function openThemeModal() {
+            themeModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            // Reset modal state
+            if (!selectedTheme) {
+                modalThemeSelect.value = '';
+                modalSaveBtn.disabled = true;
+                modalWarningNotice.classList.add('hidden');
             } else {
-                enableEditorBtn.disabled = true;
-                enableEditorBtn.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
-                enableEditorBtn.classList.remove('bg-[#303030]', 'hover:bg-[#4a4a4a]', 'text-white', 'cursor-pointer');
+                modalThemeSelect.value = selectedTheme;
+                modalSaveBtn.disabled = false;
+                modalWarningNotice.classList.remove('hidden');
             }
         }
+
+        function closeThemeModal() {
+            themeModal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        selectThemeBtn.addEventListener('click', openThemeModal);
         
-        themeSelect.addEventListener('change', updateEnableButtonState);
-        
-        enableEditorBtn.addEventListener('click', () => {
-            if (enableEditorBtn.disabled) return;
-            // Navigate to another page (simulation)
-            window.location.href = '/theme-editor?app=findter&enable=true';
+        changeThemeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openThemeModal();
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !themeModal.classList.contains('hidden')) {
+                closeThemeModal();
+            }
+        });
+
+        // Handle theme selection change
+        modalThemeSelect.addEventListener('change', () => {
+            const value = modalThemeSelect.value;
+            if (value && value !== '') {
+                modalSaveBtn.disabled = false;
+                modalWarningNotice.classList.remove('hidden');
+            } else {
+                modalSaveBtn.disabled = true;
+                modalWarningNotice.classList.add('hidden');
+            }
+        });
+
+        // Handle save button click
+        modalSaveBtn.addEventListener('click', () => {
+            selectedTheme = modalThemeSelect.value;
+            
+            // Update UI to show completed state
+            document.getElementById('step1-initial').classList.add('hidden');
+            document.getElementById('step1-completed').classList.remove('hidden');
+            document.getElementById('selected-theme-display').textContent = selectedTheme;
+
+            // Mark step 1 checkbox as completed
+            const step1Checkbox = document.getElementById('step1-checkbox');
+            step1Checkbox.setAttribute('data-completed', 'true');
+            step1Checkbox.classList.add('bg-[#303030]', 'text-white');
+            step1Checkbox.classList.remove('border-2', 'border-dashed', 'border-gray-400', 'bg-white');
+            step1Checkbox.querySelector('.fa-check').classList.remove('text-transparent');
+
+            // Update progress
+            updateProgressAndMessages();
+
+            // Close modal
+            closeThemeModal();
         });
         
         // Step 2: Go to Filter button simulation
@@ -482,10 +626,14 @@
                 alert("🚀 Navigate to Filter tab to set up custom filter rules.");
             });
         }
+
+        // Enable editor button
+        document.getElementById('enable-editor-btn').addEventListener('click', () => {
+            alert("🚀 Navigate to Theme Editor to enable the app embed.");
+        });
         
-        // Initialize progress & messages + button state
+        // Initialize progress & messages
         updateProgressAndMessages();
-        updateEnableButtonState();
     </script>
 </body>
 </html>
