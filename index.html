@@ -13,6 +13,7 @@
         .sidebar-scrollbar::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
         .step-checkbox {
             transition: all 0.2s ease;
+            cursor: pointer;
         }
         button:disabled {
             opacity: 0.5;
@@ -22,27 +23,15 @@
             animation: fadeInUp 0.4s ease;
         }
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .notice-box {
             animation: slideInDown 0.3s ease;
         }
         @keyframes slideInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .modal-overlay {
             animation: fadeIn 0.2s ease;
@@ -55,14 +44,12 @@
             to { opacity: 1; }
         }
         @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px) scale(0.98);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        /* Ensure modals are on top */
+        .modal-wrapper {
+            z-index: 9999;
         }
     </style>
 </head>
@@ -152,10 +139,10 @@
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                        <!-- Left Column (Notice only pushes this column down) -->
+                        <!-- Left Column -->
                         <div class="lg:col-span-2 flex flex-col gap-5">
                             
-                            <!-- Dynamic Notice Container - Under Title (INSIDE left column) -->
+                            <!-- Dynamic Notice Container - Under Title -->
                             <div id="notice-container-title" class="hidden"></div>
                             
                             <!-- Onboarding Guide Card -->
@@ -180,10 +167,10 @@
                                     <div id="notice-container-banner" class="mb-4 hidden"></div>
 
                                     <div id="guide-body-1" class="space-y-6 relative pl-1">
-                                        <!-- Step 1: Activate app embed (REDESIGNED) -->
+                                        <!-- Step 1: Activate app embed -->
                                         <div class="border border-gray-100 rounded-lg overflow-hidden">
                                             <div class="flex items-center gap-5 p-3 group transition-colors">
-                                                <div id="step1-checkbox" class="step-checkbox w-6 h-6 shrink-0 rounded-full border-2 border-dashed border-gray-400 bg-white flex items-center justify-center cursor-pointer hover:border-gray-600 transition-colors" data-step="1">
+                                                <div id="step1-checkbox" class="step-checkbox w-6 h-6 shrink-0 rounded-full border-2 border-dashed border-gray-400 bg-white flex items-center justify-center hover:border-gray-600 transition-colors" data-step="1">
                                                     <i class="fas fa-check text-[11px] text-transparent"></i>
                                                 </div>
                                                 <div class="flex-1 flex items-center cursor-pointer guide-step-toggle" data-target="step-content-1">
@@ -193,42 +180,44 @@
                                             </div>
                                             <div id="step-content-1" class="pl-14 pr-4 pb-4">
                                                 
-                                                <!-- Line 1: Recommended note (UPDATED) -->
-                                                <p class="text-[13px] text-[#303030] mb-4">
-                                                    Please choose a duplicate/draft theme to test the app before going live.
-                                                </p>
-                                                
-                                                <!-- Line 2: Step 1: Theme Selection + Button (INITIAL STATE) -->
-                                                <div id="step1-initial" class="flex flex-wrap items-center gap-x-2 gap-y-2 mb-3">
-                                                    <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
-                                                    <span class="text-[13px] text-gray-700">Theme Selection</span>
-                                                    <button id="select-theme-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-gray-50 transition-colors shadow-sm ml-1">
-                                                        Select a theme
-                                                        <i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
-                                                    </button>
+                                                <!-- Initial state: Show button to start flow -->
+                                                <div id="step1-initial" class="mb-3">
+                                                    <p class="text-[13px] text-[#303030] mb-3">
+                                                        Please choose a duplicate/draft theme to test the app before going live.
+                                                    </p>
+                                                    <div class="flex flex-wrap items-center gap-x-2 gap-y-2">
+                                                        <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
+                                                        <span class="text-[13px] text-gray-700">Theme Selection</span>
+                                                        <button type="button" id="select-theme-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-gray-50 transition-colors shadow-sm ml-1 inline-flex items-center gap-2">
+                                                            Select a theme
+                                                            <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
 
-                                                <!-- Line 3: Completed state (HIDDEN initially) -->
-                                                <div id="step1-completed" class="hidden mb-3">
+                                                <!-- Completed state (shown after modal flow is done) -->
+                                                <div id="step1-completed" class="hidden">
+                                                    <p class="text-[13px] text-[#303030] mb-3">
+                                                        Please choose a duplicate/draft theme to test the app before going live.
+                                                    </p>
                                                     <div class="flex flex-wrap items-center gap-x-2 gap-y-2 mb-3">
                                                         <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
                                                         <span class="text-[13px] text-gray-700">Theme Selection</span>
                                                         <div class="inline-flex items-center gap-2 border border-green-300 bg-green-50 rounded-[6px] px-3 py-1.5 ml-1">
                                                             <i class="fas fa-check-circle text-green-600 text-sm"></i>
                                                             <span id="selected-theme-display" class="text-[13px] font-medium text-green-800"></span>
-                                                            <button id="change-theme-btn" class="text-[11px] text-blue-600 underline hover:text-blue-800 font-medium">Change</button>
+                                                            <button type="button" id="change-theme-btn" class="text-[11px] text-blue-600 underline hover:text-blue-800 font-medium">Change</button>
                                                         </div>
                                                     </div>
                                                     
-                                                    <!-- Line 4: Step 2 instructions -->
                                                     <p class="text-[13px] text-[#303030] mb-3">
                                                         <strong>Step 2:</strong> Go to Theme Editor > App Embeds > Enable the "Search & Filter core" (Findter) > Save the Theme
                                                     </p>
                                                     
-                                                    <!-- Line 5: Enable App in Theme Editor button -->
-                                                    <button id="enable-editor-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors shadow-sm">
-                                                        Enable App in Theme Editor
-                                                    </button>
+                                                    <div class="inline-flex items-center gap-2 border border-green-300 bg-green-50 rounded-[6px] px-3 py-1.5">
+                                                        <i class="fas fa-check-circle text-green-600 text-sm"></i>
+                                                        <span class="text-[13px] font-medium text-green-800">App embed enabled</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -236,7 +225,7 @@
                                         <!-- Step 2: Set up custom filters (VISIBLE FROM START) -->
                                         <div id="step2-container" class="border border-gray-100 rounded-lg overflow-hidden">
                                             <div class="flex items-center gap-5 p-3 group transition-colors">
-                                                <div class="step-checkbox w-6 h-6 shrink-0 rounded-full border-2 border-dashed border-gray-400 bg-white flex items-center justify-center cursor-pointer hover:border-gray-600 transition-colors" data-step="2">
+                                                <div id="step2-checkbox" class="step-checkbox w-6 h-6 shrink-0 rounded-full border-2 border-dashed border-gray-400 bg-white flex items-center justify-center hover:border-gray-600 transition-colors" data-step="2">
                                                     <i class="fas fa-check text-[11px] text-transparent"></i>
                                                 </div>
                                                 <div class="flex-1 flex items-center cursor-pointer guide-step-toggle" data-target="step-content-2">
@@ -247,7 +236,7 @@
                                             <div id="step-content-2" class="pl-14 pr-4 pb-4">
                                                 <p class="text-[13px] text-[#303030] mb-2">Create your custom filter for each collection page with unlimited filter values.</p>
                                                 <p class="text-[13px] mb-3">Filter Guidelines <a href="https://flintverse.gitbook.io/docs/findter-custom-filter-search/user-guide/create-and-set-up-filters/add-a-new-filter-set" target="_blank" class="text-blue-600 font-bold underline hover:text-blue-800">here</a></p>
-                                                <button id="go-to-filter-btn" class="bg-[#303030] border border-[#303030] text-white rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors shadow-sm">
+                                                <button type="button" id="go-to-filter-btn" class="bg-[#303030] border border-[#303030] text-white rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors shadow-sm">
                                                     Go to Filter
                                                 </button>
                                             </div>
@@ -288,10 +277,10 @@
                             <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5"><h3 class="font-semibold text-[15px] text-[#303030] mb-3">Master</h3><button class="border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 shadow-sm">Master</button></div>
                         </div>
 
-                        <!-- Right Column (STAYS IN PLACE when notice appears) -->
+                        <!-- Right Column -->
                         <div class="flex flex-col gap-5">
                             
-                            <!-- Help & Support Card (UPDATED) -->
+                            <!-- Help & Support Card -->
                             <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5">
                                 <h3 class="font-semibold text-[15px] text-[#303030] mb-3">Help & Support</h3>
                                 <p class="text-[13px] text-[#303030] mb-3 leading-relaxed">
@@ -329,15 +318,15 @@
     <!-- Floating Chat Icon -->
     <div class="fixed bottom-6 right-6 z-50"><button class="w-[50px] h-[50px] bg-[#bd2130] rounded-full shadow-lg flex items-center justify-center text-white hover:bg-red-800 transition-colors"><i class="fas fa-search text-xl"></i></button></div>
 
-    <!-- Theme Selection Modal -->
-    <div id="theme-modal" class="fixed inset-0 z-[100] hidden">
-        <div class="modal-overlay absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeThemeModal()"></div>
-        <div class="modal-content absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
-            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg pointer-events-auto max-h-[90vh] flex flex-col">
+    <!-- MODAL 1: Theme Selection Modal -->
+    <div id="theme-modal" class="modal-wrapper fixed inset-0 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="theme-modal-overlay"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg pointer-events-auto max-h-[90vh] flex flex-col relative">
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
                     <h3 class="text-[16px] font-semibold text-[#303030]">Select Your Theme</h3>
-                    <button onclick="closeThemeModal()" class="text-gray-400 hover:text-gray-600 transition-colors p-1">
+                    <button type="button" id="close-theme-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
                         <i class="fas fa-times text-lg"></i>
                     </button>
                 </div>
@@ -385,10 +374,10 @@
                 
                 <!-- Modal Footer -->
                 <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
-                    <button onclick="closeThemeModal()" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">
+                    <button type="button" id="theme-modal-cancel-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">
                         Cancel
                     </button>
-                    <button id="modal-save-btn" disabled class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button type="button" id="modal-save-btn" disabled class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                         Save
                     </button>
                 </div>
@@ -396,244 +385,385 @@
         </div>
     </div>
 
-    <script>
-        // ---------- NOTICE BOX GENERATOR ----------
-        function createNoticeBox(containerId) {
-            const container = document.getElementById(containerId);
-            const noticeId = 'notice-' + Date.now();
-            
-            const noticeHtml = `
-                <div id="${noticeId}" class="notice-box bg-orange-50 border border-orange-200 rounded-lg p-4 relative">
-                    <button onclick="closeNotice('${noticeId}')" class="absolute top-3 right-3 text-orange-400 hover:text-orange-600 transition-colors">
-                        <i class="fas fa-times text-sm"></i>
+    <!-- MODAL 2: Enable App Embed Modal -->
+    <div id="editor-modal" class="modal-wrapper fixed inset-0 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="editor-modal-overlay"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg pointer-events-auto max-h-[90vh] flex flex-col relative">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-[16px] font-semibold text-[#303030]">Enable App Embed</h3>
+                    <button type="button" id="close-editor-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
+                        <i class="fas fa-times text-lg"></i>
                     </button>
-                    <div class="flex items-start gap-3 pr-6">
-                        <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 shrink-0 mt-0.5">
-                            <i class="fas fa-exclamation-triangle text-sm"></i>
+                </div>
+                
+                <!-- Modal Body -->
+                <div class="px-6 py-6 flex-1">
+                    <!-- Info icon with instruction -->
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 shrink-0">
+                            <i class="fas fa-puzzle-piece text-lg"></i>
                         </div>
                         <div class="flex-1">
-                            <p class="text-[13px] text-[#303030] leading-relaxed">
-                                Hi, our system notifies us there is a compatibility issue between the Findter app and your theme Local, which may cause the app's filters not to appear on your theme.<br><br>
-                                Let Findter team help you fix it for free. To proceed, please <a href="#" class="text-blue-600 font-bold underline hover:text-blue-800">contact us</a> share your [store URL] and [collaborator code].
+                            <p class="text-[14px] font-semibold text-[#303030] mb-2">Step 2: Enable App Embed in Theme Editor</p>
+                            <p class="text-[13px] text-[#303030] leading-relaxed bg-gray-50 border border-gray-200 rounded-lg p-4">
+                                Go to <strong>Theme Editor</strong> > <strong>App Embeds</strong> > Enable the <strong>"Search & Filter core" (Findter)</strong> > <strong>Save the Theme</strong>
                             </p>
                         </div>
                     </div>
+
+                    <!-- Visual steps indicator -->
+                    <div class="flex items-center gap-2 mb-6 pl-14 flex-wrap">
+                        <div class="flex items-center gap-2 text-[12px] text-gray-600">
+                            <span class="w-6 h-6 rounded-full bg-gray-200 text-gray-700 flex items-center justify-center font-semibold text-[10px]">1</span>
+                            <span>Theme Editor</span>
+                            <i class="fas fa-arrow-right text-gray-400 text-[10px]"></i>
+                        </div>
+                        <div class="flex items-center gap-2 text-[12px] text-gray-600">
+                            <span class="w-6 h-6 rounded-full bg-gray-200 text-gray-700 flex items-center justify-center font-semibold text-[10px]">2</span>
+                            <span>App Embeds</span>
+                            <i class="fas fa-arrow-right text-gray-400 text-[10px]"></i>
+                        </div>
+                        <div class="flex items-center gap-2 text-[12px] text-gray-600">
+                            <span class="w-6 h-6 rounded-full bg-gray-200 text-gray-700 flex items-center justify-center font-semibold text-[10px]">3</span>
+                            <span>Enable & Save</span>
+                        </div>
+                    </div>
                 </div>
-            `;
-            
-            container.innerHTML = noticeHtml;
-            container.classList.remove('hidden');
-        }
+                
+                <!-- Modal Footer -->
+                <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
+                    <button type="button" id="editor-modal-close-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">
+                        Close
+                    </button>
+                    <button type="button" id="enable-editor-modal-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors flex items-center gap-2">
+                        <i class="fas fa-external-link-alt text-xs"></i>
+                        Enable App in Theme Editor
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        function closeNotice(noticeId) {
-            const notice = document.getElementById(noticeId);
-            if (notice) {
-                notice.style.opacity = '0';
-                notice.style.transform = 'translateY(-10px)';
-                notice.style.transition = 'all 0.2s ease';
-                setTimeout(() => {
-                    const container = notice.parentElement;
-                    notice.remove();
-                    if (container && container.children.length === 0) {
-                        container.classList.add('hidden');
-                    }
-                }, 200);
-            }
-        }
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // ========== ELEMENT REFERENCES ==========
+            const selectThemeBtn = document.getElementById('select-theme-btn');
+            const changeThemeBtn = document.getElementById('change-theme-btn');
+            const themeModal = document.getElementById('theme-modal');
+            const editorModal = document.getElementById('editor-modal');
+            const modalThemeSelect = document.getElementById('modal-theme-select');
+            const modalSaveBtn = document.getElementById('modal-save-btn');
+            const modalWarningNotice = document.getElementById('modal-warning-notice');
+            const enableEditorModalBtn = document.getElementById('enable-editor-modal-btn');
+            
+            // Close buttons
+            const closeThemeModalBtn = document.getElementById('close-theme-modal-btn');
+            const themeModalCancelBtn = document.getElementById('theme-modal-cancel-btn');
+            const themeModalOverlay = document.getElementById('theme-modal-overlay');
+            const closeEditorModalBtn = document.getElementById('close-editor-modal-btn');
+            const editorModalCloseBtn = document.getElementById('editor-modal-close-btn');
+            const editorModalOverlay = document.getElementById('editor-modal-overlay');
 
-        // Test buttons event listeners
-        document.getElementById('test-btn-1').addEventListener('click', () => {
-            createNoticeBox('notice-container-title');
-        });
+            // State variables
+            let selectedTheme = '';
+            let flowCompleted = false;
 
-        document.getElementById('test-btn-2').addEventListener('click', () => {
-            createNoticeBox('notice-container-banner');
-        });
-
-        // ---------- STEP COMPLETION + CONGRAT MESSAGES LOGIC ----------
-        function updateProgressAndMessages() {
-            const step1 = document.querySelector('.step-checkbox[data-step="1"]');
-            const step2 = document.querySelector('.step-checkbox[data-step="2"]');
-            const step3 = document.querySelector('.step-checkbox[data-step="3"]');
-            
-            const step1Completed = step1?.getAttribute('data-completed') === 'true';
-            const step2Completed = step2?.getAttribute('data-completed') === 'true';
-            const step3Completed = step3?.getAttribute('data-completed') === 'true';
-            
-            const totalSteps = 3;
-            const completedCount = [step1Completed, step2Completed, step3Completed].filter(Boolean).length;
-            
-            // Progress bar update
-            const progressBar = document.getElementById('progress-bar');
-            const progressText = document.getElementById('progress-text');
-            const percentage = (completedCount / totalSteps) * 100;
-            progressBar.style.width = percentage + '%';
-            progressBar.classList.remove('bg-black', 'bg-yellow-400', 'bg-green-500', 'bg-gray-400');
-            if (completedCount === 1) progressBar.classList.add('bg-black');
-            else if (completedCount === 2) progressBar.classList.add('bg-yellow-400');
-            else if (completedCount === 3) progressBar.classList.add('bg-green-500');
-            else progressBar.classList.add('bg-gray-400');
-            progressText.innerText = `${completedCount}/${totalSteps} completed`;
-            
-            // Congratulation message logic - GREEN ONLY
-            const container = document.getElementById('congrat-message-container');
-            if (step1Completed && step3Completed) {
-                const messageHtml = `
-                    <div class="p-3 bg-green-50 border border-green-100 rounded-lg flex items-start gap-3">
-                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 shrink-0"><i class="fas fa-rocket"></i></div>
-                        <div class="flex-1">
-                            <p class="text-[13px] font-semibold text-green-800 leading-tight">Great job! Basic setup is complete. Explore more our <a href="#" class="underline font-bold text-green-700 hover:text-green-900">advanced features</a>.</p>
-                            <p class="text-[11px] text-green-700 mt-0.5">You can always reopen the guide to review each step.</p>
+            // ========== NOTICE BOX GENERATOR ==========
+            function createNoticeBox(containerId) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                const noticeId = 'notice-' + Date.now();
+                
+                const noticeHtml = `
+                    <div id="${noticeId}" class="notice-box bg-orange-50 border border-orange-200 rounded-lg p-4 relative">
+                        <button type="button" onclick="document.getElementById('${noticeId}').remove(); if(this.parentElement && this.parentElement.children.length <= 1) this.parentElement.classList.add('hidden');" class="absolute top-3 right-3 text-orange-400 hover:text-orange-600 transition-colors">
+                            <i class="fas fa-times text-sm"></i>
+                        </button>
+                        <div class="flex items-start gap-3 pr-6">
+                            <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 shrink-0 mt-0.5">
+                                <i class="fas fa-exclamation-triangle text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-[13px] text-[#303030] leading-relaxed">
+                                    Hi, our system notifies us there is a compatibility issue between the Findter app and your theme Local, which may cause the app's filters not to appear on your theme.<br><br>
+                                    Let Findter team help you fix it for free. To proceed, please <a href="#" class="text-blue-600 font-bold underline hover:text-blue-800">contact us</a> share your [store URL] and [collaborator code].
+                                </p>
+                            </div>
                         </div>
                     </div>
                 `;
-                container.innerHTML = messageHtml;
+                
+                container.innerHTML = noticeHtml;
                 container.classList.remove('hidden');
-            } else {
-                container.classList.add('hidden');
-                container.innerHTML = '';
             }
-        }
-        
-        // Attach event listeners to step checkboxes
-        document.querySelectorAll('.step-checkbox').forEach(cb => {
-            cb.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const isCompleted = cb.getAttribute('data-completed') === 'true';
-                const checkIcon = cb.querySelector('.fa-check');
-                if (isCompleted) {
-                    cb.setAttribute('data-completed', 'false');
-                    cb.classList.remove('bg-[#303030]', 'text-white');
-                    cb.classList.add('border-2', 'border-dashed', 'border-gray-400', 'bg-white');
-                    checkIcon.classList.add('text-transparent');
-                } else {
-                    cb.setAttribute('data-completed', 'true');
-                    cb.classList.add('bg-[#303030]', 'text-white');
-                    cb.classList.remove('border-2', 'border-dashed', 'border-gray-400', 'bg-white');
-                    checkIcon.classList.remove('text-transparent');
+
+            // Test buttons event listeners
+            document.getElementById('test-btn-1').addEventListener('click', () => createNoticeBox('notice-container-title'));
+            document.getElementById('test-btn-2').addEventListener('click', () => createNoticeBox('notice-container-banner'));
+
+            // ========== STEP COMPLETION + PROGRESS LOGIC ==========
+            function updateProgressAndMessages() {
+                const step1 = document.querySelector('.step-checkbox[data-step="1"]');
+                const step2 = document.querySelector('.step-checkbox[data-step="2"]');
+                const step3 = document.querySelector('.step-checkbox[data-step="3"]');
+                
+                const step1Completed = step1 ? step1.getAttribute('data-completed') === 'true' : false;
+                const step2Completed = step2 ? step2.getAttribute('data-completed') === 'true' : false;
+                const step3Completed = step3 ? step3.getAttribute('data-completed') === 'true' : false;
+                
+                const totalSteps = 3;
+                const completedCount = [step1Completed, step2Completed, step3Completed].filter(Boolean).length;
+                
+                const progressBar = document.getElementById('progress-bar');
+                const progressText = document.getElementById('progress-text');
+                const percentage = (completedCount / totalSteps) * 100;
+                
+                if (progressBar) {
+                    progressBar.style.width = percentage + '%';
+                    progressBar.className = 'bg-black h-full rounded-full transition-all duration-500';
+                    if (completedCount === 1) progressBar.classList.add('bg-black');
+                    else if (completedCount === 2) progressBar.classList.add('bg-yellow-400');
+                    else if (completedCount === 3) progressBar.classList.add('bg-green-500');
+                    else progressBar.classList.add('bg-gray-400');
                 }
-                updateProgressAndMessages();
-            });
-        });
-        
-        // Guide toggles
-        document.querySelectorAll('.guide-toggle').forEach((btn) => {
-            btn.addEventListener('click', () => {
-                const target = document.getElementById(btn.dataset.target);
-                const expanded = btn.getAttribute('aria-expanded') === 'true';
-                btn.setAttribute('aria-expanded', String(!expanded));
-                btn.innerHTML = expanded ? '<i class="fas fa-chevron-down"></i>' : '<i class="fas fa-chevron-up"></i>';
-                target.classList.toggle('hidden', expanded);
-            });
-        });
-        
-        // Individual step expand/collapse
-        document.querySelectorAll('.guide-step-toggle').forEach((header) => {
-            header.addEventListener('click', () => {
-                const content = document.getElementById(header.dataset.target);
-                const icon = header.querySelector('.fa-chevron-up, .fa-chevron-down');
-                const isHidden = content.classList.toggle('hidden');
-                if (icon) {
-                    icon.classList.toggle('fa-chevron-up', !isHidden);
-                    icon.classList.toggle('fa-chevron-down', isHidden);
+                
+                if (progressText) {
+                    progressText.innerText = `${completedCount}/${totalSteps} completed`;
                 }
-            });
-        });
-
-        // ---------- THEME MODAL LOGIC ----------
-        const selectThemeBtn = document.getElementById('select-theme-btn');
-        const changeThemeBtn = document.getElementById('change-theme-btn');
-        const themeModal = document.getElementById('theme-modal');
-        const modalThemeSelect = document.getElementById('modal-theme-select');
-        const modalSaveBtn = document.getElementById('modal-save-btn');
-        const modalWarningNotice = document.getElementById('modal-warning-notice');
-
-        let selectedTheme = '';
-
-        function openThemeModal() {
-            themeModal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            // Reset modal state
-            if (!selectedTheme) {
-                modalThemeSelect.value = '';
-                modalSaveBtn.disabled = true;
-                modalWarningNotice.classList.add('hidden');
-            } else {
-                modalThemeSelect.value = selectedTheme;
-                modalSaveBtn.disabled = false;
-                modalWarningNotice.classList.remove('hidden');
+                
+                const container = document.getElementById('congrat-message-container');
+                if (container) {
+                    if (step1Completed && step3Completed) {
+                        container.innerHTML = `
+                            <div class="p-3 bg-green-50 border border-green-100 rounded-lg flex items-start gap-3">
+                                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 shrink-0"><i class="fas fa-rocket"></i></div>
+                                <div class="flex-1">
+                                    <p class="text-[13px] font-semibold text-green-800 leading-tight">Great job! Basic setup is complete. Explore more our <a href="#" class="underline font-bold text-green-700 hover:text-green-900">advanced features</a>.</p>
+                                    <p class="text-[11px] text-green-700 mt-0.5">You can always reopen the guide to review each step.</p>
+                                </div>
+                            </div>
+                        `;
+                        container.classList.remove('hidden');
+                    } else {
+                        container.classList.add('hidden');
+                        container.innerHTML = '';
+                    }
+                }
             }
-        }
-
-        function closeThemeModal() {
-            themeModal.classList.add('hidden');
-            document.body.style.overflow = '';
-        }
-
-        selectThemeBtn.addEventListener('click', openThemeModal);
-        
-        changeThemeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openThemeModal();
-        });
-
-        // Close on Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !themeModal.classList.contains('hidden')) {
-                closeThemeModal();
-            }
-        });
-
-        // Handle theme selection change
-        modalThemeSelect.addEventListener('change', () => {
-            const value = modalThemeSelect.value;
-            if (value && value !== '') {
-                modalSaveBtn.disabled = false;
-                modalWarningNotice.classList.remove('hidden');
-            } else {
-                modalSaveBtn.disabled = true;
-                modalWarningNotice.classList.add('hidden');
-            }
-        });
-
-        // Handle save button click
-        modalSaveBtn.addEventListener('click', () => {
-            selectedTheme = modalThemeSelect.value;
             
-            // Update UI to show completed state
-            document.getElementById('step1-initial').classList.add('hidden');
-            document.getElementById('step1-completed').classList.remove('hidden');
-            document.getElementById('selected-theme-display').textContent = selectedTheme;
-
-            // Mark step 1 checkbox as completed
-            const step1Checkbox = document.getElementById('step1-checkbox');
-            step1Checkbox.setAttribute('data-completed', 'true');
-            step1Checkbox.classList.add('bg-[#303030]', 'text-white');
-            step1Checkbox.classList.remove('border-2', 'border-dashed', 'border-gray-400', 'bg-white');
-            step1Checkbox.querySelector('.fa-check').classList.remove('text-transparent');
-
-            // Update progress
-            updateProgressAndMessages();
-
-            // Close modal
-            closeThemeModal();
-        });
-        
-        // Step 2: Go to Filter button simulation
-        const goToFilterBtn = document.getElementById('go-to-filter-btn');
-        if (goToFilterBtn) {
-            goToFilterBtn.addEventListener('click', () => {
-                alert("🚀 Navigate to Filter tab to set up custom filter rules.");
+            // Attach event listeners to step checkboxes
+            document.querySelectorAll('.step-checkbox').forEach(cb => {
+                cb.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const isCompleted = this.getAttribute('data-completed') === 'true';
+                    const checkIcon = this.querySelector('.fa-check');
+                    if (isCompleted) {
+                        this.setAttribute('data-completed', 'false');
+                        this.classList.remove('bg-[#303030]', 'text-white');
+                        this.classList.add('border-2', 'border-dashed', 'border-gray-400', 'bg-white');
+                        checkIcon.classList.add('text-transparent');
+                    } else {
+                        this.setAttribute('data-completed', 'true');
+                        this.classList.add('bg-[#303030]', 'text-white');
+                        this.classList.remove('border-2', 'border-dashed', 'border-gray-400', 'bg-white');
+                        checkIcon.classList.remove('text-transparent');
+                    }
+                    updateProgressAndMessages();
+                });
             });
-        }
+            
+            // Guide toggles
+            document.querySelectorAll('.guide-toggle').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    const target = document.getElementById(this.dataset.target);
+                    const expanded = this.getAttribute('aria-expanded') === 'true';
+                    this.setAttribute('aria-expanded', String(!expanded));
+                    this.innerHTML = expanded ? '<i class="fas fa-chevron-down"></i>' : '<i class="fas fa-chevron-up"></i>';
+                    if (target) target.classList.toggle('hidden', expanded);
+                });
+            });
+            
+            // Individual step expand/collapse
+            document.querySelectorAll('.guide-step-toggle').forEach(function(header) {
+                header.addEventListener('click', function() {
+                    const content = document.getElementById(this.dataset.target);
+                    const icon = this.querySelector('.fa-chevron-up, .fa-chevron-down');
+                    if (content) {
+                        const isHidden = content.classList.toggle('hidden');
+                        if (icon) {
+                            icon.classList.toggle('fa-chevron-up', !isHidden);
+                            icon.classList.toggle('fa-chevron-down', isHidden);
+                        }
+                    }
+                });
+            });
 
-        // Enable editor button
-        document.getElementById('enable-editor-btn').addEventListener('click', () => {
-            alert("🚀 Navigate to Theme Editor to enable the app embed.");
+            // ========== THEME MODAL FUNCTIONS ==========
+            function openThemeModal() {
+                console.log('Opening theme modal...');
+                if (themeModal) {
+                    themeModal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                    
+                    if (!selectedTheme) {
+                        if (modalThemeSelect) modalThemeSelect.value = '';
+                        if (modalSaveBtn) modalSaveBtn.disabled = true;
+                        if (modalWarningNotice) modalWarningNotice.classList.add('hidden');
+                    } else {
+                        if (modalThemeSelect) modalThemeSelect.value = selectedTheme;
+                        if (modalSaveBtn) modalSaveBtn.disabled = false;
+                        if (modalWarningNotice) modalWarningNotice.classList.remove('hidden');
+                    }
+                }
+            }
+
+            function closeThemeModal() {
+                console.log('Closing theme modal...');
+                if (themeModal) {
+                    themeModal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            // Bind click events for Select Theme Button
+            if (selectThemeBtn) {
+                selectThemeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Select theme button clicked!');
+                    openThemeModal();
+                });
+            } else {
+                console.error('select-theme-btn element not found!');
+            }
+            
+            // Change theme button
+            if (changeThemeBtn) {
+                changeThemeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    openThemeModal();
+                });
+            }
+
+            // Close theme modal events
+            if (closeThemeModalBtn) closeThemeModalBtn.addEventListener('click', closeThemeModal);
+            if (themeModalCancelBtn) themeModalCancelBtn.addEventListener('click', closeThemeModal);
+            if (themeModalOverlay) themeModalOverlay.addEventListener('click', closeThemeModal);
+
+            // Handle theme selection change
+            if (modalThemeSelect) {
+                modalThemeSelect.addEventListener('change', function() {
+                    const value = this.value;
+                    if (value && value !== '') {
+                        if (modalSaveBtn) modalSaveBtn.disabled = false;
+                        if (modalWarningNotice) modalWarningNotice.classList.remove('hidden');
+                    } else {
+                        if (modalSaveBtn) modalSaveBtn.disabled = true;
+                        if (modalWarningNotice) modalWarningNotice.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Handle save button click in Modal 1 -> Open Modal 2
+            if (modalSaveBtn) {
+                modalSaveBtn.addEventListener('click', function() {
+                    if (modalThemeSelect) {
+                        selectedTheme = modalThemeSelect.value;
+                    }
+                    closeThemeModal();
+                    // Immediately open Modal 2 after short delay
+                    setTimeout(function() {
+                        openEditorModal();
+                    }, 250);
+                });
+            }
+
+            // ========== EDITOR MODAL FUNCTIONS ==========
+            function openEditorModal() {
+                console.log('Opening editor modal...');
+                if (editorModal) {
+                    editorModal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            function closeEditorModal() {
+                console.log('Closing editor modal...');
+                if (editorModal) {
+                    editorModal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                    completeFlow();
+                }
+            }
+
+            function completeFlow() {
+                if (flowCompleted) return;
+                flowCompleted = true;
+
+                // Update UI to show completed state for Step 1
+                const step1Initial = document.getElementById('step1-initial');
+                const step1Completed = document.getElementById('step1-completed');
+                const selectedThemeDisplay = document.getElementById('selected-theme-display');
+                const step1Checkbox = document.getElementById('step1-checkbox');
+
+                if (step1Initial) step1Initial.classList.add('hidden');
+                if (step1Completed) step1Completed.classList.remove('hidden');
+                if (selectedThemeDisplay) selectedThemeDisplay.textContent = selectedTheme;
+
+                // Mark step 1 checkbox as completed
+                if (step1Checkbox) {
+                    step1Checkbox.setAttribute('data-completed', 'true');
+                    step1Checkbox.classList.add('bg-[#303030]', 'text-white');
+                    step1Checkbox.classList.remove('border-2', 'border-dashed', 'border-gray-400', 'bg-white');
+                    const checkIcon = step1Checkbox.querySelector('.fa-check');
+                    if (checkIcon) checkIcon.classList.remove('text-transparent');
+                }
+
+                updateProgressAndMessages();
+            }
+
+            // Close editor modal events
+            if (closeEditorModalBtn) closeEditorModalBtn.addEventListener('click', closeEditorModal);
+            if (editorModalCloseBtn) editorModalCloseBtn.addEventListener('click', closeEditorModal);
+            if (editorModalOverlay) editorModalOverlay.addEventListener('click', closeEditorModal);
+
+            // Enable editor button click
+            if (enableEditorModalBtn) {
+                enableEditorModalBtn.addEventListener('click', function() {
+                    alert("🚀 Navigating to Theme Editor...\n\nIn production, this would open: /admin/themes/{theme_id}/editor");
+                    closeEditorModal();
+                });
+            }
+            
+            // Step 2: Go to Filter button
+            const goToFilterBtn = document.getElementById('go-to-filter-btn');
+            if (goToFilterBtn) {
+                goToFilterBtn.addEventListener('click', function() {
+                    alert("🚀 Navigate to Filter tab to set up custom filter rules.");
+                });
+            }
+            
+            // Escape key handler
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (themeModal && !themeModal.classList.contains('hidden')) {
+                        closeThemeModal();
+                    }
+                    if (editorModal && !editorModal.classList.contains('hidden')) {
+                        closeEditorModal();
+                    }
+                }
+            });
+
+            // Initialize progress
+            updateProgressAndMessages();
+            
+            console.log('All event listeners initialized successfully!');
         });
-        
-        // Initialize progress & messages
-        updateProgressAndMessages();
     </script>
 </body>
 </html>
