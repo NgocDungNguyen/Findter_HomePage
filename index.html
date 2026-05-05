@@ -82,13 +82,11 @@
             animation: indeterminateProgress 1.5s ease-in-out infinite;
         }
 
-        /* Locked menu item style */
-        .locked-menu-item {
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-        .locked-menu-item:hover {
-            background-color: transparent !important;
+        /* Active nav item style */
+        .nav-active {
+            background-color: #d1d5db !important;
+            color: #303030 !important;
+            font-weight: 600 !important;
         }
 
         /* Ensure modals are on top */
@@ -128,6 +126,43 @@
         .animate-pulse-custom {
             animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
+
+        /* Disabled button overlay effect */
+        .btn-disabled-overlay {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-disabled-overlay::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.3);
+            pointer-events: none;
+        }
+
+        /* Page view transitions */
+        .page-view {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .page-view.active {
+            display: block;
+        }
+
+        /* Empty state illustration */
+        .empty-state-illustration {
+            opacity: 0.05;
+        }
+
+        /* App header clickable */
+        .app-header-clickable {
+            cursor: pointer;
+            transition: background-color 0.15s;
+        }
+        .app-header-clickable:hover {
+            background-color: rgba(255,255,255,0.05);
+            border-radius: 6px;
+        }
     </style>
 </head>
 <body class="bg-[#f1f2f4] h-screen flex flex-col overflow-hidden text-[#303030]">
@@ -164,7 +199,8 @@
         <!-- Sidebar -->
         <aside class="w-60 bg-[#ebebeb] flex flex-col border-r border-gray-300 shrink-0 sidebar-scrollbar overflow-y-auto">
             <nav class="flex-1 py-3 px-3 flex flex-col gap-0.5">
-                <a href="#" id="nav-home" class="nav-item flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors"><i class="fas fa-home w-6 text-gray-500 text-center"></i> Home</a>
+                <!-- Main Shopify Nav Items -->
+                <a href="#" id="nav-home-main" data-page="home" class="nav-item flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors nav-active"><i class="fas fa-home w-6 text-gray-500 text-center"></i> Home</a>
                 <a href="#" class="flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors"><i class="fas fa-inbox w-6 text-gray-500 text-center"></i> Orders</a>
                 <a href="#" class="flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors"><i class="fas fa-tags w-6 text-gray-500 text-center"></i> Products</a>
                 <a href="#" class="flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors"><i class="fas fa-user w-6 text-gray-500 text-center"></i> Customers</a>
@@ -173,18 +209,33 @@
                 <a href="#" class="flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors"><i class="fas fa-file-alt w-6 text-gray-500 text-center"></i> Content</a>
                 <a href="#" class="flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors"><i class="fas fa-globe w-6 text-gray-500 text-center"></i> Markets</a>
                 <a href="#" class="flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors"><i class="fas fa-chart-line w-6 text-gray-500 text-center"></i> Analytics</a>
+                
                 <div class="mt-4 px-2 py-1 flex justify-between items-center text-[11px] font-bold text-gray-500 uppercase tracking-wider group cursor-pointer hover:bg-gray-200 rounded-md"><span>Sales channels</span><i class="fas fa-chevron-right text-[10px] text-gray-400"></i></div>
                 <a href="#" class="flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors"><i class="fas fa-store w-6 text-gray-500 text-center"></i> Online Store</a>
+                
                 <div class="mt-4 px-2 py-1 flex justify-between items-center text-[11px] font-bold text-gray-500 uppercase tracking-wider group cursor-pointer hover:bg-gray-200 rounded-md"><span>Apps</span><i class="fas fa-chevron-right text-[10px] text-gray-400"></i></div>
+                
+                <!-- APP SECTION with Homepage sub-link -->
                 <div class="bg-gray-200 rounded-md pb-1.5 mt-0.5 shadow-sm">
-                    <a href="#" class="flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md text-[#303030]"><div class="bg-gray-600 text-white rounded w-5 h-5 flex items-center justify-center text-[10px] mr-2 shrink-0"><i class="fas fa-filter"></i></div><span class="flex-1 truncate">Findter Custom Filter ...</span><div class="w-1 h-1 bg-[#303030] rounded-full mx-2"></div></a>
+                    <!-- App name - now clickable to go to homepage -->
+                    <a href="#" id="nav-app-name" data-page="home" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md text-[#303030] app-header-clickable transition-colors cursor-pointer">
+                        <div class="bg-gray-600 text-white rounded w-5 h-5 flex items-center justify-center text-[10px] mr-2 shrink-0"><i class="fas fa-filter"></i></div>
+                        <span class="flex-1 truncate">Findter Custom Filter ...</span>
+                        <div class="w-1 h-1 bg-[#303030] rounded-full mx-2"></div>
+                    </a>
+                    
                     <div class="flex flex-col mt-0.5 border-l-2 border-gray-300 ml-5 pl-3 space-y-0.5">
-                        <a href="#" id="nav-filter" class="app-sub-nav locked-menu-item text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors" data-nav-name="Filter">Filter</a>
-                        <a href="#" id="nav-search" class="app-sub-nav locked-menu-item text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors" data-nav-name="Search">Search</a>
-                        <a href="#" id="nav-metafield" class="app-sub-nav locked-menu-item text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors" data-nav-name="Metafield">Metafield</a>
-                        <a href="#" id="nav-design" class="app-sub-nav locked-menu-item text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors" data-nav-name="Filter & Product Grid Design">Filter & Product Grid Design</a>
-                        <a href="#" id="nav-analytics" class="app-sub-nav locked-menu-item text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors" data-nav-name="Analytics">Analytics</a>
-                        <a href="#" id="nav-advanced" class="app-sub-nav locked-menu-item text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors" data-nav-name="Advanced Features">Advanced Features</a>
+                        <!-- NEW: Homepage link inside app submenu -->
+                        <a href="#" id="nav-app-home" data-page="home" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer" data-nav-name="Homepage">
+                            <i class="fas fa-home w-5 text-center text-xs mr-1"></i>Homepage
+                        </a>
+                        
+                        <a href="#" id="nav-filter" data-page="filter" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer" data-nav-name="Filter"><i class="fas fa-filter w-5 text-center text-xs mr-1"></i>Filter</a>
+                        <a href="#" id="nav-search" data-page="search" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer" data-nav-name="Search"><i class="fas fa-search w-5 text-center text-xs mr-1"></i>Search</a>
+                        <a href="#" id="nav-metafield" data-page="metafield" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer" data-nav-name="Metafield"><i class="fas fa-database w-5 text-center text-xs mr-1"></i>Metafield</a>
+                        <a href="#" id="nav-design" data-page="design" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer" data-nav-name="Filter & Product Grid Design"><i class="fas fa-th-large w-5 text-center text-xs mr-1"></i>Filter & Product Grid Design</a>
+                        <a href="#" id="nav-analytics-app" data-page="analytics-app" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer" data-nav-name="Analytics"><i class="fas fa-chart-bar w-5 text-center text-xs mr-1"></i>Analytics</a>
+                        <a href="#" id="nav-advanced" data-page="advanced" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer" data-nav-name="Advanced Features"><i class="fas fa-cogs w-5 text-center text-xs mr-1"></i>Advanced Features</a>
                     </div>
                 </div>
             </nav>
@@ -195,220 +246,291 @@
         <main class="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#f1f2f4]">
             <!-- App Header -->
             <div class="flex items-center justify-between px-8 py-4 shrink-0">
-                <div class="flex items-center gap-2"><div class="bg-[#bd2130] text-white rounded-[4px] w-[22px] h-[22px] flex items-center justify-center text-[11px]"><i class="fas fa-filter"></i></div><h2 class="font-semibold text-[15px] text-[#303030]">Findter Custom Filter & Search</h2></div>
+                <div class="flex items-center gap-2 app-header-clickable px-2 -mx-2 py-1 rounded-md" id="app-header-title" data-page="home">
+                    <div class="bg-[#bd2130] text-white rounded-[4px] w-[22px] h-[22px] flex items-center justify-center text-[11px]"><i class="fas fa-filter"></i></div>
+                    <h2 class="font-semibold text-[15px] text-[#303030]">Findter Custom Filter & Search</h2>
+                </div>
                 <button class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors"><i class="fas fa-ellipsis-h text-sm"></i></button>
             </div>
 
-            <!-- Scrollable Content -->
-            <div class="flex-1 overflow-y-auto px-8 pb-12">
-                <div class="max-w-[1040px] mx-auto">
-                    <!-- Page Title with Test Buttons -->
-                    <div class="flex items-center justify-between mb-6">
-                        <h1 class="text-[22px] font-bold text-[#303030]">Homepage</h1>
-                        <div class="flex gap-2 shrink-0 ml-4">
-                            <button id="test-btn-1" class="border border-blue-300 bg-blue-50 text-blue-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-blue-100 transition-colors shadow-sm whitespace-nowrap">
-                                Test Notice (Under Title)
-                            </button>
-                            <button id="test-btn-2" class="border border-blue-300 bg-blue-50 text-blue-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-blue-100 transition-colors shadow-sm whitespace-nowrap">
-                                Test Notice (Under Banner)
-                            </button>
-                            <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">
-                                Reset Indexing (Test)
-                            </button>
+            <!-- Scrollable Content Container -->
+            <div class="flex-1 overflow-y-auto px-8 pb-12 relative">
+                
+                <!-- ==================== HOME PAGE VIEW ==================== -->
+                <div id="page-home" class="page-view active">
+                    <div class="max-w-[1040px] mx-auto">
+                        <!-- Page Title with Test Buttons -->
+                        <div class="flex items-center justify-between mb-6">
+                            <h1 class="text-[22px] font-bold text-[#303030]">Homepage</h1>
+                            <div class="flex gap-2 shrink-0 ml-4 flex-wrap">
+                                <button id="test-btn-1" class="border border-blue-300 bg-blue-50 text-blue-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-blue-100 transition-colors shadow-sm whitespace-nowrap">
+                                    Test Notice (Under Title)
+                                </button>
+                                <button id="test-btn-2" class="border border-blue-300 bg-blue-50 text-blue-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-blue-100 transition-colors shadow-sm whitespace-nowrap">
+                                    Test Notice (Under Banner)
+                                </button>
+                                <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">
+                                    Reset Indexing
+                                </button>
+                                <button id="end-index-btn" class="border border-green-300 bg-green-50 text-green-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-green-100 transition-colors shadow-sm whitespace-nowrap">
+                                    ⚡ End Index Now
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- INDEXING STATUS BANNER - Dynamic -->
-                    <div id="indexing-banner-container" class="mb-5"></div>
+                        <!-- INDEXING STATUS BANNER - Dynamic -->
+                        <div id="indexing-banner-container" class="mb-5"></div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                        <!-- Left Column -->
-                        <div class="lg:col-span-2 flex flex-col gap-5">
-                            
-                            <!-- Dynamic Notice Container - Under Title -->
-                            <div id="notice-container-title" class="hidden"></div>
-                            
-                            <!-- Onboarding Guide Card -->
-                            <div id="onboarding-guide-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden transition-all duration-300">
-                                <div class="p-5">
-                                    <div class="flex items-center justify-between mb-5">
-                                        <h3 class="font-semibold text-[15px] text-[#303030]">Onboarding guide</h3>
-                                        <button class="guide-toggle text-gray-400 hover:text-gray-600 transition-colors" data-target="guide-body-1" aria-expanded="true"><i class="fas fa-chevron-up"></i></button>
-                                    </div>
-                                    
-                                    <div class="flex items-center gap-4 mb-3">
-                                        <div class="flex-1 bg-gray-200 h-2.5 rounded-full overflow-hidden">
-                                            <div id="progress-bar" class="bg-black h-full w-[33%] rounded-full transition-all duration-500"></div>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                            <!-- Left Column -->
+                            <div class="lg:col-span-2 flex flex-col gap-5">
+                                
+                                <!-- Dynamic Notice Container - Under Title -->
+                                <div id="notice-container-title" class="hidden"></div>
+                                
+                                <!-- Onboarding Guide Card -->
+                                <div id="onboarding-guide-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden transition-all duration-300">
+                                    <div class="p-5">
+                                        <div class="flex items-center justify-between mb-5">
+                                            <h3 class="font-semibold text-[15px] text-[#303030]">Onboarding guide</h3>
+                                            <button class="guide-toggle text-gray-400 hover:text-gray-600 transition-colors" data-target="guide-body-1" aria-expanded="true"><i class="fas fa-chevron-up"></i></button>
                                         </div>
-                                        <span id="progress-text" class="text-[13px] text-gray-600 font-medium">1/3 completed</span>
-                                    </div>
-                                    
-                                    <!-- DYNAMIC CONGRATULATION MESSAGE -->
-                                    <div id="congrat-message-container" class="mb-4 hidden congrat-message"></div>
-
-                                    <!-- Dynamic Notice Container - Under Banner -->
-                                    <div id="notice-container-banner" class="mb-4 hidden"></div>
-
-                                    <div id="guide-body-1" class="space-y-6 relative pl-1">
-                                        <!-- Step 1: Activate app embed -->
-                                        <div class="border border-gray-100 rounded-lg overflow-hidden">
-                                            <div class="flex items-center gap-5 p-3 group transition-colors">
-                                                <div id="step1-checkbox" class="step-checkbox w-6 h-6 shrink-0 rounded-full border-2 border-dashed border-gray-400 bg-white flex items-center justify-center hover:border-gray-600 transition-colors" data-step="1">
-                                                    <i class="fas fa-check text-[11px] text-transparent"></i>
-                                                </div>
-                                                <div class="flex-1 flex items-center cursor-pointer guide-step-toggle" data-target="step-content-1">
-                                                    <h4 class="font-semibold text-[14px] text-[#303030] flex-1">Activate App Embed in Theme (<a href="https://flintverse.gitbook.io/docs/findter-custom-filter-search/user-guide/app-activation-and-preview/app-activation-in-store" target="_blank" class="font-bold text-green-600 underline hover:text-green-800">Guideline Here</a>)</h4>
-                                                    <i class="fas fa-chevron-up text-gray-400 text-xs transition-transform duration-200 ml-2"></i>
-                                                </div>
+                                        
+                                        <div class="flex items-center gap-4 mb-3">
+                                            <div class="flex-1 bg-gray-200 h-2.5 rounded-full overflow-hidden">
+                                                <div id="progress-bar" class="bg-black h-full w-[33%] rounded-full transition-all duration-500"></div>
                                             </div>
-                                            <div id="step-content-1" class="pl-14 pr-4 pb-4">
-                                                
-                                                <!-- Initial state: Show button to start flow -->
-                                                <div id="step1-initial" class="mb-3">
-                                                    <div class="flex flex-wrap items-center gap-x-2 gap-y-2">
-                                                        <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
-                                                        <span class="text-[13px] text-gray-700">Theme Selection</span>
-                                                        <button type="button" id="select-theme-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-gray-50 transition-colors shadow-sm ml-1 inline-flex items-center gap-2">
-                                                            Select a theme
-                                                            <i class="fas fa-chevron-down text-xs text-gray-400"></i>
-                                                        </button>
+                                            <span id="progress-text" class="text-[13px] text-gray-600 font-medium">1/3 completed</span>
+                                        </div>
+                                        
+                                        <!-- DYNAMIC CONGRATULATION MESSAGE -->
+                                        <div id="congrat-message-container" class="mb-4 hidden congrat-message"></div>
+
+                                        <!-- Dynamic Notice Container - Under Banner -->
+                                        <div id="notice-container-banner" class="mb-4 hidden"></div>
+
+                                        <div id="guide-body-1" class="space-y-6 relative pl-1">
+                                            <!-- Step 1: Activate app embed -->
+                                            <div class="border border-gray-100 rounded-lg overflow-hidden">
+                                                <div class="flex items-center gap-5 p-3 group transition-colors">
+                                                    <div id="step1-checkbox" class="step-checkbox w-6 h-6 shrink-0 rounded-full border-2 border-dashed border-gray-400 bg-white flex items-center justify-center hover:border-gray-600 transition-colors" data-step="1">
+                                                        <i class="fas fa-check text-[11px] text-transparent"></i>
+                                                    </div>
+                                                    <div class="flex-1 flex items-center cursor-pointer guide-step-toggle" data-target="step-content-1">
+                                                        <h4 class="font-semibold text-[14px] text-[#303030] flex-1">Activate App Embed in Theme (<a href="https://flintverse.gitbook.io/docs/findter-custom-filter-search/user-guide/app-activation-and-preview/app-activation-in-store" target="_blank" class="font-bold text-green-600 underline hover:text-green-800">Guideline Here</a>)</h4>
+                                                        <i class="fas fa-chevron-up text-gray-400 text-xs transition-transform duration-200 ml-2"></i>
                                                     </div>
                                                 </div>
-
-                                                <!-- Completed state (shown after modal flow is done) -->
-                                                <div id="step1-completed" class="hidden">
-                                                    <div class="flex flex-wrap items-center gap-x-2 gap-y-2 mb-3">
-                                                        <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
-                                                        <span class="text-[13px] text-gray-700">Theme Selection</span>
-                                                        <div class="inline-flex items-center gap-2 border border-green-300 bg-green-50 rounded-[6px] px-3 py-1.5 ml-1">
-                                                            <i class="fas fa-check-circle text-green-600 text-sm"></i>
-                                                            <span id="selected-theme-display" class="text-[13px] font-medium text-green-800"></span>
-                                                            <button type="button" id="change-theme-btn" class="text-[11px] text-blue-600 underline hover:text-blue-800 font-medium">Change</button>
+                                                <div id="step-content-1" class="pl-14 pr-4 pb-4">
+                                                    
+                                                    <!-- Initial state: Show button to start flow -->
+                                                    <div id="step1-initial" class="mb-3">
+                                                        <div class="flex flex-wrap items-center gap-x-2 gap-y-2">
+                                                            <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
+                                                            <span class="text-[13px] text-gray-700">Theme Selection</span>
+                                                            <button type="button" id="select-theme-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-gray-50 transition-colors shadow-sm ml-1 inline-flex items-center gap-2">
+                                                                Select a theme
+                                                                <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+                                                            </button>
                                                         </div>
                                                     </div>
-                                                    
-                                                    <p class="text-[13px] text-[#303030] mb-3">
-                                                        <strong>Step 2:</strong> Go to Theme Editor > App Embeds > Enable the "Search & Filter core" (Findter) > Save the Theme
-                                                    </p>
-                                                    
-                                                    <div class="inline-flex items-center gap-2 border border-green-300 bg-green-50 rounded-[6px] px-3 py-1.5">
-                                                        <i class="fas fa-check-circle text-green-600 text-sm"></i>
-                                                        <span class="text-[13px] font-medium text-green-800">App embed enabled</span>
+
+                                                    <!-- Completed state (shown after modal flow is done) -->
+                                                    <div id="step1-completed" class="hidden">
+                                                        <div class="flex flex-wrap items-center gap-x-2 gap-y-2 mb-3">
+                                                            <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
+                                                            <span class="text-[13px] text-gray-700">Theme Selection</span>
+                                                            <div class="inline-flex items-center gap-2 border border-green-300 bg-green-50 rounded-[6px] px-3 py-1.5 ml-1">
+                                                                <i class="fas fa-check-circle text-green-600 text-sm"></i>
+                                                                <span id="selected-theme-display" class="text-[13px] font-medium text-green-800"></span>
+                                                                <button type="button" id="change-theme-btn" class="text-[11px] text-blue-600 underline hover:text-blue-800 font-medium">Change</button>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <p class="text-[13px] text-[#303030] mb-3">
+                                                            <strong>Step 2:</strong> Go to Theme Editor > App Embeds > Enable the "Search & Filter core" (Findter) > Save the Theme
+                                                        </p>
+                                                        
+                                                        <div class="inline-flex items-center gap-2 border border-green-300 bg-green-50 rounded-[6px] px-3 py-1.5">
+                                                            <i class="fas fa-check-circle text-green-600 text-sm"></i>
+                                                            <span class="text-[13px] font-medium text-green-800">App embed enabled</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <!-- Step 2: Set up custom filters (VISIBLE FROM START) -->
-                                        <div id="step2-container" class="border border-gray-100 rounded-lg overflow-hidden">
-                                            <div class="flex items-center gap-5 p-3 group transition-colors">
-                                                <div id="step2-checkbox" class="step-checkbox w-6 h-6 shrink-0 rounded-full border-2 border-dashed border-gray-400 bg-white flex items-center justify-center hover:border-gray-600 transition-colors" data-step="2">
-                                                    <i class="fas fa-check text-[11px] text-transparent"></i>
+                                            <!-- Step 2: Set up custom filters (VISIBLE FROM START) -->
+                                            <div id="step2-container" class="border border-gray-100 rounded-lg overflow-hidden">
+                                                <div class="flex items-center gap-5 p-3 group transition-colors">
+                                                    <div id="step2-checkbox" class="step-checkbox w-6 h-6 shrink-0 rounded-full border-2 border-dashed border-gray-400 bg-white flex items-center justify-center hover:border-gray-600 transition-colors" data-step="2">
+                                                        <i class="fas fa-check text-[11px] text-transparent"></i>
+                                                    </div>
+                                                    <div class="flex-1 flex items-center cursor-pointer guide-step-toggle" data-target="step-content-2">
+                                                        <h4 class="font-semibold text-[14px] text-[#303030] flex-1">Set up custom filters for collections (Optional)</h4>
+                                                        <i class="fas fa-chevron-up text-gray-400 text-xs transition-transform duration-200 ml-2"></i>
+                                                    </div>
                                                 </div>
-                                                <div class="flex-1 flex items-center cursor-pointer guide-step-toggle" data-target="step-content-2">
-                                                    <h4 class="font-semibold text-[14px] text-[#303030] flex-1">Set up custom filters for collections (Optional)</h4>
-                                                    <i class="fas fa-chevron-up text-gray-400 text-xs transition-transform duration-200 ml-2"></i>
+                                                <div id="step-content-2" class="pl-14 pr-4 pb-4">
+                                                    <p class="text-[13px] text-[#303030] mb-2">Create your custom filter for each collection page with unlimited filter values.</p>
+                                                    <p class="text-[13px] mb-3">Filter Guidelines <a href="https://flintverse.gitbook.io/docs/findter-custom-filter-search/user-guide/create-and-set-up-filters/add-a-new-filter-set" target="_blank" class="text-blue-600 font-bold underline hover:text-blue-800">here</a></p>
+                                                    <button type="button" id="go-to-filter-btn" class="bg-[#303030] border border-[#303030] text-white rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                                                        Go to Filter
+                                                    </button>
+                                                    <p id="filter-lock-hint" class="hidden text-[11px] text-orange-600 mt-2 font-medium">
+                                                        <i class="fas fa-lock mr-1"></i> Complete Step 1 and wait for indexing to finish first
+                                                    </p>
                                                 </div>
                                             </div>
-                                            <div id="step-content-2" class="pl-14 pr-4 pb-4">
-                                                <p class="text-[13px] text-[#303030] mb-2">Create your custom filter for each collection page with unlimited filter values.</p>
-                                                <p class="text-[13px] mb-3">Filter Guidelines <a href="https://flintverse.gitbook.io/docs/findter-custom-filter-search/user-guide/create-and-set-up-filters/add-a-new-filter-set" target="_blank" class="text-blue-600 font-bold underline hover:text-blue-800">here</a></p>
-                                                <button type="button" id="go-to-filter-btn" class="bg-[#303030] border border-[#303030] text-white rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                                                    Go to Filter
-                                                </button>
-                                                <p id="filter-lock-hint" class="hidden text-[11px] text-orange-600 mt-2 font-medium">
-                                                    <i class="fas fa-lock mr-1"></i> Complete Step 1 and wait for indexing to finish first
-                                                </p>
-                                            </div>
-                                        </div>
 
-                                        <!-- Step 3: Basic search engine -->
-                                        <div class="border border-gray-100 rounded-lg overflow-hidden">
-                                            <div class="flex items-center gap-5 p-3 group transition-colors">
-                                                <div class="step-checkbox w-6 h-6 shrink-0 bg-[#303030] rounded-full text-white flex items-center justify-center cursor-pointer transition-colors" data-step="3" data-completed="true">
-                                                    <i class="fas fa-check text-[11px]"></i>
+                                            <!-- Step 3: Basic search engine -->
+                                            <div class="border border-gray-100 rounded-lg overflow-hidden">
+                                                <div class="flex items-center gap-5 p-3 group transition-colors">
+                                                    <div class="step-checkbox w-6 h-6 shrink-0 bg-[#303030] rounded-full text-white flex items-center justify-center cursor-pointer transition-colors" data-step="3" data-completed="true">
+                                                        <i class="fas fa-check text-[11px]"></i>
+                                                    </div>
+                                                    <div class="flex-1 flex items-center cursor-pointer guide-step-toggle" data-target="step-content-3">
+                                                        <h4 class="text-[14px] font-semibold text-gray-500 flex-1">Basic search engine is set up in app</h4>
+                                                        <i class="fas fa-chevron-up text-gray-400 text-xs transition-transform duration-200 ml-2"></i>
+                                                    </div>
                                                 </div>
-                                                <div class="flex-1 flex items-center cursor-pointer guide-step-toggle" data-target="step-content-3">
-                                                    <h4 class="text-[14px] font-semibold text-gray-500 flex-1">Basic search engine is set up in app</h4>
-                                                    <i class="fas fa-chevron-up text-gray-400 text-xs transition-transform duration-200 ml-2"></i>
+                                                <div id="step-content-3" class="pl-14 pr-4 pb-4">
+                                                    <p class="text-[13px] text-gray-500">Your search engine is optimized and active.</p>
                                                 </div>
-                                            </div>
-                                            <div id="step-content-3" class="pl-14 pr-4 pb-4">
-                                                <p class="text-[13px] text-gray-500">Your search engine is optimized and active.</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Data Insight Card -->
+                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">
+                                    <div class="p-5 flex items-center justify-between border-b border-gray-100">
+                                        <div class="flex items-center gap-3"><h3 class="font-semibold text-[15px] text-[#303030]">Data insight</h3><button class="border border-gray-300 rounded-[6px] px-2.5 py-1 text-[13px] font-medium text-[#303030] flex items-center gap-2 hover:bg-gray-50 shadow-sm"><i class="far fa-calendar text-gray-500 text-sm"></i> Last 30 days</button></div>
+                                        <button class="border border-gray-300 rounded-[6px] w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-50 shadow-sm"><i class="fas fa-chart-bar text-sm"></i></button>
+                                    </div>
+                                    <div class="p-5 flex gap-5">
+                                        <div class="flex-1 border border-gray-200 rounded-[8px] p-5 relative overflow-hidden flex flex-col justify-between"><h4 class="text-[13px] font-semibold text-[#303030] border-b border-gray-300 border-dashed pb-3 mb-4">Total sessions</h4><div class="flex items-end justify-between"><div><div class="text-[13px] text-green-700 font-medium mb-1 flex items-center gap-1">0% <i class="fas fa-arrow-up text-[10px]"></i></div><div class="text-[32px] font-normal leading-none text-[#303030]">0</div></div><div class="w-20 h-[2px] bg-green-500 mb-2"></div></div></div>
+                                        <div class="flex-1 border border-gray-200 rounded-[8px] p-5 relative overflow-hidden flex flex-col justify-between"><h4 class="text-[13px] font-semibold text-[#303030] border-b border-gray-300 border-dashed pb-3 mb-4">Conversion rate</h4><div class="flex items-end justify-between"><div class="mt-6"><div class="text-[32px] font-normal leading-none text-[#303030]">0%</div></div><div class="w-20 h-[2px] bg-green-500 mb-2"></div></div></div>
+                                    </div>
+                                </div>
+
+                                <!-- Master Card -->
+                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5"><h3 class="font-semibold text-[15px] text-[#303030] mb-3">Master</h3><button class="border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 shadow-sm">Master</button></div>
                             </div>
 
-                            <!-- Data Insight Card -->
-                            <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">
-                                <div class="p-5 flex items-center justify-between border-b border-gray-100">
-                                    <div class="flex items-center gap-3"><h3 class="font-semibold text-[15px] text-[#303030]">Data insight</h3><button class="border border-gray-300 rounded-[6px] px-2.5 py-1 text-[13px] font-medium text-[#303030] flex items-center gap-2 hover:bg-gray-50 shadow-sm"><i class="far fa-calendar text-gray-500 text-sm"></i> Last 30 days</button></div>
-                                    <button class="border border-gray-300 rounded-[6px] w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-50 shadow-sm"><i class="fas fa-chart-bar text-sm"></i></button>
-                                </div>
-                                <div class="p-5 flex gap-5">
-                                    <div class="flex-1 border border-gray-200 rounded-[8px] p-5 relative overflow-hidden flex flex-col justify-between"><h4 class="text-[13px] font-semibold text-[#303030] border-b border-gray-300 border-dashed pb-3 mb-4">Total sessions</h4><div class="flex items-end justify-between"><div><div class="text-[13px] text-green-700 font-medium mb-1 flex items-center gap-1">0% <i class="fas fa-arrow-up text-[10px]"></i></div><div class="text-[32px] font-normal leading-none text-[#303030]">0</div></div><div class="w-20 h-[2px] bg-green-500 mb-2"></div></div></div>
-                                    <div class="flex-1 border border-gray-200 rounded-[8px] p-5 relative overflow-hidden flex flex-col justify-between"><h4 class="text-[13px] font-semibold text-[#303030] border-b border-gray-300 border-dashed pb-3 mb-4">Conversion rate</h4><div class="flex items-end justify-between"><div class="mt-6"><div class="text-[32px] font-normal leading-none text-[#303030]">0%</div></div><div class="w-20 h-[2px] bg-green-500 mb-2"></div></div></div>
-                                </div>
-                            </div>
-
-                            <!-- Master Card -->
-                            <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5"><h3 class="font-semibold text-[15px] text-[#303030] mb-3">Master</h3><button class="border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 shadow-sm">Master</button></div>
-                        </div>
-
-                        <!-- Right Column -->
-                        <div class="flex flex-col gap-5">
-                            
-                            <!-- Help & Support Card -->
-                            <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5">
-                                <h3 class="font-semibold text-[15px] text-[#303030] mb-3">Help & Support</h3>
-                                <p class="text-[13px] text-[#303030] mb-3 leading-relaxed">
-                                    Find out more User Guidelines <a href="#" class="text-blue-600 hover:underline">here</a>.
-                                </p>
-                                <div class="text-[13px] text-[#303030] space-y-1 mb-4">
-                                    <p class="font-medium">If you struggling with:</p>
-                                    <ul class="list-disc pl-5 space-y-1 text-gray-700">
-                                        <li>Setup assistance</li>
-                                        <li>Theme compatibility</li>
-                                        <li>Filter/Search not displaying?</li>
-                                        <li>Storefront UI customize?</li>
-                                    </ul>
-                                    <p class="mt-2">Please contact us for <strong class="font-semibold">free support</strong>.</p>
-                                </div>
-                                <div class="flex gap-2">
-                                    <button class="flex items-center justify-center gap-2 border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 flex-1 shadow-sm"><i class="far fa-comment-dots text-gray-500 text-sm"></i> Live chat</button>
-                                    <button class="flex items-center justify-center gap-2 border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 flex-1 shadow-sm"><i class="fas fa-phone-alt text-gray-500 text-sm"></i> Book a call with us</button>
-                                </div>
-                            </div>
-
-                            <!-- Sync recent updates Card - Dynamic Status -->
-                            <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <h3 class="font-semibold text-[15px] text-[#303030]">Sync recent updates</h3>
-                                    <span id="sync-status-badge" class="bg-[#cbf1c4] text-[#1f5119] text-[11px] px-2 py-0.5 rounded-full font-semibold">Completed</span>
-                                </div>
-                                <p id="sync-status-text" class="text-[13px] text-[#303030] mb-5">Recent updates were last synced:<strong class="font-semibold ml-1" id="sync-timestamp">23:59:09 02/03/2026</strong></p>
+                            <!-- Right Column -->
+                            <div class="flex flex-col gap-5">
                                 
-                                <!-- Indexing progress indicator (shown during indexing) -->
-                                <div id="sync-progress-bar" class="hidden mb-4">
-                                    <div class="flex items-center justify-between mb-1">
-                                        <span class="text-[11px] text-gray-500 font-medium">Indexing progress</span>
-                                        <span id="sync-progress-percent" class="text-[11px] text-gray-600 font-semibold">0%</span>
+                                <!-- Help & Support Card -->
+                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5">
+                                    <h3 class="font-semibold text-[15px] text-[#303030] mb-3">Help & Support</h3>
+                                    <p class="text-[13px] text-[#303030] mb-3 leading-relaxed">
+                                        Find out more User Guidelines <a href="#" class="text-blue-600 hover:underline">here</a>.
+                                    </p>
+                                    <div class="text-[13px] text-[#303030] space-y-1 mb-4">
+                                        <p class="font-medium">If you struggling with:</p>
+                                        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                                            <li>Setup assistance</li>
+                                            <li>Theme compatibility</li>
+                                            <li>Filter/Search not displaying?</li>
+                                            <li>Storefront UI customize?</li>
+                                        </ul>
+                                        <p class="mt-2">Please contact us for <strong class="font-semibold">free support</strong>.</p>
                                     </div>
-                                    <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden relative indeterminate-progress">
-                                        <div id="sync-progress-fill" class="bg-orange-500 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                                    <div class="flex gap-2">
+                                        <button class="flex items-center justify-center gap-2 border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 flex-1 shadow-sm"><i class="far fa-comment-dots text-gray-500 text-sm"></i> Live chat</button>
+                                        <button class="flex items-center justify-center gap-2 border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 flex-1 shadow-sm"><i class="fas fa-phone-alt text-gray-500 text-sm"></i> Book a call with us</button>
                                     </div>
                                 </div>
 
-                                <button id="manual-sync-btn" class="flex items-center justify-center gap-2 border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 w-fit shadow-sm">
-                                    <i class="fas fa-sync-alt text-gray-500 text-sm" id="sync-icon"></i> 
-                                    <span id="sync-btn-text">Manual sync</span>
-                                </button>
+                                <!-- Sync recent updates Card - Dynamic Status -->
+                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5">
+                                    <div class="flex items-center gap-2 mb-3">
+                                        <h3 class="font-semibold text-[15px] text-[#303030]">Sync recent updates</h3>
+                                        <span id="sync-status-badge" class="bg-[#cbf1c4] text-[#1f5119] text-[11px] px-2 py-0.5 rounded-full font-semibold">Completed</span>
+                                    </div>
+                                    <p id="sync-status-text" class="text-[13px] text-[#303030] mb-5">Recent updates were last synced:<strong class="font-semibold ml-1" id="sync-timestamp">23:59:09 02/03/2026</strong></p>
+                                    
+                                    <!-- Indexing progress indicator (shown during indexing) -->
+                                    <div id="sync-progress-bar" class="hidden mb-4">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="text-[11px] text-gray-500 font-medium">Indexing progress</span>
+                                            <span id="sync-progress-percent" class="text-[11px] text-gray-600 font-semibold">0%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden relative indeterminate-progress">
+                                            <div id="sync-progress-fill" class="bg-orange-500 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+
+                                    <button id="manual-sync-btn" class="flex items-center justify-center gap-2 border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 w-fit shadow-sm">
+                                        <i class="fas fa-sync-alt text-gray-500 text-sm" id="sync-icon"></i> 
+                                        <span id="sync-btn-text">Manual sync</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- ==================== FILTER PAGE VIEW ==================== -->
+                <div id="page-filter" class="page-view">
+                    <div class="max-w-[1040px] mx-auto">
+                        <div class="mb-6">
+                            <h1 class="text-[22px] font-bold text-[#303030]">Filter</h1>
+                        </div>
+                        <div id="filter-page-content"></div>
+                    </div>
+                </div>
+
+                <!-- ==================== SEARCH PAGE VIEW ==================== -->
+                <div id="page-search" class="page-view">
+                    <div class="max-w-[1040px] mx-auto">
+                        <div class="mb-6">
+                            <h1 class="text-[22px] font-bold text-[#303030]">Search</h1>
+                        </div>
+                        <div id="search-page-content"></div>
+                    </div>
+                </div>
+
+                <!-- ==================== METAFIELD PAGE VIEW ==================== -->
+                <div id="page-metafield" class="page-view">
+                    <div class="max-w-[1040px] mx-auto">
+                        <div class="mb-6">
+                            <h1 class="text-[22px] font-bold text-[#303030]">Metafield</h1>
+                        </div>
+                        <div id="metafield-page-content"></div>
+                    </div>
+                </div>
+
+                <!-- ==================== DESIGN PAGE VIEW ==================== -->
+                <div id="page-design" class="page-view">
+                    <div class="max-w-[1040px] mx-auto">
+                        <div class="mb-6">
+                            <h1 class="text-[22px] font-bold text-[#303030]">Filter & Product Grid Design</h1>
+                        </div>
+                        <div id="design-page-content"></div>
+                    </div>
+                </div>
+
+                <!-- ==================== ANALYTICS APP PAGE VIEW ==================== -->
+                <div id="page-analytics-app" class="page-view">
+                    <div class="max-w-[1040px] mx-auto">
+                        <div class="mb-6">
+                            <h1 class="text-[22px] font-bold text-[#303030]">Analytics</h1>
+                        </div>
+                        <div id="analytics-app-page-content"></div>
+                    </div>
+                </div>
+
+                <!-- ==================== ADVANCED FEATURES PAGE VIEW ==================== -->
+                <div id="page-advanced" class="page-view">
+                    <div class="max-w-[1040px] mx-auto">
+                        <div class="mb-6">
+                            <h1 class="text-[22px] font-bold text-[#303030]">Advanced Features</h1>
+                        </div>
+                        <div id="advanced-page-content"></div>
+                    </div>
+                </div>
+
             </div>
         </main>
     </div>
@@ -452,12 +574,11 @@
         </div>
     </div>
 
-    <!-- MODAL: Access Restricted Modal -->
+    <!-- MODAL: Access Restricted Modal (shows when trying to access locked features) -->
     <div id="restricted-modal" class="modal-wrapper fixed inset-0 hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="restricted-modal-overlay"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
             <div class="bg-white rounded-xl shadow-2xl w-full max-w-md pointer-events-auto relative modal-content">
-                <!-- Modal Header -->
                 <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600">
@@ -470,7 +591,6 @@
                     </button>
                 </div>
                 
-                <!-- Modal Body -->
                 <div class="px-6 py-5">
                     <div class="space-y-4">
                         <p class="text-[14px] text-[#303030] leading-relaxed">
@@ -501,10 +621,10 @@
                     </div>
                 </div>
                 
-                <!-- Modal Footer -->
                 <div class="flex items-center justify-end px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
-                    <button type="button" id="restricted-modal-ok-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">
-                        Got it, take me to Homepage
+                    <button type="button" id="restricted-modal-home-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors flex items-center gap-2">
+                        <i class="fas fa-home text-xs"></i>
+                        Go to Homepage to complete setup
                     </button>
                 </div>
             </div>
@@ -516,7 +636,6 @@
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="theme-modal-overlay"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
             <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg pointer-events-auto max-h-[90vh] flex flex-col relative modal-content">
-                <!-- Modal Header -->
                 <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
                     <h3 class="text-[16px] font-semibold text-[#303030]">Select Your Theme</h3>
                     <button type="button" id="close-theme-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
@@ -524,9 +643,7 @@
                     </button>
                 </div>
                 
-                <!-- Modal Body -->
                 <div class="px-6 py-5 overflow-y-auto flex-1">
-                    <!-- Modified Notice Box with Close Button -->
                     <div id="theme-support-notice" class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-5 relative">
                         <button type="button" id="close-theme-notice" class="absolute top-3 right-3 text-blue-400 hover:text-blue-600 transition-colors p-1 rounded-full hover:bg-blue-100">
                             <i class="fas fa-times text-sm"></i>
@@ -537,12 +654,10 @@
                         </p>
                     </div>
                     
-                    <!-- Moved Text Here - Only shows in modal -->
                     <p class="text-[13px] text-[#303030] mb-4">
                         Please choose a duplicate/draft theme to test the app before going live.
                     </p>
                     
-                    <!-- Theme Selection Section -->
                     <div class="mb-4">
                         <label class="block text-[14px] font-semibold text-[#303030] mb-2">Theme Selection</label>
                         <select id="modal-theme-select" class="w-full border border-gray-300 rounded-[8px] px-4 py-2.5 text-[14px] text-[#303030] hover:bg-gray-50 bg-white outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
@@ -557,7 +672,6 @@
                     </div>
                 </div>
                 
-                <!-- Modal Footer -->
                 <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
                     <button type="button" id="theme-modal-cancel-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">
                         Cancel
@@ -575,7 +689,6 @@
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="editor-modal-overlay"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
             <div class="bg-white rounded-xl shadow-2xl w-full max-w-[980px] pointer-events-auto max-h-[90vh] flex flex-col relative modal-content">
-                <!-- Modal Header -->
                 <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
                     <h3 class="text-[16px] font-semibold text-[#303030]">Enable App Embed</h3>
                     <button type="button" id="close-editor-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
@@ -583,9 +696,7 @@
                     </button>
                 </div>
                 
-                <!-- Modal Body -->
                 <div class="px-6 py-6 flex-1">
-                    <!-- Info icon with instruction -->
                     <div class="flex items-start gap-4 mb-6">
                         <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 shrink-0">
                             <i class="fas fa-puzzle-piece text-lg"></i>
@@ -595,45 +706,41 @@
                         </div>
                     </div>
 
-                    <!-- Visual steps indicator - Horizontal Stepper (All in one line) -->
                     <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-6">
                         <div class="flex items-center justify-center gap-1 whitespace-nowrap">
-                            <!-- Step 1 -->
                             <div class="flex items-center gap-2">
                                 <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[13px] shadow-md shrink-0">1</div>
                                 <span class="text-[13px] font-semibold text-gray-800">Theme Editor</span>
                             </div>
                             <i class="fas fa-arrow-right text-gray-400 text-sm mx-2 shrink-0"></i>
                             
-                            <!-- Step 2 -->
                             <div class="flex items-center gap-2">
                                 <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[13px] shadow-md shrink-0">2</div>
                                 <span class="text-[13px] font-semibold text-gray-800">App Embeds</span>
                             </div>
                             <i class="fas fa-arrow-right text-gray-400 text-sm mx-2 shrink-0"></i>
                             
-                            <!-- Step 3 -->
                             <div class="flex items-center gap-2">
                                 <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[13px] shadow-md shrink-0">3</div>
                                 <span class="text-[13px] font-semibold text-gray-800">Enable App "Search & Filter Core"</span>
                             </div>
                             <i class="fas fa-arrow-right text-gray-400 text-sm mx-2 shrink-0"></i>
                             
-                            <!-- Step 4 -->
                             <div class="flex items-center gap-2">
                                 <div class="w-9 h-9 rounded-full bg-green-600 text-white flex items-center justify-center font-bold text-[13px] shadow-md shrink-0">4</div>
                                 <span class="text-[13px] font-semibold text-gray-800">Save</span>
                             </div>
                         </div>
                     </div>
+
+                    <div id="editor-indexing-banner" class="rounded-lg p-4 mb-6 transition-all duration-300"></div>
                 </div>
                 
-                <!-- Modal Footer -->
                 <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
                     <button type="button" id="editor-modal-back-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">
                         Back
                     </button>
-                    <button type="button" id="enable-editor-modal-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors flex items-center gap-2">
+                    <button type="button" id="enable-editor-modal-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed btn-disabled-overlay">
                         <i class="fas fa-external-link-alt text-xs"></i>
                         Enable App in Theme Editor
                     </button>
@@ -643,7 +750,6 @@
     </div>
 
     <script>
-        // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
             
             // ========== STATE MANAGEMENT ==========
@@ -652,10 +758,12 @@
                 indexingComplete: false,
                 appEnabled: false,
                 indexingStartTime: null,
-                indexingDuration: 15000, // 15 seconds
+                indexingDuration: 20000,
                 selectedTheme: '',
                 flowCompleted: false,
-                hasEnabledInEditor: false
+                hasEnabledInEditor: false,
+                indexingInterval: null,
+                currentPage: 'home'
             };
 
             // ========== ELEMENT REFERENCES ==========
@@ -679,6 +787,9 @@
             const syncIcon = document.getElementById('sync-icon');
             const syncBtnText = document.getElementById('sync-btn-text');
 
+            // Editor modal indexing banner
+            const editorIndexingBanner = document.getElementById('editor-indexing-banner');
+
             // Guide card
             const onboardingGuideCard = document.getElementById('onboarding-guide-card');
             const goToFilterBtn = document.getElementById('go-to-filter-btn');
@@ -687,7 +798,7 @@
             // Restricted modal elements
             const closeRestrictedModalBtn = document.getElementById('close-restricted-modal-btn');
             const restrictedModalOverlay = document.getElementById('restricted-modal-overlay');
-            const restrictedModalOkBtn = document.getElementById('restricted-modal-ok-btn');
+            const restrictedModalHomeBtn = document.getElementById('restricted-modal-home-btn');
             const restrictionItem1 = document.getElementById('restriction-item-1');
             const restrictionCheck1 = document.getElementById('restriction-check-1');
             const restrictionText1 = document.getElementById('restriction-text-1');
@@ -703,15 +814,15 @@
             const editorModalBackBtn = document.getElementById('editor-modal-back-btn');
             const editorModalOverlay = document.getElementById('editor-modal-overlay');
 
-            // Notice close button
             const closeThemeNoticeBtn = document.getElementById('close-theme-notice');
             const themeSupportNotice = document.getElementById('theme-support-notice');
-
-            // Live chat link
             const liveChatLink = document.getElementById('live-chat-link');
 
-            // Reset indexing button
+            // App header title (clickable)
+            const appHeaderTitle = document.getElementById('app-header-title');
+
             const resetIndexingBtn = document.getElementById('reset-indexing-btn');
+            const endIndexBtn = document.getElementById('end-index-btn');
 
             // Chat elements
             const floatingChatBtn = document.getElementById('floating-chat-btn');
@@ -722,8 +833,122 @@
             const chatMessages = document.getElementById('chat-messages');
             const chatBadge = document.getElementById('chat-badge');
 
-            // Sub navigation items (locked)
-            const subNavItems = document.querySelectorAll('.app-sub-nav');
+            // All navigation items
+            const allNavItems = document.querySelectorAll('[data-page]');
+
+            // ========== PAGE NAVIGATION SYSTEM ==========
+            const pageNames = {
+                'home': 'Homepage',
+                'filter': 'Filter',
+                'search': 'Search',
+                'metafield': 'Metafield',
+                'design': 'Filter & Product Grid Design',
+                'analytics-app': 'Analytics',
+                'advanced': 'Advanced Features'
+            };
+
+            function navigateToPage(pageId, showRestrictedModalAfter = false) {
+                // Hide all pages
+                document.querySelectorAll('.page-view').forEach(page => {
+                    page.classList.remove('active');
+                });
+
+                // Show target page
+                const targetPage = document.getElementById('page-' + pageId);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                    AppState.currentPage = pageId;
+
+                    // Update nav active states
+                    allNavItems.forEach(item => {
+                        item.classList.remove('nav-active');
+                        if (item.getAttribute('data-page') === pageId) {
+                            item.classList.add('nav-active');
+                        }
+                    });
+
+                    // Render page content
+                    renderSubPageContent(pageId);
+
+                    // If this is a locked page and we need to show modal AFTER rendering
+                    if (showRestrictedModalAfter && !canAccessFeatures()) {
+                        // Small delay to let user see the page heading first
+                        setTimeout(() => {
+                            showRestrictedModal();
+                        }, 150);
+                    }
+                }
+            }
+
+            function renderSubPageContent(pageId) {
+                const container = document.getElementById(pageId + '-page-content');
+                if (!container) return;
+
+                const canAccess = canAccessFeatures();
+
+                container.innerHTML = `
+                    <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 p-12 text-center">
+                        <div class="empty-state-illustration mb-6">
+                            <i class="fas fa-${getPageIcon(pageId)} text-[80px] text-gray-300"></i>
+                        </div>
+                        <h2 class="text-[18px] font-semibold text-[#303030] mb-2">${pageNames[pageId]}</h2>
+                        <p class="text-[13px] text-gray-500 max-w-md mx-auto">
+                            ${canAccess 
+                                ? `This section is ready for configuration. Set up your ${pageNames[pageId].toLowerCase()} options here.` 
+                                : 'Content will be available once setup is complete.'}
+                        </p>
+                    </div>
+                `;
+            }
+
+            function getPageIcon(pageId) {
+                const icons = {
+                    'filter': 'filter',
+                    'search': 'search',
+                    'metafield': 'database',
+                    'design': 'th-large',
+                    'analytics-app': 'chart-bar',
+                    'advanced': 'cogs'
+                };
+                return icons[pageId] || 'file';
+            }
+
+            // Setup navigation click handlers
+            allNavItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.getAttribute('data-page');
+                    
+                    if (!page) return;
+
+                    // Check if this is a sub-page that requires access
+                    const isLockedPage = ['filter', 'search', 'metafield', 'design', 'analytics-app', 'advanced'].includes(page);
+                    const needsRestriction = isLockedPage && !canAccessFeatures();
+
+                    // Navigate FIRST (so user sees the page), then optionally show modal
+                    navigateToPage(page, needsRestriction);
+                });
+            });
+
+            // App header title click -> go to homepage
+            if (appHeaderTitle) {
+                appHeaderTitle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navigateToPage('home');
+                });
+            }
+
+            // "Go to Filter" button
+            if (goToFilterBtn) {
+                goToFilterBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (!canAccessFeatures()) {
+                        navigateToPage('filter', true);
+                    } else {
+                        navigateToPage('filter');
+                    }
+                });
+            }
 
             // ========== INDEXING SIMULATION ==========
             function getCurrentTimestamp() {
@@ -738,7 +963,6 @@
             }
 
             function showIndexingInProgress() {
-                // Show orange/yellow banner
                 indexingBannerContainer.innerHTML = `
                     <div id="indexing-banner" class="indexing-banner bg-amber-50 border border-amber-200 rounded-lg p-4 relative">
                         <div class="flex items-start gap-3">
@@ -755,21 +979,20 @@
                     </div>
                 `;
 
-                // Update sync section
                 syncStatusBadge.className = 'bg-amber-100 text-amber-800 text-[11px] px-2 py-0.5 rounded-full font-semibold';
                 syncStatusBadge.textContent = 'In progress';
                 syncTimestamp.textContent = getCurrentTimestamp();
                 
-                // Show progress bar
                 syncProgressBar.classList.remove('hidden');
                 syncProgressFill.style.width = '0%';
                 syncProgressPercent.textContent = '0%';
                 
-                // Update sync button state
                 syncIcon.className = 'fas fa-sync-alt text-gray-400 text-sm animate-spin';
                 syncBtnText.textContent = 'Syncing...';
                 manualSyncBtn.disabled = true;
                 manualSyncBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+                updateEditorModalBanner();
             }
 
             function updateIndexingProgress(percent) {
@@ -781,7 +1004,11 @@
                 AppState.isIndexing = false;
                 AppState.indexingComplete = true;
 
-                // Change banner to green completed state
+                if (AppState.indexingInterval) {
+                    clearInterval(AppState.indexingInterval);
+                    AppState.indexingInterval = null;
+                }
+
                 indexingBannerContainer.innerHTML = `
                     <div id="indexing-banner" class="indexing-banner bg-emerald-50 border border-emerald-200 rounded-lg p-4 relative">
                         <button type="button" onclick="document.getElementById('indexing-banner-container').innerHTML='';" class="absolute top-3 right-3 text-emerald-400 hover:text-emerald-600 transition-colors">
@@ -798,25 +1025,36 @@
                     </div>
                 `;
 
-                // Update sync section to completed
                 syncStatusBadge.className = 'bg-[#cbf1c4] text-[#1f5119] text-[11px] px-2 py-0.5 rounded-full font-semibold';
                 syncStatusBadge.textContent = 'Completed';
                 syncTimestamp.textContent = getCurrentTimestamp();
                 
-                // Hide progress bar
                 syncProgressBar.classList.add('hidden');
                 
-                // Restore sync button
                 syncIcon.className = 'fas fa-sync-alt text-gray-500 text-sm';
                 syncBtnText.textContent = 'Manual sync';
                 manualSyncBtn.disabled = false;
                 manualSyncBtn.classList.remove('opacity-50', 'cursor-not-allowed');
 
-                // Update restrictions if modal is showing
                 updateRestrictedModalContent();
-                
-                // Check if we can unlock features
+                updateEditorModalBanner();
                 checkAndUnlockFeatures();
+
+                if (AppState.currentPage !== 'home') {
+                    renderSubPageContent(AppState.currentPage);
+                }
+            }
+
+            function forceEndIndexing() {
+                if (AppState.indexingInterval) {
+                    clearInterval(AppState.indexingInterval);
+                    AppState.indexingInterval = null;
+                }
+                
+                if (syncProgressFill) syncProgressFill.style.width = '100%';
+                if (syncProgressPercent) syncProgressPercent.textContent = '100%';
+                
+                setTimeout(() => showIndexingComplete(), 300);
             }
 
             function startIndexingSimulation() {
@@ -827,26 +1065,29 @@
                 showIndexingInProgress();
                 updateLockStates();
 
-                // Simulate progress over 15 seconds
                 const startTime = Date.now();
                 const duration = AppState.indexingDuration;
 
-                const progressInterval = setInterval(() => {
+                AppState.indexingInterval = setInterval(() => {
                     const elapsed = Date.now() - startTime;
                     const progress = Math.min((elapsed / duration) * 100, 100);
                     
                     updateIndexingProgress(progress);
 
                     if (progress >= 100) {
-                        clearInterval(progressInterval);
-                        setTimeout(() => {
-                            showIndexingComplete();
-                        }, 300);
+                        clearInterval(AppState.indexingInterval);
+                        AppState.indexingInterval = null;
+                        setTimeout(() => showIndexingComplete(), 300);
                     }
                 }, 100);
             }
 
             function resetIndexing() {
+                if (AppState.indexingInterval) {
+                    clearInterval(AppState.indexingInterval);
+                    AppState.indexingInterval = null;
+                }
+                
                 AppState.isIndexing = true;
                 AppState.indexingComplete = false;
                 AppState.appEnabled = false;
@@ -857,7 +1098,6 @@
                 startIndexingSimulation();
                 updateLockStates();
                 
-                // Reset step 1 UI
                 const step1Initial = document.getElementById('step1-initial');
                 const step1Completed = document.getElementById('step1-completed');
                 const step1Checkbox = document.getElementById('step1-checkbox');
@@ -873,6 +1113,58 @@
                 }
 
                 updateProgressAndMessages();
+                renderSubPageContent(AppState.currentPage);
+            }
+
+            // ========== EDITOR MODAL BANNER LOGIC ==========
+            function updateEditorModalBanner() {
+                if (!editorIndexingBanner) return;
+
+                if (!AppState.indexingComplete) {
+                    editorIndexingBanner.className = 'rounded-lg p-4 mb-6 transition-all duration-300 bg-amber-50 border border-amber-200';
+                    editorIndexingBanner.innerHTML = `
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shrink-0 mt-0.5 animate-pulse-custom">
+                                <i class="fas fa-clock text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-[14px] font-semibold text-amber-800 mb-1">Please wait for indexing to complete</p>
+                                <p class="text-[13px] text-amber-700 leading-relaxed">
+                                    Data is currently being collected and indexed. The "Enable App in Theme Editor" button will become available once indexing is finished.
+                                </p>
+                                <div class="mt-3 w-full bg-amber-200 rounded-full h-2 overflow-hidden">
+                                    <div class="bg-amber-500 h-full rounded-full transition-all duration-300" style="width: ${syncProgressFill ? syncProgressFill.style.width : '0%'}"></div>
+                                </div>
+                                <p class="text-[11px] text-amber-600 mt-1 text-right">${syncProgressPercent ? syncProgressPercent.textContent : '0%'}</p>
+                            </div>
+                        </div>
+                    `;
+
+                    if (enableEditorModalBtn) {
+                        enableEditorModalBtn.disabled = true;
+                        enableEditorModalBtn.classList.add('btn-disabled-overlay');
+                    }
+                } else {
+                    editorIndexingBanner.className = 'rounded-lg p-4 mb-6 transition-all duration-300 bg-emerald-50 border border-emerald-200';
+                    editorIndexingBanner.innerHTML = `
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 shrink-0 mt-0.5">
+                                <i class="fas fa-check-circle text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-[14px] font-semibold text-emerald-800 mb-1">Data indexing is complete!</p>
+                                <p class="text-[13px] text-emerald-700 leading-relaxed">
+                                    You can now proceed to enable the app in your Theme Editor.
+                                </p>
+                            </div>
+                        </div>
+                    `;
+
+                    if (enableEditorModalBtn) {
+                        enableEditorModalBtn.disabled = false;
+                        enableEditorModalBtn.classList.remove('btn-disabled-overlay');
+                    }
+                }
             }
 
             // ========== LOCK / UNLOCK LOGIC ==========
@@ -883,22 +1175,10 @@
             function updateLockStates() {
                 const canAccess = canAccessFeatures();
                 
-                // Update sidebar nav items
-                subNavItems.forEach(item => {
-                    if (!canAccess) {
-                        item.classList.add('locked-menu-item');
-                    } else {
-                        item.classList.remove('locked-menu-item');
-                    }
-                });
+                if (goToFilterBtn) goToFilterBtn.disabled = !canAccess;
+                if (filterLockHint) filterLockHint.classList.toggle('hidden', canAccess);
 
-                // Update Go to Filter button
-                if (goToFilterBtn) {
-                    goToFilterBtn.disabled = !canAccess;
-                }
-                if (filterLockHint) {
-                    filterLockHint.classList.toggle('hidden', canAccess);
-                }
+                updateEditorModalBanner();
             }
 
             function checkAndUnlockFeatures() {
@@ -906,14 +1186,13 @@
             }
 
             // ========== RESTRICTED ACCESS MODAL ==========
-            function showRestrictedModal(navName) {
+            function showRestrictedModal() {
                 updateRestrictedModalContent();
                 restrictedModal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
             }
 
             function updateRestrictedModalContent() {
-                // Update item 1 (Indexing status)
                 if (AppState.indexingComplete) {
                     restrictionItem1.className = 'flex items-start gap-3 p-3 rounded-lg bg-green-50 border border-green-200';
                     restrictionCheck1.className = 'w-5 h-5 rounded-full border-2 border-green-500 bg-green-500 flex items-center justify-center shrink-0 mt-0.5';
@@ -928,7 +1207,6 @@
                     restrictionSub1.textContent = 'Currently collecting data...';
                 }
 
-                // Update item 2 (App enabled status)
                 if (AppState.appEnabled) {
                     restrictionItem2.className = 'flex items-start gap-3 p-3 rounded-lg bg-green-50 border border-green-200';
                     restrictionCheck2.className = 'w-5 h-5 rounded-full border-2 border-green-500 bg-green-500 flex items-center justify-center shrink-0 mt-0.5';
@@ -940,59 +1218,29 @@
                 }
             }
 
-            function closeRestrictedModal() {
+            function closeRestrictedModalAndGoHome() {
                 restrictedModal.classList.add('hidden');
                 document.body.style.overflow = '';
-                
-                // Trigger guide attention animation
+                navigateToPage('home');
                 triggerGuideAttentionAnimation();
             }
 
-            function triggerGuideAttentionAnimation() {
+            window.triggerGuideAttentionAnimation = function() {
                 if (onboardingGuideCard) {
-                    // Remove existing animation class first
                     onboardingGuideCard.classList.remove('guide-attention-animation');
-                    
-                    // Force reflow
                     void onboardingGuideCard.offsetWidth;
-                    
-                    // Add animation class
                     onboardingGuideCard.classList.add('guide-attention-animation');
-                    
-                    // Scroll to guide
                     onboardingGuideCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    
-                    // Remove animation class after it completes
-                    setTimeout(() => {
-                        onboardingGuideCard.classList.remove('guide-attention-animation');
-                    }, 1200);
+                    setTimeout(() => onboardingGuideCard.classList.remove('guide-attention-animation'), 1200);
                 }
-            }
+            };
 
-            // Restricted modal event listeners
-            if (closeRestrictedModalBtn) closeRestrictedModalBtn.addEventListener('click', closeRestrictedModal);
-            if (restrictedModalOkBtn) restrictedModalOkBtn.addEventListener('click', closeRestrictedModal);
-            if (restrictedModalOverlay) restrictedModalOverlay.addEventListener('click', closeRestrictedModal);
+            if (closeRestrictedModalBtn) closeRestrictedModalBtn.addEventListener('click', closeRestrictedModalAndGoHome);
+            if (restrictedModalHomeBtn) restrictedModalHomeBtn.addEventListener('click', closeRestrictedModalAndGoHome);
+            if (restrictedModalOverlay) restrictedModalOverlay.addEventListener('click', closeRestrictedModalAndGoHome);
 
-            // Sub nav click handlers
-            subNavItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    if (!canAccessFeatures()) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        const navName = this.getAttribute('data-nav-name') || 'this feature';
-                        showRestrictedModal(navName);
-                    } else {
-                        // Allow normal navigation
-                        console.log('Navigating to:', navName);
-                    }
-                });
-            });
-
-            // Reset indexing button
-            if (resetIndexingBtn) {
-                resetIndexingBtn.addEventListener('click', resetIndexing);
-            }
+            if (resetIndexingBtn) resetIndexingBtn.addEventListener('click', resetIndexing);
+            if (endIndexBtn) endIndexBtn.addEventListener('click', forceEndIndexing);
 
             // ========== NOTICE BOX GENERATOR ==========
             function createNoticeBox(containerId) {
@@ -1000,7 +1248,7 @@
                 if (!container) return;
                 const noticeId = 'notice-' + Date.now();
                 
-                const noticeHtml = `
+                container.innerHTML = `
                     <div id="${noticeId}" class="notice-box bg-orange-50 border border-orange-200 rounded-lg p-4 relative">
                         <button type="button" onclick="document.getElementById('${noticeId}').remove(); if(this.parentElement && this.parentElement.children.length <= 1) this.parentElement.classList.add('hidden');" class="absolute top-3 right-3 text-orange-400 hover:text-orange-600 transition-colors">
                             <i class="fas fa-times text-sm"></i>
@@ -1018,12 +1266,9 @@
                         </div>
                     </div>
                 `;
-                
-                container.innerHTML = noticeHtml;
                 container.classList.remove('hidden');
             }
 
-            // Test buttons event listeners
             document.getElementById('test-btn-1').addEventListener('click', () => createNoticeBox('notice-container-title'));
             document.getElementById('test-btn-2').addEventListener('click', () => createNoticeBox('notice-container-banner'));
 
@@ -1053,9 +1298,7 @@
                     else progressBar.classList.add('bg-gray-400');
                 }
                 
-                if (progressText) {
-                    progressText.innerText = `${completedCount}/${totalSteps} completed`;
-                }
+                if (progressText) progressText.innerText = `${completedCount}/${totalSteps} completed`;
                 
                 const container = document.getElementById('congrat-message-container');
                 if (container) {
@@ -1077,7 +1320,6 @@
                 }
             }
             
-            // Attach event listeners to step checkboxes
             document.querySelectorAll('.step-checkbox').forEach(cb => {
                 cb.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -1098,7 +1340,6 @@
                 });
             });
             
-            // Guide toggles
             document.querySelectorAll('.guide-toggle').forEach(function(btn) {
                 btn.addEventListener('click', function() {
                     const target = document.getElementById(this.dataset.target);
@@ -1109,7 +1350,6 @@
                 });
             });
             
-            // Individual step expand/collapse
             document.querySelectorAll('.guide-step-toggle').forEach(function(header) {
                 header.addEventListener('click', function() {
                     const content = document.getElementById(this.dataset.target);
@@ -1133,10 +1373,7 @@
                 setTimeout(() => {
                     addMessageToChat(message, true);
                     chatInput.value = '';
-                    
-                    setTimeout(() => {
-                        addMessageToChat("Thank you for reaching out! A support agent will assist you shortly.", false);
-                    }, 800);
+                    setTimeout(() => addMessageToChat("Thank you for reaching out! A support agent will assist you shortly.", false), 800);
                 }, 300);
             }
 
@@ -1258,6 +1495,7 @@
                     editorModal.classList.remove('hidden');
                     document.body.style.overflow = 'hidden';
                     updateEditorModalCloseButton();
+                    updateEditorModalBanner();
                 }
             }
 
@@ -1301,6 +1539,10 @@
                 updateEditorModalCloseButton();
                 updateProgressAndMessages();
                 checkAndUnlockFeatures();
+
+                if (AppState.currentPage !== 'home') {
+                    renderSubPageContent(AppState.currentPage);
+                }
             }
 
             if (closeEditorModalBtn) closeEditorModalBtn.addEventListener('click', closeEditorModal);
@@ -1316,24 +1558,17 @@
 
             if (enableEditorModalBtn) {
                 enableEditorModalBtn.addEventListener('click', function() {
+                    if (!AppState.indexingComplete) {
+                        alert('Please wait for indexing to complete first.');
+                        return;
+                    }
+                    
                     AppState.hasEnabledInEditor = true;
                     window.open('Editor.html', '_blank');
                     updateEditorModalCloseButton();
                 });
             }
             
-            // Go to Filter button (with lock check)
-            if (goToFilterBtn) {
-                goToFilterBtn.addEventListener('click', function() {
-                    if (!canAccessFeatures()) {
-                        showRestrictedModal('Filter setup');
-                    } else {
-                        alert("🚀 Navigate to Filter tab to set up custom filter rules.");
-                    }
-                });
-            }
-            
-            // Escape key handler
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     if (chatBubble && chatBubble.classList.contains('active')) {
@@ -1341,7 +1576,7 @@
                         return;
                     }
                     if (restrictedModal && !restrictedModal.classList.contains('hidden')) {
-                        closeRestrictedModal();
+                        closeRestrictedModalAndGoHome();
                         return;
                     }
                     if (themeModal && !themeModal.classList.contains('hidden')) {
@@ -1357,15 +1592,16 @@
 
             // ========== INITIALIZATION ==========
             console.log('🚀 Initializing Shopify App Dashboard...');
-            console.log('⏳ Starting data indexing simulation (15 seconds)...');
+            console.log('⏳ Starting data indexing simulation (20 seconds)...');
             
-            // Start indexing simulation on page load
             startIndexingSimulation();
             updateLockStates();
             updateProgressAndMessages();
             
             console.log('✅ All event listeners initialized!');
-            console.log('🔒 Features locked until indexing completes AND app is enabled via Guide Step 1');
+            console.log('📄 Navigation system ready with Homepage tab in app submenu');
+            console.log('🔒 Locked pages show heading FIRST, then modal popup');
+            console.log('⚡ Use "End Index Now" button to skip waiting for testing');
         });
     </script>
 </body>
