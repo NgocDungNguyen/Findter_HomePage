@@ -439,6 +439,7 @@
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
                     <h3 class="text-[16px] font-semibold text-[#303030]">Enable App Embed</h3>
+                    <!-- Close button - HIDDEN for first-time users who haven't enabled yet -->
                     <button type="button" id="close-editor-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
                         <i class="fas fa-times text-lg"></i>
                     </button>
@@ -520,7 +521,7 @@
             const closeThemeModalBtn = document.getElementById('close-theme-modal-btn');
             const themeModalCancelBtn = document.getElementById('theme-modal-cancel-btn');
             const themeModalOverlay = document.getElementById('theme-modal-overlay');
-            const closeEditorModalBtn = document.getElementById('close-editor-modal-btn');
+            const closeEditorModalBtn = document.getElementById('close-editor-modal-btn'); // This will be conditionally hidden/shown
             const editorModalBackBtn = document.getElementById('editor-modal-back-btn');
             const editorModalOverlay = document.getElementById('editor-modal-overlay');
 
@@ -543,6 +544,7 @@
             // State variables
             let selectedTheme = '';
             let flowCompleted = false;
+            let hasEnabledInEditor = false; // NEW: Track if user has clicked Enable button
 
             // ========== NOTICE BOX GENERATOR ==========
             function createNoticeBox(containerId) {
@@ -743,6 +745,32 @@
                 if (e.key === 'Enter') sendChatBtn.click();
             });
 
+            // ========== MODAL 2 CLOSE BUTTON LOGIC (First-time enforcement) ==========
+            
+            /**
+             * Controls visibility of the X (Close) button in Modal 2.
+             * 
+             * RULES:
+             * - If user has NOT completed the flow AND has NOT clicked Enable yet → HIDE the X button
+             *   (Forces them to either click "Enable App in Theme Editor" or go "Back")
+             *   
+             * - If user HAS clicked Enable at least once OR flow is completed → SHOW the X button
+             *   (Allows them to close freely after being directed to editor)
+             */
+            function updateEditorModalCloseButton() {
+                if (!closeEditorModalBtn) return;
+
+                // Show X button ONLY if: user has already enabled in editor OR flow is already completed
+                if (hasEnabledInEditor || flowCompleted) {
+                    closeEditorModalBtn.style.display = 'flex';
+                    closeEditorModalBtn.style.visibility = 'visible';
+                } else {
+                    // First-time user: HIDE the X button completely to force action
+                    closeEditorModalBtn.style.display = 'none';
+                    closeEditorModalBtn.style.visibility = 'hidden';
+                }
+            }
+
             // ========== THEME MODAL FUNCTIONS ==========
             function openThemeModal() {
                 console.log('Opening theme modal...');
@@ -843,6 +871,9 @@
                 if (editorModal) {
                     editorModal.classList.remove('hidden');
                     document.body.style.overflow = 'hidden';
+                    
+                    // CRITICAL: Update close button visibility based on first-time status
+                    updateEditorModalCloseButton();
                 }
             }
 
@@ -851,7 +882,14 @@
                 if (editorModal) {
                     editorModal.classList.add('hidden');
                     document.body.style.overflow = '';
-                    completeFlow();
+                    
+                    // Only complete flow if user has already enabled (clicked the button)
+                    // or if they're coming back after enabling
+                    if (hasEnabledInEditor || flowCompleted) {
+                        completeFlow();
+                    }
+                    // If first-time user hasn't enabled yet, don't complete flow,
+                    // just close (they probably used Back button or somehow got here)
                 }
             }
 
@@ -887,21 +925,49 @@
                     if (checkIcon) checkIcon.classList.remove('text-transparent');
                 }
 
+                // Update close button visibility (now that flow is done, show X if modal opens again)
+                updateEditorModalCloseButton();
+
                 updateProgressAndMessages();
             }
 
             // Close editor modal events
-            if (closeEditorModalBtn) closeEditorModalBtn.addEventListener('click', closeEditorModal);
+            if (closeEditorModalBtn) {
+                closeEditorModalBtn.addEventListener('click', closeEditorModal);
+            }
             
             // Back button returns to Modal 1
             if (editorModalBackBtn) editorModalBackBtn.addEventListener('click', goBackToThemeModal);
             
-            if (editorModalOverlay) editorModalOverlay.addEventListener('click', closeEditorModal);
+            if (editorModalOverlay) {
+                editorModalOverlay.addEventListener('click', () => {
+                    // Only allow overlay click to close if user has enabled or flow completed
+                    if (hasEnabledInEditor || flowCompleted) {
+                        closeEditorModal();
+                    } else {
+                        // For first-time users: prevent closing via overlay click
+                        // Optionally: show a subtle hint or do nothing
+                        console.log('Please click "Enable App in Theme Editor" or "Back" to continue.');
+                    }
+                });
+            }
 
-            // Enable editor button click - Navigate to Editor.html
+            // Enable editor button click - OPEN IN NEW TAB + mark as enabled
             if (enableEditorModalBtn) {
                 enableEditorModalBtn.addEventListener('click', function() {
-                    window.location.href = 'Editor.html';
+                    // Mark that user has clicked Enable (this unlocks the X button for future visits)
+                    hasEnabledInEditor = true;
+                    
+                    // Open Editor.html in NEW tab
+                    window.open('Editor.html', '_blank');
+                    
+                    // Update the close button now that they've enabled
+                    updateEditorModalCloseButton();
+                    
+                    // Optional: Auto-close modal after a short delay so they see the main UI updated
+                    // Or leave it open so they can close it manually now that X is visible
+                    // Uncomment below line if you want auto-close behavior:
+                    // setTimeout(() => closeEditorModal(), 1500);
                 });
             }
             
@@ -924,7 +990,13 @@
                         closeThemeModal();
                     }
                     if (editorModal && !editorModal.classList.contains('hidden')) {
-                        closeEditorModal();
+                        // Only allow Escape to close Modal 2 if user has enabled or flow completed
+                        if (hasEnabledInEditor || flowCompleted) {
+                            closeEditorModal();
+                        } else {
+                            // Prevent ESC close for first-time users
+                            console.log('Please complete the setup by enabling the app in Theme Editor.');
+                        }
                     }
                 }
             });
@@ -933,6 +1005,7 @@
             updateProgressAndMessages();
             
             console.log('All event listeners initialized successfully!');
+            console.log('Modal 2 Close Button Logic: First-time users MUST click Enable before they can close the modal.');
         });
     </script>
 </body>
