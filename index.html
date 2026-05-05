@@ -47,6 +47,50 @@
             from { opacity: 0; transform: translateY(20px) scale(0.98); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
+
+        /* Guide Attention Animation */
+        @keyframes guideAttention {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.03) translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.15); }
+            30% { transform: scale(1.02) translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.12); }
+            50% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+        .guide-attention-animation {
+            animation: guideAttention 1s ease-out forwards;
+            border-color: #f59e0b !important;
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.3);
+        }
+
+        /* Indexing Banner Styles */
+        .indexing-banner {
+            transition: all 0.4s ease;
+        }
+        
+        /* Progress bar animation */
+        @keyframes indeterminateProgress {
+            0% { left: -40%; }
+            100% { left: 100%; }
+        }
+        .indeterminate-progress::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 40%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: indeterminateProgress 1.5s ease-in-out infinite;
+        }
+
+        /* Locked menu item style */
+        .locked-menu-item {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .locked-menu-item:hover {
+            background-color: transparent !important;
+        }
+
         /* Ensure modals are on top */
         .modal-wrapper {
             z-index: 9999;
@@ -74,6 +118,15 @@
         }
         .chat-bubble.active {
             display: flex;
+        }
+
+        /* Pulse animation for sync icon */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-pulse-custom {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
     </style>
 </head>
@@ -111,7 +164,7 @@
         <!-- Sidebar -->
         <aside class="w-60 bg-[#ebebeb] flex flex-col border-r border-gray-300 shrink-0 sidebar-scrollbar overflow-y-auto">
             <nav class="flex-1 py-3 px-3 flex flex-col gap-0.5">
-                <a href="#" class="flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors"><i class="fas fa-home w-6 text-gray-500 text-center"></i> Home</a>
+                <a href="#" id="nav-home" class="nav-item flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors"><i class="fas fa-home w-6 text-gray-500 text-center"></i> Home</a>
                 <a href="#" class="flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors"><i class="fas fa-inbox w-6 text-gray-500 text-center"></i> Orders</a>
                 <a href="#" class="flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors"><i class="fas fa-tags w-6 text-gray-500 text-center"></i> Products</a>
                 <a href="#" class="flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors"><i class="fas fa-user w-6 text-gray-500 text-center"></i> Customers</a>
@@ -126,12 +179,12 @@
                 <div class="bg-gray-200 rounded-md pb-1.5 mt-0.5 shadow-sm">
                     <a href="#" class="flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md text-[#303030]"><div class="bg-gray-600 text-white rounded w-5 h-5 flex items-center justify-center text-[10px] mr-2 shrink-0"><i class="fas fa-filter"></i></div><span class="flex-1 truncate">Findter Custom Filter ...</span><div class="w-1 h-1 bg-[#303030] rounded-full mx-2"></div></a>
                     <div class="flex flex-col mt-0.5 border-l-2 border-gray-300 ml-5 pl-3 space-y-0.5">
-                        <a href="#" class="text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors">Filter</a>
-                        <a href="#" class="text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors">Search</a>
-                        <a href="#" class="text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors">Metafield</a>
-                        <a href="#" class="text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors">Filter & Product Grid Design</a>
-                        <a href="#" class="text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors">Analytics</a>
-                        <a href="#" class="text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors">Advanced Features</a>
+                        <a href="#" id="nav-filter" class="app-sub-nav locked-menu-item text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors" data-nav-name="Filter">Filter</a>
+                        <a href="#" id="nav-search" class="app-sub-nav locked-menu-item text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors" data-nav-name="Search">Search</a>
+                        <a href="#" id="nav-metafield" class="app-sub-nav locked-menu-item text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors" data-nav-name="Metafield">Metafield</a>
+                        <a href="#" id="nav-design" class="app-sub-nav locked-menu-item text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors" data-nav-name="Filter & Product Grid Design">Filter & Product Grid Design</a>
+                        <a href="#" id="nav-analytics" class="app-sub-nav locked-menu-item text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors" data-nav-name="Analytics">Analytics</a>
+                        <a href="#" id="nav-advanced" class="app-sub-nav locked-menu-item text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors" data-nav-name="Advanced Features">Advanced Features</a>
                     </div>
                 </div>
             </nav>
@@ -159,8 +212,14 @@
                             <button id="test-btn-2" class="border border-blue-300 bg-blue-50 text-blue-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-blue-100 transition-colors shadow-sm whitespace-nowrap">
                                 Test Notice (Under Banner)
                             </button>
+                            <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">
+                                Reset Indexing (Test)
+                            </button>
                         </div>
                     </div>
+
+                    <!-- INDEXING STATUS BANNER - Dynamic -->
+                    <div id="indexing-banner-container" class="mb-5"></div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
                         <!-- Left Column -->
@@ -170,7 +229,7 @@
                             <div id="notice-container-title" class="hidden"></div>
                             
                             <!-- Onboarding Guide Card -->
-                            <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">
+                            <div id="onboarding-guide-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden transition-all duration-300">
                                 <div class="p-5">
                                     <div class="flex items-center justify-between mb-5">
                                         <h3 class="font-semibold text-[15px] text-[#303030]">Onboarding guide</h3>
@@ -254,9 +313,12 @@
                                             <div id="step-content-2" class="pl-14 pr-4 pb-4">
                                                 <p class="text-[13px] text-[#303030] mb-2">Create your custom filter for each collection page with unlimited filter values.</p>
                                                 <p class="text-[13px] mb-3">Filter Guidelines <a href="https://flintverse.gitbook.io/docs/findter-custom-filter-search/user-guide/create-and-set-up-filters/add-a-new-filter-set" target="_blank" class="text-blue-600 font-bold underline hover:text-blue-800">here</a></p>
-                                                <button type="button" id="go-to-filter-btn" class="bg-[#303030] border border-[#303030] text-white rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors shadow-sm">
+                                                <button type="button" id="go-to-filter-btn" class="bg-[#303030] border border-[#303030] text-white rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
                                                     Go to Filter
                                                 </button>
+                                                <p id="filter-lock-hint" class="hidden text-[11px] text-orange-600 mt-2 font-medium">
+                                                    <i class="fas fa-lock mr-1"></i> Complete Step 1 and wait for indexing to finish first
+                                                </p>
                                             </div>
                                         </div>
 
@@ -320,11 +382,29 @@
                                 </div>
                             </div>
 
-                            <!-- Sync recent updates Card -->
+                            <!-- Sync recent updates Card - Dynamic Status -->
                             <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5">
-                                <div class="flex items-center gap-2 mb-3"><h3 class="font-semibold text-[15px] text-[#303030]">Sync recent updates</h3><span class="bg-[#cbf1c4] text-[#1f5119] text-[11px] px-2 py-0.5 rounded-full font-semibold">Completed</span></div>
-                                <p class="text-[13px] text-[#303030] mb-5">Recent updates were last synced:<strong class="font-semibold ml-1">23:59:09 02/03/2026</strong></p>
-                                <button class="flex items-center justify-center gap-2 border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 w-fit shadow-sm"><i class="fas fa-sync-alt text-gray-500 text-sm"></i> Manual sync</button>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <h3 class="font-semibold text-[15px] text-[#303030]">Sync recent updates</h3>
+                                    <span id="sync-status-badge" class="bg-[#cbf1c4] text-[#1f5119] text-[11px] px-2 py-0.5 rounded-full font-semibold">Completed</span>
+                                </div>
+                                <p id="sync-status-text" class="text-[13px] text-[#303030] mb-5">Recent updates were last synced:<strong class="font-semibold ml-1" id="sync-timestamp">23:59:09 02/03/2026</strong></p>
+                                
+                                <!-- Indexing progress indicator (shown during indexing) -->
+                                <div id="sync-progress-bar" class="hidden mb-4">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <span class="text-[11px] text-gray-500 font-medium">Indexing progress</span>
+                                        <span id="sync-progress-percent" class="text-[11px] text-gray-600 font-semibold">0%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden relative indeterminate-progress">
+                                        <div id="sync-progress-fill" class="bg-orange-500 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                                    </div>
+                                </div>
+
+                                <button id="manual-sync-btn" class="flex items-center justify-center gap-2 border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 w-fit shadow-sm">
+                                    <i class="fas fa-sync-alt text-gray-500 text-sm" id="sync-icon"></i> 
+                                    <span id="sync-btn-text">Manual sync</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -368,6 +448,65 @@
                 <button id="send-chat-btn" class="bg-red-600 text-white rounded-lg px-4 py-2 hover:bg-red-700 transition-colors">
                     <i class="fas fa-paper-plane text-sm"></i>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Access Restricted Modal -->
+    <div id="restricted-modal" class="modal-wrapper fixed inset-0 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="restricted-modal-overlay"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-md pointer-events-auto relative modal-content">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600">
+                            <i class="fas fa-lock text-lg"></i>
+                        </div>
+                        <h3 class="text-[16px] font-semibold text-[#303030]">Access Restricted</h3>
+                    </div>
+                    <button type="button" id="close-restricted-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+                
+                <!-- Modal Body -->
+                <div class="px-6 py-5">
+                    <div class="space-y-4">
+                        <p class="text-[14px] text-[#303030] leading-relaxed">
+                            Please complete the following steps before accessing this feature:
+                        </p>
+                        
+                        <div class="space-y-3">
+                            <div id="restriction-item-1" class="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
+                                <div id="restriction-check-1" class="w-5 h-5 rounded-full border-2 border-amber-400 bg-amber-50 flex items-center justify-center shrink-0 mt-0.5">
+                                    <i class="fas fa-clock text-[10px] text-amber-500"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-[13px] font-semibold text-[#303030]" id="restriction-text-1">Wait for data indexing to complete</p>
+                                    <p class="text-[11px] text-gray-500" id="restriction-sub-1">Currently collecting data...</p>
+                                </div>
+                            </div>
+                            
+                            <div id="restriction-item-2" class="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
+                                <div id="restriction-check-2" class="w-5 h-5 rounded-full border-2 border-amber-400 bg-amber-50 flex items-center justify-center shrink-0 mt-0.5">
+                                    <i class="fas fa-times text-[10px] text-amber-500"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-[13px] font-semibold text-[#303030]">Complete Guide Step 1: Activate App Embed</p>
+                                    <p class="text-[11px] text-gray-500">Select a theme and enable the app in Theme Editor</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal Footer -->
+                <div class="flex items-center justify-end px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
+                    <button type="button" id="restricted-modal-ok-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">
+                        Got it, take me to Homepage
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -439,7 +578,6 @@
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
                     <h3 class="text-[16px] font-semibold text-[#303030]">Enable App Embed</h3>
-                    <!-- Close button - HIDDEN for first-time users who haven't enabled yet -->
                     <button type="button" id="close-editor-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
                         <i class="fas fa-times text-lg"></i>
                     </button>
@@ -508,20 +646,60 @@
         // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
             
+            // ========== STATE MANAGEMENT ==========
+            const AppState = {
+                isIndexing: true,
+                indexingComplete: false,
+                appEnabled: false,
+                indexingStartTime: null,
+                indexingDuration: 15000, // 15 seconds
+                selectedTheme: '',
+                flowCompleted: false,
+                hasEnabledInEditor: false
+            };
+
             // ========== ELEMENT REFERENCES ==========
             const selectThemeBtn = document.getElementById('select-theme-btn');
             const changeThemeBtn = document.getElementById('change-theme-btn');
             const themeModal = document.getElementById('theme-modal');
             const editorModal = document.getElementById('editor-modal');
+            const restrictedModal = document.getElementById('restricted-modal');
             const modalThemeSelect = document.getElementById('modal-theme-select');
             const modalSaveBtn = document.getElementById('modal-save-btn');
             const enableEditorModalBtn = document.getElementById('enable-editor-modal-btn');
             
+            // Indexing UI elements
+            const indexingBannerContainer = document.getElementById('indexing-banner-container');
+            const syncStatusBadge = document.getElementById('sync-status-badge');
+            const syncTimestamp = document.getElementById('sync-timestamp');
+            const syncProgressBar = document.getElementById('sync-progress-bar');
+            const syncProgressFill = document.getElementById('sync-progress-fill');
+            const syncProgressPercent = document.getElementById('sync-progress-percent');
+            const manualSyncBtn = document.getElementById('manual-sync-btn');
+            const syncIcon = document.getElementById('sync-icon');
+            const syncBtnText = document.getElementById('sync-btn-text');
+
+            // Guide card
+            const onboardingGuideCard = document.getElementById('onboarding-guide-card');
+            const goToFilterBtn = document.getElementById('go-to-filter-btn');
+            const filterLockHint = document.getElementById('filter-lock-hint');
+
+            // Restricted modal elements
+            const closeRestrictedModalBtn = document.getElementById('close-restricted-modal-btn');
+            const restrictedModalOverlay = document.getElementById('restricted-modal-overlay');
+            const restrictedModalOkBtn = document.getElementById('restricted-modal-ok-btn');
+            const restrictionItem1 = document.getElementById('restriction-item-1');
+            const restrictionCheck1 = document.getElementById('restriction-check-1');
+            const restrictionText1 = document.getElementById('restriction-text-1');
+            const restrictionSub1 = document.getElementById('restriction-sub-1');
+            const restrictionItem2 = document.getElementById('restriction-item-2');
+            const restrictionCheck2 = document.getElementById('restriction-check-2');
+
             // Close buttons
             const closeThemeModalBtn = document.getElementById('close-theme-modal-btn');
             const themeModalCancelBtn = document.getElementById('theme-modal-cancel-btn');
             const themeModalOverlay = document.getElementById('theme-modal-overlay');
-            const closeEditorModalBtn = document.getElementById('close-editor-modal-btn'); // This will be conditionally hidden/shown
+            const closeEditorModalBtn = document.getElementById('close-editor-modal-btn');
             const editorModalBackBtn = document.getElementById('editor-modal-back-btn');
             const editorModalOverlay = document.getElementById('editor-modal-overlay');
 
@@ -532,6 +710,9 @@
             // Live chat link
             const liveChatLink = document.getElementById('live-chat-link');
 
+            // Reset indexing button
+            const resetIndexingBtn = document.getElementById('reset-indexing-btn');
+
             // Chat elements
             const floatingChatBtn = document.getElementById('floating-chat-btn');
             const chatBubble = document.getElementById('chat-bubble');
@@ -541,10 +722,277 @@
             const chatMessages = document.getElementById('chat-messages');
             const chatBadge = document.getElementById('chat-badge');
 
-            // State variables
-            let selectedTheme = '';
-            let flowCompleted = false;
-            let hasEnabledInEditor = false; // NEW: Track if user has clicked Enable button
+            // Sub navigation items (locked)
+            const subNavItems = document.querySelectorAll('.app-sub-nav');
+
+            // ========== INDEXING SIMULATION ==========
+            function getCurrentTimestamp() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const year = now.getFullYear();
+                return `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`;
+            }
+
+            function showIndexingInProgress() {
+                // Show orange/yellow banner
+                indexingBannerContainer.innerHTML = `
+                    <div id="indexing-banner" class="indexing-banner bg-amber-50 border border-amber-200 rounded-lg p-4 relative">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shrink-0 mt-0.5 animate-pulse-custom">
+                                <i class="fas fa-exclamation-triangle text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-[14px] font-semibold text-amber-800 mb-1">Collecting data</p>
+                                <p class="text-[13px] text-amber-700 leading-relaxed">
+                                    Up-to-date data are being collected. Please wait until this process is complete before continuing with the app.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Update sync section
+                syncStatusBadge.className = 'bg-amber-100 text-amber-800 text-[11px] px-2 py-0.5 rounded-full font-semibold';
+                syncStatusBadge.textContent = 'In progress';
+                syncTimestamp.textContent = getCurrentTimestamp();
+                
+                // Show progress bar
+                syncProgressBar.classList.remove('hidden');
+                syncProgressFill.style.width = '0%';
+                syncProgressPercent.textContent = '0%';
+                
+                // Update sync button state
+                syncIcon.className = 'fas fa-sync-alt text-gray-400 text-sm animate-spin';
+                syncBtnText.textContent = 'Syncing...';
+                manualSyncBtn.disabled = true;
+                manualSyncBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+
+            function updateIndexingProgress(percent) {
+                if (syncProgressFill) syncProgressFill.style.width = percent + '%';
+                if (syncProgressPercent) syncProgressPercent.textContent = Math.round(percent) + '%';
+            }
+
+            function showIndexingComplete() {
+                AppState.isIndexing = false;
+                AppState.indexingComplete = true;
+
+                // Change banner to green completed state
+                indexingBannerContainer.innerHTML = `
+                    <div id="indexing-banner" class="indexing-banner bg-emerald-50 border border-emerald-200 rounded-lg p-4 relative">
+                        <button type="button" onclick="document.getElementById('indexing-banner-container').innerHTML='';" class="absolute top-3 right-3 text-emerald-400 hover:text-emerald-600 transition-colors">
+                            <i class="fas fa-times text-sm"></i>
+                        </button>
+                        <div class="flex items-start gap-3 pr-8">
+                            <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 shrink-0 mt-0.5">
+                                <i class="fas fa-check-circle text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-[14px] font-semibold text-emerald-800">Data indexing is completed.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Update sync section to completed
+                syncStatusBadge.className = 'bg-[#cbf1c4] text-[#1f5119] text-[11px] px-2 py-0.5 rounded-full font-semibold';
+                syncStatusBadge.textContent = 'Completed';
+                syncTimestamp.textContent = getCurrentTimestamp();
+                
+                // Hide progress bar
+                syncProgressBar.classList.add('hidden');
+                
+                // Restore sync button
+                syncIcon.className = 'fas fa-sync-alt text-gray-500 text-sm';
+                syncBtnText.textContent = 'Manual sync';
+                manualSyncBtn.disabled = false;
+                manualSyncBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+                // Update restrictions if modal is showing
+                updateRestrictedModalContent();
+                
+                // Check if we can unlock features
+                checkAndUnlockFeatures();
+            }
+
+            function startIndexingSimulation() {
+                AppState.isIndexing = true;
+                AppState.indexingComplete = false;
+                AppState.indexingStartTime = Date.now();
+
+                showIndexingInProgress();
+                updateLockStates();
+
+                // Simulate progress over 15 seconds
+                const startTime = Date.now();
+                const duration = AppState.indexingDuration;
+
+                const progressInterval = setInterval(() => {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min((elapsed / duration) * 100, 100);
+                    
+                    updateIndexingProgress(progress);
+
+                    if (progress >= 100) {
+                        clearInterval(progressInterval);
+                        setTimeout(() => {
+                            showIndexingComplete();
+                        }, 300);
+                    }
+                }, 100);
+            }
+
+            function resetIndexing() {
+                AppState.isIndexing = true;
+                AppState.indexingComplete = false;
+                AppState.appEnabled = false;
+                AppState.flowCompleted = false;
+                AppState.hasEnabledInEditor = false;
+                AppState.selectedTheme = '';
+                
+                startIndexingSimulation();
+                updateLockStates();
+                
+                // Reset step 1 UI
+                const step1Initial = document.getElementById('step1-initial');
+                const step1Completed = document.getElementById('step1-completed');
+                const step1Checkbox = document.getElementById('step1-checkbox');
+                
+                if (step1Initial) step1Initial.classList.remove('hidden');
+                if (step1Completed) step1Completed.classList.add('hidden');
+                if (step1Checkbox) {
+                    step1Checkbox.setAttribute('data-completed', 'false');
+                    step1Checkbox.classList.remove('bg-[#303030]', 'text-white');
+                    step1Checkbox.classList.add('border-2', 'border-dashed', 'border-gray-400', 'bg-white');
+                    const checkIcon = step1Checkbox.querySelector('.fa-check');
+                    if (checkIcon) checkIcon.classList.add('text-transparent');
+                }
+
+                updateProgressAndMessages();
+            }
+
+            // ========== LOCK / UNLOCK LOGIC ==========
+            function canAccessFeatures() {
+                return AppState.indexingComplete && AppState.appEnabled;
+            }
+
+            function updateLockStates() {
+                const canAccess = canAccessFeatures();
+                
+                // Update sidebar nav items
+                subNavItems.forEach(item => {
+                    if (!canAccess) {
+                        item.classList.add('locked-menu-item');
+                    } else {
+                        item.classList.remove('locked-menu-item');
+                    }
+                });
+
+                // Update Go to Filter button
+                if (goToFilterBtn) {
+                    goToFilterBtn.disabled = !canAccess;
+                }
+                if (filterLockHint) {
+                    filterLockHint.classList.toggle('hidden', canAccess);
+                }
+            }
+
+            function checkAndUnlockFeatures() {
+                updateLockStates();
+            }
+
+            // ========== RESTRICTED ACCESS MODAL ==========
+            function showRestrictedModal(navName) {
+                updateRestrictedModalContent();
+                restrictedModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function updateRestrictedModalContent() {
+                // Update item 1 (Indexing status)
+                if (AppState.indexingComplete) {
+                    restrictionItem1.className = 'flex items-start gap-3 p-3 rounded-lg bg-green-50 border border-green-200';
+                    restrictionCheck1.className = 'w-5 h-5 rounded-full border-2 border-green-500 bg-green-500 flex items-center justify-center shrink-0 mt-0.5';
+                    restrictionCheck1.innerHTML = '<i class="fas fa-check text-[10px] text-white"></i>';
+                    restrictionText1.textContent = 'Data indexing complete';
+                    restrictionSub1.textContent = 'All data has been collected successfully';
+                } else {
+                    restrictionItem1.className = 'flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200';
+                    restrictionCheck1.className = 'w-5 h-5 rounded-full border-2 border-amber-400 bg-amber-50 flex items-center justify-center shrink-0 mt-0.5';
+                    restrictionCheck1.innerHTML = '<i class="fas fa-clock text-[10px] text-amber-500"></i>';
+                    restrictionText1.textContent = 'Wait for data indexing to complete';
+                    restrictionSub1.textContent = 'Currently collecting data...';
+                }
+
+                // Update item 2 (App enabled status)
+                if (AppState.appEnabled) {
+                    restrictionItem2.className = 'flex items-start gap-3 p-3 rounded-lg bg-green-50 border border-green-200';
+                    restrictionCheck2.className = 'w-5 h-5 rounded-full border-2 border-green-500 bg-green-500 flex items-center justify-center shrink-0 mt-0.5';
+                    restrictionCheck2.innerHTML = '<i class="fas fa-check text-[10px] text-white"></i>';
+                } else {
+                    restrictionItem2.className = 'flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200';
+                    restrictionCheck2.className = 'w-5 h-5 rounded-full border-2 border-amber-400 bg-amber-50 flex items-center justify-center shrink-0 mt-0.5';
+                    restrictionCheck2.innerHTML = '<i class="fas fa-times text-[10px] text-amber-500"></i>';
+                }
+            }
+
+            function closeRestrictedModal() {
+                restrictedModal.classList.add('hidden');
+                document.body.style.overflow = '';
+                
+                // Trigger guide attention animation
+                triggerGuideAttentionAnimation();
+            }
+
+            function triggerGuideAttentionAnimation() {
+                if (onboardingGuideCard) {
+                    // Remove existing animation class first
+                    onboardingGuideCard.classList.remove('guide-attention-animation');
+                    
+                    // Force reflow
+                    void onboardingGuideCard.offsetWidth;
+                    
+                    // Add animation class
+                    onboardingGuideCard.classList.add('guide-attention-animation');
+                    
+                    // Scroll to guide
+                    onboardingGuideCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Remove animation class after it completes
+                    setTimeout(() => {
+                        onboardingGuideCard.classList.remove('guide-attention-animation');
+                    }, 1200);
+                }
+            }
+
+            // Restricted modal event listeners
+            if (closeRestrictedModalBtn) closeRestrictedModalBtn.addEventListener('click', closeRestrictedModal);
+            if (restrictedModalOkBtn) restrictedModalOkBtn.addEventListener('click', closeRestrictedModal);
+            if (restrictedModalOverlay) restrictedModalOverlay.addEventListener('click', closeRestrictedModal);
+
+            // Sub nav click handlers
+            subNavItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    if (!canAccessFeatures()) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const navName = this.getAttribute('data-nav-name') || 'this feature';
+                        showRestrictedModal(navName);
+                    } else {
+                        // Allow normal navigation
+                        console.log('Navigating to:', navName);
+                    }
+                });
+            });
+
+            // Reset indexing button
+            if (resetIndexingBtn) {
+                resetIndexingBtn.addEventListener('click', resetIndexing);
+            }
 
             // ========== NOTICE BOX GENERATOR ==========
             function createNoticeBox(containerId) {
@@ -682,12 +1130,10 @@
                 chatInput.value = message;
                 chatBadge.classList.remove('hidden');
                 
-                // Auto-send the message
                 setTimeout(() => {
                     addMessageToChat(message, true);
                     chatInput.value = '';
                     
-                    // Simulate response
                     setTimeout(() => {
                         addMessageToChat("Thank you for reaching out! A support agent will assist you shortly.", false);
                     }, 800);
@@ -699,19 +1145,13 @@
                 msgDiv.className = `flex gap-2 ${isUser ? 'justify-end' : ''}`;
                 
                 if (isUser) {
-                    msgDiv.innerHTML = `
-                        <div class="bg-red-600 text-white rounded-lg rounded-tr-none px-3 py-2 text-[13px] max-w-[85%]">
-                            ${text}
-                        </div>
-                    `;
+                    msgDiv.innerHTML = `<div class="bg-red-600 text-white rounded-lg rounded-tr-none px-3 py-2 text-[13px] max-w-[85%]">${text}</div>`;
                 } else {
                     msgDiv.innerHTML = `
                         <div class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center text-red-600 shrink-0">
                             <i class="fas fa-robot text-xs"></i>
                         </div>
-                        <div class="bg-gray-100 rounded-lg rounded-tl-none px-3 py-2 text-[13px] text-gray-700 max-w-[85%]">
-                            ${text}
-                        </div>
+                        <div class="bg-gray-100 rounded-lg rounded-tl-none px-3 py-2 text-[13px] text-gray-700 max-w-[85%]">${text}</div>
                     `;
                 }
                 
@@ -719,53 +1159,27 @@
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
 
-            // Floating chat button click
-            floatingChatBtn.addEventListener('click', () => {
-                chatBubble.classList.toggle('active');
-            });
+            floatingChatBtn.addEventListener('click', () => chatBubble.classList.toggle('active'));
+            closeChatBubble.addEventListener('click', () => chatBubble.classList.remove('active'));
 
-            // Close chat bubble
-            closeChatBubble.addEventListener('click', () => {
-                chatBubble.classList.remove('active');
-            });
-
-            // Send chat message
             sendChatBtn.addEventListener('click', () => {
                 const msg = chatInput.value.trim();
                 if (msg) {
                     addMessageToChat(msg, true);
                     chatInput.value = '';
-                    setTimeout(() => {
-                        addMessageToChat("Thank you for your message. We'll get back to you soon!", false);
-                    }, 600);
+                    setTimeout(() => addMessageToChat("Thank you for your message. We'll get back to you soon!", false), 600);
                 }
             });
 
-            chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') sendChatBtn.click();
-            });
+            chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendChatBtn.click(); });
 
-            // ========== MODAL 2 CLOSE BUTTON LOGIC (First-time enforcement) ==========
-            
-            /**
-             * Controls visibility of the X (Close) button in Modal 2.
-             * 
-             * RULES:
-             * - If user has NOT completed the flow AND has NOT clicked Enable yet → HIDE the X button
-             *   (Forces them to either click "Enable App in Theme Editor" or go "Back")
-             *   
-             * - If user HAS clicked Enable at least once OR flow is completed → SHOW the X button
-             *   (Allows them to close freely after being directed to editor)
-             */
+            // ========== MODAL 2 CLOSE BUTTON LOGIC ==========
             function updateEditorModalCloseButton() {
                 if (!closeEditorModalBtn) return;
-
-                // Show X button ONLY if: user has already enabled in editor OR flow is already completed
-                if (hasEnabledInEditor || flowCompleted) {
+                if (AppState.hasEnabledInEditor || AppState.flowCompleted) {
                     closeEditorModalBtn.style.display = 'flex';
                     closeEditorModalBtn.style.visibility = 'visible';
                 } else {
-                    // First-time user: HIDE the X button completely to force action
                     closeEditorModalBtn.style.display = 'none';
                     closeEditorModalBtn.style.visibility = 'hidden';
                 }
@@ -773,42 +1187,34 @@
 
             // ========== THEME MODAL FUNCTIONS ==========
             function openThemeModal() {
-                console.log('Opening theme modal...');
                 if (themeModal) {
                     themeModal.classList.remove('hidden');
                     document.body.style.overflow = 'hidden';
-                    
-                    if (!selectedTheme) {
+                    if (!AppState.selectedTheme) {
                         if (modalThemeSelect) modalThemeSelect.value = '';
                         if (modalSaveBtn) modalSaveBtn.disabled = true;
                     } else {
-                        if (modalThemeSelect) modalThemeSelect.value = selectedTheme;
+                        if (modalThemeSelect) modalThemeSelect.value = AppState.selectedTheme;
                         if (modalSaveBtn) modalSaveBtn.disabled = false;
                     }
                 }
             }
 
             function closeThemeModal() {
-                console.log('Closing theme modal...');
                 if (themeModal) {
                     themeModal.classList.add('hidden');
                     document.body.style.overflow = '';
                 }
             }
 
-            // Bind click events for Select Theme Button
             if (selectThemeBtn) {
                 selectThemeBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('Select theme button clicked!');
                     openThemeModal();
                 });
-            } else {
-                console.error('select-theme-btn element not found!');
             }
             
-            // Change theme button
             if (changeThemeBtn) {
                 changeThemeBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -816,97 +1222,65 @@
                 });
             }
 
-            // Close theme modal events
             if (closeThemeModalBtn) closeThemeModalBtn.addEventListener('click', closeThemeModal);
             if (themeModalCancelBtn) themeModalCancelBtn.addEventListener('click', closeThemeModal);
             if (themeModalOverlay) themeModalOverlay.addEventListener('click', closeThemeModal);
 
-            // Close theme notice
             if (closeThemeNoticeBtn && themeSupportNotice) {
-                closeThemeNoticeBtn.addEventListener('click', () => {
-                    themeSupportNotice.style.display = 'none';
-                });
+                closeThemeNoticeBtn.addEventListener('click', () => themeSupportNotice.style.display = 'none');
             }
 
-            // Live chat link - opens chat with pre-filled message
             if (liveChatLink) {
                 liveChatLink.addEventListener('click', (e) => {
                     e.preventDefault();
                     closeThemeModal();
-                    setTimeout(() => {
-                        openChatWithMessage("I need assistance about theme support");
-                    }, 350);
+                    setTimeout(() => openChatWithMessage("I need assistance about theme support"), 350);
                 });
             }
 
-            // Handle theme selection change
             if (modalThemeSelect) {
                 modalThemeSelect.addEventListener('change', function() {
-                    const value = this.value;
-                    if (value && value !== '') {
-                        if (modalSaveBtn) modalSaveBtn.disabled = false;
-                    } else {
-                        if (modalSaveBtn) modalSaveBtn.disabled = true;
-                    }
+                    if (modalSaveBtn) modalSaveBtn.disabled = !this.value;
                 });
             }
 
-            // Handle save button click in Modal 1 -> Open Modal 2
             if (modalSaveBtn) {
                 modalSaveBtn.addEventListener('click', function() {
-                    if (modalThemeSelect) {
-                        selectedTheme = modalThemeSelect.value;
-                    }
+                    if (modalThemeSelect) AppState.selectedTheme = modalThemeSelect.value;
                     closeThemeModal();
-                    // Immediately open Modal 2 after short delay
-                    setTimeout(function() {
-                        openEditorModal();
-                    }, 250);
+                    setTimeout(() => openEditorModal(), 250);
                 });
             }
 
             // ========== EDITOR MODAL FUNCTIONS ==========
             function openEditorModal() {
-                console.log('Opening editor modal...');
                 if (editorModal) {
                     editorModal.classList.remove('hidden');
                     document.body.style.overflow = 'hidden';
-                    
-                    // CRITICAL: Update close button visibility based on first-time status
                     updateEditorModalCloseButton();
                 }
             }
 
             function closeEditorModal() {
-                console.log('Closing editor modal...');
                 if (editorModal) {
                     editorModal.classList.add('hidden');
                     document.body.style.overflow = '';
-                    
-                    // Only complete flow if user has already enabled (clicked the button)
-                    // or if they're coming back after enabling
-                    if (hasEnabledInEditor || flowCompleted) {
+                    if (AppState.hasEnabledInEditor || AppState.flowCompleted) {
                         completeFlow();
                     }
-                    // If first-time user hasn't enabled yet, don't complete flow,
-                    // just close (they probably used Back button or somehow got here)
                 }
             }
 
             function goBackToThemeModal() {
-                if (editorModal) {
-                    editorModal.classList.add('hidden');
-                }
-                setTimeout(() => {
-                    openThemeModal();
-                }, 150);
+                if (editorModal) editorModal.classList.add('hidden');
+                setTimeout(() => openThemeModal(), 150);
             }
 
             function completeFlow() {
-                if (flowCompleted) return;
-                flowCompleted = true;
+                if (AppState.flowCompleted) return;
+                AppState.flowCompleted = true;
+                AppState.appEnabled = true;
 
-                // Update UI to show completed state for Step 1
                 const step1Initial = document.getElementById('step1-initial');
                 const step1Completed = document.getElementById('step1-completed');
                 const selectedThemeDisplay = document.getElementById('selected-theme-display');
@@ -914,9 +1288,8 @@
 
                 if (step1Initial) step1Initial.classList.add('hidden');
                 if (step1Completed) step1Completed.classList.remove('hidden');
-                if (selectedThemeDisplay) selectedThemeDisplay.textContent = selectedTheme;
+                if (selectedThemeDisplay) selectedThemeDisplay.textContent = AppState.selectedTheme;
 
-                // Mark step 1 checkbox as completed
                 if (step1Checkbox) {
                     step1Checkbox.setAttribute('data-completed', 'true');
                     step1Checkbox.classList.add('bg-[#303030]', 'text-white');
@@ -925,57 +1298,38 @@
                     if (checkIcon) checkIcon.classList.remove('text-transparent');
                 }
 
-                // Update close button visibility (now that flow is done, show X if modal opens again)
                 updateEditorModalCloseButton();
-
                 updateProgressAndMessages();
+                checkAndUnlockFeatures();
             }
 
-            // Close editor modal events
-            if (closeEditorModalBtn) {
-                closeEditorModalBtn.addEventListener('click', closeEditorModal);
-            }
-            
-            // Back button returns to Modal 1
+            if (closeEditorModalBtn) closeEditorModalBtn.addEventListener('click', closeEditorModal);
             if (editorModalBackBtn) editorModalBackBtn.addEventListener('click', goBackToThemeModal);
             
             if (editorModalOverlay) {
                 editorModalOverlay.addEventListener('click', () => {
-                    // Only allow overlay click to close if user has enabled or flow completed
-                    if (hasEnabledInEditor || flowCompleted) {
+                    if (AppState.hasEnabledInEditor || AppState.flowCompleted) {
                         closeEditorModal();
-                    } else {
-                        // For first-time users: prevent closing via overlay click
-                        // Optionally: show a subtle hint or do nothing
-                        console.log('Please click "Enable App in Theme Editor" or "Back" to continue.');
                     }
                 });
             }
 
-            // Enable editor button click - OPEN IN NEW TAB + mark as enabled
             if (enableEditorModalBtn) {
                 enableEditorModalBtn.addEventListener('click', function() {
-                    // Mark that user has clicked Enable (this unlocks the X button for future visits)
-                    hasEnabledInEditor = true;
-                    
-                    // Open Editor.html in NEW tab
+                    AppState.hasEnabledInEditor = true;
                     window.open('Editor.html', '_blank');
-                    
-                    // Update the close button now that they've enabled
                     updateEditorModalCloseButton();
-                    
-                    // Optional: Auto-close modal after a short delay so they see the main UI updated
-                    // Or leave it open so they can close it manually now that X is visible
-                    // Uncomment below line if you want auto-close behavior:
-                    // setTimeout(() => closeEditorModal(), 1500);
                 });
             }
             
-            // Step 2: Go to Filter button
-            const goToFilterBtn = document.getElementById('go-to-filter-btn');
+            // Go to Filter button (with lock check)
             if (goToFilterBtn) {
                 goToFilterBtn.addEventListener('click', function() {
-                    alert("🚀 Navigate to Filter tab to set up custom filter rules.");
+                    if (!canAccessFeatures()) {
+                        showRestrictedModal('Filter setup');
+                    } else {
+                        alert("🚀 Navigate to Filter tab to set up custom filter rules.");
+                    }
                 });
             }
             
@@ -986,26 +1340,32 @@
                         chatBubble.classList.remove('active');
                         return;
                     }
+                    if (restrictedModal && !restrictedModal.classList.contains('hidden')) {
+                        closeRestrictedModal();
+                        return;
+                    }
                     if (themeModal && !themeModal.classList.contains('hidden')) {
                         closeThemeModal();
                     }
                     if (editorModal && !editorModal.classList.contains('hidden')) {
-                        // Only allow Escape to close Modal 2 if user has enabled or flow completed
-                        if (hasEnabledInEditor || flowCompleted) {
+                        if (AppState.hasEnabledInEditor || AppState.flowCompleted) {
                             closeEditorModal();
-                        } else {
-                            // Prevent ESC close for first-time users
-                            console.log('Please complete the setup by enabling the app in Theme Editor.');
                         }
                     }
                 }
             });
 
-            // Initialize progress
+            // ========== INITIALIZATION ==========
+            console.log('🚀 Initializing Shopify App Dashboard...');
+            console.log('⏳ Starting data indexing simulation (15 seconds)...');
+            
+            // Start indexing simulation on page load
+            startIndexingSimulation();
+            updateLockStates();
             updateProgressAndMessages();
             
-            console.log('All event listeners initialized successfully!');
-            console.log('Modal 2 Close Button Logic: First-time users MUST click Enable before they can close the modal.');
+            console.log('✅ All event listeners initialized!');
+            console.log('🔒 Features locked until indexing completes AND app is enabled via Guide Step 1');
         });
     </script>
 </body>
