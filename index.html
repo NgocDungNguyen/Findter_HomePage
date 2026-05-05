@@ -51,6 +51,30 @@
         .modal-wrapper {
             z-index: 9999;
         }
+
+        /* Chat bubble styles */
+        .chat-bubble {
+            position: fixed;
+            bottom: 80px;
+            right: 24px;
+            width: 340px;
+            max-height: 420px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 10000;
+            animation: chatSlideUp 0.3s ease;
+        }
+        @keyframes chatSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chat-bubble.active {
+            display: flex;
+        }
     </style>
 </head>
 <body class="bg-[#f1f2f4] h-screen flex flex-col overflow-hidden text-[#303030]">
@@ -182,9 +206,6 @@
                                                 
                                                 <!-- Initial state: Show button to start flow -->
                                                 <div id="step1-initial" class="mb-3">
-                                                    <p class="text-[13px] text-[#303030] mb-3">
-                                                        Please choose a duplicate/draft theme to test the app before going live.
-                                                    </p>
                                                     <div class="flex flex-wrap items-center gap-x-2 gap-y-2">
                                                         <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
                                                         <span class="text-[13px] text-gray-700">Theme Selection</span>
@@ -197,9 +218,6 @@
 
                                                 <!-- Completed state (shown after modal flow is done) -->
                                                 <div id="step1-completed" class="hidden">
-                                                    <p class="text-[13px] text-[#303030] mb-3">
-                                                        Please choose a duplicate/draft theme to test the app before going live.
-                                                    </p>
                                                     <div class="flex flex-wrap items-center gap-x-2 gap-y-2 mb-3">
                                                         <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
                                                         <span class="text-[13px] text-gray-700">Theme Selection</span>
@@ -316,13 +334,49 @@
     </div>
 
     <!-- Floating Chat Icon -->
-    <div class="fixed bottom-6 right-6 z-50"><button class="w-[50px] h-[50px] bg-[#bd2130] rounded-full shadow-lg flex items-center justify-center text-white hover:bg-red-800 transition-colors"><i class="fas fa-search text-xl"></i></button></div>
+    <div class="fixed bottom-6 right-6 z-50">
+        <button id="floating-chat-btn" class="w-[50px] h-[50px] bg-[#bd2130] rounded-full shadow-lg flex items-center justify-center text-white hover:bg-red-800 transition-colors relative">
+            <i class="fas fa-search text-xl"></i>
+            <span id="chat-badge" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-red-600 rounded-full text-[10px] font-bold flex items-center justify-center border-2 border-white">1</span>
+        </button>
+    </div>
+
+    <!-- Chat Bubble -->
+    <div id="chat-bubble" class="chat-bubble">
+        <div class="bg-gradient-to-r from-red-600 to-red-700 text-white px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-headset"></i>
+                <span class="font-semibold text-sm">Support Chat</span>
+            </div>
+            <button id="close-chat-bubble" class="hover:bg-white/20 rounded-full p-1 transition-colors">
+                <i class="fas fa-times text-sm"></i>
+            </button>
+        </div>
+        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 min-h-[200px] max-h-[280px]">
+            <div class="flex gap-2">
+                <div class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center text-red-600 shrink-0">
+                    <i class="fas fa-robot text-xs"></i>
+                </div>
+                <div class="bg-gray-100 rounded-lg rounded-tl-none px-3 py-2 text-[13px] text-gray-700">
+                    Hello! How can we help you today?
+                </div>
+            </div>
+        </div>
+        <div class="p-3 border-t border-gray-200">
+            <div class="flex gap-2">
+                <input id="chat-input" type="text" placeholder="Type your message..." class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-[13px] outline-none focus:border-red-400 focus:ring-1 focus:ring-red-400">
+                <button id="send-chat-btn" class="bg-red-600 text-white rounded-lg px-4 py-2 hover:bg-red-700 transition-colors">
+                    <i class="fas fa-paper-plane text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- MODAL 1: Theme Selection Modal -->
     <div id="theme-modal" class="modal-wrapper fixed inset-0 hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="theme-modal-overlay"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
-            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg pointer-events-auto max-h-[90vh] flex flex-col relative">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg pointer-events-auto max-h-[90vh] flex flex-col relative modal-content">
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
                     <h3 class="text-[16px] font-semibold text-[#303030]">Select Your Theme</h3>
@@ -333,14 +387,21 @@
                 
                 <!-- Modal Body -->
                 <div class="px-6 py-5 overflow-y-auto flex-1">
-                    <!-- Notice at top -->
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-5">
-                        <p class="text-[13px] text-[#303030] leading-relaxed">
-                            This is the list of themes that our app currently supports: 
-                            <a href="https://flintverse.gitbook.io/docs/findter-custom-filter-search/user-guide/app-activation-and-preview/app-activation-in-store" target="_blank" class="font-bold text-blue-600 underline hover:text-blue-800">this list</a>.
-                            If you don't see your theme in the list, please return to live chat so we can assist you.
+                    <!-- Modified Notice Box with Close Button -->
+                    <div id="theme-support-notice" class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-5 relative">
+                        <button type="button" id="close-theme-notice" class="absolute top-3 right-3 text-blue-400 hover:text-blue-600 transition-colors p-1 rounded-full hover:bg-blue-100">
+                            <i class="fas fa-times text-sm"></i>
+                        </button>
+                        <p class="text-[13px] text-[#303030] leading-relaxed pr-6">
+                            <strong class="font-bold">Supported Themes:</strong> View the list of themes currently supported by our app <a href="https://flintverse.gitbook.io/docs/findter-custom-filter-search/user-guide/app-activation-and-preview/app-activation-in-store" target="_blank" class="font-bold underline hover:text-blue-800">[here]</a>.<br><br>
+                            If your theme is not listed, please contact us <a href="#" id="live-chat-link" class="font-bold underline hover:text-blue-800">via live chat</a> for assistance.
                         </p>
                     </div>
+                    
+                    <!-- Moved Text Here - Only shows in modal -->
+                    <p class="text-[13px] text-[#303030] mb-4">
+                        Please choose a duplicate/draft theme to test the app before going live.
+                    </p>
                     
                     <!-- Theme Selection Section -->
                     <div class="mb-4">
@@ -355,21 +416,6 @@
                             <option value="Taste">Taste</option>
                         </select>
                     </div>
-                    
-                    <!-- Orange Notice (Hidden until theme selected) -->
-                    <div id="modal-warning-notice" class="hidden bg-orange-50 border border-orange-200 rounded-lg p-4">
-                        <div class="flex items-start gap-3">
-                            <div class="w-7 h-7 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 shrink-0 mt-0.5">
-                                <i class="fas fa-info-circle text-sm"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-[13px] text-orange-800 font-semibold mb-1">Here's how our app may affect your store:</p>
-                                <p class="text-[13px] text-orange-700 leading-relaxed">
-                                    Our app uses its own product grid (not Shopify's), so your collection page will change. We offer free customization to keep your theme's functions.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 
                 <!-- Modal Footer -->
@@ -378,18 +424,18 @@
                         Cancel
                     </button>
                     <button type="button" id="modal-save-btn" disabled class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                        Save
+                        Next
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 2: Enable App Embed Modal -->
+    <!-- MODAL 2: Enable App Embed Modal (Wider) -->
     <div id="editor-modal" class="modal-wrapper fixed inset-0 hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="editor-modal-overlay"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
-            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg pointer-events-auto max-h-[90vh] flex flex-col relative">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-[980px] pointer-events-auto max-h-[90vh] flex flex-col relative modal-content">
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
                     <h3 class="text-[16px] font-semibold text-[#303030]">Enable App Embed</h3>
@@ -407,35 +453,46 @@
                         </div>
                         <div class="flex-1">
                             <p class="text-[14px] font-semibold text-[#303030] mb-2">Step 2: Enable App Embed in Theme Editor</p>
-                            <p class="text-[13px] text-[#303030] leading-relaxed bg-gray-50 border border-gray-200 rounded-lg p-4">
-                                Go to <strong>Theme Editor</strong> > <strong>App Embeds</strong> > Enable the <strong>"Search & Filter core" (Findter)</strong> > <strong>Save the Theme</strong>
-                            </p>
                         </div>
                     </div>
 
-                    <!-- Visual steps indicator -->
-                    <div class="flex items-center gap-2 mb-6 pl-14 flex-wrap">
-                        <div class="flex items-center gap-2 text-[12px] text-gray-600">
-                            <span class="w-6 h-6 rounded-full bg-gray-200 text-gray-700 flex items-center justify-center font-semibold text-[10px]">1</span>
-                            <span>Theme Editor</span>
-                            <i class="fas fa-arrow-right text-gray-400 text-[10px]"></i>
-                        </div>
-                        <div class="flex items-center gap-2 text-[12px] text-gray-600">
-                            <span class="w-6 h-6 rounded-full bg-gray-200 text-gray-700 flex items-center justify-center font-semibold text-[10px]">2</span>
-                            <span>App Embeds</span>
-                            <i class="fas fa-arrow-right text-gray-400 text-[10px]"></i>
-                        </div>
-                        <div class="flex items-center gap-2 text-[12px] text-gray-600">
-                            <span class="w-6 h-6 rounded-full bg-gray-200 text-gray-700 flex items-center justify-center font-semibold text-[10px]">3</span>
-                            <span>Enable & Save</span>
+                    <!-- Visual steps indicator - Horizontal Stepper (All in one line) -->
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-6">
+                        <div class="flex items-center justify-center gap-1 whitespace-nowrap">
+                            <!-- Step 1 -->
+                            <div class="flex items-center gap-2">
+                                <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[13px] shadow-md shrink-0">1</div>
+                                <span class="text-[13px] font-semibold text-gray-800">Theme Editor</span>
+                            </div>
+                            <i class="fas fa-arrow-right text-gray-400 text-sm mx-2 shrink-0"></i>
+                            
+                            <!-- Step 2 -->
+                            <div class="flex items-center gap-2">
+                                <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[13px] shadow-md shrink-0">2</div>
+                                <span class="text-[13px] font-semibold text-gray-800">App Embeds</span>
+                            </div>
+                            <i class="fas fa-arrow-right text-gray-400 text-sm mx-2 shrink-0"></i>
+                            
+                            <!-- Step 3 -->
+                            <div class="flex items-center gap-2">
+                                <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[13px] shadow-md shrink-0">3</div>
+                                <span class="text-[13px] font-semibold text-gray-800">Enable App "Search & Filter Core"</span>
+                            </div>
+                            <i class="fas fa-arrow-right text-gray-400 text-sm mx-2 shrink-0"></i>
+                            
+                            <!-- Step 4 -->
+                            <div class="flex items-center gap-2">
+                                <div class="w-9 h-9 rounded-full bg-green-600 text-white flex items-center justify-center font-bold text-[13px] shadow-md shrink-0">4</div>
+                                <span class="text-[13px] font-semibold text-gray-800">Save</span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Modal Footer -->
                 <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
-                    <button type="button" id="editor-modal-close-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">
-                        Close
+                    <button type="button" id="editor-modal-back-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">
+                        Back
                     </button>
                     <button type="button" id="enable-editor-modal-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors flex items-center gap-2">
                         <i class="fas fa-external-link-alt text-xs"></i>
@@ -457,7 +514,6 @@
             const editorModal = document.getElementById('editor-modal');
             const modalThemeSelect = document.getElementById('modal-theme-select');
             const modalSaveBtn = document.getElementById('modal-save-btn');
-            const modalWarningNotice = document.getElementById('modal-warning-notice');
             const enableEditorModalBtn = document.getElementById('enable-editor-modal-btn');
             
             // Close buttons
@@ -465,8 +521,24 @@
             const themeModalCancelBtn = document.getElementById('theme-modal-cancel-btn');
             const themeModalOverlay = document.getElementById('theme-modal-overlay');
             const closeEditorModalBtn = document.getElementById('close-editor-modal-btn');
-            const editorModalCloseBtn = document.getElementById('editor-modal-close-btn');
+            const editorModalBackBtn = document.getElementById('editor-modal-back-btn');
             const editorModalOverlay = document.getElementById('editor-modal-overlay');
+
+            // Notice close button
+            const closeThemeNoticeBtn = document.getElementById('close-theme-notice');
+            const themeSupportNotice = document.getElementById('theme-support-notice');
+
+            // Live chat link
+            const liveChatLink = document.getElementById('live-chat-link');
+
+            // Chat elements
+            const floatingChatBtn = document.getElementById('floating-chat-btn');
+            const chatBubble = document.getElementById('chat-bubble');
+            const closeChatBubble = document.getElementById('close-chat-bubble');
+            const chatInput = document.getElementById('chat-input');
+            const sendChatBtn = document.getElementById('send-chat-btn');
+            const chatMessages = document.getElementById('chat-messages');
+            const chatBadge = document.getElementById('chat-badge');
 
             // State variables
             let selectedTheme = '';
@@ -602,6 +674,75 @@
                 });
             });
 
+            // ========== CHAT FUNCTIONALITY ==========
+            function openChatWithMessage(message) {
+                chatBubble.classList.add('active');
+                chatInput.value = message;
+                chatBadge.classList.remove('hidden');
+                
+                // Auto-send the message
+                setTimeout(() => {
+                    addMessageToChat(message, true);
+                    chatInput.value = '';
+                    
+                    // Simulate response
+                    setTimeout(() => {
+                        addMessageToChat("Thank you for reaching out! A support agent will assist you shortly.", false);
+                    }, 800);
+                }, 300);
+            }
+
+            function addMessageToChat(text, isUser) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `flex gap-2 ${isUser ? 'justify-end' : ''}`;
+                
+                if (isUser) {
+                    msgDiv.innerHTML = `
+                        <div class="bg-red-600 text-white rounded-lg rounded-tr-none px-3 py-2 text-[13px] max-w-[85%]">
+                            ${text}
+                        </div>
+                    `;
+                } else {
+                    msgDiv.innerHTML = `
+                        <div class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center text-red-600 shrink-0">
+                            <i class="fas fa-robot text-xs"></i>
+                        </div>
+                        <div class="bg-gray-100 rounded-lg rounded-tl-none px-3 py-2 text-[13px] text-gray-700 max-w-[85%]">
+                            ${text}
+                        </div>
+                    `;
+                }
+                
+                chatMessages.appendChild(msgDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Floating chat button click
+            floatingChatBtn.addEventListener('click', () => {
+                chatBubble.classList.toggle('active');
+            });
+
+            // Close chat bubble
+            closeChatBubble.addEventListener('click', () => {
+                chatBubble.classList.remove('active');
+            });
+
+            // Send chat message
+            sendChatBtn.addEventListener('click', () => {
+                const msg = chatInput.value.trim();
+                if (msg) {
+                    addMessageToChat(msg, true);
+                    chatInput.value = '';
+                    setTimeout(() => {
+                        addMessageToChat("Thank you for your message. We'll get back to you soon!", false);
+                    }, 600);
+                }
+            });
+
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendChatBtn.click();
+            });
+
             // ========== THEME MODAL FUNCTIONS ==========
             function openThemeModal() {
                 console.log('Opening theme modal...');
@@ -612,11 +753,9 @@
                     if (!selectedTheme) {
                         if (modalThemeSelect) modalThemeSelect.value = '';
                         if (modalSaveBtn) modalSaveBtn.disabled = true;
-                        if (modalWarningNotice) modalWarningNotice.classList.add('hidden');
                     } else {
                         if (modalThemeSelect) modalThemeSelect.value = selectedTheme;
                         if (modalSaveBtn) modalSaveBtn.disabled = false;
-                        if (modalWarningNotice) modalWarningNotice.classList.remove('hidden');
                     }
                 }
             }
@@ -654,16 +793,32 @@
             if (themeModalCancelBtn) themeModalCancelBtn.addEventListener('click', closeThemeModal);
             if (themeModalOverlay) themeModalOverlay.addEventListener('click', closeThemeModal);
 
+            // Close theme notice
+            if (closeThemeNoticeBtn && themeSupportNotice) {
+                closeThemeNoticeBtn.addEventListener('click', () => {
+                    themeSupportNotice.style.display = 'none';
+                });
+            }
+
+            // Live chat link - opens chat with pre-filled message
+            if (liveChatLink) {
+                liveChatLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    closeThemeModal();
+                    setTimeout(() => {
+                        openChatWithMessage("I need assistance about theme support");
+                    }, 350);
+                });
+            }
+
             // Handle theme selection change
             if (modalThemeSelect) {
                 modalThemeSelect.addEventListener('change', function() {
                     const value = this.value;
                     if (value && value !== '') {
                         if (modalSaveBtn) modalSaveBtn.disabled = false;
-                        if (modalWarningNotice) modalWarningNotice.classList.remove('hidden');
                     } else {
                         if (modalSaveBtn) modalSaveBtn.disabled = true;
-                        if (modalWarningNotice) modalWarningNotice.classList.add('hidden');
                     }
                 });
             }
@@ -700,6 +855,15 @@
                 }
             }
 
+            function goBackToThemeModal() {
+                if (editorModal) {
+                    editorModal.classList.add('hidden');
+                }
+                setTimeout(() => {
+                    openThemeModal();
+                }, 150);
+            }
+
             function completeFlow() {
                 if (flowCompleted) return;
                 flowCompleted = true;
@@ -728,14 +892,16 @@
 
             // Close editor modal events
             if (closeEditorModalBtn) closeEditorModalBtn.addEventListener('click', closeEditorModal);
-            if (editorModalCloseBtn) editorModalCloseBtn.addEventListener('click', closeEditorModal);
+            
+            // Back button returns to Modal 1
+            if (editorModalBackBtn) editorModalBackBtn.addEventListener('click', goBackToThemeModal);
+            
             if (editorModalOverlay) editorModalOverlay.addEventListener('click', closeEditorModal);
 
-            // Enable editor button click
+            // Enable editor button click - Navigate to Editor.html
             if (enableEditorModalBtn) {
                 enableEditorModalBtn.addEventListener('click', function() {
-                    alert("🚀 Navigating to Theme Editor...\n\nIn production, this would open: /admin/themes/{theme_id}/editor");
-                    closeEditorModal();
+                    window.location.href = 'Editor.html';
                 });
             }
             
@@ -750,6 +916,10 @@
             // Escape key handler
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
+                    if (chatBubble && chatBubble.classList.contains('active')) {
+                        chatBubble.classList.remove('active');
+                        return;
+                    }
                     if (themeModal && !themeModal.classList.contains('hidden')) {
                         closeThemeModal();
                     }
