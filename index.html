@@ -26,28 +26,13 @@
             from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .notice-box {
-            animation: slideInDown 0.3s ease;
-        }
-        @keyframes slideInDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .modal-overlay {
-            animation: fadeIn 0.2s ease;
-        }
         .modal-content {
             animation: slideInUp 0.3s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
         @keyframes slideInUp {
             from { opacity: 0; transform: translateY(20px) scale(0.98); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
-
         @keyframes guideAttention {
             0% { transform: scale(1); }
             15% { transform: scale(1.03) translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.15); }
@@ -60,21 +45,14 @@
             border-color: #f59e0b !important;
             box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.3);
         }
-
-        .indexing-banner {
-            transition: all 0.4s ease;
-        }
-
         .nav-active {
             background-color: #d1d5db !important;
             color: #303030 !important;
             font-weight: 600 !important;
         }
-
         .modal-wrapper {
             z-index: 9999;
         }
-
         .chat-bubble {
             position: fixed;
             bottom: 80px;
@@ -97,7 +75,6 @@
         .chat-bubble.active {
             display: flex;
         }
-
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
@@ -105,7 +82,6 @@
         .animate-pulse-custom {
             animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
-
         .btn-disabled-overlay {
             position: relative;
             overflow: hidden;
@@ -117,7 +93,6 @@
             background: rgba(255,255,255,0.3);
             pointer-events: none;
         }
-
         .page-view {
             display: none;
             animation: fadeIn 0.3s ease;
@@ -125,11 +100,13 @@
         .page-view.active {
             display: block;
         }
-
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
         .empty-state-illustration {
             opacity: 0.05;
         }
-
         .app-header-clickable {
             cursor: pointer;
             transition: background-color 0.15s;
@@ -138,8 +115,6 @@
             background-color: rgba(255,255,255,0.05);
             border-radius: 6px;
         }
-
-        /* Flow Toggle Buttons */
         .flow-btn {
             transition: all 0.25s ease;
             position: relative;
@@ -170,8 +145,6 @@
             0%, 100% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.3); opacity: 0.7; }
         }
-
-        /* Unified Status Banner - Simple Version for All Flows */
         .unified-status-banner {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border-left-width: 4px;
@@ -186,6 +159,34 @@
             border-left-color: #10b981;
             background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
             border-color: #6ee7b7;
+        }
+        .unified-status-banner.disabled-state {
+            border-left-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-color: #fca5a5;
+        }
+        .theme-live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #dcfce7;
+            color: #166534;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            margin-left: 8px;
+        }
+        .theme-live-dot {
+            width: 6px;
+            height: 6px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: livePulse 2s ease-in-out infinite;
+        }
+        @keyframes livePulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.9); }
         }
     </style>
 </head>
@@ -213,7 +214,7 @@
             <button class="text-gray-400 hover:text-white transition-colors"><i class="fas fa-bell"></i></button>
             <div class="flex items-center gap-2 hover:bg-[#303030] rounded px-2 py-1 cursor-pointer transition-colors -mr-2">
                 <div class="bg-[#cbf1c4] text-[#1f5119] text-[10px] font-bold px-1.5 py-0.5 rounded">MS</div>
-                <span class="text-gray-200 font-medium text-[13px]">Master Admin for support</span>
+                <span class="text-gray-200 font-medium text-[13px]">Master Admin</span>
             </div>
         </div>
     </header>
@@ -238,7 +239,6 @@
                 
                 <div class="mt-4 px-2 py-1 flex justify-between items-center text-[11px] font-bold text-gray-500 uppercase tracking-wider group cursor-pointer hover:bg-gray-200 rounded-md"><span>Apps</span><i class="fas fa-chevron-right text-[10px] text-gray-400"></i></div>
                 
-                <!-- APP SECTION -->
                 <div class="bg-gray-200 rounded-md pb-1.5 mt-0.5 shadow-sm">
                     <a href="#" id="nav-app-name" data-page="home" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md text-[#303030] app-header-clickable transition-colors cursor-pointer">
                         <div class="bg-gray-600 text-white rounded w-5 h-5 flex items-center justify-center text-[10px] mr-2 shrink-0"><i class="fas fa-filter"></i></div>
@@ -247,16 +247,13 @@
                     </a>
                     
                     <div class="flex flex-col mt-0.5 border-l-2 border-gray-300 ml-5 pl-3 space-y-0.5">
-                        <a href="#" id="nav-app-home" data-page="home" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer" data-nav-name="Homepage">
-                            <i class="fas fa-home w-5 text-center text-xs mr-1"></i>Homepage
-                        </a>
-                        
-                        <a href="#" id="nav-filter" data-page="filter" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer" data-nav-name="Filter"><i class="fas fa-filter w-5 text-center text-xs mr-1"></i>Filter</a>
-                        <a href="#" id="nav-search" data-page="search" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer" data-nav-name="Search"><i class="fas fa-search w-5 text-center text-xs mr-1"></i>Search</a>
-                        <a href="#" id="nav-metafield" data-page="metafield" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer" data-nav-name="Metafield"><i class="fas fa-database w-5 text-center text-xs mr-1"></i>Metafield</a>
-                        <a href="#" id="nav-design" data-page="design" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer" data-nav-name="Filter & Product Grid Design"><i class="fas fa-th-large w-5 text-center text-xs mr-1"></i>Filter & Product Grid Design</a>
-                        <a href="#" id="nav-analytics-app" data-page="analytics-app" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer" data-nav-name="Analytics"><i class="fas fa-chart-bar w-5 text-center text-xs mr-1"></i>Analytics</a>
-                        <a href="#" id="nav-advanced" data-page="advanced" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer" data-nav-name="Advanced Features"><i class="fas fa-cogs w-5 text-center text-xs mr-1"></i>Advanced Features</a>
+                        <a href="#" id="nav-app-home" data-page="home" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer"><i class="fas fa-home w-5 text-center text-xs mr-1"></i>Homepage</a>
+                        <a href="#" id="nav-filter" data-page="filter" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer"><i class="fas fa-filter w-5 text-center text-xs mr-1"></i>Filter</a>
+                        <a href="#" id="nav-search" data-page="search" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer"><i class="fas fa-search w-5 text-center text-xs mr-1"></i>Search</a>
+                        <a href="#" id="nav-metafield" data-page="metafield" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer"><i class="fas fa-database w-5 text-center text-xs mr-1"></i>Metafield</a>
+                        <a href="#" id="nav-design" data-page="design" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer"><i class="fas fa-th-large w-5 text-center text-xs mr-1"></i>Filter & Product Grid Design</a>
+                        <a href="#" id="nav-analytics-app" data-page="analytics-app" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer"><i class="fas fa-chart-bar w-5 text-center text-xs mr-1"></i>Analytics</a>
+                        <a href="#" id="nav-advanced" data-page="advanced" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer"><i class="fas fa-cogs w-5 text-center text-xs mr-1"></i>Advanced Features</a>
                     </div>
                 </div>
             </nav>
@@ -265,7 +262,6 @@
 
         <!-- Main Content Area -->
         <main class="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#f1f2f4]">
-            <!-- App Header -->
             <div class="flex items-center justify-between px-8 py-4 shrink-0">
                 <div class="flex items-center gap-2 app-header-clickable px-2 -mx-2 py-1 rounded-md" id="app-header-title" data-page="home">
                     <div class="bg-[#bd2130] text-white rounded-[4px] w-[22px] h-[22px] flex items-center justify-center text-[11px]"><i class="fas fa-filter"></i></div>
@@ -274,17 +270,14 @@
                 <button class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors"><i class="fas fa-ellipsis-h text-sm"></i></button>
             </div>
 
-            <!-- Scrollable Content Container -->
             <div class="flex-1 overflow-y-auto px-8 pb-12 relative">
                 
-                <!-- ==================== HOME PAGE VIEW ==================== -->
+                <!-- HOME PAGE VIEW -->
                 <div id="page-home" class="page-view active">
                     <div class="max-w-[1040px] mx-auto">
-                        <!-- Page Title with Flow Toggle Buttons -->
                         <div class="flex items-center justify-between mb-6">
                             <h1 class="text-[22px] font-bold text-[#303030]">Homepage</h1>
                             <div class="flex gap-3 shrink-0 ml-4 flex-wrap items-center">
-                                <!-- FLOW TOGGLE BUTTONS -->
                                 <div class="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
                                     <button id="flow-1-btn" class="flow-btn active-flow-1 border-2 border-transparent rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative">
                                         <span class="flow-indicator bg-white/50"></span>
@@ -296,32 +289,19 @@
                                         Flow 2: Flexible
                                     </button>
                                 </div>
-                                
                                 <div class="w-px h-8 bg-gray-300"></div>
-                                
-                                <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">
-                                    Reset Indexing
-                                </button>
-                                <button id="end-index-btn" class="border border-green-300 bg-green-50 text-green-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-green-100 transition-colors shadow-sm whitespace-nowrap">
-                                    ⚡ End Index Now
-                                </button>
+                                <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">Reset Indexing</button>
+                                <button id="end-index-btn" class="border border-green-300 bg-green-50 text-green-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-green-100 transition-colors shadow-sm whitespace-nowrap">End Index Now</button>
+                                <button id="simulate-disable-btn" class="border border-red-300 bg-red-50 text-red-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-red-100 transition-colors shadow-sm whitespace-nowrap">Simulate Disable</button>
                             </div>
                         </div>
 
-                        <!-- UNIFIED STATUS BANNER CONTAINER (Used by ALL flows on ALL pages) -->
                         <div id="unified-status-banner" class="mb-5 hidden"></div>
-
-                        <!-- Legacy Indexing Banner Container (Flow 1 home only - now also uses unified style) -->
                         <div id="indexing-banner-container" class="mb-5 hidden"></div>
 
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                            <!-- Left Column -->
                             <div class="lg:col-span-2 flex flex-col gap-5">
                                 
-                                <!-- Dynamic Notice Container -->
-                                <div id="notice-container-title" class="hidden"></div>
-                                
-                                <!-- Onboarding Guide Card -->
                                 <div id="onboarding-guide-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden transition-all duration-300">
                                     <div class="p-5">
                                         <div class="flex items-center justify-between mb-5">
@@ -337,22 +317,19 @@
                                         </div>
                                         
                                         <div id="congrat-message-container" class="mb-4 hidden congrat-message"></div>
-                                <div id="notice-container-banner" class="mb-4 hidden"></div>
 
                                         <div id="guide-body-1" class="space-y-6 relative pl-1">
-                                            <!-- Step 1 -->
                                             <div class="border border-gray-100 rounded-lg overflow-hidden">
                                                 <div class="flex items-center gap-5 p-3 group transition-colors">
                                                     <div id="step1-checkbox" class="step-checkbox w-6 h-6 shrink-0 rounded-full border-2 border-dashed border-gray-400 bg-white flex items-center justify-center hover:border-gray-600 transition-colors" data-step="1">
                                                         <i class="fas fa-check text-[11px] text-transparent"></i>
                                                     </div>
                                                     <div class="flex-1 flex items-center cursor-pointer guide-step-toggle" data-target="step-content-1">
-                                                        <h4 class="font-semibold text-[14px] text-[#303030] flex-1">Activate App Embed in Theme (<a href="https://flintverse.gitbook.io/docs/findter-custom-filter-search/user-guide/app-activation-and-preview/app-activation-in-store" target="_blank" class="font-bold text-green-600 underline hover:text-green-800">Guideline Here</a>)</h4>
+                                                        <h4 class="font-semibold text-[14px] text-[#303030] flex-1">Activate App Embed in Theme (<a href="#" class="font-bold text-green-600 underline hover:text-green-800">Guideline Here</a>)</h4>
                                                         <i class="fas fa-chevron-up text-gray-400 text-xs transition-transform duration-200 ml-2"></i>
                                                     </div>
                                                 </div>
                                                 <div id="step-content-1" class="pl-14 pr-4 pb-4">
-                                                    
                                                     <div id="step1-initial" class="mb-3">
                                                         <div class="flex flex-wrap items-center gap-x-2 gap-y-2">
                                                             <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
@@ -379,15 +356,19 @@
                                                             <strong>Step 2:</strong> Go to Theme Editor > App Embeds > Enable the "Search & Filter core" (Findter) > Save the Theme
                                                         </p>
                                                         
-                                                        <div class="inline-flex items-center gap-2 border border-green-300 bg-green-50 rounded-[6px] px-3 py-1.5">
+                                                        <div id="app-enable-status-indicator" class="inline-flex items-center gap-2 border border-green-300 bg-green-50 rounded-[6px] px-3 py-1.5">
                                                             <i class="fas fa-check-circle text-green-600 text-sm"></i>
                                                             <span class="text-[13px] font-medium text-green-800">App embed enabled</span>
+                                                        </div>
+                                                        <div id="app-disabled-status-indicator" class="hidden inline-flex items-center gap-2 border border-red-300 bg-red-50 rounded-[6px] px-3 py-1.5">
+                                                            <i class="fas fa-times-circle text-red-600 text-sm"></i>
+                                                            <span class="text-[13px] font-medium text-red-800">App embed disabled</span>
+                                                            <button type="button" id="re-enable-from-guide-btn" class="text-[11px] text-blue-600 underline hover:text-blue-800 font-medium ml-1">(Re-enable)</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <!-- Step 2 -->
                                             <div id="step2-container" class="border border-gray-100 rounded-lg overflow-hidden">
                                                 <div class="flex items-center gap-5 p-3 group transition-colors">
                                                     <div id="step2-checkbox" class="step-checkbox w-6 h-6 shrink-0 rounded-full border-2 border-dashed border-gray-400 bg-white flex items-center justify-center hover:border-gray-600 transition-colors" data-step="2">
@@ -400,7 +381,7 @@
                                                 </div>
                                                 <div id="step-content-2" class="pl-14 pr-4 pb-4">
                                                     <p class="text-[13px] text-[#303030] mb-2">Create your custom filter for each collection page with unlimited filter values.</p>
-                                                    <p class="text-[13px] mb-3">Filter Guidelines <a href="https://flintverse.gitbook.io/docs/findter-custom-filter-search/user-guide/create-and-set-up-filters/add-a-new-filter-set" target="_blank" class="text-blue-600 font-bold underline hover:text-blue-800">here</a></p>
+                                                    <p class="text-[13px] mb-3">Filter Guidelines <a href="#" class="text-blue-600 font-bold underline hover:text-blue-800">here</a></p>
                                                     <button type="button" id="go-to-filter-btn" class="bg-[#303030] border border-[#303030] text-white rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
                                                         Go to Filter
                                                     </button>
@@ -410,7 +391,6 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Step 3 -->
                                             <div class="border border-gray-100 rounded-lg overflow-hidden">
                                                 <div class="flex items-center gap-5 p-3 group transition-colors">
                                                     <div class="step-checkbox w-6 h-6 shrink-0 bg-[#303030] rounded-full text-white flex items-center justify-center cursor-pointer transition-colors" data-step="3" data-completed="true">
@@ -429,7 +409,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Data Insight Card -->
                                 <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">
                                     <div class="p-5 flex items-center justify-between border-b border-gray-100">
                                         <div class="flex items-center gap-3"><h3 class="font-semibold text-[15px] text-[#303030]">Data insight</h3><button class="border border-gray-300 rounded-[6px] px-2.5 py-1 text-[13px] font-medium text-[#303030] flex items-center gap-2 hover:bg-gray-50 shadow-sm"><i class="far fa-calendar text-gray-500 text-sm"></i> Last 30 days</button></div>
@@ -441,19 +420,13 @@
                                     </div>
                                 </div>
 
-                                <!-- Master Card -->
                                 <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5"><h3 class="font-semibold text-[15px] text-[#303030] mb-3">Master</h3><button class="border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 shadow-sm">Master</button></div>
                             </div>
 
-                            <!-- Right Column -->
                             <div class="flex flex-col gap-5">
-                                
-                                <!-- Help & Support Card -->
                                 <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5">
                                     <h3 class="font-semibold text-[15px] text-[#303030] mb-3">Help & Support</h3>
-                                    <p class="text-[13px] text-[#303030] mb-3 leading-relaxed">
-                                        Find out more User Guidelines <a href="#" class="text-blue-600 hover:underline">here</a>.
-                                    </p>
+                                    <p class="text-[13px] text-[#303030] mb-3 leading-relaxed">Find out more User Guidelines <a href="#" class="text-blue-600 hover:underline">here</a>.</p>
                                     <div class="text-[13px] text-[#303030] space-y-1 mb-4">
                                         <p class="font-medium">If you struggling with:</p>
                                         <ul class="list-disc pl-5 space-y-1 text-gray-700">
@@ -466,11 +439,10 @@
                                     </div>
                                     <div class="flex gap-2">
                                         <button class="flex items-center justify-center gap-2 border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 flex-1 shadow-sm"><i class="far fa-comment-dots text-gray-500 text-sm"></i> Live chat</button>
-                                        <button class="flex items-center justify-center gap-2 border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 flex-1 shadow-sm"><i class="fas fa-phone-alt text-gray-500 text-sm"></i> Book a call with us</button>
+                                        <button class="flex items-center justify-center gap-2 border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 flex-1 shadow-sm"><i class="fas fa-phone-alt text-gray-500 text-sm"></i> Book a call</button>
                                     </div>
                                 </div>
 
-                                <!-- Sync recent updates Card -->
                                 <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5">
                                     <div class="flex items-center gap-2 mb-3">
                                         <h3 class="font-semibold text-[15px] text-[#303030]">Sync recent updates</h3>
@@ -488,68 +460,50 @@
                     </div>
                 </div>
 
-                <!-- ==================== FILTER PAGE VIEW ==================== -->
+                <!-- OTHER PAGE VIEWS -->
                 <div id="page-filter" class="page-view">
                     <div class="max-w-[1040px] mx-auto">
-                        <div class="mb-6">
-                            <h1 class="text-[22px] font-bold text-[#303030]">Filter</h1>
-                        </div>
-                        <!-- UNIFIED BANNER FOR ALL FLOWS -->
+                        <div class="mb-6"><h1 class="text-[22px] font-bold text-[#303030]">Filter</h1></div>
                         <div id="unified-banner-filter" class="mb-5 hidden"></div>
                         <div id="filter-page-content"></div>
                     </div>
                 </div>
 
-                <!-- ==================== SEARCH PAGE VIEW ==================== -->
                 <div id="page-search" class="page-view">
                     <div class="max-w-[1040px] mx-auto">
-                        <div class="mb-6">
-                            <h1 class="text-[22px] font-bold text-[#303030]">Search</h1>
-                        </div>
+                        <div class="mb-6"><h1 class="text-[22px] font-bold text-[#303030]">Search</h1></div>
                         <div id="unified-banner-search" class="mb-5 hidden"></div>
                         <div id="search-page-content"></div>
                     </div>
                 </div>
 
-                <!-- ==================== METAFIELD PAGE VIEW ==================== -->
                 <div id="page-metafield" class="page-view">
                     <div class="max-w-[1040px] mx-auto">
-                        <div class="mb-6">
-                            <h1 class="text-[22px] font-bold text-[#303030]">Metafield</h1>
-                        </div>
+                        <div class="mb-6"><h1 class="text-[22px] font-bold text-[#303030]">Metafield</h1></div>
                         <div id="unified-banner-metafield" class="mb-5 hidden"></div>
                         <div id="metafield-page-content"></div>
                     </div>
                 </div>
 
-                <!-- ==================== DESIGN PAGE VIEW ==================== -->
                 <div id="page-design" class="page-view">
                     <div class="max-w-[1040px] mx-auto">
-                        <div class="mb-6">
-                            <h1 class="text-[22px] font-bold text-[#303030]">Filter & Product Grid Design</h1>
-                        </div>
+                        <div class="mb-6"><h1 class="text-[22px] font-bold text-[#303030]">Filter & Product Grid Design</h1></div>
                         <div id="unified-banner-design" class="mb-5 hidden"></div>
                         <div id="design-page-content"></div>
                     </div>
                 </div>
 
-                <!-- ==================== ANALYTICS APP PAGE VIEW ==================== -->
                 <div id="page-analytics-app" class="page-view">
                     <div class="max-w-[1040px] mx-auto">
-                        <div class="mb-6">
-                            <h1 class="text-[22px] font-bold text-[#303030]">Analytics</h1>
-                        </div>
+                        <div class="mb-6"><h1 class="text-[22px] font-bold text-[#303030]">Analytics</h1></div>
                         <div id="unified-banner-analytics-app" class="mb-5 hidden"></div>
                         <div id="analytics-app-page-content"></div>
                     </div>
                 </div>
 
-                <!-- ==================== ADVANCED FEATURES PAGE VIEW ==================== -->
                 <div id="page-advanced" class="page-view">
                     <div class="max-w-[1040px] mx-auto">
-                        <div class="mb-6">
-                            <h1 class="text-[22px] font-bold text-[#303030]">Advanced Features</h1>
-                        </div>
+                        <div class="mb-6"><h1 class="text-[22px] font-bold text-[#303030]">Advanced Features</h1></div>
                         <div id="unified-banner-advanced" class="mb-5 hidden"></div>
                         <div id="advanced-page-content"></div>
                     </div>
@@ -598,7 +552,7 @@
         </div>
     </div>
 
-    <!-- MODAL: Access Restricted Modal (Flow 1) -->
+    <!-- MODAL: Access Restricted Modal -->
     <div id="restricted-modal" class="modal-wrapper fixed inset-0 hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="restricted-modal-overlay"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
@@ -614,13 +568,9 @@
                         <i class="fas fa-times text-lg"></i>
                     </button>
                 </div>
-                
                 <div class="px-6 py-5">
                     <div class="space-y-4">
-                        <p class="text-[14px] text-[#303030] leading-relaxed">
-                            Please complete the following steps before accessing this feature:
-                        </p>
-                        
+                        <p class="text-[14px] text-[#303030] leading-relaxed">Please complete the following steps before accessing this feature:</p>
                         <div class="space-y-3">
                             <div id="restriction-item-1" class="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
                                 <div id="restriction-check-1" class="w-5 h-5 rounded-full border-2 border-amber-400 bg-amber-50 flex items-center justify-center shrink-0 mt-0.5">
@@ -631,7 +581,6 @@
                                     <p class="text-[11px] text-gray-500" id="restriction-sub-1">Currently collecting data...</p>
                                 </div>
                             </div>
-                            
                             <div id="restriction-item-2" class="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
                                 <div id="restriction-check-2" class="w-5 h-5 rounded-full border-2 border-amber-400 bg-amber-50 flex items-center justify-center shrink-0 mt-0.5">
                                     <i class="fas fa-times text-[10px] text-amber-500"></i>
@@ -644,11 +593,10 @@
                         </div>
                     </div>
                 </div>
-                
                 <div class="flex items-center justify-end px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
                     <button type="button" id="restricted-modal-home-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors flex items-center gap-2">
                         <i class="fas fa-home text-xs"></i>
-                        Go to Homepage to complete setup
+                        Go to Homepage
                     </button>
                 </div>
             </div>
@@ -666,43 +614,33 @@
                         <i class="fas fa-times text-lg"></i>
                     </button>
                 </div>
-                
                 <div class="px-6 py-5 overflow-y-auto flex-1">
                     <div id="theme-support-notice" class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-5 relative">
                         <button type="button" id="close-theme-notice" class="absolute top-3 right-3 text-blue-400 hover:text-blue-600 transition-colors p-1 rounded-full hover:bg-blue-100">
                             <i class="fas fa-times text-sm"></i>
                         </button>
                         <p class="text-[13px] text-[#303030] leading-relaxed pr-6">
-                            <strong class="font-bold">Supported Themes:</strong> View the list of themes currently supported by our app <a href="https://flintverse.gitbook.io/docs/findter-custom-filter-search/user-guide/app-activation-and-preview/app-activation-in-store" target="_blank" class="font-bold underline hover:text-blue-800">[here]</a>.<br><br>
+                            <strong class="font-bold">Supported Themes:</strong> View the list of themes currently supported by our app <a href="#" class="font-bold underline hover:text-blue-800">[here]</a>.<br><br>
                             If your theme is not listed, please contact us <a href="#" id="live-chat-link" class="font-bold underline hover:text-blue-800">via live chat</a> for assistance.
                         </p>
                     </div>
-                    
-                    <p class="text-[13px] text-[#303030] mb-4">
-                        Please choose a duplicate/draft theme to test the app before going live.
-                    </p>
-                    
+                    <p class="text-[13px] text-[#303030] mb-4">Please choose a duplicate/draft theme to test the app before going live.</p>
                     <div class="mb-4">
                         <label class="block text-[14px] font-semibold text-[#303030] mb-2">Theme Selection</label>
                         <select id="modal-theme-select" class="w-full border border-gray-300 rounded-[8px] px-4 py-2.5 text-[14px] text-[#303030] hover:bg-gray-50 bg-white outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
                             <option value="" disabled selected>-- Select a theme --</option>
+                            <option value="Dawn">Dawn <span style="display:inline-flex;align-items:center;gap:4px;background:#dcfce7;color:#166534;font-size:11px;font-weight:600;padding:2px 8px;border-radius:9999px;margin-left:8px;"><span style="width:6px;height:6px;background:#22c55e;border-radius:50%;animation:livePulse 2s ease-in-out infinite;display:inline-block;"></span>LIVE</span></option>
                             <option value="Horizon v1">Horizon v1</option>
                             <option value="Horizon v2">Horizon v2</option>
-                            <option value="Dawn">Dawn</option>
                             <option value="Craft">Craft</option>
                             <option value="Sense">Sense</option>
                             <option value="Taste">Taste</option>
                         </select>
                     </div>
                 </div>
-                
                 <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
-                    <button type="button" id="theme-modal-cancel-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">
-                        Cancel
-                    </button>
-                    <button type="button" id="modal-save-btn" disabled class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                        Next
-                    </button>
+                    <button type="button" id="theme-modal-cancel-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">Cancel</button>
+                    <button type="button" id="modal-save-btn" disabled class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
                 </div>
             </div>
         </div>
@@ -719,7 +657,6 @@
                         <i class="fas fa-times text-lg"></i>
                     </button>
                 </div>
-                
                 <div class="px-6 py-6 flex-1">
                     <div class="flex items-start gap-4 mb-6">
                         <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 shrink-0">
@@ -727,9 +664,9 @@
                         </div>
                         <div class="flex-1">
                             <p class="text-[14px] font-semibold text-[#303030] mb-2">Step 2: Enable App Embed in Theme Editor</p>
+                            <p class="text-[13px] text-gray-600">Selected theme: <strong id="editor-theme-display" class="text-[#303030]"></strong></p>
                         </div>
                     </div>
-
                     <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-6">
                         <div class="flex items-center justify-center gap-1 whitespace-nowrap flex-wrap">
                             <div class="flex items-center gap-2">
@@ -737,33 +674,26 @@
                                 <span class="text-[13px] font-semibold text-gray-800">Theme Editor</span>
                             </div>
                             <i class="fas fa-arrow-right text-gray-400 text-sm mx-2 shrink-0"></i>
-                            
                             <div class="flex items-center gap-2">
                                 <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[13px] shadow-md shrink-0">2</div>
                                 <span class="text-[13px] font-semibold text-gray-800">App Embeds</span>
                             </div>
                             <i class="fas fa-arrow-right text-gray-400 text-sm mx-2 shrink-0"></i>
-                            
                             <div class="flex items-center gap-2">
                                 <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[13px] shadow-md shrink-0">3</div>
                                 <span class="text-[13px] font-semibold text-gray-800">Enable App</span>
                             </div>
                             <i class="fas fa-arrow-right text-gray-400 text-sm mx-2 shrink-0"></i>
-                            
                             <div class="flex items-center gap-2">
                                 <div class="w-9 h-9 rounded-full bg-green-600 text-white flex items-center justify-center font-bold text-[13px] shadow-md shrink-0">4</div>
                                 <span class="text-[13px] font-semibold text-gray-800">Save</span>
                             </div>
                         </div>
                     </div>
-
                     <div id="editor-indexing-banner" class="rounded-lg p-4 mb-6 transition-all duration-300"></div>
                 </div>
-                
                 <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
-                    <button type="button" id="editor-modal-back-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">
-                        Back
-                    </button>
+                    <button type="button" id="editor-modal-back-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">Back</button>
                     <button type="button" id="enable-editor-modal-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed btn-disabled-overlay">
                         <i class="fas fa-external-link-alt text-xs"></i>
                         Enable App in Theme Editor
@@ -774,1004 +704,1060 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // ========== STATE MANAGEMENT ==========
+        const AppState = {
+            isIndexing: true,
+            indexingComplete: false,
+            appEnabled: false,
+            indexingStartTime: null,
+            indexingDuration: 20000,
+            selectedTheme: '',
+            flowCompleted: false,
+            hasEnabledInEditor: false,
+            indexingInterval: null,
+            currentPage: 'home',
+            currentFlow: 1,
+            appToggleState: 'off',
+            wasPreviouslyEnabled: false
+        };
+
+        const STORAGE_KEYS = {
+            APP_TOGGLE_STATE: 'findter_app_toggle_state',
+            INDEXING_COMPLETE: 'findter_indexing_complete'
+        };
+
+        // ========== ELEMENT REFERENCES ==========
+        const selectThemeBtn = document.getElementById('select-theme-btn');
+        const changeThemeBtn = document.getElementById('change-theme-btn');
+        const themeModal = document.getElementById('theme-modal');
+        const editorModal = document.getElementById('editor-modal');
+        const restrictedModal = document.getElementById('restricted-modal');
+        const modalThemeSelect = document.getElementById('modal-theme-select');
+        const modalSaveBtn = document.getElementById('modal-save-btn');
+        const enableEditorModalBtn = document.getElementById('enable-editor-modal-btn');
+        
+        const indexingBannerContainer = document.getElementById('indexing-banner-container');
+        const syncStatusBadge = document.getElementById('sync-status-badge');
+        const syncTimestamp = document.getElementById('sync-timestamp');
+        const manualSyncBtn = document.getElementById('manual-sync-btn');
+        const syncIcon = document.getElementById('sync-icon');
+        const syncBtnText = document.getElementById('sync-btn-text');
+
+        const editorIndexingBanner = document.getElementById('editor-indexing-banner');
+        const onboardingGuideCard = document.getElementById('onboarding-guide-card');
+        const goToFilterBtn = document.getElementById('go-to-filter-btn');
+        const filterLockHint = document.getElementById('filter-lock-hint');
+
+        const closeRestrictedModalBtn = document.getElementById('close-restricted-modal-btn');
+        const restrictedModalOverlay = document.getElementById('restricted-modal-overlay');
+        const restrictedModalHomeBtn = document.getElementById('restricted-modal-home-btn');
+        const restrictionItem1 = document.getElementById('restriction-item-1');
+        const restrictionCheck1 = document.getElementById('restriction-check-1');
+        const restrictionText1 = document.getElementById('restriction-text-1');
+        const restrictionSub1 = document.getElementById('restriction-sub-1');
+        const restrictionItem2 = document.getElementById('restriction-item-2');
+        const restrictionCheck2 = document.getElementById('restriction-check-2');
+
+        const closeThemeModalBtn = document.getElementById('close-theme-modal-btn');
+        const themeModalCancelBtn = document.getElementById('theme-modal-cancel-btn');
+        const themeModalOverlay = document.getElementById('theme-modal-overlay');
+        const closeEditorModalBtn = document.getElementById('close-editor-modal-btn');
+        const editorModalBackBtn = document.getElementById('editor-modal-back-btn');
+        const editorModalOverlay = document.getElementById('editor-modal-overlay');
+
+        const closeThemeNoticeBtn = document.getElementById('close-theme-notice');
+        const themeSupportNotice = document.getElementById('theme-support-notice');
+        const liveChatLink = document.getElementById('live-chat-link');
+
+        const appHeaderTitle = document.getElementById('app-header-title');
+        const resetIndexingBtn = document.getElementById('reset-indexing-btn');
+        const endIndexBtn = document.getElementById('end-index-btn');
+        const simulateDisableBtn = document.getElementById('simulate-disable-btn');
+
+        const appEnableStatusIndicator = document.getElementById('app-enable-status-indicator');
+        const appDisabledStatusIndicator = document.getElementById('app-disabled-status-indicator');
+        const reEnableFromGuideBtn = document.getElementById('re-enable-from-guide-btn');
+        const editorThemeDisplay = document.getElementById('editor-theme-display');
+
+        const flow1Btn = document.getElementById('flow-1-btn');
+        const flow2Btn = document.getElementById('flow-2-btn');
+
+        const floatingChatBtn = document.getElementById('floating-chat-btn');
+        const chatBubble = document.getElementById('chat-bubble');
+        const closeChatBubble = document.getElementById('close-chat-bubble');
+        const chatInput = document.getElementById('chat-input');
+        const sendChatBtn = document.getElementById('send-chat-btn');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatBadge = document.getElementById('chat-badge');
+
+        const allNavItems = document.querySelectorAll('[data-page]');
+
+        const unifiedBannerContainers = {
+            home: document.getElementById('unified-status-banner'),
+            filter: document.getElementById('unified-banner-filter'),
+            search: document.getElementById('unified-banner-search'),
+            metafield: document.getElementById('unified-banner-metafield'),
+            design: document.getElementById('unified-banner-design'),
+            'analytics-app': document.getElementById('unified-banner-analytics-app'),
+            advanced: document.getElementById('unified-banner-advanced')
+        };
+
+        // ========== LISTEN FOR EDITOR TOGGLE CHANGES ==========
+        window.addEventListener('storage', function(e) {
+            if (e.key === STORAGE_KEYS.APP_TOGGLE_STATE) {
+                var newState = e.newValue;
+                console.log('Detected app toggle change:', newState);
+                
+                if (newState === 'off' && AppState.wasPreviouslyEnabled) {
+                    handleAppDisabled();
+                } else if (newState === 'on') {
+                    handleAppReEnabled();
+                }
+                
+                updateAllBanners();
+                updateGuideStep1Status();
+            }
+        });
+
+        // ========== FLOW MANAGEMENT ==========
+        function switchToFlow(flowNumber) {
+            AppState.currentFlow = flowNumber;
             
-            // ========== STATE MANAGEMENT ==========
-            const AppState = {
-                isIndexing: true,
-                indexingComplete: false,
-                appEnabled: false,
-                indexingStartTime: null,
-                indexingDuration: 20000,
-                selectedTheme: '',
-                flowCompleted: false,
-                hasEnabledInEditor: false,
-                indexingInterval: null,
-                currentPage: 'home',
-                currentFlow: 1
-            };
-
-            // ========== ELEMENT REFERENCES ==========
-            const selectThemeBtn = document.getElementById('select-theme-btn');
-            const changeThemeBtn = document.getElementById('change-theme-btn');
-            const themeModal = document.getElementById('theme-modal');
-            const editorModal = document.getElementById('editor-modal');
-            const restrictedModal = document.getElementById('restricted-modal');
-            const modalThemeSelect = document.getElementById('modal-theme-select');
-            const modalSaveBtn = document.getElementById('modal-save-btn');
-            const enableEditorModalBtn = document.getElementById('enable-editor-modal-btn');
-            
-            // Indexing UI elements
-            const indexingBannerContainer = document.getElementById('indexing-banner-container');
-            const syncStatusBadge = document.getElementById('sync-status-badge');
-            const syncTimestamp = document.getElementById('sync-timestamp');
-            const manualSyncBtn = document.getElementById('manual-sync-btn');
-            const syncIcon = document.getElementById('sync-icon');
-            const syncBtnText = document.getElementById('sync-btn-text');
-
-            const editorIndexingBanner = document.getElementById('editor-indexing-banner');
-
-            const onboardingGuideCard = document.getElementById('onboarding-guide-card');
-            const goToFilterBtn = document.getElementById('go-to-filter-btn');
-            const filterLockHint = document.getElementById('filter-lock-hint');
-
-            const closeRestrictedModalBtn = document.getElementById('close-restricted-modal-btn');
-            const restrictedModalOverlay = document.getElementById('restricted-modal-overlay');
-            const restrictedModalHomeBtn = document.getElementById('restricted-modal-home-btn');
-            const restrictionItem1 = document.getElementById('restriction-item-1');
-            const restrictionCheck1 = document.getElementById('restriction-check-1');
-            const restrictionText1 = document.getElementById('restriction-text-1');
-            const restrictionSub1 = document.getElementById('restriction-sub-1');
-            const restrictionItem2 = document.getElementById('restriction-item-2');
-            const restrictionCheck2 = document.getElementById('restriction-check-2');
-
-            const closeThemeModalBtn = document.getElementById('close-theme-modal-btn');
-            const themeModalCancelBtn = document.getElementById('theme-modal-cancel-btn');
-            const themeModalOverlay = document.getElementById('theme-modal-overlay');
-            const closeEditorModalBtn = document.getElementById('close-editor-modal-btn');
-            const editorModalBackBtn = document.getElementById('editor-modal-back-btn');
-            const editorModalOverlay = document.getElementById('editor-modal-overlay');
-
-            const closeThemeNoticeBtn = document.getElementById('close-theme-notice');
-            const themeSupportNotice = document.getElementById('theme-support-notice');
-            const liveChatLink = document.getElementById('live-chat-link');
-
-            const appHeaderTitle = document.getElementById('app-header-title');
-
-            const resetIndexingBtn = document.getElementById('reset-indexing-btn');
-            const endIndexBtn = document.getElementById('end-index-btn');
-
-            // Flow toggle buttons
-            const flow1Btn = document.getElementById('flow-1-btn');
-            const flow2Btn = document.getElementById('flow-2-btn');
-
-            // Chat elements
-            const floatingChatBtn = document.getElementById('floating-chat-btn');
-            const chatBubble = document.getElementById('chat-bubble');
-            const closeChatBubble = document.getElementById('close-chat-bubble');
-            const chatInput = document.getElementById('chat-input');
-            const sendChatBtn = document.getElementById('send-chat-btn');
-            const chatMessages = document.getElementById('chat-messages');
-            const chatBadge = document.getElementById('chat-badge');
-
-            const allNavItems = document.querySelectorAll('[data-page]');
-
-            // All unified banner containers (Used by ALL flows on ALL pages)
-            const unifiedBannerContainers = {
-                home: document.getElementById('unified-status-banner'),
-                filter: document.getElementById('unified-banner-filter'),
-                search: document.getElementById('unified-banner-search'),
-                metafield: document.getElementById('unified-banner-metafield'),
-                design: document.getElementById('unified-banner-design'),
-                'analytics-app': document.getElementById('unified-banner-analytics-app'),
-                advanced: document.getElementById('unified-banner-advanced')
-            };
-
-            // ========== FLOW MANAGEMENT ==========
-            function switchToFlow(flowNumber) {
-                AppState.currentFlow = flowNumber;
-                
-                if (flowNumber === 1) {
-                    flow1Btn.className = 'flow-btn active-flow-1 border-2 border-transparent rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative';
-                    flow2Btn.className = 'flow-btn border-2 border-gray-300 bg-white text-gray-600 rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative hover:border-blue-300';
-                } else {
-                    flow1Btn.className = 'flow-btn border-2 border-gray-300 bg-white text-gray-600 rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative hover:border-red-300';
-                    flow2Btn.className = 'flow-btn active-flow-2 border-2 border-transparent rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative';
-                }
-
-                updateAllBanners();
-                renderSubPageContent(AppState.currentPage);
-                
-                console.log(`🔄 Switched to Flow ${flowNumber}: ${flowNumber === 1 ? 'LOCK MODE' : 'FLEXIBLE MODE'}`);
+            if (flowNumber === 1) {
+                flow1Btn.className = 'flow-btn active-flow-1 border-2 border-transparent rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative';
+                flow2Btn.className = 'flow-btn border-2 border-gray-300 bg-white text-gray-600 rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative hover:border-blue-300';
+            } else {
+                flow1Btn.className = 'flow-btn border-2 border-gray-300 bg-white text-gray-600 rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative hover:border-red-300';
+                flow2Btn.className = 'flow-btn active-flow-2 border-2 border-transparent rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative';
             }
 
-            flow1Btn.addEventListener('click', () => switchToFlow(1));
-            flow2Btn.addEventListener('click', () => switchToFlow(2));
+            updateAllBanners();
+            renderSubPageContent(AppState.currentPage);
+        }
 
-            // ========== UNIFIED SIMPLE BANNER SYSTEM (ALL FLOWS, ALL PAGES) ==========
-            
-            /**
-             * Returns the SIMPLE "Collecting data" banner HTML - NO progress bar, NO percentage
-             * Used across ALL flows and ALL pages during indexing
-             */
-            function getSimpleIndexingBannerHTML() {
-                return `
-                    <div class="unified-status-banner indexing-state rounded-lg p-4 border border-amber-300">
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shrink-0 mt-0.5 animate-pulse-custom">
-                                <i class="fas fa-exclamation-triangle text-sm"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-[14px] font-semibold text-amber-800 mb-1">Collecting data</p>
-                                <p class="text-[13px] text-amber-700 leading-relaxed">
-                                    Up-to-date data are being collected. Please wait until this process is complete before continuing with the app.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                `;
+        flow1Btn.addEventListener('click', function() { switchToFlow(1); });
+        flow2Btn.addEventListener('click', function() { switchToFlow(2); });
+
+        // ========== BANNER GENERATION FUNCTIONS ==========
+        function getSimpleIndexingBannerHTML() {
+            return '<div class="unified-status-banner indexing-state rounded-lg p-4 border border-amber-300">' +
+                '<div class="flex items-start gap-3">' +
+                    '<div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shrink-0 mt-0.5 animate-pulse-custom">' +
+                        '<i class="fas fa-exclamation-triangle text-sm"></i>' +
+                    '</div>' +
+                    '<div class="flex-1">' +
+                        '<p class="text-[14px] font-semibold text-amber-800 mb-1">Collecting data</p>' +
+                        '<p class="text-[13px] text-amber-700 leading-relaxed">' +
+                            'Up-to-date data are being collected. Please wait until this process is complete before continuing with the app.' +
+                        '</p>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }
+
+        function getFirstTimeCompleteBannerHTML() {
+            return '<div class="unified-status-banner complete-state rounded-lg p-4 border border-emerald-300">' +
+                '<div class="flex items-start gap-3">' +
+                    '<div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 shrink-0 mt-0.5">' +
+                        '<i class="fas fa-check-circle text-sm"></i>' +
+                    '</div>' +
+                    '<div class="flex-1">' +
+                        '<p class="text-[14px] font-semibold text-emerald-800 mb-1">Data indexing is completed.</p>' +
+                        '<p class="text-[13px] text-emerald-700 leading-relaxed mb-3">' +
+                            'Your data has been successfully indexed. To activate the app on your storefront, please enable it in your Theme Editor.' +
+                        '</p>' +
+                        '<button onclick="window.handleEnableAppFromBanner()" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors shadow-sm inline-flex items-center gap-2">' +
+                            '<i class="fas fa-external-link-alt text-xs"></i>' +
+                            'Enable App in Theme Editor' +
+                        '</button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }
+
+        function getReEnableReminderBannerHTML() {
+            return '<div class="unified-status-banner disabled-state rounded-lg p-4 border border-red-300">' +
+                '<div class="flex items-start gap-3">' +
+                    '<div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center text-red-600 shrink-0 mt-0.5 animate-pulse-custom">' +
+                        '<i class="fas fa-exclamation-circle text-sm"></i>' +
+                    '</div>' +
+                    '<div class="flex-1">' +
+                        '<p class="text-[14px] font-semibold text-red-800 mb-1">Data indexing is completed.</p>' +
+                        '<p class="text-[13px] text-red-700 leading-relaxed mb-3">' +
+                            'Your data has been successfully indexed. To activate the app on your storefront, please enable it in your Theme Editor.' +
+                        '</p>' +
+                        '<button onclick="window.handleEnableAppFromBanner()" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors shadow-sm inline-flex items-center gap-2">' +
+                            '<i class="fas fa-external-link-alt text-xs"></i>' +
+                            'Enable App in Theme Editor' +
+                        '</button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }
+
+        // ========== UPDATE ALL BANNERS ==========
+        function updateAllBanners() {
+            var bannerHTML = '';
+            var showBanner = true;
+
+            if (!AppState.indexingComplete) {
+                bannerHTML = getSimpleIndexingBannerHTML();
+            } else if (!AppState.wasPreviouslyEnabled) {
+                bannerHTML = getFirstTimeCompleteBannerHTML();
+            } else if (AppState.appToggleState === 'off') {
+                bannerHTML = getReEnableReminderBannerHTML();
+            } else {
+                showBanner = false;
             }
 
-            /**
-             * Returns the completion banner HTML (shown after indexing finishes but before app is enabled)
-             */
-            function getCompleteBannerHTML() {
-                return `
-                    <div class="unified-status-banner complete-state rounded-lg p-4 border border-emerald-300">
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 shrink-0 mt-0.5">
-                                <i class="fas fa-check-circle text-sm"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-[14px] font-semibold text-emerald-800 mb-1">Data indexing is completed.</p>
-                                <p class="text-[13px] text-emerald-700 leading-relaxed mb-3">
-                                    Your data has been successfully indexed. To activate the app on your storefront, please enable it in your Theme Editor.
-                                </p>
-                                <button onclick="handleEnableAppFromBanner()" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors shadow-sm inline-flex items-center gap-2">
-                                    <i class="fas fa-external-link-alt text-xs"></i>
-                                    Enable App in Theme Editor
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            /**
-             * Updates ALL banner containers across ALL pages and ALL flows
-             * This ensures consistent display of the simple "Collecting data" banner everywhere
-             */
-            function updateAllBanners() {
-                let bannerHTML = '';
-                let showBanner = true;
-
-                if (!AppState.indexingComplete) {
-                    // INDEXING IN PROGRESS - Show simple "Collecting data" banner (NO progress bar)
-                    bannerHTML = getSimpleIndexingBannerHTML();
-                } else if (!AppState.appEnabled) {
-                    // INDEXING COMPLETE - Show completion banner with action button
-                    bannerHTML = getCompleteBannerHTML();
-                } else {
-                    // EVERYTHING DONE - Hide banners
-                    showBanner = false;
-                }
-
-                // Update ALL unified banner containers (used by both flows on all pages)
-                Object.entries(unifiedBannerContainers).forEach(([page, container]) => {
-                    if (container) {
-                        if (showBanner) {
-                            container.classList.remove('hidden');
-                            container.innerHTML = bannerHTML;
-                        } else {
-                            container.classList.add('hidden');
-                            container.innerHTML = '';
-                        }
-                    }
-                });
-
-                // Also update the legacy Flow 1 home banner container (keep for backwards compat)
-                if (AppState.currentFlow === 1 && AppState.currentPage === 'home') {
-                    if (showBanner && !AppState.indexingComplete) {
-                        indexingBannerContainer.classList.remove('hidden');
-                        indexingBannerContainer.innerHTML = getSimpleIndexingBannerHTML();
-                    } else {
-                        indexingBannerContainer.classList.add('hidden');
-                        indexingBannerContainer.innerHTML = '';
-                    }
-                } else {
-                    indexingBannerContainer.classList.add('hidden');
-                    indexingBannerContainer.innerHTML = '';
-                }
-            }
-
-            // ========== ENABLE APP FUNCTION (Shared between Modal and Banner Button) ==========
-            function handleEnableApp() {
-                if (!AppState.indexingComplete) {
-                    alert('Please wait for indexing to complete first.');
-                    return;
-                }
-                
-                AppState.hasEnabledInEditor = true;
-                window.open('Editor.html', '_blank');
-                updateEditorModalCloseButton();
-                
-                // Show processing state in all visible banners
-                Object.values(unifiedBannerContainers).forEach(container => {
-                    if (container && !container.classList.contains('hidden')) {
-                        const banner = container.querySelector('.unified-status-banner');
-                        if (banner) {
-                            banner.className = 'unified-status-banner complete-state rounded-lg p-4 border border-blue-300';
-                            banner.innerHTML = `
-                                <div class="flex items-center justify-center gap-3 py-4">
-                                    <i class="fas fa-spinner fa-spin text-emerald-600 text-lg"></i>
-                                    <span class="text-[14px] font-semibold text-emerald-800">Opening Theme Editor...</span>
-                                </div>
-                            `;
-                        }
-                    }
-                });
-
-                setTimeout(() => {
-                    completeFlow();
-                }, 1500);
-            }
-
-            window.handleEnableAppFromBanner = handleEnableApp;
-
-            // ========== PAGE NAVIGATION SYSTEM ==========
-            const pageNames = {
-                'home': 'Homepage',
-                'filter': 'Filter',
-                'search': 'Search',
-                'metafield': 'Metafield',
-                'design': 'Filter & Product Grid Design',
-                'analytics-app': 'Analytics',
-                'advanced': 'Advanced Features'
-            };
-
-            function navigateToPage(pageId, showRestrictedModalAfter = false) {
-                document.querySelectorAll('.page-view').forEach(page => {
-                    page.classList.remove('active');
-                });
-
-                const targetPage = document.getElementById('page-' + pageId);
-                if (targetPage) {
-                    targetPage.classList.add('active');
-                    AppState.currentPage = pageId;
-
-                    allNavItems.forEach(item => {
-                        item.classList.remove('nav-active');
-                        if (item.getAttribute('data-page') === pageId) {
-                            item.classList.add('nav-active');
-                        }
-                    });
-
-                    renderSubPageContent(pageId);
-                    updateAllBanners();
-
-                    if (AppState.currentFlow === 1 && showRestrictedModalAfter && !canAccessFeatures()) {
-                        setTimeout(() => {
-                            showRestrictedModal();
-                        }, 150);
-                    }
-                }
-            }
-
-            function renderSubPageContent(pageId) {
-                const container = document.getElementById(pageId + '-page-content');
-                if (!container) return;
-
-                const canAccess = canAccessFeatures();
-                const isFlow2 = AppState.currentFlow === 2;
-
-                if (isFlow2 || canAccess) {
-                    container.innerHTML = `
-                        <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 p-8">
-                            <div class="flex items-center gap-4 mb-6">
-                                <div class="w-12 h-12 bg-${isFlow2 && !canAccess ? 'blue' : 'gray'}-100 rounded-xl flex items-center justify-center">
-                                    <i class="fas fa-${getPageIcon(pageId)} text-${isFlow2 && !canAccess ? 'blue' : 'gray'}-500 text-xl"></i>
-                                </div>
-                                <div>
-                                    <h2 class="text-[18px] font-semibold text-[#303030]">${pageNames[pageId]}</h2>
-                                    <p class="text-[13px] ${isFlow2 && !canAccess ? 'text-blue-600' : 'text-gray-500'}">
-                                        ${isFlow2 && !canAccess 
-                                            ? '<i class="fas fa-info-circle mr-1"></i> Available for preview - Full functionality after setup completes' 
-                                            : 'Configure your settings here'}
-                                    </p>
-                                </div>
-                            </div>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                ${generatePlaceholderCards(isFlow2 && !canAccess)}
-                            </div>
-                            
-                            ${isFlow2 && !canAccess ? `
-                                <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                                    <div class="flex items-start gap-3">
-                                        <i class="fas fa-lightbulb text-blue-500 mt-0.5"></i>
-                                        <div>
-                                            <p class="text-[13px] font-semibold text-blue-800">Preview Mode Active</p>
-                                            <p class="text-[12px] text-blue-600 mt-1">You can explore this section while indexing completes. Some features may be limited until full setup is done.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ` : ''}
-                        </div>
-                    `;
-                } else {
-                    container.innerHTML = `
-                        <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 p-12 text-center">
-                            <div class="empty-state-illustration mb-6">
-                                <i class="fas fa-${getPageIcon(pageId)} text-[80px] text-gray-300"></i>
-                            </div>
-                            <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-lock text-amber-600 text-2xl"></i>
-                            </div>
-                            <h2 class="text-[18px] font-semibold text-[#303030] mb-2">${pageNames[pageId]}</h2>
-                            <p class="text-[13px] text-gray-500 max-w-md mx-auto mb-4">
-                                This section is locked. Complete the onboarding process on the Homepage to unlock all features.
-                            </p>
-                            <button onclick="navigateToPage('home')" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
-                                <i class="fas fa-home text-xs"></i>
-                                Go to Homepage
-                            </button>
-                        </div>
-                    `;
-                }
-            }
-
-            function generatePlaceholderCards(isPreview) {
-                const cards = [
-                    { title: 'Configuration', icon: 'cog', desc: 'Main settings' },
-                    { title: 'Display Options', icon: 'palette', desc: 'Visual customization' },
-                    { title: 'Advanced Settings', icon: 'sliders-h', desc: 'Fine-tuning options' }
-                ];
-                
-                return cards.map(card => `
-                    <div class="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors ${isPreview ? 'opacity-75' : ''}">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-${card.icon} text-gray-500 text-sm"></i>
-                            </div>
-                            <h4 class="font-medium text-[14px] text-[#303030]">${card.title}</h4>
-                        </div>
-                        <p class="text-[12px] text-gray-500">${card.desc}</p>
-                        ${isPreview ? '<div class="mt-3 text-[11px] text-blue-500 font-medium"><i class="fas fa-eye mr-1"></i> Preview available</div>' : ''}
-                    </div>
-                `).join('');
-            }
-
-            function getPageIcon(pageId) {
-                const icons = {
-                    'filter': 'filter',
-                    'search': 'search',
-                    'metafield': 'database',
-                    'design': 'th-large',
-                    'analytics-app': 'chart-bar',
-                    'advanced': 'cogs'
-                };
-                return icons[pageId] || 'file';
-            }
-
-            allNavItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const page = this.getAttribute('data-page');
-                    if (!page) return;
-
-                    const isLockedPage = ['filter', 'search', 'metafield', 'design', 'analytics-app', 'advanced'].includes(page);
-                    
-                    if (AppState.currentFlow === 1) {
-                        const needsRestriction = isLockedPage && !canAccessFeatures();
-                        navigateToPage(page, needsRestriction);
-                    } else {
-                        navigateToPage(page, false);
-                    }
-                });
-            });
-
-            if (appHeaderTitle) {
-                appHeaderTitle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    navigateToPage('home');
-                });
-            }
-
-            if (goToFilterBtn) {
-                goToFilterBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    if (AppState.currentFlow === 1 && !canAccessFeatures()) {
-                        navigateToPage('filter', true);
-                    } else {
-                        navigateToPage('filter');
-                    }
-                });
-            }
-
-            // ========== INDEXING SIMULATION ==========
-            function getCurrentTimestamp() {
-                const now = new Date();
-                const hours = String(now.getHours()).padStart(2, '0');
-                const minutes = String(now.getMinutes()).padStart(2, '0');
-                const seconds = String(now.getSeconds()).padStart(2, '0');
-                const day = String(now.getDate()).padStart(2, '0');
-                const month = String(now.getMonth() + 1).padStart(2, '0');
-                const year = now.getFullYear();
-                return `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`;
-            }
-
-            function showIndexingInProgress() {
-                // Update status badge in right column
-                syncStatusBadge.className = 'bg-amber-100 text-amber-800 text-[11px] px-2 py-0.5 rounded-full font-semibold';
-                syncStatusBadge.textContent = 'In progress';
-                syncTimestamp.textContent = getCurrentTimestamp();
-                
-                // Update manual sync button state
-                syncIcon.className = 'fas fa-sync-alt text-gray-400 text-sm animate-spin';
-                syncBtnText.textContent = 'Syncing...';
-                manualSyncBtn.disabled = true;
-                manualSyncBtn.classList.add('opacity-50', 'cursor-not-allowed');
-
-                // Update ALL banners with simple "Collecting data" message
-                updateAllBanners();
-                updateEditorModalBanner();
-            }
-
-            function showIndexingComplete() {
-                AppState.isIndexing = false;
-                AppState.indexingComplete = true;
-
-                if (AppState.indexingInterval) {
-                    clearInterval(AppState.indexingInterval);
-                    AppState.indexingInterval = null;
-                }
-
-                // Update status badge
-                syncStatusBadge.className = 'bg-[#cbf1c4] text-[#1f5119] text-[11px] px-2 py-0.5 rounded-full font-semibold';
-                syncStatusBadge.textContent = 'Completed';
-                syncTimestamp.textContent = getCurrentTimestamp();
-                
-                // Reset manual sync button
-                syncIcon.className = 'fas fa-sync-alt text-gray-500 text-sm';
-                syncBtnText.textContent = 'Manual sync';
-                manualSyncBtn.disabled = false;
-                manualSyncBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-
-                // Update UI states
-                updateRestrictedModalContent();
-                updateEditorModalBanner();
-                checkAndUnlockFeatures();
-                updateAllBanners();
-
-                if (AppState.currentPage !== 'home') {
-                    renderSubPageContent(AppState.currentPage);
-                }
-            }
-
-            function forceEndIndexing() {
-                if (AppState.indexingInterval) {
-                    clearInterval(AppState.indexingInterval);
-                    AppState.indexingInterval = null;
-                }
-                
-                setTimeout(() => showIndexingComplete(), 300);
-            }
-
-            function startIndexingSimulation() {
-                AppState.isIndexing = true;
-                AppState.indexingComplete = false;
-                AppState.indexingStartTime = Date.now();
-
-                showIndexingInProgress();
-                updateLockStates();
-
-                const startTime = Date.now();
-                const duration = AppState.indexingDuration;
-
-                AppState.indexingInterval = setInterval(() => {
-                    const elapsed = Date.now() - startTime;
-                    const progress = Math.min((elapsed / duration) * 100, 100);
-                    
-                    // Note: We do NOT update any progress bar UI here anymore
-                    // The simple banner has no progress indicator
-                    
-                    if (progress >= 100) {
-                        clearInterval(AppState.indexingInterval);
-                        AppState.indexingInterval = null;
-                        setTimeout(() => showIndexingComplete(), 300);
-                    }
-                }, 100);
-            }
-
-            function resetIndexing() {
-                if (AppState.indexingInterval) {
-                    clearInterval(AppState.indexingInterval);
-                    AppState.indexingInterval = null;
-                }
-                
-                AppState.isIndexing = true;
-                AppState.indexingComplete = false;
-                AppState.appEnabled = false;
-                AppState.flowCompleted = false;
-                AppState.hasEnabledInEditor = false;
-                AppState.selectedTheme = '';
-                
-                startIndexingSimulation();
-                updateLockStates();
-                
-                const step1Initial = document.getElementById('step1-initial');
-                const step1Completed = document.getElementById('step1-completed');
-                const step1Checkbox = document.getElementById('step1-checkbox');
-                
-                if (step1Initial) step1Initial.classList.remove('hidden');
-                if (step1Completed) step1Completed.classList.add('hidden');
-                if (step1Checkbox) {
-                    step1Checkbox.setAttribute('data-completed', 'false');
-                    step1Checkbox.classList.remove('bg-[#303030]', 'text-white');
-                    step1Checkbox.classList.add('border-2', 'border-dashed', 'border-gray-400', 'bg-white');
-                    const checkIcon = step1Checkbox.querySelector('.fa-check');
-                    if (checkIcon) checkIcon.classList.add('text-transparent');
-                }
-
-                updateProgressAndMessages();
-                renderSubPageContent(AppState.currentPage);
-                updateAllBanners();
-            }
-
-            // ========== EDITOR MODAL BANNER LOGIC ==========
-            function updateEditorModalBanner() {
-                if (!editorIndexingBanner) return;
-
-                if (!AppState.indexingComplete) {
-                    // Use SAME simple banner style as main page
-                    editorIndexingBanner.className = 'rounded-lg p-4 mb-6 transition-all duration-300 bg-amber-50 border border-amber-200';
-                    editorIndexingBanner.innerHTML = `
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shrink-0 mt-0.5 animate-pulse-custom">
-                                <i class="fas fa-exclamation-triangle text-sm"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-[14px] font-semibold text-amber-800 mb-1">Please wait for indexing to complete</p>
-                                <p class="text-[13px] text-amber-700 leading-relaxed">
-                                    Up-to-date data are being collected. Please wait until this process is complete before continuing with the app.
-                                </p>
-                            </div>
-                        </div>
-                    `;
-
-                    if (enableEditorModalBtn) {
-                        enableEditorModalBtn.disabled = true;
-                        enableEditorModalBtn.classList.add('btn-disabled-overlay');
-                    }
-                } else {
-                    editorIndexingBanner.className = 'rounded-lg p-4 mb-6 transition-all duration-300 bg-emerald-50 border border-emerald-200';
-                    editorIndexingBanner.innerHTML = `
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 shrink-0 mt-0.5">
-                                <i class="fas fa-check-circle text-sm"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-[14px] font-semibold text-emerald-800 mb-1">Data indexing is complete!</p>
-                                <p class="text-[13px] text-emerald-700 leading-relaxed">
-                                    You can now proceed to enable the app in your Theme Editor.
-                                </p>
-                            </div>
-                        </div>
-                    `;
-
-                    if (enableEditorModalBtn) {
-                        enableEditorModalBtn.disabled = false;
-                        enableEditorModalBtn.classList.remove('btn-disabled-overlay');
-                    }
-                }
-            }
-
-            // ========== LOCK / UNLOCK LOGIC ==========
-            function canAccessFeatures() {
-                return AppState.indexingComplete && AppState.appEnabled;
-            }
-
-            function updateLockStates() {
-                const canAccess = canAccessFeatures();
-                
-                if (AppState.currentFlow === 1) {
-                    if (goToFilterBtn) goToFilterBtn.disabled = !canAccess;
-                    if (filterLockHint) filterLockHint.classList.toggle('hidden', canAccess);
-                } else {
-                    if (goToFilterBtn) goToFilterBtn.disabled = false;
-                    if (filterLockHint) filterLockHint.classList.add('hidden');
-                }
-
-                updateEditorModalBanner();
-            }
-
-            function checkAndUnlockFeatures() {
-                updateLockStates();
-            }
-
-            // ========== RESTRICTED ACCESS MODAL (Flow 1) ==========
-            function showRestrictedModal() {
-                updateRestrictedModalContent();
-                restrictedModal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-            }
-
-            function updateRestrictedModalContent() {
-                if (AppState.indexingComplete) {
-                    restrictionItem1.className = 'flex items-start gap-3 p-3 rounded-lg bg-green-50 border border-green-200';
-                    restrictionCheck1.className = 'w-5 h-5 rounded-full border-2 border-green-500 bg-green-500 flex items-center justify-center shrink-0 mt-0.5';
-                    restrictionCheck1.innerHTML = '<i class="fas fa-check text-[10px] text-white"></i>';
-                    restrictionText1.textContent = 'Data indexing complete';
-                    restrictionSub1.textContent = 'All data has been collected successfully';
-                } else {
-                    restrictionItem1.className = 'flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200';
-                    restrictionCheck1.className = 'w-5 h-5 rounded-full border-2 border-amber-400 bg-amber-50 flex items-center justify-center shrink-0 mt-0.5';
-                    restrictionCheck1.innerHTML = '<i class="fas fa-clock text-[10px] text-amber-500"></i>';
-                    restrictionText1.textContent = 'Wait for data indexing to complete';
-                    restrictionSub1.textContent = 'Currently collecting data...';
-                }
-
-                if (AppState.appEnabled) {
-                    restrictionItem2.className = 'flex items-start gap-3 p-3 rounded-lg bg-green-50 border border-green-200';
-                    restrictionCheck2.className = 'w-5 h-5 rounded-full border-2 border-green-500 bg-green-500 flex items-center justify-center shrink-0 mt-0.5';
-                    restrictionCheck2.innerHTML = '<i class="fas fa-check text-[10px] text-white"></i>';
-                } else {
-                    restrictionItem2.className = 'flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200';
-                    restrictionCheck2.className = 'w-5 h-5 rounded-full border-2 border-amber-400 bg-amber-50 flex items-center justify-center shrink-0 mt-0.5';
-                    restrictionCheck2.innerHTML = '<i class="fas fa-times text-[10px] text-amber-500"></i>';
-                }
-            }
-
-            function closeRestrictedModalAndGoHome() {
-                restrictedModal.classList.add('hidden');
-                document.body.style.overflow = '';
-                navigateToPage('home');
-                triggerGuideAttentionAnimation();
-            }
-
-            window.triggerGuideAttentionAnimation = function() {
-                if (onboardingGuideCard) {
-                    onboardingGuideCard.classList.remove('guide-attention-animation');
-                    void onboardingGuideCard.offsetWidth;
-                    onboardingGuideCard.classList.add('guide-attention-animation');
-                    onboardingGuideCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    setTimeout(() => onboardingGuideCard.classList.remove('guide-attention-animation'), 1200);
-                }
-            };
-
-            if (closeRestrictedModalBtn) closeRestrictedModalBtn.addEventListener('click', closeRestrictedModalAndGoHome);
-            if (restrictedModalHomeBtn) restrictedModalHomeBtn.addEventListener('click', closeRestrictedModalAndGoHome);
-            if (restrictedModalOverlay) restrictedModalOverlay.addEventListener('click', closeRestrictedModalAndGoHome);
-
-            if (resetIndexingBtn) resetIndexingBtn.addEventListener('click', resetIndexing);
-            if (endIndexBtn) endIndexBtn.addEventListener('click', forceEndIndexing);
-
-            // ========== STEP COMPLETION + PROGRESS LOGIC ==========
-            function updateProgressAndMessages() {
-                const step1 = document.querySelector('.step-checkbox[data-step="1"]');
-                const step2 = document.querySelector('.step-checkbox[data-step="2"]');
-                const step3 = document.querySelector('.step-checkbox[data-step="3"]');
-                
-                const step1Completed = step1 ? step1.getAttribute('data-completed') === 'true' : false;
-                const step2Completed = step2 ? step2.getAttribute('data-completed') === 'true' : false;
-                const step3Completed = step3 ? step3.getAttribute('data-completed') === 'true' : false;
-                
-                const totalSteps = 3;
-                const completedCount = [step1Completed, step2Completed, step3Completed].filter(Boolean).length;
-                
-                const progressBar = document.getElementById('progress-bar');
-                const progressText = document.getElementById('progress-text');
-                const percentage = (completedCount / totalSteps) * 100;
-                
-                if (progressBar) {
-                    progressBar.style.width = percentage + '%';
-                    progressBar.className = 'bg-black h-full rounded-full transition-all duration-500';
-                    if (completedCount === 1) progressBar.classList.add('bg-black');
-                    else if (completedCount === 2) progressBar.classList.add('bg-yellow-400');
-                    else if (completedCount === 3) progressBar.classList.add('bg-green-500');
-                    else progressBar.classList.add('bg-gray-400');
-                }
-                
-                if (progressText) progressText.innerText = `${completedCount}/${totalSteps} completed`;
-                
-                const container = document.getElementById('congrat-message-container');
+            Object.keys(unifiedBannerContainers).forEach(function(page) {
+                var container = unifiedBannerContainers[page];
                 if (container) {
-                    if (step1Completed && step3Completed) {
-                        container.innerHTML = `
-                            <div class="p-3 bg-green-50 border border-green-100 rounded-lg flex items-start gap-3">
-                                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 shrink-0"><i class="fas fa-rocket"></i></div>
-                                <div class="flex-1">
-                                    <p class="text-[13px] font-semibold text-green-800 leading-tight">Great job! Basic setup is complete. Explore more our <a href="#" class="underline font-bold text-green-700 hover:text-green-900">advanced features</a>.</p>
-                                    <p class="text-[11px] text-green-700 mt-0.5">You can always reopen the guide to review each step.</p>
-                                </div>
-                            </div>
-                        `;
+                    if (showBanner) {
                         container.classList.remove('hidden');
+                        container.innerHTML = bannerHTML;
                     } else {
                         container.classList.add('hidden');
                         container.innerHTML = '';
                     }
                 }
-            }
-            
-            document.querySelectorAll('.step-checkbox').forEach(cb => {
-                cb.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const isCompleted = this.getAttribute('data-completed') === 'true';
-                    const checkIcon = this.querySelector('.fa-check');
-                    if (isCompleted) {
-                        this.setAttribute('data-completed', 'false');
-                        this.classList.remove('bg-[#303030]', 'text-white');
-                        this.classList.add('border-2', 'border-dashed', 'border-gray-400', 'bg-white');
-                        checkIcon.classList.add('text-transparent');
-                    } else {
-                        this.setAttribute('data-completed', 'true');
-                        this.classList.add('bg-[#303030]', 'text-white');
-                        this.classList.remove('border-2', 'border-dashed', 'border-gray-400', 'bg-white');
-                        checkIcon.classList.remove('text-transparent');
-                    }
-                    updateProgressAndMessages();
-                });
-            });
-            
-            document.querySelectorAll('.guide-toggle').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    const target = document.getElementById(this.dataset.target);
-                    const expanded = this.getAttribute('aria-expanded') === 'true';
-                    this.setAttribute('aria-expanded', String(!expanded));
-                    this.innerHTML = expanded ? '<i class="fas fa-chevron-down"></i>' : '<i class="fas fa-chevron-up"></i>';
-                    if (target) target.classList.toggle('hidden', expanded);
-                });
-            });
-            
-            document.querySelectorAll('.guide-step-toggle').forEach(function(header) {
-                header.addEventListener('click', function() {
-                    const content = document.getElementById(this.dataset.target);
-                    const icon = this.querySelector('.fa-chevron-up, .fa-chevron-down');
-                    if (content) {
-                        const isHidden = content.classList.toggle('hidden');
-                        if (icon) {
-                            icon.classList.toggle('fa-chevron-up', !isHidden);
-                            icon.classList.toggle('fa-chevron-down', isHidden);
-                        }
-                    }
-                });
             });
 
-            // ========== CHAT FUNCTIONALITY ==========
-            function openChatWithMessage(message) {
-                chatBubble.classList.add('active');
-                chatInput.value = message;
-                chatBadge.classList.remove('hidden');
-                
-                setTimeout(() => {
-                    addMessageToChat(message, true);
-                    chatInput.value = '';
-                    setTimeout(() => addMessageToChat("Thank you for reaching out! A support agent will assist you shortly.", false), 800);
-                }, 300);
-            }
-
-            function addMessageToChat(text, isUser) {
-                const msgDiv = document.createElement('div');
-                msgDiv.className = `flex gap-2 ${isUser ? 'justify-end' : ''}`;
-                
-                if (isUser) {
-                    msgDiv.innerHTML = `<div class="bg-red-600 text-white rounded-lg rounded-tr-none px-3 py-2 text-[13px] max-w-[85%]">${text}</div>`;
+            if (AppState.currentFlow === 1 && AppState.currentPage === 'home') {
+                if (showBanner && !AppState.indexingComplete) {
+                    indexingBannerContainer.classList.remove('hidden');
+                    indexingBannerContainer.innerHTML = getSimpleIndexingBannerHTML();
                 } else {
-                    msgDiv.innerHTML = `
-                        <div class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center text-red-600 shrink-0">
-                            <i class="fas fa-robot text-xs"></i>
-                        </div>
-                        <div class="bg-gray-100 rounded-lg rounded-tl-none px-3 py-2 text-[13px] text-gray-700 max-w-[85%]">${text}</div>
-                    `;
+                    indexingBannerContainer.classList.add('hidden');
+                    indexingBannerContainer.innerHTML = '';
                 }
-                
-                chatMessages.appendChild(msgDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
+            } else {
+                indexingBannerContainer.classList.add('hidden');
+                indexingBannerContainer.innerHTML = '';
             }
+        }
 
-            floatingChatBtn.addEventListener('click', () => chatBubble.classList.toggle('active'));
-            closeChatBubble.addEventListener('click', () => chatBubble.classList.remove('active'));
+        // ========== APP DISABLED / RE-ENABLE HANDLERS ==========
+        function handleAppDisabled() {
+            console.log('App has been DISABLED');
+            AppState.appToggleState = 'off';
+            AppState.appEnabled = false;
+            localStorage.setItem(STORAGE_KEYS.APP_TOGGLE_STATE, 'off');
+            updateLockStates();
+            updateGuideStep1Status();
+        }
 
-            sendChatBtn.addEventListener('click', () => {
-                const msg = chatInput.value.trim();
-                if (msg) {
-                    addMessageToChat(msg, true);
-                    chatInput.value = '';
-                    setTimeout(() => addMessageToChat("Thank you for your message. We'll get back to you soon!", false), 600);
+        function handleAppReEnabled() {
+            console.log('App has been RE-ENABLED');
+            AppState.appToggleState = 'on';
+            AppState.appEnabled = true;
+            localStorage.setItem(STORAGE_KEYS.APP_TOGGLE_STATE, 'on');
+            updateLockStates();
+            updateGuideStep1Status();
+        }
+
+        function simulateDisableApp() {
+            if (!AppState.indexingComplete || !AppState.wasPreviouslyEnabled) {
+                alert('Please complete indexing and enable the app first.');
+                return;
+            }
+            handleAppDisabled();
+            alert('Simulated: App disabled. You should now see the red reminder banner.');
+        }
+
+        if (simulateDisableBtn) {
+            simulateDisableBtn.addEventListener('click', simulateDisableApp);
+        }
+
+        if (reEnableFromGuideBtn) {
+            reEnableFromGuideBtn.addEventListener('click', function() {
+                openThemeModal();
+            });
+        }
+
+        function updateGuideStep1Status() {
+            if (!appEnableStatusIndicator || !appDisabledStatusIndicator) return;
+
+            if (AppState.wasPreviouslyEnabled && AppState.appToggleState === 'off') {
+                appEnableStatusIndicator.classList.add('hidden');
+                appDisabledStatusIndicator.classList.remove('hidden');
+            } else {
+                appEnableStatusIndicator.classList.remove('hidden');
+                appDisabledStatusIndicator.classList.add('hidden');
+            }
+        }
+
+        // ========== ENABLE APP FROM BANNER (Opens Modal 1) ==========
+        window.handleEnableAppFromBanner = function() {
+            if (!AppState.indexingComplete) {
+                alert('Please wait for indexing to complete first.');
+                return;
+            }
+            openThemeModal();
+        };
+
+        // ========== ENABLE APP FROM MODAL 2 (Opens Editor.html) ==========
+        function handleEnableFromModal2() {
+            if (!AppState.indexingComplete) {
+                alert('Please wait for indexing to complete first.');
+                return;
+            }
+            
+            console.log('Opening Editor.html from Modal 2...');
+            
+            AppState.hasEnabledInEditor = true;
+            AppState.wasPreviouslyEnabled = true;
+            AppState.appToggleState = 'on';
+            localStorage.setItem(STORAGE_KEYS.APP_TOGGLE_STATE, 'on');
+            
+            window.open('Editor.html', '_blank');
+            
+            updateEditorModalCloseButton();
+            
+            Object.keys(unifiedBannerContainers).forEach(function(key) {
+                var container = unifiedBannerContainers[key];
+                if (container && !container.classList.contains('hidden')) {
+                    var banner = container.querySelector('.unified-status-banner');
+                    if (banner) {
+                        banner.className = 'unified-status-banner complete-state rounded-lg p-4 border border-blue-300';
+                        banner.innerHTML = 
+                            '<div class="flex items-center justify-center gap-3 py-4">' +
+                                '<i class="fas fa-spinner fa-spin text-emerald-600 text-lg"></i>' +
+                                '<span class="text-[14px] font-semibold text-emerald-800">Opening Theme Editor...</span>' +
+                            '</div>';
+                    }
                 }
             });
 
-            chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendChatBtn.click(); });
+            setTimeout(function() {
+                completeFlow();
+            }, 1500);
+        }
 
-            // ========== THEME MODAL FUNCTIONS ==========
-            function openThemeModal() {
-                if (themeModal) {
-                    themeModal.classList.remove('hidden');
-                    document.body.style.overflow = 'hidden';
-                    if (!AppState.selectedTheme) {
-                        if (modalThemeSelect) modalThemeSelect.value = '';
-                        if (modalSaveBtn) modalSaveBtn.disabled = true;
-                    } else {
-                        if (modalThemeSelect) modalThemeSelect.value = AppState.selectedTheme;
-                        if (modalSaveBtn) modalSaveBtn.disabled = false;
+        // ========== PAGE NAVIGATION ==========
+        var pageNames = {
+            'home': 'Homepage',
+            'filter': 'Filter',
+            'search': 'Search',
+            'metafield': 'Metafield',
+            'design': 'Filter & Product Grid Design',
+            'analytics-app': 'Analytics',
+            'advanced': 'Advanced Features'
+        };
+
+        function navigateToPage(pageId, showRestrictedModalAfter) {
+            showRestrictedModalAfter = showRestrictedModalAfter || false;
+
+            var pages = document.querySelectorAll('.page-view');
+            pages.forEach(function(p) { p.classList.remove('active'); });
+
+            var targetPage = document.getElementById('page-' + pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                AppState.currentPage = pageId;
+
+                allNavItems.forEach(function(item) {
+                    item.classList.remove('nav-active');
+                    if (item.getAttribute('data-page') === pageId) {
+                        item.classList.add('nav-active');
                     }
-                }
-            }
-
-            function closeThemeModal() {
-                if (themeModal) {
-                    themeModal.classList.add('hidden');
-                    document.body.style.overflow = '';
-                }
-            }
-
-            if (selectThemeBtn) {
-                selectThemeBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    openThemeModal();
                 });
-            }
-            
-            if (changeThemeBtn) {
-                changeThemeBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    openThemeModal();
-                });
-            }
 
-            if (closeThemeModalBtn) closeThemeModalBtn.addEventListener('click', closeThemeModal);
-            if (themeModalCancelBtn) themeModalCancelBtn.addEventListener('click', closeThemeModal);
-            if (themeModalOverlay) themeModalOverlay.addEventListener('click', closeThemeModal);
-
-            if (closeThemeNoticeBtn && themeSupportNotice) {
-                closeThemeNoticeBtn.addEventListener('click', () => themeSupportNotice.style.display = 'none');
-            }
-
-            if (liveChatLink) {
-                liveChatLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    closeThemeModal();
-                    setTimeout(() => openChatWithMessage("I need assistance about theme support"), 350);
-                });
-            }
-
-            if (modalThemeSelect) {
-                modalThemeSelect.addEventListener('change', function() {
-                    if (modalSaveBtn) modalSaveBtn.disabled = !this.value;
-                });
-            }
-
-            if (modalSaveBtn) {
-                modalSaveBtn.addEventListener('click', function() {
-                    if (modalThemeSelect) AppState.selectedTheme = modalThemeSelect.value;
-                    closeThemeModal();
-                    setTimeout(() => openEditorModal(), 250);
-                });
-            }
-
-            // ========== EDITOR MODAL FUNCTIONS ==========
-            function openEditorModal() {
-                if (editorModal) {
-                    editorModal.classList.remove('hidden');
-                    document.body.style.overflow = 'hidden';
-                    updateEditorModalCloseButton();
-                    updateEditorModalBanner();
-                }
-            }
-
-            function closeEditorModal() {
-                if (editorModal) {
-                    editorModal.classList.add('hidden');
-                    document.body.style.overflow = '';
-                    if (AppState.hasEnabledInEditor || AppState.flowCompleted) {
-                        completeFlow();
-                    }
-                }
-            }
-
-            function goBackToThemeModal() {
-                if (editorModal) editorModal.classList.add('hidden');
-                setTimeout(() => openThemeModal(), 150);
-            }
-
-            function completeFlow() {
-                if (AppState.flowCompleted) return;
-                AppState.flowCompleted = true;
-                AppState.appEnabled = true;
-
-                const step1Initial = document.getElementById('step1-initial');
-                const step1Completed = document.getElementById('step1-completed');
-                const selectedThemeDisplay = document.getElementById('selected-theme-display');
-                const step1Checkbox = document.getElementById('step1-checkbox');
-
-                if (step1Initial) step1Initial.classList.add('hidden');
-                if (step1Completed) step1Completed.classList.remove('hidden');
-                if (selectedThemeDisplay) selectedThemeDisplay.textContent = AppState.selectedTheme;
-
-                if (step1Checkbox) {
-                    step1Checkbox.setAttribute('data-completed', 'true');
-                    step1Checkbox.classList.add('bg-[#303030]', 'text-white');
-                    step1Checkbox.classList.remove('border-2', 'border-dashed', 'border-gray-400', 'bg-white');
-                    const checkIcon = step1Checkbox.querySelector('.fa-check');
-                    if (checkIcon) checkIcon.classList.remove('text-transparent');
-                }
-
-                updateEditorModalCloseButton();
-                updateProgressAndMessages();
-                checkAndUnlockFeatures();
+                renderSubPageContent(pageId);
                 updateAllBanners();
 
-                if (AppState.currentPage !== 'home') {
-                    renderSubPageContent(AppState.currentPage);
+                if (AppState.currentFlow === 1 && showRestrictedModalAfter && !canAccessFeatures()) {
+                    setTimeout(function() { showRestrictedModal(); }, 150);
                 }
             }
+        }
 
-            function updateEditorModalCloseButton() {
-                if (!closeEditorModalBtn) return;
-                if (AppState.hasEnabledInEditor || AppState.flowCompleted) {
-                    closeEditorModalBtn.style.display = 'flex';
-                    closeEditorModalBtn.style.visibility = 'visible';
-                } else {
-                    closeEditorModalBtn.style.display = 'none';
-                    closeEditorModalBtn.style.visibility = 'hidden';
-                }
+        function renderSubPageContent(pageId) {
+            var container = document.getElementById(pageId + '-page-content');
+            if (!container) return;
+
+            var canAccess = canAccessFeatures();
+            var isFlow2 = AppState.currentFlow === 2;
+
+            if (isFlow2 || canAccess) {
+                container.innerHTML = 
+                    '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 p-8">' +
+                        '<div class="flex items-center gap-4 mb-6">' +
+                            '<div class="w-12 h-12 bg-' + (isFlow2 && !canAccess ? 'blue' : 'gray') + '-100 rounded-xl flex items-center justify-center">' +
+                                '<i class="fas fa-' + getPageIcon(pageId) + ' text-' + (isFlow2 && !canAccess ? 'blue' : 'gray') + '-500 text-xl"></i>' +
+                            '</div>' +
+                            '<div>' +
+                                '<h2 class="text-[18px] font-semibold text-[#303030]">' + pageNames[pageId] + '</h2>' +
+                                '<p class="text-[13px] ' + (isFlow2 && !canAccess ? 'text-blue-600' : 'text-gray-500') + '">' +
+                                    (isFlow2 && !canAccess ? '<i class="fas fa-info-circle mr-1"></i> Available for preview' : 'Configure settings here') +
+                                '</p>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">' +
+                            generatePlaceholderCards(isFlow2 && !canAccess) +
+                        '</div>' +
+                    '</div>';
+            } else {
+                container.innerHTML = 
+                    '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 p-12 text-center">' +
+                        '<div class="empty-state-illustration mb-6">' +
+                            '<i class="fas fa-' + getPageIcon(pageId) + ' text-[80px] text-gray-300"></i>' +
+                        '</div>' +
+                        '<div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">' +
+                            '<i class="fas fa-lock text-amber-600 text-2xl"></i>' +
+                        '</div>' +
+                        '<h2 class="text-[18px] font-semibold text-[#303030] mb-2">' + pageNames[pageId] + '</h2>' +
+                        '<p class="text-[13px] text-gray-500 max-w-md mx-auto mb-4">This section is locked. Complete setup to unlock features.</p>' +
+                        "<button onclick=\"navigateToPage('home')\" class=\"bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2\">" +
+                            '<i class="fas fa-home text-xs"></i> Go to Homepage' +
+                        "</button>"
+                    '</div>';
             }
+        }
 
-            if (closeEditorModalBtn) closeEditorModalBtn.addEventListener('click', closeEditorModal);
-            if (editorModalBackBtn) editorModalBackBtn.addEventListener('click', goBackToThemeModal);
+        function generatePlaceholderCards(isPreview) {
+            var cards = [
+                { title: 'Configuration', icon: 'cog', desc: 'Main settings' },
+                { title: 'Display Options', icon: 'palette', desc: 'Visual customization' },
+                { title: 'Advanced Settings', icon: 'sliders-h', desc: 'Fine-tuning options' }
+            ];
             
-            if (editorModalOverlay) {
-                editorModalOverlay.addEventListener('click', () => {
+            var html = '';
+            cards.forEach(function(card) {
+                html += '<div class="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors ' + (isPreview ? 'opacity-75' : '') + '">' +
+                    '<div class="flex items-center gap-3 mb-3">' +
+                        '<div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">' +
+                            '<i class="fas fa-' + card.icon + ' text-gray-500 text-sm"></i>' +
+                        '</div>' +
+                        '<h4 class="font-medium text-[14px] text-[#303030]">' + card.title + '</h4>' +
+                    '</div>' +
+                    '<p class="text-[12px] text-gray-500">' + card.desc + '</p>' +
+                    (isPreview ? '<div class="mt-3 text-[11px] text-blue-500 font-medium"><i class="fas fa-eye mr-1"></i> Preview available</div>' : '') +
+                '</div>';
+            });
+            return html;
+        }
+
+        function getPageIcon(pageId) {
+            var icons = {
+                'filter': 'filter',
+                'search': 'search',
+                'metafield': 'database',
+                'design': 'th-large',
+                'analytics-app': 'chart-bar',
+                'advanced': 'cogs'
+            };
+            return icons[pageId] || 'file';
+        }
+
+        allNavItems.forEach(function(item) {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                var page = this.getAttribute('data-page');
+                if (!page) return;
+
+                var lockedPages = ['filter', 'search', 'metafield', 'design', 'analytics-app', 'advanced'];
+                var isLocked = lockedPages.indexOf(page) !== -1;
+                
+                if (AppState.currentFlow === 1) {
+                    navigateToPage(page, isLocked && !canAccessFeatures());
+                } else {
+                    navigateToPage(page, false);
+                }
+            });
+        });
+
+        if (appHeaderTitle) {
+            appHeaderTitle.addEventListener('click', function(e) {
+                e.preventDefault();
+                navigateToPage('home');
+            });
+        }
+
+        if (goToFilterBtn) {
+            goToFilterBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (AppState.currentFlow === 1 && !canAccessFeatures()) {
+                    navigateToPage('filter', true);
+                } else {
+                    navigateToPage('filter');
+                }
+            });
+        }
+
+        // ========== INDEXING SIMULATION ==========
+        function getCurrentTimestamp() {
+            var now = new Date();
+            var h = String(now.getHours()).padStart(2, '0');
+            var m = String(now.getMinutes()).padStart(2, '0');
+            var s = String(now.getSeconds()).padStart(2, '0');
+            var d = String(now.getDate()).padStart(2, '0');
+            var mo = String(now.getMonth() + 1).padStart(2, '0');
+            var y = now.getFullYear();
+            return h + ':' + m + ':' + s + ' ' + d + '/' + mo + '/' + y;
+        }
+
+        function showIndexingInProgress() {
+            syncStatusBadge.className = 'bg-amber-100 text-amber-800 text-[11px] px-2 py-0.5 rounded-full font-semibold';
+            syncStatusBadge.textContent = 'In progress';
+            syncTimestamp.textContent = getCurrentTimestamp();
+            
+            syncIcon.className = 'fas fa-sync-alt text-gray-400 text-sm animate-spin';
+            syncBtnText.textContent = 'Syncing...';
+            manualSyncBtn.disabled = true;
+            manualSyncBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            updateAllBanners();
+            updateEditorModalBanner();
+        }
+
+        function showIndexingComplete() {
+            AppState.isIndexing = false;
+            AppState.indexingComplete = true;
+
+            if (AppState.indexingInterval) {
+                clearInterval(AppState.indexingInterval);
+                AppState.indexingInterval = null;
+            }
+
+            localStorage.setItem(STORAGE_KEYS.INDEXING_COMPLETE, 'true');
+
+            syncStatusBadge.className = 'bg-[#cbf1c4] text-[#1f5119] text-[11px] px-2 py-0.5 rounded-full font-semibold';
+            syncStatusBadge.textContent = 'Completed';
+            syncTimestamp.textContent = getCurrentTimestamp();
+            
+            syncIcon.className = 'fas fa-sync-alt text-gray-500 text-sm';
+            syncBtnText.textContent = 'Manual sync';
+            manualSyncBtn.disabled = false;
+            manualSyncBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+            updateRestrictedModalContent();
+            updateEditorModalBanner();
+            checkAndUnlockFeatures();
+            updateAllBanners();
+
+            if (AppState.currentPage !== 'home') {
+                renderSubPageContent(AppState.currentPage);
+            }
+        }
+
+        function forceEndIndexing() {
+            if (AppState.indexingInterval) {
+                clearInterval(AppState.indexingInterval);
+                AppState.indexingInterval = null;
+            }
+            setTimeout(function() { showIndexingComplete(); }, 300);
+        }
+
+        function startIndexingSimulation() {
+            AppState.isIndexing = true;
+            AppState.indexingComplete = false;
+            AppState.indexingStartTime = Date.now();
+
+            showIndexingInProgress();
+            updateLockStates();
+
+            var startTime = Date.now();
+            var duration = AppState.indexingDuration;
+
+            AppState.indexingInterval = setInterval(function() {
+                var elapsed = Date.now() - startTime;
+                var progress = Math.min((elapsed / duration) * 100, 100);
+                
+                if (progress >= 100) {
+                    clearInterval(AppState.indexingInterval);
+                    AppState.indexingInterval = null;
+                    setTimeout(function() { showIndexingComplete(); }, 300);
+                }
+            }, 100);
+        }
+
+        function resetIndexing() {
+            if (AppState.indexingInterval) {
+                clearInterval(AppState.indexingInterval);
+                AppState.indexingInterval = null;
+            }
+            
+            AppState.isIndexing = true;
+            AppState.indexingComplete = false;
+            AppState.appEnabled = false;
+            AppState.flowCompleted = false;
+            AppState.hasEnabledInEditor = false;
+            AppState.selectedTheme = '';
+            AppState.appToggleState = 'off';
+            AppState.wasPreviouslyEnabled = false;
+            
+            localStorage.removeItem(STORAGE_KEYS.APP_TOGGLE_STATE);
+            localStorage.removeItem(STORAGE_KEYS.INDEXING_COMPLETE);
+            
+            startIndexingSimulation();
+            updateLockStates();
+            
+            var step1Initial = document.getElementById('step1-initial');
+            var step1Completed = document.getElementById('step1-completed');
+            var step1Checkbox = document.getElementById('step1-checkbox');
+            
+            if (step1Initial) step1Initial.classList.remove('hidden');
+            if (step1Completed) step1Completed.classList.add('hidden');
+            if (step1Checkbox) {
+                step1Checkbox.setAttribute('data-completed', 'false');
+                step1Checkbox.classList.remove('bg-[#303030]', 'text-white');
+                step1Checkbox.classList.add('border-2', 'border-dashed', 'border-gray-400', 'bg-white');
+                var checkIcon = step1Checkbox.querySelector('.fa-check');
+                if (checkIcon) checkIcon.classList.add('text-transparent');
+            }
+
+            updateProgressAndMessages();
+            renderSubPageContent(AppState.currentPage);
+            updateAllBanners();
+            updateGuideStep1Status();
+        }
+
+        // ========== EDITOR MODAL BANNER ==========
+        function updateEditorModalBanner() {
+            if (!editorIndexingBanner) return;
+
+            if (!AppState.indexingComplete) {
+                editorIndexingBanner.className = 'rounded-lg p-4 mb-6 transition-all duration-300 bg-amber-50 border border-amber-200';
+                editorIndexingBanner.innerHTML = 
+                    '<div class="flex items-start gap-3">' +
+                        '<div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shrink-0 mt-0.5 animate-pulse-custom">' +
+                            '<i class="fas fa-exclamation-triangle text-sm"></i>' +
+                        '</div>' +
+                        '<div class="flex-1">' +
+                            '<p class="text-[14px] font-semibold text-amber-800 mb-1">Please wait for indexing to complete</p>' +
+                            '<p class="text-[13px] text-amber-700 leading-relaxed">Up-to-date data are being collected. Please wait until this process is complete before continuing with the app.</p>' +
+                        '</div>' +
+                    '</div>';
+
+                if (enableEditorModalBtn) {
+                    enableEditorModalBtn.disabled = true;
+                    enableEditorModalBtn.classList.add('btn-disabled-overlay');
+                }
+            } else {
+                editorIndexingBanner.className = 'rounded-lg p-4 mb-6 transition-all duration-300 bg-emerald-50 border border-emerald-200';
+                editorIndexingBanner.innerHTML = 
+                    '<div class="flex items-start gap-3">' +
+                        '<div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 shrink-0 mt-0.5">' +
+                            '<i class="fas fa-check-circle text-sm"></i>' +
+                        '</div>' +
+                        '<div class="flex-1">' +
+                            '<p class="text-[14px] font-semibold text-emerald-800 mb-1">Data indexing is complete!</p>' +
+                            '<p class="text-[13px] text-emerald-700 leading-relaxed">You can now proceed to enable the app in your Theme Editor.</p>' +
+                        '</div>' +
+                    '</div>';
+
+                if (enableEditorModalBtn) {
+                    enableEditorModalBtn.disabled = false;
+                    enableEditorModalBtn.classList.remove('btn-disabled-overlay');
+                }
+            }
+        }
+
+        // ========== LOCK / UNLOCK LOGIC ==========
+        function canAccessFeatures() {
+            return AppState.indexingComplete && AppState.appEnabled && AppState.appToggleState === 'on';
+        }
+
+        function updateLockStates() {
+            var canAccess = canAccessFeatures();
+            
+            if (AppState.currentFlow === 1) {
+                if (goToFilterBtn) goToFilterBtn.disabled = !canAccess;
+                if (filterLockHint) filterLockHint.classList.toggle('hidden', canAccess);
+            } else {
+                if (goToFilterBtn) goToFilterBtn.disabled = false;
+                if (filterLockHint) filterLockHint.classList.add('hidden');
+            }
+
+            updateEditorModalBanner();
+        }
+
+        function checkAndUnlockFeatures() {
+            updateLockStates();
+        }
+
+        // ========== RESTRICTED MODAL ==========
+        function showRestrictedModal() {
+            updateRestrictedModalContent();
+            restrictedModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function updateRestrictedModalContent() {
+            if (AppState.indexingComplete) {
+                restrictionItem1.className = 'flex items-start gap-3 p-3 rounded-lg bg-green-50 border border-green-200';
+                restrictionCheck1.className = 'w-5 h-5 rounded-full border-2 border-green-500 bg-green-500 flex items-center justify-center shrink-0 mt-0.5';
+                restrictionCheck1.innerHTML = '<i class="fas fa-check text-[10px] text-white"></i>';
+                restrictionText1.textContent = 'Data indexing complete';
+                restrictionSub1.textContent = 'All data collected successfully';
+            } else {
+                restrictionItem1.className = 'flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200';
+                restrictionCheck1.className = 'w-5 h-5 rounded-full border-2 border-amber-400 bg-amber-50 flex items-center justify-center shrink-0 mt-0.5';
+                restrictionCheck1.innerHTML = '<i class="fas fa-clock text-[10px] text-amber-500"></i>';
+                restrictionText1.textContent = 'Wait for data indexing to complete';
+                restrictionSub1.textContent = 'Currently collecting data...';
+            }
+
+            if (AppState.appEnabled && AppState.appToggleState === 'on') {
+                restrictionItem2.className = 'flex items-start gap-3 p-3 rounded-lg bg-green-50 border border-green-200';
+                restrictionCheck2.className = 'w-5 h-5 rounded-full border-2 border-green-500 bg-green-500 flex items-center justify-center shrink-0 mt-0.5';
+                restrictionCheck2.innerHTML = '<i class="fas fa-check text-[10px] text-white"></i>';
+            } else {
+                restrictionItem2.className = 'flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200';
+                restrictionCheck2.className = 'w-5 h-5 rounded-full border-2 border-amber-400 bg-amber-50 flex items-center justify-center shrink-0 mt-0.5';
+                restrictionCheck2.innerHTML = '<i class="fas fa-times text-[10px] text-amber-500"></i>';
+            }
+        }
+
+        function closeRestrictedModalAndGoHome() {
+            restrictedModal.classList.add('hidden');
+            document.body.style.overflow = '';
+            navigateToPage('home');
+            triggerGuideAttentionAnimation();
+        }
+
+        window.triggerGuideAttentionAnimation = function() {
+            if (onboardingGuideCard) {
+                onboardingGuideCard.classList.remove('guide-attention-animation');
+                void onboardingGuideCard.offsetWidth;
+                onboardingGuideCard.classList.add('guide-attention-animation');
+                onboardingGuideCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(function() { onboardingGuideCard.classList.remove('guide-attention-animation'); }, 1200);
+            }
+        };
+
+        if (closeRestrictedModalBtn) closeRestrictedModalBtn.addEventListener('click', closeRestrictedModalAndGoHome);
+        if (restrictedModalHomeBtn) restrictedModalHomeBtn.addEventListener('click', closeRestrictedModalAndGoHome);
+        if (restrictedModalOverlay) restrictedModalOverlay.addEventListener('click', closeRestrictedModalAndGoHome);
+
+        if (resetIndexingBtn) resetIndexingBtn.addEventListener('click', resetIndexing);
+        if (endIndexBtn) endIndexBtn.addEventListener('click', forceEndIndexing);
+
+        // ========== STEP PROGRESS ==========
+        function updateProgressAndMessages() {
+            var step1 = document.querySelector('.step-checkbox[data-step="1"]');
+            var step2 = document.querySelector('.step-checkbox[data-step="2"]');
+            var step3 = document.querySelector('.step-checkbox[data-step="3"]');
+            
+            var s1Done = step1 ? step1.getAttribute('data-completed') === 'true' : false;
+            var s2Done = step2 ? step2.getAttribute('data-completed') === 'true' : false;
+            var s3Done = step3 ? step3.getAttribute('data-completed') === 'true' : false;
+            
+            var total = 3;
+            var count = [s1Done, s2Done, s3Done].filter(Boolean).length;
+            var pct = (count / total) * 100;
+            
+            var progressBar = document.getElementById('progress-bar');
+            var progressText = document.getElementById('progress-text');
+            
+            if (progressBar) {
+                progressBar.style.width = pct + '%';
+                progressBar.className = 'bg-black h-full rounded-full transition-all duration-500';
+                if (count === 1) progressBar.classList.add('bg-black');
+                else if (count === 2) progressBar.classList.add('bg-yellow-400');
+                else if (count === 3) progressBar.classList.add('bg-green-500');
+                else progressBar.classList.add('bg-gray-400');
+            }
+            
+            if (progressText) progressText.innerText = count + '/' + total + ' completed';
+            
+            var container = document.getElementById('congrat-message-container');
+            if (container) {
+                if (s1Done && s3Done) {
+                    container.innerHTML = 
+                        '<div class="p-3 bg-green-50 border border-green-100 rounded-lg flex items-start gap-3">' +
+                            '<div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 shrink-0"><i class="fas fa-rocket"></i></div>' +
+                            '<div class="flex-1">' +
+                                '<p class="text-[13px] font-semibold text-green-800 leading-tight">Great job! Basic setup is complete. Explore our <a href="#" class="underline font-bold text-green-700 hover:text-green-900">advanced features</a>.</p>' +
+                                '<p class="text-[11px] text-green-700 mt-0.5">You can always reopen the guide to review steps.</p>' +
+                            '</div>' +
+                        '</div>';
+                    container.classList.remove('hidden');
+                } else {
+                    container.classList.add('hidden');
+                    container.innerHTML = '';
+                }
+            }
+        }
+        
+        document.querySelectorAll('.step-checkbox').forEach(function(cb) {
+            cb.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var done = this.getAttribute('data-completed') === 'true';
+                var icon = this.querySelector('.fa-check');
+                if (done) {
+                    this.setAttribute('data-completed', 'false');
+                    this.classList.remove('bg-[#303030]', 'text-white');
+                    this.classList.add('border-2', 'border-dashed', 'border-gray-400', 'bg-white');
+                    icon.classList.add('text-transparent');
+                } else {
+                    this.setAttribute('data-completed', 'true');
+                    this.classList.add('bg-[#303030]', 'text-white');
+                    this.classList.remove('border-2', 'border-dashed', 'border-gray-400', 'bg-white');
+                    icon.classList.remove('text-transparent');
+                }
+                updateProgressAndMessages();
+            });
+        });
+        
+        document.querySelectorAll('.guide-toggle').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var target = document.getElementById(this.dataset.target);
+                var expanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', String(!expanded));
+                this.innerHTML = expanded ? '<i class="fas fa-chevron-down"></i>' : '<i class="fas fa-chevron-up"></i>';
+                if (target) target.classList.toggle('hidden', expanded);
+            });
+        });
+        
+        document.querySelectorAll('.guide-step-toggle').forEach(function(header) {
+            header.addEventListener('click', function() {
+                var content = document.getElementById(this.dataset.target);
+                var icon = this.querySelector('.fa-chevron-up, .fa-chevron-down');
+                if (content) {
+                    var hid = content.classList.toggle('hidden');
+                    if (icon) {
+                        icon.classList.toggle('fa-chevron-up', !hid);
+                        icon.classList.toggle('fa-chevron-down', hid);
+                    }
+                }
+            });
+        });
+
+        // ========== CHAT ==========
+        function openChatWithMessage(msg) {
+            chatBubble.classList.add('active');
+            chatInput.value = msg;
+            chatBadge.classList.remove('hidden');
+            
+            setTimeout(function() {
+                addMessageToChat(msg, true);
+                chatInput.value = '';
+                setTimeout(function() { addMessageToChat("Thank you for reaching out!", false); }, 800);
+            }, 300);
+        }
+
+        function addMessageToChat(text, isUser) {
+            var div = document.createElement('div');
+            div.className = 'flex gap-2 ' + (isUser ? 'justify-end' : '');
+            
+            if (isUser) {
+                div.innerHTML = '<div class="bg-red-600 text-white rounded-lg rounded-tr-none px-3 py-2 text-[13px] max-w-[85%]">' + text + '</div>';
+            } else {
+                div.innerHTML = 
+                    '<div class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center text-red-600 shrink-0">' +
+                        '<i class="fas fa-robot text-xs"></i>' +
+                    '</div>' +
+                    '<div class="bg-gray-100 rounded-lg rounded-tl-none px-3 py-2 text-[13px] text-gray-700 max-w-[85%]">' + text + '</div>';
+            }
+            
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        floatingChatBtn.addEventListener('click', function() { chatBubble.classList.toggle('active'); });
+        closeChatBubble.addEventListener('click', function() { chatBubble.classList.remove('active'); });
+
+        sendChatBtn.addEventListener('click', function() {
+            var msg = chatInput.value.trim();
+            if (msg) {
+                addMessageToChat(msg, true);
+                chatInput.value = '';
+                setTimeout(function() { addMessageToChat("Thank you! We'll respond soon.", false); }, 600);
+            }
+        });
+
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendChatBtn.click();
+        });
+
+        // ========== THEME MODAL ==========
+        function openThemeModal() {
+            if (themeModal) {
+                themeModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                if (!AppState.selectedTheme) {
+                    if (modalThemeSelect) modalThemeSelect.value = '';
+                    if (modalSaveBtn) modalSaveBtn.disabled = true;
+                } else {
+                    if (modalThemeSelect) modalThemeSelect.value = AppState.selectedTheme;
+                    if (modalSaveBtn) modalSaveBtn.disabled = false;
+                }
+            }
+        }
+
+        function closeThemeModal() {
+            if (themeModal) {
+                themeModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+
+        if (selectThemeBtn) {
+            selectThemeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                openThemeModal();
+            });
+        }
+        
+        if (changeThemeBtn) {
+            changeThemeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                openThemeModal();
+            });
+        }
+
+        if (closeThemeModalBtn) closeThemeModalBtn.addEventListener('click', closeThemeModal);
+        if (themeModalCancelBtn) themeModalCancelBtn.addEventListener('click', closeThemeModal);
+        if (themeModalOverlay) themeModalOverlay.addEventListener('click', closeThemeModal);
+
+        if (closeThemeNoticeBtn && themeSupportNotice) {
+            closeThemeNoticeBtn.addEventListener('click', function() { themeSupportNotice.style.display = 'none'; });
+        }
+
+        if (liveChatLink) {
+            liveChatLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeThemeModal();
+                setTimeout(function() { openChatWithMessage("I need help with theme support"); }, 350);
+            });
+        }
+
+        if (modalThemeSelect) {
+            modalThemeSelect.addEventListener('change', function() {
+                if (modalSaveBtn) modalSaveBtn.disabled = !this.value;
+            });
+        }
+
+        if (modalSaveBtn) {
+            modalSaveBtn.addEventListener('click', function() {
+                if (modalThemeSelect) AppState.selectedTheme = modalThemeSelect.value;
+                closeThemeModal();
+                setTimeout(function() { openEditorModal(); }, 250);
+            });
+        }
+
+        // ========== EDITOR MODAL ==========
+        function openEditorModal() {
+            if (editorModal) {
+                editorModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                if (editorThemeDisplay) editorThemeDisplay.textContent = AppState.selectedTheme;
+                updateEditorModalCloseButton();
+                updateEditorModalBanner();
+            }
+        }
+
+        function closeEditorModal() {
+            if (editorModal) {
+                editorModal.classList.add('hidden');
+                document.body.style.overflow = '';
+                if (AppState.hasEnabledInEditor || AppState.flowCompleted) {
+                    completeFlow();
+                }
+            }
+        }
+
+        function goBackToThemeModal() {
+            if (editorModal) editorModal.classList.add('hidden');
+            setTimeout(function() { openThemeModal(); }, 150);
+        }
+
+        function completeFlow() {
+            if (AppState.flowCompleted) return;
+            AppState.flowCompleted = true;
+            AppState.appEnabled = true;
+
+            var step1Initial = document.getElementById('step1-initial');
+            var step1Completed = document.getElementById('step1-completed');
+            var selectedThemeDisplay = document.getElementById('selected-theme-display');
+            var step1Checkbox = document.getElementById('step1-checkbox');
+
+            if (step1Initial) step1Initial.classList.add('hidden');
+            if (step1Completed) step1Completed.classList.remove('hidden');
+            if (selectedThemeDisplay) selectedThemeDisplay.textContent = AppState.selectedTheme;
+
+            if (step1Checkbox) {
+                step1Checkbox.setAttribute('data-completed', 'true');
+                step1Checkbox.classList.add('bg-[#303030]', 'text-white');
+                step1Checkbox.classList.remove('border-2', 'border-dashed', 'border-gray-400', 'bg-white');
+                var ci = step1Checkbox.querySelector('.fa-check');
+                if (ci) ci.classList.remove('text-transparent');
+            }
+
+            updateEditorModalCloseButton();
+            updateProgressAndMessages();
+            checkAndUnlockFeatures();
+            updateAllBanners();
+            updateGuideStep1Status();
+
+            if (AppState.currentPage !== 'home') {
+                renderSubPageContent(AppState.currentPage);
+            }
+        }
+
+        function updateEditorModalCloseButton() {
+            if (!closeEditorModalBtn) return;
+            if (AppState.hasEnabledInEditor || AppState.flowCompleted) {
+                closeEditorModalBtn.style.display = 'flex';
+                closeEditorModalBtn.style.visibility = 'visible';
+            } else {
+                closeEditorModalBtn.style.display = 'none';
+                closeEditorModalBtn.style.visibility = 'hidden';
+            }
+        }
+
+        if (closeEditorModalBtn) closeEditorModalBtn.addEventListener('click', closeEditorModal);
+        if (editorModalBackBtn) editorModalBackBtn.addEventListener('click', goBackToThemeModal);
+        
+        if (editorModalOverlay) {
+            editorModalOverlay.addEventListener('click', function() {
+                if (AppState.hasEnabledInEditor || AppState.flowCompleted) {
+                    closeEditorModal();
+                }
+            });
+        }
+
+        // Modal 2 button opens Editor.html
+        if (enableEditorModalBtn) {
+            enableEditorModalBtn.addEventListener('click', handleEnableFromModal2);
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (chatBubble && chatBubble.classList.contains('active')) {
+                    chatBubble.classList.remove('active');
+                    return;
+                }
+                if (restrictedModal && !restrictedModal.classList.contains('hidden')) {
+                    closeRestrictedModalAndGoHome();
+                    return;
+                }
+                if (themeModal && !themeModal.classList.contains('hidden')) {
+                    closeThemeModal();
+                }
+                if (editorModal && !editorModal.classList.contains('hidden')) {
                     if (AppState.hasEnabledInEditor || AppState.flowCompleted) {
                         closeEditorModal();
                     }
-                });
-            }
-
-            // Modal 2 button now uses the SHARED handleEnableApp function
-            if (enableEditorModalBtn) {
-                enableEditorModalBtn.addEventListener('click', handleEnableApp);
-            }
-            
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    if (chatBubble && chatBubble.classList.contains('active')) {
-                        chatBubble.classList.remove('active');
-                        return;
-                    }
-                    if (restrictedModal && !restrictedModal.classList.contains('hidden')) {
-                        closeRestrictedModalAndGoHome();
-                        return;
-                    }
-                    if (themeModal && !themeModal.classList.contains('hidden')) {
-                        closeThemeModal();
-                    }
-                    if (editorModal && !editorModal.classList.contains('hidden')) {
-                        if (AppState.hasEnabledInEditor || AppState.flowCompleted) {
-                            closeEditorModal();
-                        }
-                    }
                 }
-            });
-
-            // ========== INITIALIZATION ==========
-            console.log('🚀 Initializing Shopify App Dashboard...');
-            console.log('⏳ Starting data indexing simulation (20 seconds)...');
-            console.log('🔀 Dual Flow System Ready: Flow 1 (Lock) | Flow 2 (Flexible)');
-            console.log('📢 Using SIMPLE "Collecting data" banner for ALL flows and ALL pages (no progress bar)');
-            
-            switchToFlow(1);
-            startIndexingSimulation();
-            updateLockStates();
-            updateProgressAndMessages();
-            
-            console.log('✅ All event listeners initialized!');
-            console.log('📋 Use Flow 1/2 toggle buttons to switch between modes');
-            console.log('⚡ Use "End Index Now" button to skip waiting for testing');
-            console.log('🔗 Both "Enable App in Theme Editor" buttons (Modal + Banner) share the same behavior');
+            }
         });
+
+        // ========== INITIALIZATION ==========
+        console.log('Initializing Dashboard...');
+        switchToFlow(1);
+        startIndexingSimulation();
+        updateLockStates();
+        updateProgressAndMessages();
+        updateGuideStep1Status();
+        
+        console.log('Ready!');
+    });
     </script>
 </body>
 </html>
