@@ -64,20 +64,6 @@
         .indexing-banner {
             transition: all 0.4s ease;
         }
-        
-        @keyframes indeterminateProgress {
-            0% { left: -40%; }
-            100% { left: 100%; }
-        }
-        .indeterminate-progress::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 40%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            animation: indeterminateProgress 1.5s ease-in-out infinite;
-        }
 
         .nav-active {
             background-color: #d1d5db !important;
@@ -185,7 +171,7 @@
             50% { transform: scale(1.3); opacity: 0.7; }
         }
 
-        /* Unified Status Banner for Flow 2 */
+        /* Unified Status Banner - Simple Version for All Flows */
         .unified-status-banner {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border-left-width: 4px;
@@ -200,16 +186,6 @@
             border-left-color: #10b981;
             background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
             border-color: #6ee7b7;
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        .shimmer-bar {
-            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
         }
     </style>
 </head>
@@ -332,11 +308,11 @@
                             </div>
                         </div>
 
-                        <!-- UNIFIED STATUS BANNER CONTAINER (For Flow 2 - under page title) -->
+                        <!-- UNIFIED STATUS BANNER CONTAINER (Used by ALL flows on ALL pages) -->
                         <div id="unified-status-banner" class="mb-5 hidden"></div>
 
-                        <!-- INDEXING STATUS BANNER (Flow 1 only - Home page) -->
-                        <div id="indexing-banner-container" class="mb-5"></div>
+                        <!-- Legacy Indexing Banner Container (Flow 1 home only - now also uses unified style) -->
+                        <div id="indexing-banner-container" class="mb-5 hidden"></div>
 
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
                             <!-- Left Column -->
@@ -502,16 +478,6 @@
                                     </div>
                                     <p id="sync-status-text" class="text-[13px] text-[#303030] mb-5">Recent updates were last synced:<strong class="font-semibold ml-1" id="sync-timestamp">23:59:09 02/03/2026</strong></p>
                                     
-                                    <div id="sync-progress-bar" class="hidden mb-4">
-                                        <div class="flex items-center justify-between mb-1">
-                                            <span class="text-[11px] text-gray-500 font-medium">Indexing progress</span>
-                                            <span id="sync-progress-percent" class="text-[11px] text-gray-600 font-semibold">0%</span>
-                                        </div>
-                                        <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden relative indeterminate-progress">
-                                            <div id="sync-progress-fill" class="bg-orange-500 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
-                                        </div>
-                                    </div>
-
                                     <button id="manual-sync-btn" class="flex items-center justify-center gap-2 border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 w-fit shadow-sm">
                                         <i class="fas fa-sync-alt text-gray-500 text-sm" id="sync-icon"></i> 
                                         <span id="sync-btn-text">Manual sync</span>
@@ -528,7 +494,7 @@
                         <div class="mb-6">
                             <h1 class="text-[22px] font-bold text-[#303030]">Filter</h1>
                         </div>
-                        <!-- UNIFIED BANNER FOR FLOW 2 -->
+                        <!-- UNIFIED BANNER FOR ALL FLOWS -->
                         <div id="unified-banner-filter" class="mb-5 hidden"></div>
                         <div id="filter-page-content"></div>
                     </div>
@@ -839,9 +805,6 @@
             const indexingBannerContainer = document.getElementById('indexing-banner-container');
             const syncStatusBadge = document.getElementById('sync-status-badge');
             const syncTimestamp = document.getElementById('sync-timestamp');
-            const syncProgressBar = document.getElementById('sync-progress-bar');
-            const syncProgressFill = document.getElementById('sync-progress-fill');
-            const syncProgressPercent = document.getElementById('sync-progress-percent');
             const manualSyncBtn = document.getElementById('manual-sync-btn');
             const syncIcon = document.getElementById('sync-icon');
             const syncBtnText = document.getElementById('sync-btn-text');
@@ -893,7 +856,7 @@
 
             const allNavItems = document.querySelectorAll('[data-page]');
 
-            // All unified banner containers (for Flow 2)
+            // All unified banner containers (Used by ALL flows on ALL pages)
             const unifiedBannerContainers = {
                 home: document.getElementById('unified-status-banner'),
                 filter: document.getElementById('unified-banner-filter'),
@@ -925,86 +888,75 @@
             flow1Btn.addEventListener('click', () => switchToFlow(1));
             flow2Btn.addEventListener('click', () => switchToFlow(2));
 
-            // ========== UNIFIED BANNER SYSTEM (Flow 2) ==========
-            function getUnifiedBannerHTML(state) {
-                if (state === 'indexing') {
-                    return `
-                        <div class="unified-status-banner indexing-state rounded-lg p-4 border border-amber-300">
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shrink-0 animate-pulse-custom">
-                                    <i class="fas fa-sync-alt text-lg"></i>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
-                                        <p class="text-[15px] font-semibold text-amber-800">Data Indexing in Progress</p>
-                                        <span class="text-[13px] font-bold text-amber-700 bg-amber-200 px-3 py-1 rounded-full">${syncProgressPercent ? syncProgressPercent.textContent : '0%'}</span>
-                                    </div>
-                                    <p class="text-[13px] text-amber-700 leading-relaxed mb-3">
-                                        We're collecting and organizing your store data. You can explore other sections while you wait. This process typically takes a few minutes.
-                                    </p>
-                                    <div class="w-full bg-amber-200 rounded-full h-2.5 overflow-hidden relative">
-                                        <div class="bg-amber-500 h-full rounded-full transition-all duration-300 shimmer-bar relative" style="width: ${syncProgressFill ? syncProgressFill.style.width : '0%'}">
-                                            <div class="absolute inset-0 shimmer-bar rounded-full"></div>
-                                        </div>
-                                    </div>
-                                </div>
+            // ========== UNIFIED SIMPLE BANNER SYSTEM (ALL FLOWS, ALL PAGES) ==========
+            
+            /**
+             * Returns the SIMPLE "Collecting data" banner HTML - NO progress bar, NO percentage
+             * Used across ALL flows and ALL pages during indexing
+             */
+            function getSimpleIndexingBannerHTML() {
+                return `
+                    <div class="unified-status-banner indexing-state rounded-lg p-4 border border-amber-300">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shrink-0 mt-0.5 animate-pulse-custom">
+                                <i class="fas fa-exclamation-triangle text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-[14px] font-semibold text-amber-800 mb-1">Collecting data</p>
+                                <p class="text-[13px] text-amber-700 leading-relaxed">
+                                    Up-to-date data are being collected. Please wait until this process is complete before continuing with the app.
+                                </p>
                             </div>
                         </div>
-                    `;
-                } else if (state === 'complete') {
-                    return `
-                        <div class="unified-status-banner complete-state rounded-lg p-4 border border-emerald-300">
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 shrink-0">
-                                    <i class="fas fa-check-circle text-lg"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <p class="text-[15px] font-semibold text-emerald-800 mb-2">Data Indexing Complete!</p>
-                                    <p class="text-[13px] text-emerald-700 leading-relaxed mb-4">
-                                        Your data has been successfully indexed. To activate the app on your storefront, please enable it in your Theme Editor.
-                                    </p>
-                                    <button onclick="handleEnableAppFromBanner()" class="bg-[#303030] text-white rounded-[6px] px-5 py-2.5 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-all shadow-md inline-flex items-center gap-2 transform hover:scale-[1.02]">
-                                        <i class="fas fa-external-link-alt text-xs"></i>
-                                        Enable App in Theme Editor
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-                return '';
+                    </div>
+                `;
             }
 
+            /**
+             * Returns the completion banner HTML (shown after indexing finishes but before app is enabled)
+             */
+            function getCompleteBannerHTML() {
+                return `
+                    <div class="unified-status-banner complete-state rounded-lg p-4 border border-emerald-300">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 shrink-0 mt-0.5">
+                                <i class="fas fa-check-circle text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-[14px] font-semibold text-emerald-800 mb-1">Data indexing is completed.</p>
+                                <p class="text-[13px] text-emerald-700 leading-relaxed mb-3">
+                                    Your data has been successfully indexed. To activate the app on your storefront, please enable it in your Theme Editor.
+                                </p>
+                                <button onclick="handleEnableAppFromBanner()" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors shadow-sm inline-flex items-center gap-2">
+                                    <i class="fas fa-external-link-alt text-xs"></i>
+                                    Enable App in Theme Editor
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            /**
+             * Updates ALL banner containers across ALL pages and ALL flows
+             * This ensures consistent display of the simple "Collecting data" banner everywhere
+             */
             function updateAllBanners() {
-                // Handle Flow 1: Only show original banner on homepage, hide all unified banners
-                if (AppState.currentFlow === 1) {
-                    Object.values(unifiedBannerContainers).forEach(container => {
-                        if (container) {
-                            container.classList.add('hidden');
-                            container.innerHTML = '';
-                        }
-                    });
-                    if (!AppState.indexingComplete && AppState.currentPage === 'home') {
-                        indexingBannerContainer.classList.remove('hidden');
-                    }
-                    return;
-                }
-
-                // Flow 2: Use unified banners everywhere
-                indexingBannerContainer.classList.add('hidden');
-                indexingBannerContainer.innerHTML = '';
-
                 let bannerHTML = '';
                 let showBanner = true;
 
                 if (!AppState.indexingComplete) {
-                    bannerHTML = getUnifiedBannerHTML('indexing');
+                    // INDEXING IN PROGRESS - Show simple "Collecting data" banner (NO progress bar)
+                    bannerHTML = getSimpleIndexingBannerHTML();
                 } else if (!AppState.appEnabled) {
-                    bannerHTML = getUnifiedBannerHTML('complete');
+                    // INDEXING COMPLETE - Show completion banner with action button
+                    bannerHTML = getCompleteBannerHTML();
                 } else {
+                    // EVERYTHING DONE - Hide banners
                     showBanner = false;
                 }
 
+                // Update ALL unified banner containers (used by both flows on all pages)
                 Object.entries(unifiedBannerContainers).forEach(([page, container]) => {
                     if (container) {
                         if (showBanner) {
@@ -1016,28 +968,34 @@
                         }
                     }
                 });
+
+                // Also update the legacy Flow 1 home banner container (keep for backwards compat)
+                if (AppState.currentFlow === 1 && AppState.currentPage === 'home') {
+                    if (showBanner && !AppState.indexingComplete) {
+                        indexingBannerContainer.classList.remove('hidden');
+                        indexingBannerContainer.innerHTML = getSimpleIndexingBannerHTML();
+                    } else {
+                        indexingBannerContainer.classList.add('hidden');
+                        indexingBannerContainer.innerHTML = '';
+                    }
+                } else {
+                    indexingBannerContainer.classList.add('hidden');
+                    indexingBannerContainer.innerHTML = '';
+                }
             }
 
             // ========== ENABLE APP FUNCTION (Shared between Modal and Banner Button) ==========
             function handleEnableApp() {
-                // This function handles the EXACT SAME logic as the modal's "Enable App in Theme Editor" button
-                
-                // 1. Check if indexing is complete
                 if (!AppState.indexingComplete) {
                     alert('Please wait for indexing to complete first.');
                     return;
                 }
                 
-                // 2. Mark as enabled
                 AppState.hasEnabledInEditor = true;
-                
-                // 3. Open Editor.html in new tab (same as modal)
                 window.open('Editor.html', '_blank');
-                
-                // 4. Update UI states
                 updateEditorModalCloseButton();
                 
-                // 5. Show processing state in all visible banners
+                // Show processing state in all visible banners
                 Object.values(unifiedBannerContainers).forEach(container => {
                     if (container && !container.classList.contains('hidden')) {
                         const banner = container.querySelector('.unified-status-banner');
@@ -1053,13 +1011,11 @@
                     }
                 });
 
-                // 6. After simulated delay, complete the flow
                 setTimeout(() => {
                     completeFlow();
                 }, 1500);
             }
 
-            // This is called from the unified banner button
             window.handleEnableAppFromBanner = handleEnableApp;
 
             // ========== PAGE NAVIGATION SYSTEM ==========
@@ -1245,47 +1201,20 @@
             }
 
             function showIndexingInProgress() {
-                if (AppState.currentFlow === 1) {
-                    indexingBannerContainer.innerHTML = `
-                        <div id="indexing-banner" class="indexing-banner bg-amber-50 border border-amber-200 rounded-lg p-4 relative">
-                            <div class="flex items-start gap-3">
-                                <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shrink-0 mt-0.5 animate-pulse-custom">
-                                    <i class="fas fa-exclamation-triangle text-sm"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <p class="text-[14px] font-semibold text-amber-800 mb-1">Collecting data</p>
-                                    <p class="text-[13px] text-amber-700 leading-relaxed">
-                                        Up-to-date data are being collected. Please wait until this process is complete before continuing with the app.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    indexingBannerContainer.classList.remove('hidden');
-                }
-
+                // Update status badge in right column
                 syncStatusBadge.className = 'bg-amber-100 text-amber-800 text-[11px] px-2 py-0.5 rounded-full font-semibold';
                 syncStatusBadge.textContent = 'In progress';
                 syncTimestamp.textContent = getCurrentTimestamp();
                 
-                syncProgressBar.classList.remove('hidden');
-                syncProgressFill.style.width = '0%';
-                syncProgressPercent.textContent = '0%';
-                
+                // Update manual sync button state
                 syncIcon.className = 'fas fa-sync-alt text-gray-400 text-sm animate-spin';
                 syncBtnText.textContent = 'Syncing...';
                 manualSyncBtn.disabled = true;
                 manualSyncBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
+                // Update ALL banners with simple "Collecting data" message
+                updateAllBanners();
                 updateEditorModalBanner();
-                updateAllBanners();
-            }
-
-            function updateIndexingProgress(percent) {
-                if (syncProgressFill) syncProgressFill.style.width = percent + '%';
-                if (syncProgressPercent) syncProgressPercent.textContent = Math.round(percent) + '%';
-                
-                updateAllBanners();
             }
 
             function showIndexingComplete() {
@@ -1297,36 +1226,18 @@
                     AppState.indexingInterval = null;
                 }
 
-                if (AppState.currentFlow === 1) {
-                    indexingBannerContainer.innerHTML = `
-                        <div id="indexing-banner" class="indexing-banner bg-emerald-50 border border-emerald-200 rounded-lg p-4 relative">
-                            <button type="button" onclick="document.getElementById('indexing-banner-container').innerHTML='';document.getElementById('indexing-banner-container').classList.add('hidden');" class="absolute top-3 right-3 text-emerald-400 hover:text-emerald-600 transition-colors">
-                                <i class="fas fa-times text-sm"></i>
-                            </button>
-                            <div class="flex items-start gap-3 pr-8">
-                                <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 shrink-0 mt-0.5">
-                                    <i class="fas fa-check-circle text-sm"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <p class="text-[14px] font-semibold text-emerald-800">Data indexing is completed.</p>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    indexingBannerContainer.classList.remove('hidden');
-                }
-
+                // Update status badge
                 syncStatusBadge.className = 'bg-[#cbf1c4] text-[#1f5119] text-[11px] px-2 py-0.5 rounded-full font-semibold';
                 syncStatusBadge.textContent = 'Completed';
                 syncTimestamp.textContent = getCurrentTimestamp();
                 
-                syncProgressBar.classList.add('hidden');
-                
+                // Reset manual sync button
                 syncIcon.className = 'fas fa-sync-alt text-gray-500 text-sm';
                 syncBtnText.textContent = 'Manual sync';
                 manualSyncBtn.disabled = false;
                 manualSyncBtn.classList.remove('opacity-50', 'cursor-not-allowed');
 
+                // Update UI states
                 updateRestrictedModalContent();
                 updateEditorModalBanner();
                 checkAndUnlockFeatures();
@@ -1342,9 +1253,6 @@
                     clearInterval(AppState.indexingInterval);
                     AppState.indexingInterval = null;
                 }
-                
-                if (syncProgressFill) syncProgressFill.style.width = '100%';
-                if (syncProgressPercent) syncProgressPercent.textContent = '100%';
                 
                 setTimeout(() => showIndexingComplete(), 300);
             }
@@ -1364,8 +1272,9 @@
                     const elapsed = Date.now() - startTime;
                     const progress = Math.min((elapsed / duration) * 100, 100);
                     
-                    updateIndexingProgress(progress);
-
+                    // Note: We do NOT update any progress bar UI here anymore
+                    // The simple banner has no progress indicator
+                    
                     if (progress >= 100) {
                         clearInterval(AppState.indexingInterval);
                         AppState.indexingInterval = null;
@@ -1414,21 +1323,18 @@
                 if (!editorIndexingBanner) return;
 
                 if (!AppState.indexingComplete) {
+                    // Use SAME simple banner style as main page
                     editorIndexingBanner.className = 'rounded-lg p-4 mb-6 transition-all duration-300 bg-amber-50 border border-amber-200';
                     editorIndexingBanner.innerHTML = `
                         <div class="flex items-start gap-3">
                             <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shrink-0 mt-0.5 animate-pulse-custom">
-                                <i class="fas fa-clock text-sm"></i>
+                                <i class="fas fa-exclamation-triangle text-sm"></i>
                             </div>
                             <div class="flex-1">
                                 <p class="text-[14px] font-semibold text-amber-800 mb-1">Please wait for indexing to complete</p>
                                 <p class="text-[13px] text-amber-700 leading-relaxed">
-                                    Data is currently being collected and indexed. The "Enable App in Theme Editor" button will become available once indexing is finished.
+                                    Up-to-date data are being collected. Please wait until this process is complete before continuing with the app.
                                 </p>
-                                <div class="mt-3 w-full bg-amber-200 rounded-full h-2 overflow-hidden">
-                                    <div class="bg-amber-500 h-full rounded-full transition-all duration-300" style="width: ${syncProgressFill ? syncProgressFill.style.width : '0%'}"></div>
-                                </div>
-                                <p class="text-[11px] text-amber-600 mt-1 text-right">${syncProgressPercent ? syncProgressPercent.textContent : '0%'}</p>
                             </div>
                         </div>
                     `;
@@ -1854,6 +1760,7 @@
             console.log('🚀 Initializing Shopify App Dashboard...');
             console.log('⏳ Starting data indexing simulation (20 seconds)...');
             console.log('🔀 Dual Flow System Ready: Flow 1 (Lock) | Flow 2 (Flexible)');
+            console.log('📢 Using SIMPLE "Collecting data" banner for ALL flows and ALL pages (no progress bar)');
             
             switchToFlow(1);
             startIndexingSimulation();
@@ -1863,7 +1770,7 @@
             console.log('✅ All event listeners initialized!');
             console.log('📋 Use Flow 1/2 toggle buttons to switch between modes');
             console.log('⚡ Use "End Index Now" button to skip waiting for testing');
-            console.log('🔗 Both "Enable App in Theme Editor" buttons (Modal + Banner) now share the same behavior');
+            console.log('🔗 Both "Enable App in Theme Editor" buttons (Modal + Banner) share the same behavior');
         });
     </script>
 </body>
