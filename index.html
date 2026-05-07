@@ -48,7 +48,6 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Guide Attention Animation */
         @keyframes guideAttention {
             0% { transform: scale(1); }
             15% { transform: scale(1.03) translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.15); }
@@ -62,12 +61,10 @@
             box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.3);
         }
 
-        /* Indexing Banner Styles */
         .indexing-banner {
             transition: all 0.4s ease;
         }
         
-        /* Progress bar animation */
         @keyframes indeterminateProgress {
             0% { left: -40%; }
             100% { left: 100%; }
@@ -82,19 +79,16 @@
             animation: indeterminateProgress 1.5s ease-in-out infinite;
         }
 
-        /* Active nav item style */
         .nav-active {
             background-color: #d1d5db !important;
             color: #303030 !important;
             font-weight: 600 !important;
         }
 
-        /* Ensure modals are on top */
         .modal-wrapper {
             z-index: 9999;
         }
 
-        /* Chat bubble styles */
         .chat-bubble {
             position: fixed;
             bottom: 80px;
@@ -118,7 +112,6 @@
             display: flex;
         }
 
-        /* Pulse animation for sync icon */
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
@@ -127,7 +120,6 @@
             animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
 
-        /* Disabled button overlay effect */
         .btn-disabled-overlay {
             position: relative;
             overflow: hidden;
@@ -140,7 +132,6 @@
             pointer-events: none;
         }
 
-        /* Page view transitions */
         .page-view {
             display: none;
             animation: fadeIn 0.3s ease;
@@ -149,12 +140,10 @@
             display: block;
         }
 
-        /* Empty state illustration */
         .empty-state-illustration {
             opacity: 0.05;
         }
 
-        /* App header clickable */
         .app-header-clickable {
             cursor: pointer;
             transition: background-color 0.15s;
@@ -162,6 +151,65 @@
         .app-header-clickable:hover {
             background-color: rgba(255,255,255,0.05);
             border-radius: 6px;
+        }
+
+        /* Flow Toggle Buttons */
+        .flow-btn {
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .flow-btn.active-flow-1 {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            border-color: #dc2626;
+            box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
+        }
+        .flow-btn.active-flow-2 {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            border-color: #2563eb;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+        }
+        .flow-indicator {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: pulseDot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulseDot {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+        }
+
+        /* Unified Status Banner for Flow 2 */
+        .unified-status-banner {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left-width: 4px;
+            border-left-style: solid;
+        }
+        .unified-status-banner.indexing-state {
+            border-left-color: #f59e0b;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-color: #fcd34d;
+        }
+        .unified-status-banner.complete-state {
+            border-left-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border-color: #6ee7b7;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .shimmer-bar {
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
         }
     </style>
 </head>
@@ -199,7 +247,6 @@
         <!-- Sidebar -->
         <aside class="w-60 bg-[#ebebeb] flex flex-col border-r border-gray-300 shrink-0 sidebar-scrollbar overflow-y-auto">
             <nav class="flex-1 py-3 px-3 flex flex-col gap-0.5">
-                <!-- Main Shopify Nav Items -->
                 <a href="#" id="nav-home-main" data-page="home" class="nav-item flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors nav-active"><i class="fas fa-home w-6 text-gray-500 text-center"></i> Home</a>
                 <a href="#" class="flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors"><i class="fas fa-inbox w-6 text-gray-500 text-center"></i> Orders</a>
                 <a href="#" class="flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors"><i class="fas fa-tags w-6 text-gray-500 text-center"></i> Products</a>
@@ -215,9 +262,8 @@
                 
                 <div class="mt-4 px-2 py-1 flex justify-between items-center text-[11px] font-bold text-gray-500 uppercase tracking-wider group cursor-pointer hover:bg-gray-200 rounded-md"><span>Apps</span><i class="fas fa-chevron-right text-[10px] text-gray-400"></i></div>
                 
-                <!-- APP SECTION with Homepage sub-link -->
+                <!-- APP SECTION -->
                 <div class="bg-gray-200 rounded-md pb-1.5 mt-0.5 shadow-sm">
-                    <!-- App name - now clickable to go to homepage -->
                     <a href="#" id="nav-app-name" data-page="home" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md text-[#303030] app-header-clickable transition-colors cursor-pointer">
                         <div class="bg-gray-600 text-white rounded w-5 h-5 flex items-center justify-center text-[10px] mr-2 shrink-0"><i class="fas fa-filter"></i></div>
                         <span class="flex-1 truncate">Findter Custom Filter ...</span>
@@ -225,7 +271,6 @@
                     </a>
                     
                     <div class="flex flex-col mt-0.5 border-l-2 border-gray-300 ml-5 pl-3 space-y-0.5">
-                        <!-- NEW: Homepage link inside app submenu -->
                         <a href="#" id="nav-app-home" data-page="home" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer" data-nav-name="Homepage">
                             <i class="fas fa-home w-5 text-center text-xs mr-1"></i>Homepage
                         </a>
@@ -259,16 +304,25 @@
                 <!-- ==================== HOME PAGE VIEW ==================== -->
                 <div id="page-home" class="page-view active">
                     <div class="max-w-[1040px] mx-auto">
-                        <!-- Page Title with Test Buttons -->
+                        <!-- Page Title with Flow Toggle Buttons -->
                         <div class="flex items-center justify-between mb-6">
                             <h1 class="text-[22px] font-bold text-[#303030]">Homepage</h1>
-                            <div class="flex gap-2 shrink-0 ml-4 flex-wrap">
-                                <button id="test-btn-1" class="border border-blue-300 bg-blue-50 text-blue-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-blue-100 transition-colors shadow-sm whitespace-nowrap">
-                                    Test Notice (Under Title)
-                                </button>
-                                <button id="test-btn-2" class="border border-blue-300 bg-blue-50 text-blue-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-blue-100 transition-colors shadow-sm whitespace-nowrap">
-                                    Test Notice (Under Banner)
-                                </button>
+                            <div class="flex gap-3 shrink-0 ml-4 flex-wrap items-center">
+                                <!-- FLOW TOGGLE BUTTONS -->
+                                <div class="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
+                                    <button id="flow-1-btn" class="flow-btn active-flow-1 border-2 border-transparent rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative">
+                                        <span class="flow-indicator bg-white/50"></span>
+                                        <i class="fas fa-lock text-xs"></i>
+                                        Flow 1: Lock
+                                    </button>
+                                    <button id="flow-2-btn" class="flow-btn border-2 border-gray-300 bg-white text-gray-600 rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative hover:border-blue-300">
+                                        <i class="fas fa-unlock-alt text-xs"></i>
+                                        Flow 2: Flexible
+                                    </button>
+                                </div>
+                                
+                                <div class="w-px h-8 bg-gray-300"></div>
+                                
                                 <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">
                                     Reset Indexing
                                 </button>
@@ -278,14 +332,17 @@
                             </div>
                         </div>
 
-                        <!-- INDEXING STATUS BANNER - Dynamic -->
+                        <!-- UNIFIED STATUS BANNER CONTAINER (For Flow 2 - under page title) -->
+                        <div id="unified-status-banner" class="mb-5 hidden"></div>
+
+                        <!-- INDEXING STATUS BANNER (Flow 1 only - Home page) -->
                         <div id="indexing-banner-container" class="mb-5"></div>
 
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
                             <!-- Left Column -->
                             <div class="lg:col-span-2 flex flex-col gap-5">
                                 
-                                <!-- Dynamic Notice Container - Under Title -->
+                                <!-- Dynamic Notice Container -->
                                 <div id="notice-container-title" class="hidden"></div>
                                 
                                 <!-- Onboarding Guide Card -->
@@ -303,14 +360,11 @@
                                             <span id="progress-text" class="text-[13px] text-gray-600 font-medium">1/3 completed</span>
                                         </div>
                                         
-                                        <!-- DYNAMIC CONGRATULATION MESSAGE -->
                                         <div id="congrat-message-container" class="mb-4 hidden congrat-message"></div>
-
-                                        <!-- Dynamic Notice Container - Under Banner -->
-                                        <div id="notice-container-banner" class="mb-4 hidden"></div>
+                                <div id="notice-container-banner" class="mb-4 hidden"></div>
 
                                         <div id="guide-body-1" class="space-y-6 relative pl-1">
-                                            <!-- Step 1: Activate app embed -->
+                                            <!-- Step 1 -->
                                             <div class="border border-gray-100 rounded-lg overflow-hidden">
                                                 <div class="flex items-center gap-5 p-3 group transition-colors">
                                                     <div id="step1-checkbox" class="step-checkbox w-6 h-6 shrink-0 rounded-full border-2 border-dashed border-gray-400 bg-white flex items-center justify-center hover:border-gray-600 transition-colors" data-step="1">
@@ -323,7 +377,6 @@
                                                 </div>
                                                 <div id="step-content-1" class="pl-14 pr-4 pb-4">
                                                     
-                                                    <!-- Initial state: Show button to start flow -->
                                                     <div id="step1-initial" class="mb-3">
                                                         <div class="flex flex-wrap items-center gap-x-2 gap-y-2">
                                                             <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
@@ -335,7 +388,6 @@
                                                         </div>
                                                     </div>
 
-                                                    <!-- Completed state (shown after modal flow is done) -->
                                                     <div id="step1-completed" class="hidden">
                                                         <div class="flex flex-wrap items-center gap-x-2 gap-y-2 mb-3">
                                                             <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
@@ -359,7 +411,7 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Step 2: Set up custom filters (VISIBLE FROM START) -->
+                                            <!-- Step 2 -->
                                             <div id="step2-container" class="border border-gray-100 rounded-lg overflow-hidden">
                                                 <div class="flex items-center gap-5 p-3 group transition-colors">
                                                     <div id="step2-checkbox" class="step-checkbox w-6 h-6 shrink-0 rounded-full border-2 border-dashed border-gray-400 bg-white flex items-center justify-center hover:border-gray-600 transition-colors" data-step="2">
@@ -382,7 +434,7 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Step 3: Basic search engine -->
+                                            <!-- Step 3 -->
                                             <div class="border border-gray-100 rounded-lg overflow-hidden">
                                                 <div class="flex items-center gap-5 p-3 group transition-colors">
                                                     <div class="step-checkbox w-6 h-6 shrink-0 bg-[#303030] rounded-full text-white flex items-center justify-center cursor-pointer transition-colors" data-step="3" data-completed="true">
@@ -442,7 +494,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Sync recent updates Card - Dynamic Status -->
+                                <!-- Sync recent updates Card -->
                                 <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5">
                                     <div class="flex items-center gap-2 mb-3">
                                         <h3 class="font-semibold text-[15px] text-[#303030]">Sync recent updates</h3>
@@ -450,7 +502,6 @@
                                     </div>
                                     <p id="sync-status-text" class="text-[13px] text-[#303030] mb-5">Recent updates were last synced:<strong class="font-semibold ml-1" id="sync-timestamp">23:59:09 02/03/2026</strong></p>
                                     
-                                    <!-- Indexing progress indicator (shown during indexing) -->
                                     <div id="sync-progress-bar" class="hidden mb-4">
                                         <div class="flex items-center justify-between mb-1">
                                             <span class="text-[11px] text-gray-500 font-medium">Indexing progress</span>
@@ -477,6 +528,8 @@
                         <div class="mb-6">
                             <h1 class="text-[22px] font-bold text-[#303030]">Filter</h1>
                         </div>
+                        <!-- UNIFIED BANNER FOR FLOW 2 -->
+                        <div id="unified-banner-filter" class="mb-5 hidden"></div>
                         <div id="filter-page-content"></div>
                     </div>
                 </div>
@@ -487,6 +540,7 @@
                         <div class="mb-6">
                             <h1 class="text-[22px] font-bold text-[#303030]">Search</h1>
                         </div>
+                        <div id="unified-banner-search" class="mb-5 hidden"></div>
                         <div id="search-page-content"></div>
                     </div>
                 </div>
@@ -497,6 +551,7 @@
                         <div class="mb-6">
                             <h1 class="text-[22px] font-bold text-[#303030]">Metafield</h1>
                         </div>
+                        <div id="unified-banner-metafield" class="mb-5 hidden"></div>
                         <div id="metafield-page-content"></div>
                     </div>
                 </div>
@@ -507,6 +562,7 @@
                         <div class="mb-6">
                             <h1 class="text-[22px] font-bold text-[#303030]">Filter & Product Grid Design</h1>
                         </div>
+                        <div id="unified-banner-design" class="mb-5 hidden"></div>
                         <div id="design-page-content"></div>
                     </div>
                 </div>
@@ -517,6 +573,7 @@
                         <div class="mb-6">
                             <h1 class="text-[22px] font-bold text-[#303030]">Analytics</h1>
                         </div>
+                        <div id="unified-banner-analytics-app" class="mb-5 hidden"></div>
                         <div id="analytics-app-page-content"></div>
                     </div>
                 </div>
@@ -527,6 +584,7 @@
                         <div class="mb-6">
                             <h1 class="text-[22px] font-bold text-[#303030]">Advanced Features</h1>
                         </div>
+                        <div id="unified-banner-advanced" class="mb-5 hidden"></div>
                         <div id="advanced-page-content"></div>
                     </div>
                 </div>
@@ -574,7 +632,7 @@
         </div>
     </div>
 
-    <!-- MODAL: Access Restricted Modal (shows when trying to access locked features) -->
+    <!-- MODAL: Access Restricted Modal (Flow 1) -->
     <div id="restricted-modal" class="modal-wrapper fixed inset-0 hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="restricted-modal-overlay"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
@@ -684,7 +742,7 @@
         </div>
     </div>
 
-    <!-- MODAL 2: Enable App Embed Modal (Wider) -->
+    <!-- MODAL 2: Enable App Embed Modal -->
     <div id="editor-modal" class="modal-wrapper fixed inset-0 hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="editor-modal-overlay"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
@@ -707,7 +765,7 @@
                     </div>
 
                     <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-6">
-                        <div class="flex items-center justify-center gap-1 whitespace-nowrap">
+                        <div class="flex items-center justify-center gap-1 whitespace-nowrap flex-wrap">
                             <div class="flex items-center gap-2">
                                 <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[13px] shadow-md shrink-0">1</div>
                                 <span class="text-[13px] font-semibold text-gray-800">Theme Editor</span>
@@ -722,7 +780,7 @@
                             
                             <div class="flex items-center gap-2">
                                 <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-[13px] shadow-md shrink-0">3</div>
-                                <span class="text-[13px] font-semibold text-gray-800">Enable App "Search & Filter Core"</span>
+                                <span class="text-[13px] font-semibold text-gray-800">Enable App</span>
                             </div>
                             <i class="fas fa-arrow-right text-gray-400 text-sm mx-2 shrink-0"></i>
                             
@@ -763,7 +821,8 @@
                 flowCompleted: false,
                 hasEnabledInEditor: false,
                 indexingInterval: null,
-                currentPage: 'home'
+                currentPage: 'home',
+                currentFlow: 1
             };
 
             // ========== ELEMENT REFERENCES ==========
@@ -787,15 +846,12 @@
             const syncIcon = document.getElementById('sync-icon');
             const syncBtnText = document.getElementById('sync-btn-text');
 
-            // Editor modal indexing banner
             const editorIndexingBanner = document.getElementById('editor-indexing-banner');
 
-            // Guide card
             const onboardingGuideCard = document.getElementById('onboarding-guide-card');
             const goToFilterBtn = document.getElementById('go-to-filter-btn');
             const filterLockHint = document.getElementById('filter-lock-hint');
 
-            // Restricted modal elements
             const closeRestrictedModalBtn = document.getElementById('close-restricted-modal-btn');
             const restrictedModalOverlay = document.getElementById('restricted-modal-overlay');
             const restrictedModalHomeBtn = document.getElementById('restricted-modal-home-btn');
@@ -806,7 +862,6 @@
             const restrictionItem2 = document.getElementById('restriction-item-2');
             const restrictionCheck2 = document.getElementById('restriction-check-2');
 
-            // Close buttons
             const closeThemeModalBtn = document.getElementById('close-theme-modal-btn');
             const themeModalCancelBtn = document.getElementById('theme-modal-cancel-btn');
             const themeModalOverlay = document.getElementById('theme-modal-overlay');
@@ -818,11 +873,14 @@
             const themeSupportNotice = document.getElementById('theme-support-notice');
             const liveChatLink = document.getElementById('live-chat-link');
 
-            // App header title (clickable)
             const appHeaderTitle = document.getElementById('app-header-title');
 
             const resetIndexingBtn = document.getElementById('reset-indexing-btn');
             const endIndexBtn = document.getElementById('end-index-btn');
+
+            // Flow toggle buttons
+            const flow1Btn = document.getElementById('flow-1-btn');
+            const flow2Btn = document.getElementById('flow-2-btn');
 
             // Chat elements
             const floatingChatBtn = document.getElementById('floating-chat-btn');
@@ -833,8 +891,176 @@
             const chatMessages = document.getElementById('chat-messages');
             const chatBadge = document.getElementById('chat-badge');
 
-            // All navigation items
             const allNavItems = document.querySelectorAll('[data-page]');
+
+            // All unified banner containers (for Flow 2)
+            const unifiedBannerContainers = {
+                home: document.getElementById('unified-status-banner'),
+                filter: document.getElementById('unified-banner-filter'),
+                search: document.getElementById('unified-banner-search'),
+                metafield: document.getElementById('unified-banner-metafield'),
+                design: document.getElementById('unified-banner-design'),
+                'analytics-app': document.getElementById('unified-banner-analytics-app'),
+                advanced: document.getElementById('unified-banner-advanced')
+            };
+
+            // ========== FLOW MANAGEMENT ==========
+            function switchToFlow(flowNumber) {
+                AppState.currentFlow = flowNumber;
+                
+                if (flowNumber === 1) {
+                    flow1Btn.className = 'flow-btn active-flow-1 border-2 border-transparent rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative';
+                    flow2Btn.className = 'flow-btn border-2 border-gray-300 bg-white text-gray-600 rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative hover:border-blue-300';
+                } else {
+                    flow1Btn.className = 'flow-btn border-2 border-gray-300 bg-white text-gray-600 rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative hover:border-red-300';
+                    flow2Btn.className = 'flow-btn active-flow-2 border-2 border-transparent rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative';
+                }
+
+                updateAllBanners();
+                renderSubPageContent(AppState.currentPage);
+                
+                console.log(`🔄 Switched to Flow ${flowNumber}: ${flowNumber === 1 ? 'LOCK MODE' : 'FLEXIBLE MODE'}`);
+            }
+
+            flow1Btn.addEventListener('click', () => switchToFlow(1));
+            flow2Btn.addEventListener('click', () => switchToFlow(2));
+
+            // ========== UNIFIED BANNER SYSTEM (Flow 2) ==========
+            function getUnifiedBannerHTML(state) {
+                if (state === 'indexing') {
+                    return `
+                        <div class="unified-status-banner indexing-state rounded-lg p-4 border border-amber-300">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shrink-0 animate-pulse-custom">
+                                    <i class="fas fa-sync-alt text-lg"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+                                        <p class="text-[15px] font-semibold text-amber-800">Data Indexing in Progress</p>
+                                        <span class="text-[13px] font-bold text-amber-700 bg-amber-200 px-3 py-1 rounded-full">${syncProgressPercent ? syncProgressPercent.textContent : '0%'}</span>
+                                    </div>
+                                    <p class="text-[13px] text-amber-700 leading-relaxed mb-3">
+                                        We're collecting and organizing your store data. You can explore other sections while you wait. This process typically takes a few minutes.
+                                    </p>
+                                    <div class="w-full bg-amber-200 rounded-full h-2.5 overflow-hidden relative">
+                                        <div class="bg-amber-500 h-full rounded-full transition-all duration-300 shimmer-bar relative" style="width: ${syncProgressFill ? syncProgressFill.style.width : '0%'}">
+                                            <div class="absolute inset-0 shimmer-bar rounded-full"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (state === 'complete') {
+                    return `
+                        <div class="unified-status-banner complete-state rounded-lg p-4 border border-emerald-300">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 shrink-0">
+                                    <i class="fas fa-check-circle text-lg"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-[15px] font-semibold text-emerald-800 mb-2">Data Indexing Complete!</p>
+                                    <p class="text-[13px] text-emerald-700 leading-relaxed mb-4">
+                                        Your data has been successfully indexed. To activate the app on your storefront, please enable it in your Theme Editor.
+                                    </p>
+                                    <button onclick="handleEnableAppFromBanner()" class="bg-[#303030] text-white rounded-[6px] px-5 py-2.5 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-all shadow-md inline-flex items-center gap-2 transform hover:scale-[1.02]">
+                                        <i class="fas fa-external-link-alt text-xs"></i>
+                                        Enable App in Theme Editor
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                return '';
+            }
+
+            function updateAllBanners() {
+                // Handle Flow 1: Only show original banner on homepage, hide all unified banners
+                if (AppState.currentFlow === 1) {
+                    Object.values(unifiedBannerContainers).forEach(container => {
+                        if (container) {
+                            container.classList.add('hidden');
+                            container.innerHTML = '';
+                        }
+                    });
+                    if (!AppState.indexingComplete && AppState.currentPage === 'home') {
+                        indexingBannerContainer.classList.remove('hidden');
+                    }
+                    return;
+                }
+
+                // Flow 2: Use unified banners everywhere
+                indexingBannerContainer.classList.add('hidden');
+                indexingBannerContainer.innerHTML = '';
+
+                let bannerHTML = '';
+                let showBanner = true;
+
+                if (!AppState.indexingComplete) {
+                    bannerHTML = getUnifiedBannerHTML('indexing');
+                } else if (!AppState.appEnabled) {
+                    bannerHTML = getUnifiedBannerHTML('complete');
+                } else {
+                    showBanner = false;
+                }
+
+                Object.entries(unifiedBannerContainers).forEach(([page, container]) => {
+                    if (container) {
+                        if (showBanner) {
+                            container.classList.remove('hidden');
+                            container.innerHTML = bannerHTML;
+                        } else {
+                            container.classList.add('hidden');
+                            container.innerHTML = '';
+                        }
+                    }
+                });
+            }
+
+            // ========== ENABLE APP FUNCTION (Shared between Modal and Banner Button) ==========
+            function handleEnableApp() {
+                // This function handles the EXACT SAME logic as the modal's "Enable App in Theme Editor" button
+                
+                // 1. Check if indexing is complete
+                if (!AppState.indexingComplete) {
+                    alert('Please wait for indexing to complete first.');
+                    return;
+                }
+                
+                // 2. Mark as enabled
+                AppState.hasEnabledInEditor = true;
+                
+                // 3. Open Editor.html in new tab (same as modal)
+                window.open('Editor.html', '_blank');
+                
+                // 4. Update UI states
+                updateEditorModalCloseButton();
+                
+                // 5. Show processing state in all visible banners
+                Object.values(unifiedBannerContainers).forEach(container => {
+                    if (container && !container.classList.contains('hidden')) {
+                        const banner = container.querySelector('.unified-status-banner');
+                        if (banner) {
+                            banner.className = 'unified-status-banner complete-state rounded-lg p-4 border border-blue-300';
+                            banner.innerHTML = `
+                                <div class="flex items-center justify-center gap-3 py-4">
+                                    <i class="fas fa-spinner fa-spin text-emerald-600 text-lg"></i>
+                                    <span class="text-[14px] font-semibold text-emerald-800">Opening Theme Editor...</span>
+                                </div>
+                            `;
+                        }
+                    }
+                });
+
+                // 6. After simulated delay, complete the flow
+                setTimeout(() => {
+                    completeFlow();
+                }, 1500);
+            }
+
+            // This is called from the unified banner button
+            window.handleEnableAppFromBanner = handleEnableApp;
 
             // ========== PAGE NAVIGATION SYSTEM ==========
             const pageNames = {
@@ -848,18 +1074,15 @@
             };
 
             function navigateToPage(pageId, showRestrictedModalAfter = false) {
-                // Hide all pages
                 document.querySelectorAll('.page-view').forEach(page => {
                     page.classList.remove('active');
                 });
 
-                // Show target page
                 const targetPage = document.getElementById('page-' + pageId);
                 if (targetPage) {
                     targetPage.classList.add('active');
                     AppState.currentPage = pageId;
 
-                    // Update nav active states
                     allNavItems.forEach(item => {
                         item.classList.remove('nav-active');
                         if (item.getAttribute('data-page') === pageId) {
@@ -867,12 +1090,10 @@
                         }
                     });
 
-                    // Render page content
                     renderSubPageContent(pageId);
+                    updateAllBanners();
 
-                    // If this is a locked page and we need to show modal AFTER rendering
-                    if (showRestrictedModalAfter && !canAccessFeatures()) {
-                        // Small delay to let user see the page heading first
+                    if (AppState.currentFlow === 1 && showRestrictedModalAfter && !canAccessFeatures()) {
                         setTimeout(() => {
                             showRestrictedModal();
                         }, 150);
@@ -885,20 +1106,83 @@
                 if (!container) return;
 
                 const canAccess = canAccessFeatures();
+                const isFlow2 = AppState.currentFlow === 2;
 
-                container.innerHTML = `
-                    <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 p-12 text-center">
-                        <div class="empty-state-illustration mb-6">
-                            <i class="fas fa-${getPageIcon(pageId)} text-[80px] text-gray-300"></i>
+                if (isFlow2 || canAccess) {
+                    container.innerHTML = `
+                        <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 p-8">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="w-12 h-12 bg-${isFlow2 && !canAccess ? 'blue' : 'gray'}-100 rounded-xl flex items-center justify-center">
+                                    <i class="fas fa-${getPageIcon(pageId)} text-${isFlow2 && !canAccess ? 'blue' : 'gray'}-500 text-xl"></i>
+                                </div>
+                                <div>
+                                    <h2 class="text-[18px] font-semibold text-[#303030]">${pageNames[pageId]}</h2>
+                                    <p class="text-[13px] ${isFlow2 && !canAccess ? 'text-blue-600' : 'text-gray-500'}">
+                                        ${isFlow2 && !canAccess 
+                                            ? '<i class="fas fa-info-circle mr-1"></i> Available for preview - Full functionality after setup completes' 
+                                            : 'Configure your settings here'}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                ${generatePlaceholderCards(isFlow2 && !canAccess)}
+                            </div>
+                            
+                            ${isFlow2 && !canAccess ? `
+                                <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                    <div class="flex items-start gap-3">
+                                        <i class="fas fa-lightbulb text-blue-500 mt-0.5"></i>
+                                        <div>
+                                            <p class="text-[13px] font-semibold text-blue-800">Preview Mode Active</p>
+                                            <p class="text-[12px] text-blue-600 mt-1">You can explore this section while indexing completes. Some features may be limited until full setup is done.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ` : ''}
                         </div>
-                        <h2 class="text-[18px] font-semibold text-[#303030] mb-2">${pageNames[pageId]}</h2>
-                        <p class="text-[13px] text-gray-500 max-w-md mx-auto">
-                            ${canAccess 
-                                ? `This section is ready for configuration. Set up your ${pageNames[pageId].toLowerCase()} options here.` 
-                                : 'Content will be available once setup is complete.'}
-                        </p>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 p-12 text-center">
+                            <div class="empty-state-illustration mb-6">
+                                <i class="fas fa-${getPageIcon(pageId)} text-[80px] text-gray-300"></i>
+                            </div>
+                            <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-lock text-amber-600 text-2xl"></i>
+                            </div>
+                            <h2 class="text-[18px] font-semibold text-[#303030] mb-2">${pageNames[pageId]}</h2>
+                            <p class="text-[13px] text-gray-500 max-w-md mx-auto mb-4">
+                                This section is locked. Complete the onboarding process on the Homepage to unlock all features.
+                            </p>
+                            <button onclick="navigateToPage('home')" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
+                                <i class="fas fa-home text-xs"></i>
+                                Go to Homepage
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+
+            function generatePlaceholderCards(isPreview) {
+                const cards = [
+                    { title: 'Configuration', icon: 'cog', desc: 'Main settings' },
+                    { title: 'Display Options', icon: 'palette', desc: 'Visual customization' },
+                    { title: 'Advanced Settings', icon: 'sliders-h', desc: 'Fine-tuning options' }
+                ];
+                
+                return cards.map(card => `
+                    <div class="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors ${isPreview ? 'opacity-75' : ''}">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-${card.icon} text-gray-500 text-sm"></i>
+                            </div>
+                            <h4 class="font-medium text-[14px] text-[#303030]">${card.title}</h4>
+                        </div>
+                        <p class="text-[12px] text-gray-500">${card.desc}</p>
+                        ${isPreview ? '<div class="mt-3 text-[11px] text-blue-500 font-medium"><i class="fas fa-eye mr-1"></i> Preview available</div>' : ''}
                     </div>
-                `;
+                `).join('');
             }
 
             function getPageIcon(pageId) {
@@ -913,24 +1197,23 @@
                 return icons[pageId] || 'file';
             }
 
-            // Setup navigation click handlers
             allNavItems.forEach(item => {
                 item.addEventListener('click', function(e) {
                     e.preventDefault();
                     const page = this.getAttribute('data-page');
-                    
                     if (!page) return;
 
-                    // Check if this is a sub-page that requires access
                     const isLockedPage = ['filter', 'search', 'metafield', 'design', 'analytics-app', 'advanced'].includes(page);
-                    const needsRestriction = isLockedPage && !canAccessFeatures();
-
-                    // Navigate FIRST (so user sees the page), then optionally show modal
-                    navigateToPage(page, needsRestriction);
+                    
+                    if (AppState.currentFlow === 1) {
+                        const needsRestriction = isLockedPage && !canAccessFeatures();
+                        navigateToPage(page, needsRestriction);
+                    } else {
+                        navigateToPage(page, false);
+                    }
                 });
             });
 
-            // App header title click -> go to homepage
             if (appHeaderTitle) {
                 appHeaderTitle.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -938,11 +1221,10 @@
                 });
             }
 
-            // "Go to Filter" button
             if (goToFilterBtn) {
                 goToFilterBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    if (!canAccessFeatures()) {
+                    if (AppState.currentFlow === 1 && !canAccessFeatures()) {
                         navigateToPage('filter', true);
                     } else {
                         navigateToPage('filter');
@@ -963,21 +1245,24 @@
             }
 
             function showIndexingInProgress() {
-                indexingBannerContainer.innerHTML = `
-                    <div id="indexing-banner" class="indexing-banner bg-amber-50 border border-amber-200 rounded-lg p-4 relative">
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shrink-0 mt-0.5 animate-pulse-custom">
-                                <i class="fas fa-exclamation-triangle text-sm"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-[14px] font-semibold text-amber-800 mb-1">Collecting data</p>
-                                <p class="text-[13px] text-amber-700 leading-relaxed">
-                                    Up-to-date data are being collected. Please wait until this process is complete before continuing with the app.
-                                </p>
+                if (AppState.currentFlow === 1) {
+                    indexingBannerContainer.innerHTML = `
+                        <div id="indexing-banner" class="indexing-banner bg-amber-50 border border-amber-200 rounded-lg p-4 relative">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shrink-0 mt-0.5 animate-pulse-custom">
+                                    <i class="fas fa-exclamation-triangle text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-[14px] font-semibold text-amber-800 mb-1">Collecting data</p>
+                                    <p class="text-[13px] text-amber-700 leading-relaxed">
+                                        Up-to-date data are being collected. Please wait until this process is complete before continuing with the app.
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                    indexingBannerContainer.classList.remove('hidden');
+                }
 
                 syncStatusBadge.className = 'bg-amber-100 text-amber-800 text-[11px] px-2 py-0.5 rounded-full font-semibold';
                 syncStatusBadge.textContent = 'In progress';
@@ -993,11 +1278,14 @@
                 manualSyncBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
                 updateEditorModalBanner();
+                updateAllBanners();
             }
 
             function updateIndexingProgress(percent) {
                 if (syncProgressFill) syncProgressFill.style.width = percent + '%';
                 if (syncProgressPercent) syncProgressPercent.textContent = Math.round(percent) + '%';
+                
+                updateAllBanners();
             }
 
             function showIndexingComplete() {
@@ -1009,21 +1297,24 @@
                     AppState.indexingInterval = null;
                 }
 
-                indexingBannerContainer.innerHTML = `
-                    <div id="indexing-banner" class="indexing-banner bg-emerald-50 border border-emerald-200 rounded-lg p-4 relative">
-                        <button type="button" onclick="document.getElementById('indexing-banner-container').innerHTML='';" class="absolute top-3 right-3 text-emerald-400 hover:text-emerald-600 transition-colors">
-                            <i class="fas fa-times text-sm"></i>
-                        </button>
-                        <div class="flex items-start gap-3 pr-8">
-                            <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 shrink-0 mt-0.5">
-                                <i class="fas fa-check-circle text-sm"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-[14px] font-semibold text-emerald-800">Data indexing is completed.</p>
+                if (AppState.currentFlow === 1) {
+                    indexingBannerContainer.innerHTML = `
+                        <div id="indexing-banner" class="indexing-banner bg-emerald-50 border border-emerald-200 rounded-lg p-4 relative">
+                            <button type="button" onclick="document.getElementById('indexing-banner-container').innerHTML='';document.getElementById('indexing-banner-container').classList.add('hidden');" class="absolute top-3 right-3 text-emerald-400 hover:text-emerald-600 transition-colors">
+                                <i class="fas fa-times text-sm"></i>
+                            </button>
+                            <div class="flex items-start gap-3 pr-8">
+                                <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 shrink-0 mt-0.5">
+                                    <i class="fas fa-check-circle text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-[14px] font-semibold text-emerald-800">Data indexing is completed.</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                    indexingBannerContainer.classList.remove('hidden');
+                }
 
                 syncStatusBadge.className = 'bg-[#cbf1c4] text-[#1f5119] text-[11px] px-2 py-0.5 rounded-full font-semibold';
                 syncStatusBadge.textContent = 'Completed';
@@ -1039,6 +1330,7 @@
                 updateRestrictedModalContent();
                 updateEditorModalBanner();
                 checkAndUnlockFeatures();
+                updateAllBanners();
 
                 if (AppState.currentPage !== 'home') {
                     renderSubPageContent(AppState.currentPage);
@@ -1114,6 +1406,7 @@
 
                 updateProgressAndMessages();
                 renderSubPageContent(AppState.currentPage);
+                updateAllBanners();
             }
 
             // ========== EDITOR MODAL BANNER LOGIC ==========
@@ -1175,8 +1468,13 @@
             function updateLockStates() {
                 const canAccess = canAccessFeatures();
                 
-                if (goToFilterBtn) goToFilterBtn.disabled = !canAccess;
-                if (filterLockHint) filterLockHint.classList.toggle('hidden', canAccess);
+                if (AppState.currentFlow === 1) {
+                    if (goToFilterBtn) goToFilterBtn.disabled = !canAccess;
+                    if (filterLockHint) filterLockHint.classList.toggle('hidden', canAccess);
+                } else {
+                    if (goToFilterBtn) goToFilterBtn.disabled = false;
+                    if (filterLockHint) filterLockHint.classList.add('hidden');
+                }
 
                 updateEditorModalBanner();
             }
@@ -1185,7 +1483,7 @@
                 updateLockStates();
             }
 
-            // ========== RESTRICTED ACCESS MODAL ==========
+            // ========== RESTRICTED ACCESS MODAL (Flow 1) ==========
             function showRestrictedModal() {
                 updateRestrictedModalContent();
                 restrictedModal.classList.remove('hidden');
@@ -1241,36 +1539,6 @@
 
             if (resetIndexingBtn) resetIndexingBtn.addEventListener('click', resetIndexing);
             if (endIndexBtn) endIndexBtn.addEventListener('click', forceEndIndexing);
-
-            // ========== NOTICE BOX GENERATOR ==========
-            function createNoticeBox(containerId) {
-                const container = document.getElementById(containerId);
-                if (!container) return;
-                const noticeId = 'notice-' + Date.now();
-                
-                container.innerHTML = `
-                    <div id="${noticeId}" class="notice-box bg-orange-50 border border-orange-200 rounded-lg p-4 relative">
-                        <button type="button" onclick="document.getElementById('${noticeId}').remove(); if(this.parentElement && this.parentElement.children.length <= 1) this.parentElement.classList.add('hidden');" class="absolute top-3 right-3 text-orange-400 hover:text-orange-600 transition-colors">
-                            <i class="fas fa-times text-sm"></i>
-                        </button>
-                        <div class="flex items-start gap-3 pr-6">
-                            <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 shrink-0 mt-0.5">
-                                <i class="fas fa-exclamation-triangle text-sm"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-[13px] text-[#303030] leading-relaxed">
-                                    Hi, our system notifies us there is a compatibility issue between the Findter app and your theme Local, which may cause the app's filters not to appear on your theme.<br><br>
-                                    Let Findter team help you fix it for free. To proceed, please <a href="#" class="text-blue-600 font-bold underline hover:text-blue-800">contact us</a> share your [store URL] and [collaborator code].
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.classList.remove('hidden');
-            }
-
-            document.getElementById('test-btn-1').addEventListener('click', () => createNoticeBox('notice-container-title'));
-            document.getElementById('test-btn-2').addEventListener('click', () => createNoticeBox('notice-container-banner'));
 
             // ========== STEP COMPLETION + PROGRESS LOGIC ==========
             function updateProgressAndMessages() {
@@ -1410,18 +1678,6 @@
 
             chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendChatBtn.click(); });
 
-            // ========== MODAL 2 CLOSE BUTTON LOGIC ==========
-            function updateEditorModalCloseButton() {
-                if (!closeEditorModalBtn) return;
-                if (AppState.hasEnabledInEditor || AppState.flowCompleted) {
-                    closeEditorModalBtn.style.display = 'flex';
-                    closeEditorModalBtn.style.visibility = 'visible';
-                } else {
-                    closeEditorModalBtn.style.display = 'none';
-                    closeEditorModalBtn.style.visibility = 'hidden';
-                }
-            }
-
             // ========== THEME MODAL FUNCTIONS ==========
             function openThemeModal() {
                 if (themeModal) {
@@ -1539,9 +1795,21 @@
                 updateEditorModalCloseButton();
                 updateProgressAndMessages();
                 checkAndUnlockFeatures();
+                updateAllBanners();
 
                 if (AppState.currentPage !== 'home') {
                     renderSubPageContent(AppState.currentPage);
+                }
+            }
+
+            function updateEditorModalCloseButton() {
+                if (!closeEditorModalBtn) return;
+                if (AppState.hasEnabledInEditor || AppState.flowCompleted) {
+                    closeEditorModalBtn.style.display = 'flex';
+                    closeEditorModalBtn.style.visibility = 'visible';
+                } else {
+                    closeEditorModalBtn.style.display = 'none';
+                    closeEditorModalBtn.style.visibility = 'hidden';
                 }
             }
 
@@ -1556,17 +1824,9 @@
                 });
             }
 
+            // Modal 2 button now uses the SHARED handleEnableApp function
             if (enableEditorModalBtn) {
-                enableEditorModalBtn.addEventListener('click', function() {
-                    if (!AppState.indexingComplete) {
-                        alert('Please wait for indexing to complete first.');
-                        return;
-                    }
-                    
-                    AppState.hasEnabledInEditor = true;
-                    window.open('Editor.html', '_blank');
-                    updateEditorModalCloseButton();
-                });
+                enableEditorModalBtn.addEventListener('click', handleEnableApp);
             }
             
             document.addEventListener('keydown', function(e) {
@@ -1593,15 +1853,17 @@
             // ========== INITIALIZATION ==========
             console.log('🚀 Initializing Shopify App Dashboard...');
             console.log('⏳ Starting data indexing simulation (20 seconds)...');
+            console.log('🔀 Dual Flow System Ready: Flow 1 (Lock) | Flow 2 (Flexible)');
             
+            switchToFlow(1);
             startIndexingSimulation();
             updateLockStates();
             updateProgressAndMessages();
             
             console.log('✅ All event listeners initialized!');
-            console.log('📄 Navigation system ready with Homepage tab in app submenu');
-            console.log('🔒 Locked pages show heading FIRST, then modal popup');
+            console.log('📋 Use Flow 1/2 toggle buttons to switch between modes');
             console.log('⚡ Use "End Index Now" button to skip waiting for testing');
+            console.log('🔗 Both "Enable App in Theme Editor" buttons (Modal + Banner) now share the same behavior');
         });
     </script>
 </body>
