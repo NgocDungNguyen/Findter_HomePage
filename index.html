@@ -925,18 +925,8 @@
                 }
             });
 
-            if (AppState.currentFlow === 1 && AppState.currentPage === 'home') {
-                if (showBanner && !AppState.indexingComplete) {
-                    indexingBannerContainer.classList.remove('hidden');
-                    indexingBannerContainer.innerHTML = getSimpleIndexingBannerHTML();
-                } else {
-                    indexingBannerContainer.classList.add('hidden');
-                    indexingBannerContainer.innerHTML = '';
-                }
-            } else {
-                indexingBannerContainer.classList.add('hidden');
-                indexingBannerContainer.innerHTML = '';
-            }
+            indexingBannerContainer.classList.add('hidden');
+            indexingBannerContainer.innerHTML = '';
         }
 
         // ========== APP DISABLED / RE-ENABLE HANDLERS ==========
