@@ -75,7 +75,7 @@
                             <span class="font-medium">Search & filter core</span>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" checked class="sr-only peer">
+                            <input id="app-embed-toggle" type="checkbox" checked class="sr-only peer">
                             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:bg-blue-600"></div>
                         </label>
                     </div>
@@ -247,7 +247,42 @@
         }
 
         // Initialize
-        window.onload = () => setSidebarMode(1);
+        const STORAGE_KEYS = {
+            APP_TOGGLE_STATE: 'findter_app_toggle_state'
+        };
+
+        function setToggleState(isOn, persist) {
+            const toggle = document.getElementById('app-embed-toggle');
+            if (!toggle) return;
+            toggle.checked = isOn;
+            if (persist) {
+                localStorage.setItem(STORAGE_KEYS.APP_TOGGLE_STATE, isOn ? 'on' : 'off');
+            }
+        }
+
+        function initAppToggle() {
+            const toggle = document.getElementById('app-embed-toggle');
+            if (!toggle) return;
+
+            const storedState = localStorage.getItem(STORAGE_KEYS.APP_TOGGLE_STATE);
+            if (storedState) {
+                toggle.checked = storedState === 'on';
+            }
+
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('autoEnable') === '1') {
+                setToggleState(true, true);
+            }
+
+            toggle.addEventListener('change', function() {
+                localStorage.setItem(STORAGE_KEYS.APP_TOGGLE_STATE, toggle.checked ? 'on' : 'off');
+            });
+        }
+
+        window.onload = () => {
+            setSidebarMode(1);
+            initAppToggle();
+        };
     </script>
 </body>
 </html>
