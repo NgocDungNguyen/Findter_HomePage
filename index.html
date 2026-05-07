@@ -344,8 +344,8 @@
                                                         <div class="flex flex-wrap items-center gap-x-2 gap-y-2 mb-3">
                                                             <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
                                                             <span class="text-[13px] text-gray-700">Theme Selection</span>
-                                                            <div class="inline-flex items-center gap-2 border border-green-300 bg-green-50 rounded-[6px] px-3 py-1.5 ml-1">
-                                                                <i class="fas fa-check-circle text-green-600 text-sm"></i>
+                                                            <div id="selected-theme-badge" class="inline-flex items-center gap-2 border border-green-300 bg-green-50 rounded-[6px] px-3 py-1.5 ml-1">
+                                                                <i id="selected-theme-icon" class="fas fa-check-circle text-green-600 text-sm"></i>
                                                                 <span id="selected-theme-display" class="text-[13px] font-medium text-green-800"></span>
                                                                 <button type="button" id="change-theme-btn" class="text-[11px] text-blue-600 underline hover:text-blue-800 font-medium">Change</button>
                                                             </div>
@@ -1018,6 +1018,24 @@
                 guideEnableEditorBtn.classList.toggle('hidden', appOn || !hasTheme || !AppState.indexingComplete);
             }
 
+            var badge = document.getElementById('selected-theme-badge');
+            var badgeIcon = document.getElementById('selected-theme-icon');
+            if (badge && badgeIcon) {
+                if (!appOn) {
+                    badge.className = 'inline-flex items-center gap-2 border border-amber-300 bg-amber-50 rounded-[6px] px-3 py-1.5 ml-1';
+                    badgeIcon.className = 'fas fa-exclamation-circle text-amber-600 text-sm';
+                    if (changeThemeBtn) {
+                        changeThemeBtn.className = 'text-[11px] font-medium ml-2 px-2 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-200 hover:bg-amber-200 transition-colors';
+                    }
+                } else {
+                    badge.className = 'inline-flex items-center gap-2 border border-green-300 bg-green-50 rounded-[6px] px-3 py-1.5 ml-1';
+                    badgeIcon.className = 'fas fa-check-circle text-green-600 text-sm';
+                    if (changeThemeBtn) {
+                        changeThemeBtn.className = 'text-[11px] text-blue-600 underline hover:text-blue-800 font-medium';
+                    }
+                }
+            }
+
             updateProgressAndMessages();
         }
 
@@ -1631,9 +1649,6 @@
             if (AppState.appToggleState !== 'on') {
                 return;
             }
-            if (AppState.selectedTheme) {
-                addEnabledTheme(AppState.selectedTheme);
-            }
         }
 
         function isThemeEnabled(theme) {
@@ -1668,8 +1683,8 @@
 
         function updateThemeModalAction() {
             if (!modalSaveBtn) return;
-            var useSaveOnly = AppState.indexingComplete && AppState.appToggleState === 'on';
-            modalSaveBtn.textContent = useSaveOnly ? 'Save' : 'Next';
+            var isEnabledTheme = AppState.selectedTheme && isThemeEnabled(AppState.selectedTheme);
+            modalSaveBtn.textContent = isEnabledTheme ? 'Save' : 'Next';
         }
 
         function openThemeModal() {
@@ -1741,6 +1756,7 @@
                 AppState.selectedTheme = row.getAttribute('data-theme');
                 localStorage.setItem(STORAGE_KEYS.SELECTED_THEME, AppState.selectedTheme);
                 renderThemeDropdown();
+                updateThemeModalAction();
                 if (modalSaveBtn) modalSaveBtn.disabled = !AppState.selectedTheme;
                 if (themeDropdownMenu) themeDropdownMenu.classList.add('hidden');
             });
@@ -1752,9 +1768,8 @@
                 localStorage.setItem(STORAGE_KEYS.SELECTED_THEME, AppState.selectedTheme);
                 updateThemeModalAction();
 
-                var useSaveOnly = AppState.indexingComplete && AppState.appToggleState === 'on';
-                if (useSaveOnly) {
-                    addEnabledTheme(AppState.selectedTheme);
+                var isEnabledTheme = isThemeEnabled(AppState.selectedTheme);
+                if (isEnabledTheme) {
                     closeThemeModal();
                     updateGuideStep1Status();
                     updateAllBanners();
