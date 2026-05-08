@@ -344,9 +344,14 @@
                                                         <div class="flex flex-wrap items-center gap-x-2 gap-y-2 mb-3">
                                                             <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
                                                             <span class="text-[13px] text-gray-700">Theme Selection</span>
-                                                            <div id="selected-theme-badge" class="inline-flex items-center gap-2 border border-green-300 bg-green-50 rounded-[6px] px-3 py-1.5 ml-1">
-                                                                <i id="selected-theme-icon" class="fas fa-check-circle text-green-600 text-sm"></i>
-                                                                <span id="selected-theme-display" class="text-[13px] font-medium text-green-800"></span>
+                                                            <div class="relative">
+                                                                <button type="button" id="guide-theme-dropdown-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-3 py-1.5 text-[13px] font-medium hover:bg-gray-50 transition-colors inline-flex items-center gap-2">
+                                                                    <span id="guide-theme-dropdown-label" class="text-gray-700">-- Select a theme --</span>
+                                                                    <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+                                                                </button>
+                                                                <div id="guide-theme-dropdown-menu" class="hidden absolute z-10 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg max-h-64 overflow-auto">
+                                                                    <div id="guide-theme-dropdown-list" class="py-1"></div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         
@@ -354,10 +359,6 @@
                                                             <strong>Step 2:</strong> Go to Theme Editor > App Embeds > Enable the "Search & Filter core" (Findter) > Save the Theme
                                                         </p>
                                                         
-                                                        <div id="app-enable-status-indicator" class="inline-flex items-center gap-2 border border-green-300 bg-green-50 rounded-[6px] px-3 py-1.5">
-                                                            <i class="fas fa-check-circle text-green-600 text-sm"></i>
-                                                            <span class="text-[13px] font-medium text-green-800">App embed enabled</span>
-                                                        </div>
                                                         <button type="button" id="guide-enable-editor-btn" class="hidden mt-2 bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
                                                             <i class="fas fa-external-link-alt text-xs"></i>
                                                             Enable App in Theme Editor
@@ -711,6 +712,8 @@
             indexingStartTime: null,
             indexingDuration: 20000,
             selectedTheme: '',
+            lastEnabledTheme: '',
+            firstEnableDone: false,
             flowCompleted: false,
             hasEnabledInEditor: false,
             indexingInterval: null,
@@ -722,13 +725,17 @@
         const STORAGE_KEYS = {
             APP_TOGGLE_STATE: 'findter_app_toggle_state',
             INDEXING_COMPLETE: 'findter_indexing_complete',
-            SELECTED_THEME: 'findter_selected_theme'
+            SELECTED_THEME: 'findter_selected_theme',
+            LAST_ENABLED_THEME: 'findter_last_enabled_theme',
+            FIRST_ENABLE_DONE: 'findter_first_enable_done'
         };
 
         function loadPersistedState() {
             var storedToggle = localStorage.getItem(STORAGE_KEYS.APP_TOGGLE_STATE);
             var storedIndexing = localStorage.getItem(STORAGE_KEYS.INDEXING_COMPLETE);
             var storedTheme = localStorage.getItem(STORAGE_KEYS.SELECTED_THEME);
+            var storedLastEnabled = localStorage.getItem(STORAGE_KEYS.LAST_ENABLED_THEME);
+            var storedFirstEnable = localStorage.getItem(STORAGE_KEYS.FIRST_ENABLE_DONE);
 
             if (storedToggle) {
                 AppState.appToggleState = storedToggle;
@@ -744,12 +751,19 @@
                 AppState.selectedTheme = storedTheme;
             }
 
+            if (storedLastEnabled) {
+                AppState.lastEnabledTheme = storedLastEnabled;
+            }
+
+            if (storedFirstEnable === 'true') {
+                AppState.firstEnableDone = true;
+            }
+
             // Enabled theme status is not tracked in the simplified flow.
         }
 
         // ========== ELEMENT REFERENCES ==========
         const selectThemeBtn = document.getElementById('select-theme-btn');
-        const changeThemeBtn = document.getElementById('change-theme-btn');
         const themeModal = document.getElementById('theme-modal');
         const editorModal = document.getElementById('editor-modal');
         const restrictedModal = document.getElementById('restricted-modal');
@@ -757,6 +771,10 @@
         const themeDropdownLabel = document.getElementById('theme-dropdown-label');
         const themeDropdownMenu = document.getElementById('theme-dropdown-menu');
         const themeDropdownList = document.getElementById('theme-dropdown-list');
+        const guideThemeDropdownBtn = document.getElementById('guide-theme-dropdown-btn');
+        const guideThemeDropdownLabel = document.getElementById('guide-theme-dropdown-label');
+        const guideThemeDropdownMenu = document.getElementById('guide-theme-dropdown-menu');
+        const guideThemeDropdownList = document.getElementById('guide-theme-dropdown-list');
         const modalSaveBtn = document.getElementById('modal-save-btn');
         const enableEditorModalBtn = document.getElementById('enable-editor-modal-btn');
         
@@ -797,7 +815,6 @@
         const resetIndexingBtn = document.getElementById('reset-indexing-btn');
         const endIndexBtn = document.getElementById('end-index-btn');
 
-        const appEnableStatusIndicator = document.getElementById('app-enable-status-indicator');
         const guideEnableEditorBtn = document.getElementById('guide-enable-editor-btn');
         const editorThemeDisplay = document.getElementById('editor-theme-display');
 
@@ -831,7 +848,12 @@
                 console.log('Detected app toggle change:', newState);
                 AppState.appToggleState = newState;
                 AppState.appEnabled = newState === 'on';
-                syncEnabledThemeFromToggle();
+                if (newState === 'on' && !AppState.firstEnableDone) {
+                    AppState.firstEnableDone = true;
+                    AppState.lastEnabledTheme = AppState.selectedTheme;
+                    localStorage.setItem(STORAGE_KEYS.FIRST_ENABLE_DONE, 'true');
+                    localStorage.setItem(STORAGE_KEYS.LAST_ENABLED_THEME, AppState.lastEnabledTheme);
+                }
                 if (themeModal && !themeModal.classList.contains('hidden')) {
                     renderThemeDropdown();
                     updateThemeModalAction();
@@ -925,7 +947,7 @@
 
             if (!AppState.indexingComplete) {
                 bannerHTML = getSimpleIndexingBannerHTML();
-            } else if (AppState.appToggleState === 'off') {
+            } else if (!AppState.firstEnableDone) {
                 bannerHTML = getFirstTimeCompleteBannerHTML();
             } else {
                 showBanner = false;
@@ -952,8 +974,13 @@
         function setAppToggleState(state) {
             AppState.appToggleState = state;
             AppState.appEnabled = state === 'on';
+            if (state === 'on' && !AppState.firstEnableDone) {
+                AppState.firstEnableDone = true;
+                AppState.lastEnabledTheme = AppState.selectedTheme;
+                localStorage.setItem(STORAGE_KEYS.FIRST_ENABLE_DONE, 'true');
+                localStorage.setItem(STORAGE_KEYS.LAST_ENABLED_THEME, AppState.lastEnabledTheme);
+            }
             localStorage.setItem(STORAGE_KEYS.APP_TOGGLE_STATE, state);
-            syncEnabledThemeFromToggle();
             if (themeModal && !themeModal.classList.contains('hidden')) {
                 renderThemeDropdown();
                 updateThemeModalAction();
@@ -967,13 +994,13 @@
             var step1Initial = document.getElementById('step1-initial');
             var step1Completed = document.getElementById('step1-completed');
             var step1Checkbox = document.getElementById('step1-checkbox');
-            var selectedThemeDisplay = document.getElementById('selected-theme-display');
-
             var hasTheme = Boolean(AppState.selectedTheme);
             var appOn = AppState.appToggleState === 'on';
+            var isThemeEnabled = AppState.selectedTheme && AppState.selectedTheme === AppState.lastEnabledTheme;
+            var shouldShowCompleted = hasTheme && AppState.firstEnableDone;
 
             if (step1Initial && step1Completed) {
-                if (hasTheme) {
+                if (shouldShowCompleted) {
                     step1Initial.classList.add('hidden');
                     step1Completed.classList.remove('hidden');
                 } else {
@@ -982,12 +1009,14 @@
                 }
             }
 
-            if (selectedThemeDisplay) {
-                selectedThemeDisplay.textContent = AppState.selectedTheme || '';
+            if (guideThemeDropdownLabel) {
+                guideThemeDropdownLabel.textContent = AppState.selectedTheme || '-- Select a theme --';
             }
 
+            renderThemeDropdown();
+
             if (step1Checkbox) {
-                var complete = hasTheme && appOn;
+                var complete = AppState.firstEnableDone && appOn && isThemeEnabled;
                 step1Checkbox.setAttribute('data-completed', complete ? 'true' : 'false');
                 step1Checkbox.classList.toggle('bg-[#303030]', complete);
                 step1Checkbox.classList.toggle('text-white', complete);
@@ -999,29 +1028,9 @@
                 if (checkIcon) checkIcon.classList.toggle('text-transparent', !complete);
             }
 
-            if (appEnableStatusIndicator) {
-                appEnableStatusIndicator.classList.toggle('hidden', !appOn);
-            }
             if (guideEnableEditorBtn) {
-                guideEnableEditorBtn.classList.toggle('hidden', appOn || !hasTheme || !AppState.indexingComplete);
-            }
-
-            var badge = document.getElementById('selected-theme-badge');
-            var badgeIcon = document.getElementById('selected-theme-icon');
-            if (badge && badgeIcon) {
-                if (!appOn) {
-                    badge.className = 'inline-flex items-center gap-2 border border-amber-300 bg-amber-50 rounded-[6px] px-3 py-1.5 ml-1';
-                    badgeIcon.className = 'fas fa-exclamation-circle text-amber-600 text-sm';
-                    if (changeThemeBtn) {
-                        changeThemeBtn.className = 'text-[11px] font-medium ml-2 px-2 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-200 hover:bg-amber-200 transition-colors';
-                    }
-                } else {
-                    badge.className = 'inline-flex items-center gap-2 border border-green-300 bg-green-50 rounded-[6px] px-3 py-1.5 ml-1';
-                    badgeIcon.className = 'fas fa-check-circle text-green-600 text-sm';
-                    if (changeThemeBtn) {
-                        changeThemeBtn.className = 'text-[11px] text-blue-600 underline hover:text-blue-800 font-medium';
-                    }
-                }
+                var needsEnable = hasTheme && AppState.indexingComplete && (!appOn || !isThemeEnabled);
+                guideEnableEditorBtn.classList.toggle('hidden', !needsEnable);
             }
 
             updateProgressAndMessages();
@@ -1048,6 +1057,10 @@
             console.log('Opening Editor.html with auto-enable...');
             setAppToggleState('on');
             AppState.hasEnabledInEditor = true;
+            AppState.firstEnableDone = true;
+            AppState.lastEnabledTheme = AppState.selectedTheme;
+            localStorage.setItem(STORAGE_KEYS.FIRST_ENABLE_DONE, 'true');
+            localStorage.setItem(STORAGE_KEYS.LAST_ENABLED_THEME, AppState.lastEnabledTheme);
             window.open('Editor.html?autoEnable=1', '_blank');
             updateGuideStep1Status();
         }
@@ -1324,11 +1337,15 @@
             AppState.flowCompleted = false;
             AppState.hasEnabledInEditor = false;
             AppState.selectedTheme = '';
+            AppState.lastEnabledTheme = '';
+            AppState.firstEnableDone = false;
             AppState.appToggleState = 'off';
 
             localStorage.removeItem(STORAGE_KEYS.APP_TOGGLE_STATE);
             localStorage.removeItem(STORAGE_KEYS.INDEXING_COMPLETE);
             localStorage.removeItem(STORAGE_KEYS.SELECTED_THEME);
+            localStorage.removeItem(STORAGE_KEYS.LAST_ENABLED_THEME);
+            localStorage.removeItem(STORAGE_KEYS.FIRST_ENABLE_DONE);
             
             startIndexingSimulation();
             updateLockStates();
@@ -1615,16 +1632,10 @@
         // ========== THEME MODAL ==========
         var THEMES = ['Dawn', 'Horizon v1', 'Horizon v2', 'Craft', 'Sense', 'Taste'];
 
-        function syncEnabledThemeFromToggle() {
-            if (AppState.appToggleState !== 'on') {
-                return;
-            }
-        }
-
         function renderThemeDropdown() {
-            if (!themeDropdownList || !themeDropdownLabel) return;
             var label = AppState.selectedTheme ? AppState.selectedTheme : '-- Select a theme --';
-            themeDropdownLabel.textContent = label;
+            if (themeDropdownLabel) themeDropdownLabel.textContent = label;
+            if (guideThemeDropdownLabel) guideThemeDropdownLabel.textContent = label;
 
             var html = '';
             THEMES.forEach(function(theme) {
@@ -1636,7 +1647,9 @@
                         '<span class="font-medium">' + theme + '</span>' +
                     '</button>';
             });
-            themeDropdownList.innerHTML = html;
+
+            if (themeDropdownList) themeDropdownList.innerHTML = html;
+            if (guideThemeDropdownList) guideThemeDropdownList.innerHTML = html;
         }
 
         function updateThemeModalAction() {
@@ -1669,12 +1682,6 @@
             });
         }
         
-        if (changeThemeBtn) {
-            changeThemeBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-        }
-
         if (closeThemeModalBtn) closeThemeModalBtn.addEventListener('click', closeThemeModal);
         if (themeModalCancelBtn) themeModalCancelBtn.addEventListener('click', closeThemeModal);
         if (themeModalOverlay) themeModalOverlay.addEventListener('click', closeThemeModal);
@@ -1697,11 +1704,24 @@
             });
         }
 
+        if (guideThemeDropdownBtn && guideThemeDropdownMenu) {
+            guideThemeDropdownBtn.addEventListener('click', function() {
+                guideThemeDropdownMenu.classList.toggle('hidden');
+            });
+        }
+
         document.addEventListener('click', function(e) {
-            if (!themeDropdownMenu || !themeDropdownBtn) return;
-            var clickedInside = themeDropdownMenu.contains(e.target) || themeDropdownBtn.contains(e.target);
-            if (!clickedInside) {
-                themeDropdownMenu.classList.add('hidden');
+            if (themeDropdownMenu && themeDropdownBtn) {
+                var clickedInsideModal = themeDropdownMenu.contains(e.target) || themeDropdownBtn.contains(e.target);
+                if (!clickedInsideModal) {
+                    themeDropdownMenu.classList.add('hidden');
+                }
+            }
+            if (guideThemeDropdownMenu && guideThemeDropdownBtn) {
+                var clickedInsideGuide = guideThemeDropdownMenu.contains(e.target) || guideThemeDropdownBtn.contains(e.target);
+                if (!clickedInsideGuide) {
+                    guideThemeDropdownMenu.classList.add('hidden');
+                }
             }
         });
 
@@ -1715,6 +1735,18 @@
                 updateThemeModalAction();
                 if (modalSaveBtn) modalSaveBtn.disabled = !AppState.selectedTheme;
                 if (themeDropdownMenu) themeDropdownMenu.classList.add('hidden');
+            });
+        }
+
+        if (guideThemeDropdownList) {
+            guideThemeDropdownList.addEventListener('click', function(e) {
+                var row = e.target.closest('[data-theme]');
+                if (!row) return;
+                AppState.selectedTheme = row.getAttribute('data-theme');
+                localStorage.setItem(STORAGE_KEYS.SELECTED_THEME, AppState.selectedTheme);
+                renderThemeDropdown();
+                updateGuideStep1Status();
+                if (guideThemeDropdownMenu) guideThemeDropdownMenu.classList.add('hidden');
             });
         }
 
