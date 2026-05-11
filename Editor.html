@@ -27,6 +27,16 @@
             cursor: pointer;
         }
         .live-chat-link:hover { color: #b45309; }
+
+        .theme-select {
+            color: #111827;
+        }
+        .theme-select option {
+            padding: 6px 10px;
+        }
+        .theme-select optgroup {
+            padding-top: 6px;
+        }
     </style>
 </head>
 <body class="h-screen bg-gray-50 overflow-hidden flex flex-col">
@@ -172,6 +182,50 @@
                         <span onclick="goToLiveChat()" class="live-chat-link">live chat</span> 
                         to resolve theme compatibility.
                     </p>
+                    <div>
+                        <label class="block text-xs text-gray-900 mb-1">Theme list</label>
+                        <select class="theme-select w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white text-gray-900 focus:outline-none focus:border-blue-500">
+                            <option value="" selected>Select a theme</option>
+                            <optgroup label="Free themes">
+                                <option>Trade</option>
+                                <option>Refresh</option>
+                                <option>Origin</option>
+                                <option>Vessel</option>
+                                <option>Publisher</option>
+                                <option>Rise</option>
+                                <option>Savor</option>
+                                <option>Craft</option>
+                                <option>Studio</option>
+                                <option>Ride</option>
+                                <option>Horizon</option>
+                                <option>Tinker</option>
+                                <option>Fabric</option>
+                                <option>Sense</option>
+                                <option>Colorblock</option>
+                                <option>Heritage</option>
+                                <option>Taste</option>
+                                <option>Ritual</option>
+                                <option>Spotlight</option>
+                                <option>Pitch</option>
+                                <option>Dawn</option>
+                                <option>Crave</option>
+                                <option>Atelier</option>
+                                <option>Dwell</option>
+                            </optgroup>
+                            <optgroup label="Paid themes">
+                                <option>Arcane</option>
+                                <option>Venice</option>
+                                <option>Granivio</option>
+                                <option>Mivo</option>
+                                <option>Woody</option>
+                                <option>Andie</option>
+                                <option>Pleasure</option>
+                                <option>Runase</option>
+                                <option>Oak</option>
+                                <option>Road</option>
+                            </optgroup>
+                        </select>
+                    </div>
                     <p><strong>Note 2:</strong> This app uses its own product grid (instead of Shopify’s default) to display filters and product results. As a result, your collection page design may change.<br><br>
                         Please visit the 
                         <a href="#" onclick="goToCustomDesign()" class="font-semibold underline text-amber-700 hover:text-amber-800">Custom Design tab</a> 
@@ -185,6 +239,50 @@
                     <p><strong>Note 1:</strong> Your theme may not work with the app, so the filter might not show. 
                         <span onclick="goToLiveChat()" class="live-chat-link">Contact live chat</span> for help fixing it.
                     </p>
+                    <div>
+                        <label class="block text-xs text-gray-900 mb-1">Theme list</label>
+                        <select class="theme-select w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white text-gray-900 focus:outline-none focus:border-blue-500">
+                            <option value="" selected>Select a theme</option>
+                            <optgroup label="Free themes">
+                                <option>Trade</option>
+                                <option>Refresh</option>
+                                <option>Origin</option>
+                                <option>Vessel</option>
+                                <option>Publisher</option>
+                                <option>Rise</option>
+                                <option>Savor</option>
+                                <option>Craft</option>
+                                <option>Studio</option>
+                                <option>Ride</option>
+                                <option>Horizon</option>
+                                <option>Tinker</option>
+                                <option>Fabric</option>
+                                <option>Sense</option>
+                                <option>Colorblock</option>
+                                <option>Heritage</option>
+                                <option>Taste</option>
+                                <option>Ritual</option>
+                                <option>Spotlight</option>
+                                <option>Pitch</option>
+                                <option>Dawn</option>
+                                <option>Crave</option>
+                                <option>Atelier</option>
+                                <option>Dwell</option>
+                            </optgroup>
+                            <optgroup label="Paid themes">
+                                <option>Arcane</option>
+                                <option>Venice</option>
+                                <option>Granivio</option>
+                                <option>Mivo</option>
+                                <option>Woody</option>
+                                <option>Andie</option>
+                                <option>Pleasure</option>
+                                <option>Runase</option>
+                                <option>Oak</option>
+                                <option>Road</option>
+                            </optgroup>
+                        </select>
+                    </div>
                     <p><strong>Note 2:</strong> This app uses its own product grid (instead of Shopify’s default) to display filters and product results. As a result, your collection page design may change.<br><br>
                         Please visit the 
                         <a href="#" onclick="goToCustomDesign()" class="font-semibold underline text-amber-700 hover:text-amber-800">Custom Design tab</a> 
