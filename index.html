@@ -1122,6 +1122,21 @@
             updateProgressAndMessages();
         }
 
+        function shouldCollapseOnboardingOnReload() {
+            var appLive = AppState.firstEnableDone && AppState.appToggleState === 'on' && AppState.selectedTheme === AppState.lastEnabledTheme;
+            var suggestionLive = AppState.searchSuggestionState === 'on';
+            return appLive && suggestionLive;
+        }
+
+        function collapseOnboardingGuide() {
+            var toggle = document.querySelector('.guide-toggle[data-target="guide-body-1"]');
+            var body = document.getElementById('guide-body-1');
+            if (!toggle || !body) return;
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+            body.classList.add('hidden');
+        }
+
         function updateFindterStatus() {
             var appLive = AppState.appToggleState === 'on' && AppState.firstEnableDone;
             var suggestionLive = AppState.searchSuggestionState === 'on';
@@ -1968,6 +1983,9 @@
         updateGuideStep1Status();
         updateSearchSuggestionGuideStatus();
         updateFindterStatus();
+        if (shouldCollapseOnboardingOnReload()) {
+            collapseOnboardingGuide();
+        }
         
         console.log('Ready!');
     });
