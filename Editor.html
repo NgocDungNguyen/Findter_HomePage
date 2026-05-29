@@ -78,37 +78,67 @@
             </div>
             
             <div class="flex-1 overflow-auto p-4 space-y-6 text-sm">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-x-2">
+                <div class="border border-gray-200 rounded-xl">
+                    <div class="flex items-center justify-between px-3 py-2">
+                        <button id="search-filter-core-header" class="flex items-center gap-x-2 flex-1 text-left" data-expanded="true">
                             <div class="w-5 h-5 bg-blue-100 text-blue-600 rounded flex items-center justify-center text-xs">📦</div>
                             <span class="font-medium">Search & filter core</span>
-                        </div>
+                            <i id="search-filter-core-icon" class="fa-solid fa-chevron-up text-xs text-gray-400 ml-auto"></i>
+                        </button>
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input id="app-embed-toggle" type="checkbox" checked class="sr-only peer">
                             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:bg-blue-600"></div>
                         </label>
                     </div>
-                    
-                    <div id="notesContainer" class="pl-7 text-xs text-amber-600 leading-relaxed space-y-4"></div>
-                </div>
-
-                <!-- Always visible section -->
-                <div class="pl-7 space-y-4">
-                    <div>
-                        <label class="block text-xs text-gray-500 mb-1">Search input selector</label>
-                        <input type="text" value="[name=q]" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-500 mb-1">Link no results page</label>
-                        <div class="flex items-center gap-x-2 bg-white border border-gray-300 rounded-lg px-3 py-2">
-                            <i class="fa-solid fa-link text-gray-400"></i>
-                            <span class="text-sm">All Products</span>
+                    <div id="search-filter-core-content" class="px-3 pb-4">
+                        <div id="notesContainer" class="pl-7 text-xs text-amber-600 leading-relaxed space-y-4"></div>
+                        <div class="pl-7 space-y-4 mt-4">
+                            <div>
+                                <label class="block text-xs text-gray-500 mb-1">Search input selector</label>
+                                <input type="text" value="[name=q]" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-500 mb-1">Link no results page</label>
+                                <div class="flex items-center gap-x-2 bg-white border border-gray-300 rounded-lg px-3 py-2">
+                                    <i class="fa-solid fa-link text-gray-400"></i>
+                                    <span class="text-sm">All Products</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-500 mb-1">Collection grid selector</label>
+                                <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-xs text-gray-500 mb-1">Collection grid selector</label>
-                        <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                </div>
+
+                <div class="border border-gray-200 rounded-xl">
+                    <div class="flex items-center justify-between px-3 py-2">
+                        <button id="search-suggestion-header" class="flex items-center gap-x-2 flex-1 text-left" data-expanded="false">
+                            <div class="w-5 h-5 bg-blue-100 text-blue-600 rounded flex items-center justify-center text-xs">💡</div>
+                            <span class="font-medium">Search suggestion</span>
+                            <i id="search-suggestion-icon" class="fa-solid fa-chevron-down text-xs text-gray-400 ml-auto"></i>
+                        </button>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input id="search-suggestion-toggle" type="checkbox" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                    <div id="search-suggestion-content" class="px-3 pb-4 hidden">
+                        <div class="pl-7 space-y-4 mt-2">
+                            <div>
+                                <label class="block text-xs text-gray-500 mb-1">Search input selector</label>
+                                <input type="text" placeholder="[name=q]" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-500 mb-1">Predictive container selector</label>
+                                <input type="text" placeholder=".predictive-search-form__content-wrapper,.predictive-search" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-500 mb-1">Predictive container selector (mobile)</label>
+                                <input type="text" placeholder="Fill in field" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -346,7 +376,8 @@
 
         // Initialize
         const STORAGE_KEYS = {
-            APP_TOGGLE_STATE: 'findter_app_toggle_state'
+            APP_TOGGLE_STATE: 'findter_app_toggle_state',
+            SEARCH_SUGGESTION_TOGGLE_STATE: 'findter_search_suggestion_toggle_state'
         };
 
         function setToggleState(isOn, persist) {
@@ -355,6 +386,15 @@
             toggle.checked = isOn;
             if (persist) {
                 localStorage.setItem(STORAGE_KEYS.APP_TOGGLE_STATE, isOn ? 'on' : 'off');
+            }
+        }
+
+        function setSearchSuggestionToggleState(isOn, persist) {
+            const toggle = document.getElementById('search-suggestion-toggle');
+            if (!toggle) return;
+            toggle.checked = isOn;
+            if (persist) {
+                localStorage.setItem(STORAGE_KEYS.SEARCH_SUGGESTION_TOGGLE_STATE, isOn ? 'on' : 'off');
             }
         }
 
@@ -377,9 +417,45 @@
             });
         }
 
+        function initSearchSuggestionToggle() {
+            const toggle = document.getElementById('search-suggestion-toggle');
+            if (!toggle) return;
+
+            const storedState = localStorage.getItem(STORAGE_KEYS.SEARCH_SUGGESTION_TOGGLE_STATE);
+            if (storedState) {
+                toggle.checked = storedState === 'on';
+            }
+
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('autoEnableSuggestion') === '1') {
+                setSearchSuggestionToggleState(true, true);
+            }
+
+            toggle.addEventListener('change', function() {
+                localStorage.setItem(STORAGE_KEYS.SEARCH_SUGGESTION_TOGGLE_STATE, toggle.checked ? 'on' : 'off');
+            });
+        }
+
+        function setupAccordion(headerId, contentId, iconId) {
+            const header = document.getElementById(headerId);
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById(iconId);
+            if (!header || !content || !icon) return;
+
+            header.addEventListener('click', function() {
+                const expanded = header.getAttribute('data-expanded') === 'true';
+                header.setAttribute('data-expanded', String(!expanded));
+                content.classList.toggle('hidden', expanded);
+                icon.className = expanded ? 'fa-solid fa-chevron-down text-xs text-gray-400 ml-auto' : 'fa-solid fa-chevron-up text-xs text-gray-400 ml-auto';
+            });
+        }
+
         window.onload = () => {
             setSidebarMode(1);
             initAppToggle();
+            initSearchSuggestionToggle();
+            setupAccordion('search-filter-core-header', 'search-filter-core-content', 'search-filter-core-icon');
+            setupAccordion('search-suggestion-header', 'search-suggestion-content', 'search-suggestion-icon');
         };
     </script>
 </body>
