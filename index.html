@@ -11,6 +11,38 @@
         body { font-family: 'Inter', sans-serif; }
         .sidebar-scrollbar::-webkit-scrollbar { width: 6px; }
         .sidebar-scrollbar::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+        .homepage-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        .homepage-column {
+            display: contents;
+        }
+        @media (min-width: 1024px) {
+            .homepage-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+            .homepage-column {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+            .homepage-left {
+                grid-column: span 2 / span 2;
+            }
+            .homepage-right {
+                grid-column: span 1 / span 1;
+            }
+        }
+        .sidebar-collapsed aside {
+            width: 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+        }
+        .sidebar-collapsed aside > * {
+            display: none !important;
+        }
         .step-checkbox {
             transition: all 0.2s ease;
             cursor: pointer;
@@ -222,7 +254,7 @@
     <!-- Main Layout -->
     <div class="flex flex-1 overflow-hidden">
         <!-- Sidebar -->
-        <aside class="w-60 bg-[#ebebeb] flex flex-col border-r border-gray-300 shrink-0 sidebar-scrollbar overflow-y-auto">
+        <aside class="w-60 bg-[#ebebeb] flex flex-col border-r border-gray-300 shrink-0 sidebar-scrollbar overflow-y-auto transition-all duration-300">
             <nav class="flex-1 py-3 px-3 flex flex-col gap-0.5">
                 <a href="#" id="nav-home-main" data-page="home" class="nav-item flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors nav-active"><i class="fas fa-home w-6 text-gray-500 text-center"></i> Home</a>
                 <a href="#" class="flex items-center px-2 py-1.5 text-[13px] font-medium rounded-md hover:bg-gray-200 text-gray-700 transition-colors"><i class="fas fa-inbox w-6 text-gray-500 text-center"></i> Orders</a>
@@ -263,9 +295,14 @@
         <!-- Main Content Area -->
         <main class="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#f1f2f4]">
             <div class="flex items-center justify-between px-8 py-4 shrink-0">
-                <div class="flex items-center gap-2 app-header-clickable px-2 -mx-2 py-1 rounded-md" id="app-header-title" data-page="home">
+                <div class="flex items-center gap-2">
+                    <button id="sidebar-toggle-btn" class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors" aria-label="Toggle sidebar">
+                        <i class="fas fa-bars text-sm"></i>
+                    </button>
+                    <div class="flex items-center gap-2 app-header-clickable px-2 -mx-2 py-1 rounded-md" id="app-header-title" data-page="home">
                     <div class="bg-[#bd2130] text-white rounded-[4px] w-[22px] h-[22px] flex items-center justify-center text-[11px]"><i class="fas fa-filter"></i></div>
                     <h2 class="font-semibold text-[15px] text-[#303030]">Findter Custom Filter & Search</h2>
+                    </div>
                 </div>
                 <button class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors"><i class="fas fa-ellipsis-h text-sm"></i></button>
             </div>
@@ -278,18 +315,6 @@
                         <div class="flex items-center justify-between mb-6">
                             <h1 class="text-[22px] font-bold text-[#303030]">Homepage</h1>
                             <div class="flex gap-3 shrink-0 ml-4 flex-wrap items-center">
-                                <div class="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
-                                    <button id="flow-1-btn" class="flow-btn active-flow-1 border-2 border-transparent rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative">
-                                        <span class="flow-indicator bg-white/50"></span>
-                                        <i class="fas fa-lock text-xs"></i>
-                                        Flow 1: Lock
-                                    </button>
-                                    <button id="flow-2-btn" class="flow-btn border-2 border-gray-300 bg-white text-gray-600 rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative hover:border-blue-300">
-                                        <i class="fas fa-unlock-alt text-xs"></i>
-                                        Flow 2: Flexible
-                                    </button>
-                                </div>
-                                <div class="w-px h-8 bg-gray-300"></div>
                                 <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">Reset Indexing</button>
                                 <button id="end-index-btn" class="border border-green-300 bg-green-50 text-green-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-green-100 transition-colors shadow-sm whitespace-nowrap">End Index Now</button>
                             </div>
@@ -298,10 +323,9 @@
                         <div id="unified-status-banner" class="mb-5 hidden"></div>
                         <div id="indexing-banner-container" class="mb-5 hidden"></div>
 
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                            <div class="lg:col-span-2 flex flex-col gap-5">
-                                
-                                <div id="onboarding-guide-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden transition-all duration-300">
+                        <div class="homepage-grid">
+                            <div class="homepage-column homepage-left">
+                                <div id="onboarding-guide-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 order-2 lg:order-none">
                                     <div class="p-5">
                                         <div class="flex items-center justify-between mb-5">
                                             <h3 class="font-semibold text-[15px] text-[#303030]">Onboarding guide</h3>
@@ -324,7 +348,7 @@
                                                         <i class="fas fa-check text-[11px] text-transparent"></i>
                                                     </div>
                                                     <div class="flex-1 flex items-center cursor-pointer guide-step-toggle" data-target="step-content-1">
-                                                        <h4 class="font-semibold text-[14px] text-[#303030] flex-1">Activate App Embed in Theme (<a href="#" class="font-bold text-green-600 underline hover:text-green-800">Guideline Here</a>)</h4>
+                                                        <h4 class="font-semibold text-[14px] text-[#303030] flex-1">Activate app embed in theme (<a href="#" class="font-bold text-green-600 underline hover:text-green-800">Guideline here</a>)</h4>
                                                         <i class="fas fa-chevron-up text-gray-400 text-xs transition-transform duration-200 ml-2"></i>
                                                     </div>
                                                 </div>
@@ -345,8 +369,9 @@
                                                             <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
                                                             <span class="text-[13px] text-gray-700">Theme Selection</span>
                                                             <div class="relative">
-                                                                <button type="button" id="guide-theme-dropdown-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-3 py-1.5 text-[13px] font-medium hover:bg-gray-50 transition-colors inline-flex items-center gap-2">
-                                                                    <span id="guide-theme-dropdown-label" class="text-gray-700">-- Select a theme --</span>
+                                                                <button type="button" id="guide-theme-dropdown-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-3 py-1.5 text-[13px] font-medium hover:bg-gray-50 transition-colors inline-flex items-center gap-2 w-full">
+                                                                    <span id="guide-theme-dropdown-label" class="text-gray-700 flex-1 text-left">-- Select a theme --</span>
+                                                                    <span id="guide-theme-live-pill" class="hidden px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">Live</span>
                                                                     <i class="fas fa-chevron-down text-xs text-gray-400"></i>
                                                                 </button>
                                                                 <div id="guide-theme-dropdown-menu" class="hidden absolute left-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg max-h-40 overflow-y-auto">
@@ -364,6 +389,24 @@
                                                             Enable App in Theme Editor
                                                         </button>
                                                     </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="border border-gray-100 rounded-lg overflow-hidden">
+                                                <div class="flex items-center gap-5 p-3 group transition-colors">
+                                                    <div id="step4-checkbox" class="step-checkbox w-6 h-6 shrink-0 rounded-full border-2 border-dashed border-gray-400 bg-white flex items-center justify-center" data-step="4">
+                                                        <i class="fas fa-check text-[11px] text-transparent"></i>
+                                                    </div>
+                                                    <div class="flex-1 flex items-center cursor-pointer guide-step-toggle" data-target="step-content-4">
+                                                        <h4 class="text-[14px] font-semibold text-[#303030] flex-1"><strong>Activate search suggestion in theme (Optional)</strong></h4>
+                                                        <i class="fas fa-chevron-up text-gray-400 text-xs transition-transform duration-200 ml-2"></i>
+                                                    </div>
+                                                </div>
+                                                <div id="step-content-4" class="pl-14 pr-4 pb-4">
+                                                    <button type="button" id="enable-search-suggestion-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
+                                                        <i class="fas fa-external-link-alt text-xs"></i>
+                                                        Enable Search Suggestion in Theme Editor
+                                                    </button>
                                                 </div>
                                             </div>
 
@@ -403,11 +446,12 @@
                                                     <p class="text-[13px] text-gray-500">Your search engine is optimized and active.</p>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">
+                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-3 lg:order-none">
                                     <div class="p-5 flex items-center justify-between border-b border-gray-100">
                                         <div class="flex items-center gap-3"><h3 class="font-semibold text-[15px] text-[#303030]">Data insight</h3><button class="border border-gray-300 rounded-[6px] px-2.5 py-1 text-[13px] font-medium text-[#303030] flex items-center gap-2 hover:bg-gray-50 shadow-sm"><i class="far fa-calendar text-gray-500 text-sm"></i> Last 30 days</button></div>
                                         <button class="border border-gray-300 rounded-[6px] w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-50 shadow-sm"><i class="fas fa-chart-bar text-sm"></i></button>
@@ -418,11 +462,31 @@
                                     </div>
                                 </div>
 
-                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5"><h3 class="font-semibold text-[15px] text-[#303030] mb-3">Master</h3><button class="border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 shadow-sm">Master</button></div>
+                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-6 lg:order-none"><h3 class="font-semibold text-[15px] text-[#303030] mb-3">Master</h3><button class="border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 shadow-sm">Master</button></div>
                             </div>
 
-                            <div class="flex flex-col gap-5">
-                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5">
+                            <div class="homepage-column homepage-right">
+                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-1 lg:order-none">
+                                    <h3 class="font-semibold text-[15px] text-[#303030] mb-4"><strong>Findter App Status</strong></h3>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center justify-between text-[13px] text-[#303030]">
+                                            <span class="font-medium">App Embed</span>
+                                            <span id="status-app-embed" class="flex items-center gap-2 px-2.5 py-1 rounded-md border border-gray-200 bg-white text-[11px] font-semibold text-gray-600">
+                                                <span class="w-2 h-2 rounded-full bg-gray-400"></span>
+                                                Inactive
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center justify-between text-[13px] text-[#303030]">
+                                            <span class="font-medium">Search Suggestion</span>
+                                            <span id="status-search-suggestion" class="flex items-center gap-2 px-2.5 py-1 rounded-md border border-gray-200 bg-white text-[11px] font-semibold text-gray-600">
+                                                <span class="w-2 h-2 rounded-full bg-gray-400"></span>
+                                                Inactive
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-4 lg:order-none">
                                     <h3 class="font-semibold text-[15px] text-[#303030] mb-3">Help & Support</h3>
                                     <p class="text-[13px] text-[#303030] mb-3 leading-relaxed">Find out more User Guidelines <a href="#" class="text-blue-600 hover:underline">here</a>.</p>
                                     <div class="text-[13px] text-[#303030] space-y-1 mb-4">
@@ -441,7 +505,7 @@
                                     </div>
                                 </div>
 
-                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5">
+                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-5 lg:order-none">
                                     <div class="flex items-center gap-2 mb-3">
                                         <h3 class="font-semibold text-[15px] text-[#303030]">Sync recent updates</h3>
                                         <span id="sync-status-badge" class="bg-[#cbf1c4] text-[#1f5119] text-[11px] px-2 py-0.5 rounded-full font-semibold">Completed</span>
@@ -718,12 +782,13 @@
             hasEnabledInEditor: false,
             indexingInterval: null,
             currentPage: 'home',
-            currentFlow: 2,
-            appToggleState: 'off'
+            appToggleState: 'off',
+            searchSuggestionState: 'off'
         };
 
         const STORAGE_KEYS = {
             APP_TOGGLE_STATE: 'findter_app_toggle_state',
+            SEARCH_SUGGESTION_TOGGLE_STATE: 'findter_search_suggestion_toggle_state',
             INDEXING_COMPLETE: 'findter_indexing_complete',
             SELECTED_THEME: 'findter_selected_theme',
             LAST_ENABLED_THEME: 'findter_last_enabled_theme',
@@ -732,6 +797,7 @@
 
         function loadPersistedState() {
             var storedToggle = localStorage.getItem(STORAGE_KEYS.APP_TOGGLE_STATE);
+            var storedSearchSuggestion = localStorage.getItem(STORAGE_KEYS.SEARCH_SUGGESTION_TOGGLE_STATE);
             var storedIndexing = localStorage.getItem(STORAGE_KEYS.INDEXING_COMPLETE);
             var storedTheme = localStorage.getItem(STORAGE_KEYS.SELECTED_THEME);
             var storedLastEnabled = localStorage.getItem(STORAGE_KEYS.LAST_ENABLED_THEME);
@@ -740,6 +806,10 @@
             if (storedToggle) {
                 AppState.appToggleState = storedToggle;
                 AppState.appEnabled = storedToggle === 'on';
+            }
+
+            if (storedSearchSuggestion) {
+                AppState.searchSuggestionState = storedSearchSuggestion;
             }
 
             if (storedIndexing === 'true') {
@@ -775,6 +845,7 @@
         const guideThemeDropdownLabel = document.getElementById('guide-theme-dropdown-label');
         const guideThemeDropdownMenu = document.getElementById('guide-theme-dropdown-menu');
         const guideThemeDropdownList = document.getElementById('guide-theme-dropdown-list');
+        const guideThemeLivePill = document.getElementById('guide-theme-live-pill');
         const modalSaveBtn = document.getElementById('modal-save-btn');
         const enableEditorModalBtn = document.getElementById('enable-editor-modal-btn');
         
@@ -812,14 +883,14 @@
         const liveChatLink = document.getElementById('live-chat-link');
 
         const appHeaderTitle = document.getElementById('app-header-title');
+        const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
         const resetIndexingBtn = document.getElementById('reset-indexing-btn');
         const endIndexBtn = document.getElementById('end-index-btn');
 
         const guideEnableEditorBtn = document.getElementById('guide-enable-editor-btn');
         const editorThemeDisplay = document.getElementById('editor-theme-display');
-
-        const flow1Btn = document.getElementById('flow-1-btn');
-        const flow2Btn = document.getElementById('flow-2-btn');
+        const enableSearchSuggestionBtn = document.getElementById('enable-search-suggestion-btn');
+        const step4Checkbox = document.getElementById('step4-checkbox');
 
         const floatingChatBtn = document.getElementById('floating-chat-btn');
         const chatBubble = document.getElementById('chat-bubble');
@@ -828,6 +899,9 @@
         const sendChatBtn = document.getElementById('send-chat-btn');
         const chatMessages = document.getElementById('chat-messages');
         const chatBadge = document.getElementById('chat-badge');
+
+        const statusAppEmbed = document.getElementById('status-app-embed');
+        const statusSearchSuggestion = document.getElementById('status-search-suggestion');
 
         const allNavItems = document.querySelectorAll('[data-page]');
 
@@ -861,27 +935,17 @@
                 updateAllBanners();
                 updateGuideStep1Status();
                 updateLockStates();
+                updateFindterStatus();
+                updateSearchSuggestionGuideStatus();
+            }
+
+            if (e.key === STORAGE_KEYS.SEARCH_SUGGESTION_TOGGLE_STATE) {
+                var suggestionState = e.newValue || 'off';
+                AppState.searchSuggestionState = suggestionState;
+                updateFindterStatus();
+                updateSearchSuggestionGuideStatus();
             }
         });
-
-        // ========== FLOW MANAGEMENT ==========
-        function switchToFlow(flowNumber) {
-            AppState.currentFlow = flowNumber;
-            
-            if (flowNumber === 1) {
-                flow1Btn.className = 'flow-btn active-flow-1 border-2 border-transparent rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative';
-                flow2Btn.className = 'flow-btn border-2 border-gray-300 bg-white text-gray-600 rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative hover:border-blue-300';
-            } else {
-                flow1Btn.className = 'flow-btn border-2 border-gray-300 bg-white text-gray-600 rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative hover:border-red-300';
-                flow2Btn.className = 'flow-btn active-flow-2 border-2 border-transparent rounded-md px-4 py-2 text-[13px] font-semibold flex items-center gap-2 relative';
-            }
-
-            updateAllBanners();
-            renderSubPageContent(AppState.currentPage);
-        }
-
-        flow1Btn.addEventListener('click', function() { switchToFlow(1); });
-        flow2Btn.addEventListener('click', function() { switchToFlow(2); });
 
         // ========== BANNER GENERATION FUNCTIONS ==========
         function getSimpleIndexingBannerHTML() {
@@ -998,6 +1062,7 @@
             var appOn = AppState.appToggleState === 'on';
             var isThemeEnabled = AppState.selectedTheme && AppState.selectedTheme === AppState.lastEnabledTheme;
             var shouldShowCompleted = hasTheme && AppState.firstEnableDone;
+            var isLive = AppState.firstEnableDone && appOn && isThemeEnabled;
 
             if (step1Initial && step1Completed) {
                 if (shouldShowCompleted) {
@@ -1011,6 +1076,10 @@
 
             if (guideThemeDropdownLabel) {
                 guideThemeDropdownLabel.textContent = AppState.selectedTheme || '-- Select a theme --';
+            }
+
+            if (guideThemeLivePill) {
+                guideThemeLivePill.classList.toggle('hidden', !isLive);
             }
 
             renderThemeDropdown();
@@ -1034,6 +1103,46 @@
             }
 
             updateProgressAndMessages();
+            updateFindterStatus();
+            updateSearchSuggestionGuideStatus();
+        }
+
+        function updateSearchSuggestionGuideStatus() {
+            if (!step4Checkbox) return;
+            var suggestionOn = AppState.searchSuggestionState === 'on';
+            step4Checkbox.setAttribute('data-completed', suggestionOn ? 'true' : 'false');
+            step4Checkbox.classList.toggle('bg-[#303030]', suggestionOn);
+            step4Checkbox.classList.toggle('text-white', suggestionOn);
+            step4Checkbox.classList.toggle('border-2', !suggestionOn);
+            step4Checkbox.classList.toggle('border-dashed', !suggestionOn);
+            step4Checkbox.classList.toggle('border-gray-400', !suggestionOn);
+            step4Checkbox.classList.toggle('bg-white', !suggestionOn);
+            var checkIcon = step4Checkbox.querySelector('.fa-check');
+            if (checkIcon) checkIcon.classList.toggle('text-transparent', !suggestionOn);
+            updateProgressAndMessages();
+        }
+
+        function updateFindterStatus() {
+            var appLive = AppState.appToggleState === 'on' && AppState.firstEnableDone;
+            var suggestionLive = AppState.searchSuggestionState === 'on';
+
+            if (statusAppEmbed) {
+                statusAppEmbed.className = appLive
+                    ? 'flex items-center gap-2 px-2.5 py-1 rounded-md border border-green-200 bg-white text-[11px] font-semibold text-green-700'
+                    : 'flex items-center gap-2 px-2.5 py-1 rounded-md border border-gray-200 bg-white text-[11px] font-semibold text-gray-600';
+                statusAppEmbed.innerHTML = appLive
+                    ? '<span class="w-2 h-2 rounded-full bg-green-500"></span>Active'
+                    : '<span class="w-2 h-2 rounded-full bg-gray-400"></span>Inactive';
+            }
+
+            if (statusSearchSuggestion) {
+                statusSearchSuggestion.className = suggestionLive
+                    ? 'flex items-center gap-2 px-2.5 py-1 rounded-md border border-green-200 bg-white text-[11px] font-semibold text-green-700'
+                    : 'flex items-center gap-2 px-2.5 py-1 rounded-md border border-gray-200 bg-white text-[11px] font-semibold text-gray-600';
+                statusSearchSuggestion.innerHTML = suggestionLive
+                    ? '<span class="w-2 h-2 rounded-full bg-green-500"></span>Active'
+                    : '<span class="w-2 h-2 rounded-full bg-gray-400"></span>Inactive';
+            }
         }
 
         // ========== ENABLE APP FROM BANNER ==========
@@ -1065,6 +1174,18 @@
             updateGuideStep1Status();
         }
 
+        function openEditorWithSearchSuggestionEnable() {
+            if (!AppState.indexingComplete) {
+                alert('Please wait for indexing to complete first.');
+                return;
+            }
+            if (!AppState.selectedTheme) {
+                openThemeModal();
+                return;
+            }
+            window.open('Editor.html?autoEnableSuggestion=1', '_blank');
+        }
+
         // ========== ENABLE APP FROM MODAL 2 (Opens Editor.html) ==========
         function handleEnableFromModal2() {
             if (!AppState.indexingComplete) {
@@ -1087,9 +1208,7 @@
             'advanced': 'Advanced Features'
         };
 
-        function navigateToPage(pageId, showRestrictedModalAfter) {
-            showRestrictedModalAfter = showRestrictedModalAfter || false;
-
+        function navigateToPage(pageId) {
             var pages = document.querySelectorAll('.page-view');
             pages.forEach(function(p) { p.classList.remove('active'); });
 
@@ -1108,9 +1227,6 @@
                 renderSubPageContent(pageId);
                 updateAllBanners();
 
-                if (AppState.currentFlow === 1 && showRestrictedModalAfter && !canAccessFeatures()) {
-                    setTimeout(function() { showRestrictedModal(); }, 150);
-                }
             }
         }
 
@@ -1119,42 +1235,25 @@
             if (!container) return;
 
             var canAccess = canAccessFeatures();
-            var isFlow2 = AppState.currentFlow === 2;
+            var showPreview = !canAccess;
 
-            if (isFlow2 || canAccess) {
-                container.innerHTML = 
-                    '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 p-8">' +
-                        '<div class="flex items-center gap-4 mb-6">' +
-                            '<div class="w-12 h-12 bg-' + (isFlow2 && !canAccess ? 'blue' : 'gray') + '-100 rounded-xl flex items-center justify-center">' +
-                                '<i class="fas fa-' + getPageIcon(pageId) + ' text-' + (isFlow2 && !canAccess ? 'blue' : 'gray') + '-500 text-xl"></i>' +
-                            '</div>' +
-                            '<div>' +
-                                '<h2 class="text-[18px] font-semibold text-[#303030]">' + pageNames[pageId] + '</h2>' +
-                                '<p class="text-[13px] ' + (isFlow2 && !canAccess ? 'text-blue-600' : 'text-gray-500') + '">' +
-                                    (isFlow2 && !canAccess ? '<i class="fas fa-info-circle mr-1"></i> Available for preview' : 'Configure settings here') +
-                                '</p>' +
-                            '</div>' +
+            container.innerHTML = 
+                '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 p-8">' +
+                    '<div class="flex items-center gap-4 mb-6">' +
+                        '<div class="w-12 h-12 bg-' + (showPreview ? 'blue' : 'gray') + '-100 rounded-xl flex items-center justify-center">' +
+                            '<i class="fas fa-' + getPageIcon(pageId) + ' text-' + (showPreview ? 'blue' : 'gray') + '-500 text-xl"></i>' +
                         '</div>' +
-                        '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">' +
-                            generatePlaceholderCards(isFlow2 && !canAccess) +
+                        '<div>' +
+                            '<h2 class="text-[18px] font-semibold text-[#303030]">' + pageNames[pageId] + '</h2>' +
+                            '<p class="text-[13px] ' + (showPreview ? 'text-blue-600' : 'text-gray-500') + '">' +
+                                (showPreview ? '<i class="fas fa-info-circle mr-1"></i> Available for preview' : 'Configure settings here') +
+                            '</p>' +
                         '</div>' +
-                    '</div>';
-            } else {
-                container.innerHTML = 
-                    '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 p-12 text-center">' +
-                        '<div class="empty-state-illustration mb-6">' +
-                            '<i class="fas fa-' + getPageIcon(pageId) + ' text-[80px] text-gray-300"></i>' +
-                        '</div>' +
-                        '<div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">' +
-                            '<i class="fas fa-lock text-amber-600 text-2xl"></i>' +
-                        '</div>' +
-                        '<h2 class="text-[18px] font-semibold text-[#303030] mb-2">' + pageNames[pageId] + '</h2>' +
-                        '<p class="text-[13px] text-gray-500 max-w-md mx-auto mb-4">This section is locked. Complete setup to unlock features.</p>' +
-                        "<button onclick=\"navigateToPage('home')\" class=\"bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2\">" +
-                            '<i class="fas fa-home text-xs"></i> Go to Homepage' +
-                        "</button>"
-                    '</div>';
-            }
+                    '</div>' +
+                    '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">' +
+                        generatePlaceholderCards(showPreview) +
+                    '</div>' +
+                '</div>';
         }
 
         function generatePlaceholderCards(isPreview) {
@@ -1198,16 +1297,15 @@
                 var page = this.getAttribute('data-page');
                 if (!page) return;
 
-                var lockedPages = ['filter', 'search', 'metafield', 'design', 'analytics-app', 'advanced'];
-                var isLocked = lockedPages.indexOf(page) !== -1;
-                
-                if (AppState.currentFlow === 1) {
-                    navigateToPage(page, isLocked && !canAccessFeatures());
-                } else {
-                    navigateToPage(page, false);
-                }
+                navigateToPage(page);
             });
         });
+
+        if (sidebarToggleBtn) {
+            sidebarToggleBtn.addEventListener('click', function() {
+                document.body.classList.toggle('sidebar-collapsed');
+            });
+        }
 
         if (appHeaderTitle) {
             appHeaderTitle.addEventListener('click', function(e) {
@@ -1219,11 +1317,7 @@
         if (goToFilterBtn) {
             goToFilterBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                if (AppState.currentFlow === 1 && !canAccessFeatures()) {
-                    navigateToPage('filter', true);
-                } else {
-                    navigateToPage('filter');
-                }
+                navigateToPage('filter');
             });
         }
 
@@ -1235,6 +1329,13 @@
                     return;
                 }
                 openEditorWithAutoEnable();
+            });
+        }
+
+        if (enableSearchSuggestionBtn) {
+            enableSearchSuggestionBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                openEditorWithSearchSuggestionEnable();
             });
         }
 
@@ -1419,13 +1520,8 @@
         function updateLockStates() {
             var canAccess = canAccessFeatures();
             
-            if (AppState.currentFlow === 1) {
-                if (goToFilterBtn) goToFilterBtn.disabled = !canAccess;
-                if (filterLockHint) filterLockHint.classList.toggle('hidden', canAccess);
-            } else {
-                if (goToFilterBtn) goToFilterBtn.disabled = false;
-                if (filterLockHint) filterLockHint.classList.add('hidden');
-            }
+            if (goToFilterBtn) goToFilterBtn.disabled = false;
+            if (filterLockHint) filterLockHint.classList.add('hidden');
 
             updateEditorModalBanner();
         }
@@ -1501,8 +1597,10 @@
             var s2Done = step2 ? step2.getAttribute('data-completed') === 'true' : false;
             var s3Done = step3 ? step3.getAttribute('data-completed') === 'true' : false;
             
-            var total = 3;
-            var count = [s1Done, s2Done, s3Done].filter(Boolean).length;
+            var total = 4;
+            var step4 = document.querySelector('.step-checkbox[data-step="4"]');
+            var s4Done = step4 ? step4.getAttribute('data-completed') === 'true' : false;
+            var count = [s1Done, s2Done, s3Done, s4Done].filter(Boolean).length;
             var pct = (count / total) * 100;
             
             var progressBar = document.getElementById('progress-bar');
@@ -1541,6 +1639,14 @@
         document.querySelectorAll('.step-checkbox').forEach(function(cb) {
             cb.addEventListener('click', function(e) {
                 e.stopPropagation();
+                if (this === step4Checkbox) {
+                    var nextState = AppState.searchSuggestionState === 'on' ? 'off' : 'on';
+                    AppState.searchSuggestionState = nextState;
+                    localStorage.setItem(STORAGE_KEYS.SEARCH_SUGGESTION_TOGGLE_STATE, nextState);
+                    updateFindterStatus();
+                    updateSearchSuggestionGuideStatus();
+                    return;
+                }
                 var done = this.getAttribute('data-completed') === 'true';
                 var icon = this.querySelector('.fa-check');
                 if (done) {
@@ -1853,7 +1959,6 @@
         // ========== INITIALIZATION ==========
         console.log('Initializing Dashboard...');
         loadPersistedState();
-        switchToFlow(2);
         if (AppState.indexingComplete) {
             showIndexingComplete();
         } else {
@@ -1861,6 +1966,8 @@
         }
         updateLockStates();
         updateGuideStep1Status();
+        updateSearchSuggestionGuideStatus();
+        updateFindterStatus();
         
         console.log('Ready!');
     });
