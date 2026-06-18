@@ -320,9 +320,39 @@
                             </div>
                         </div>
 
-                        <div id="welcome-box" elementtiming="lcp-welcome" class="bg-white rounded-[8px] border border-gray-300 p-6 mb-5" style="display:block !important; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                            <h1 elementtiming="lcp-welcome-heading" class="text-[26px] font-bold text-[#303030] mb-1">Welcome aboard!</h1>
-                            <p class="text-[14px] text-gray-600">Explore your store's filter and search tools - and help your customers find exactly what they're looking for.</p>
+                        <div id="welcome-box" elementtiming="lcp-welcome" class="bg-white rounded-[8px] border border-gray-300 mb-5 overflow-hidden" style="display:block !important; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                            <div class="flex items-center gap-8 p-6">
+                                <!-- Left: text + CTA -->
+                                <div class="flex-1 min-w-0">
+                                    <h1 elementtiming="lcp-welcome-heading" class="text-[26px] font-bold mb-1.5" style="color: #4f46e5;">Welcome aboard!</h1>
+                                    <p class="text-[14px] text-gray-500 mb-5 leading-relaxed">Explore your store's filter and search tools - and help your customers find exactly what they're looking for.</p>
+                                    <div class="flex items-center gap-3 flex-wrap">
+                                        <button onclick="document.getElementById('onboarding-guide-card').scrollIntoView({behavior:'smooth'})" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2 shadow-sm">
+                                            <i class="fas fa-rocket text-xs"></i>
+                                            Start Setup
+                                        </button>
+                                        <a href="#" class="text-[13px] font-medium text-gray-400 hover:text-gray-700 transition-colors inline-flex items-center gap-1.5">
+                                            View guide <i class="fas fa-external-link-alt text-[10px]"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- Right: illustration -->
+                                <div class="shrink-0 hidden md:flex items-center justify-center pr-2">
+                                    <div class="relative w-[120px] h-[100px]">
+                                        <div class="absolute inset-0 rounded-2xl" style="background: linear-gradient(135deg, #eef2ff 0%, #fef2f2 100%);"></div>
+                                        <!-- Filter card -->
+                                        <div class="absolute top-3 left-4 w-14 h-14 bg-white rounded-xl shadow-md flex flex-col items-center justify-center gap-1 border border-gray-100">
+                                            <i class="fas fa-filter text-[#bd2130] text-xl"></i>
+                                            <span class="text-[8px] font-semibold text-gray-400 tracking-wide">FILTER</span>
+                                        </div>
+                                        <!-- Search card -->
+                                        <div class="absolute bottom-2 right-2 w-11 h-11 bg-white rounded-xl shadow-md flex flex-col items-center justify-center gap-0.5 border border-gray-100">
+                                            <i class="fas fa-search text-indigo-500 text-sm"></i>
+                                            <span class="text-[7px] font-semibold text-gray-400 tracking-wide">SEARCH</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div id="unified-status-banner" class="mb-5 hidden"></div>
