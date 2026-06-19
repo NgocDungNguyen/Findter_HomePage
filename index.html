@@ -294,7 +294,7 @@
 
         <!-- Main Content Area -->
         <main class="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#f1f2f4]">
-            <div class="flex items-center justify-between px-8 py-4 shrink-0">
+            <div class="flex items-center justify-between px-8 py-3 shrink-0 bg-white border-b border-gray-200">
                 <div class="flex items-center gap-2">
                     <button id="sidebar-toggle-btn" class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors" aria-label="Toggle sidebar">
                         <i class="fas fa-bars text-sm"></i>
@@ -304,34 +304,30 @@
                     <h1 class="font-semibold text-[18px] text-[#303030]">Findter Filter & Search</h1>
                     </div>
                 </div>
-                <button class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors"><i class="fas fa-ellipsis-h text-sm"></i></button>
+                <div class="flex items-center gap-2">
+                    <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">Reset Indexing</button>
+                    <button id="end-index-btn" class="border border-green-300 bg-green-50 text-green-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-green-100 transition-colors shadow-sm whitespace-nowrap">End Index Now</button>
+                    <button class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors"><i class="fas fa-ellipsis-h text-sm"></i></button>
+                </div>
             </div>
 
-            <div class="flex-1 overflow-y-auto px-8 pb-12 relative">
+            <div class="flex-1 overflow-y-auto px-8 pt-6 pb-12 relative">
                 
                 <!-- HOME PAGE VIEW -->
                 <div id="page-home" class="page-view active">
                     <div class="max-w-[1040px] mx-auto">
-                        <div class="flex items-center justify-between mb-6">
-                            <h1 class="text-[22px] font-bold text-[#303030]">Homepage</h1>
-                            <div class="flex gap-3 shrink-0 ml-4 flex-wrap items-center">
-                                <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">Reset Indexing</button>
-                                <button id="end-index-btn" class="border border-green-300 bg-green-50 text-green-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-green-100 transition-colors shadow-sm whitespace-nowrap">End Index Now</button>
-                            </div>
-                        </div>
-
-                        <div id="welcome-box" elementtiming="lcp-welcome" class="bg-white rounded-[8px] border border-gray-300 mb-5 overflow-hidden" style="display:block !important; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                        <div id="welcome-box" elementtiming="lcp-welcome" class="rounded-[8px] mb-5 overflow-hidden" style="display:block !important; background: linear-gradient(135deg, #022c22 0%, #064e3b 55%, #059669 100%); box-shadow: 0 4px 20px rgba(5,150,105,0.3);">
                             <div class="flex items-center gap-8 p-6">
-                                <!-- Left: text + CTA -->
+                                <!-- Left: heading + text + CTA -->
                                 <div class="flex-1 min-w-0">
-                                    <h1 elementtiming="lcp-welcome-heading" class="text-[26px] font-bold mb-1.5" style="color: #4f46e5;">Welcome aboard!</h1>
-                                    <p class="text-[14px] text-gray-500 mb-5 leading-relaxed">Explore your store's filter and search tools - and help your customers find exactly what they're looking for.</p>
+                                    <h1 elementtiming="lcp-welcome-heading" class="text-[22px] font-bold mb-2" style="color: #fde68a;">Welcome aboard!</h1>
+                                    <p class="text-[13px] leading-relaxed mb-5" style="color: rgba(255,255,255,0.85);">Findter brings unlimited custom filters and instant search to your Shopify storefront, so customers can find products by tags, metafields, variants, vendors and more. Follow the setup guide below to go live in minutes.</p>
                                     <div class="flex items-center gap-3 flex-wrap">
-                                        <button onclick="document.getElementById('onboarding-guide-card').scrollIntoView({behavior:'smooth'})" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2 shadow-sm">
-                                            <i class="fas fa-rocket text-xs"></i>
-                                            Start Setup
+                                        <button id="welcome-contact-btn" class="bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-gray-100 transition-colors inline-flex items-center gap-2 shadow-sm">
+                                            <i class="far fa-comment-dots text-xs"></i>
+                                            Contact us
                                         </button>
-                                        <a href="#" class="text-[13px] font-medium text-gray-400 hover:text-gray-700 transition-colors inline-flex items-center gap-1.5">
+                                        <a href="#" class="text-[13px] font-medium inline-flex items-center gap-1.5 hover:underline" style="color: rgba(255,255,255,0.7);">
                                             View guide <i class="fas fa-external-link-alt text-[10px]"></i>
                                         </a>
                                     </div>
@@ -339,15 +335,13 @@
                                 <!-- Right: illustration -->
                                 <div class="shrink-0 hidden md:flex items-center justify-center pr-2">
                                     <div class="relative w-[120px] h-[100px]">
-                                        <div class="absolute inset-0 rounded-2xl" style="background: linear-gradient(135deg, #eef2ff 0%, #fef2f2 100%);"></div>
-                                        <!-- Filter card -->
-                                        <div class="absolute top-3 left-4 w-14 h-14 bg-white rounded-xl shadow-md flex flex-col items-center justify-center gap-1 border border-gray-100">
-                                            <i class="fas fa-filter text-[#bd2130] text-xl"></i>
+                                        <div class="absolute inset-0 rounded-2xl" style="background: rgba(255,255,255,0.08);"></div>
+                                        <div class="absolute top-3 left-4 w-14 h-14 bg-white rounded-xl shadow-lg flex flex-col items-center justify-center gap-1">
+                                            <i class="fas fa-filter text-xl" style="color: #059669;"></i>
                                             <span class="text-[8px] font-semibold text-gray-400 tracking-wide">FILTER</span>
                                         </div>
-                                        <!-- Search card -->
-                                        <div class="absolute bottom-2 right-2 w-11 h-11 bg-white rounded-xl shadow-md flex flex-col items-center justify-center gap-0.5 border border-gray-100">
-                                            <i class="fas fa-search text-indigo-500 text-sm"></i>
+                                        <div class="absolute bottom-2 right-2 w-11 h-11 bg-white rounded-xl shadow-lg flex flex-col items-center justify-center gap-0.5">
+                                            <i class="fas fa-search text-sm" style="color: #064e3b;"></i>
                                             <span class="text-[7px] font-semibold text-gray-400 tracking-wide">SEARCH</span>
                                         </div>
                                     </div>
@@ -2022,6 +2016,46 @@
             collapseOnboardingGuide();
         }
         
+        // ========== WHAT'S NEW DROPDOWN ==========
+        var whatsNewBtn = document.getElementById('whats-new-btn');
+        var whatsNewDropdown = document.getElementById('whats-new-dropdown');
+        var whatsNewBadge = document.getElementById('whats-new-badge');
+        var whatsNewUnread = 3;
+
+        if (whatsNewBtn && whatsNewDropdown) {
+            whatsNewBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var isHidden = whatsNewDropdown.classList.contains('hidden');
+                whatsNewDropdown.classList.toggle('hidden');
+                if (isHidden && whatsNewUnread > 0) {
+                    whatsNewUnread = 0;
+                    if (whatsNewBadge) whatsNewBadge.classList.add('hidden');
+                    document.querySelectorAll('.whats-new-unread-dot').forEach(function(d) {
+                        d.classList.add('hidden');
+                    });
+                    document.querySelectorAll('.whats-new-item').forEach(function(item) {
+                        item.style.background = '';
+                    });
+                }
+            });
+            document.addEventListener('click', function(e) {
+                if (!whatsNewDropdown.classList.contains('hidden') &&
+                    !whatsNewBtn.contains(e.target) &&
+                    !whatsNewDropdown.contains(e.target)) {
+                    whatsNewDropdown.classList.add('hidden');
+                }
+            });
+        }
+
+        // ========== WELCOME CONTACT BUTTON ==========
+        var welcomeContactBtn = document.getElementById('welcome-contact-btn');
+        if (welcomeContactBtn && chatBubble) {
+            welcomeContactBtn.addEventListener('click', function() {
+                chatBubble.classList.add('active');
+                if (chatBadge) chatBadge.classList.add('hidden');
+            });
+        }
+
         console.log('Ready!');
     });
     </script>
