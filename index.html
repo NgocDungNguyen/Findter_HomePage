@@ -316,37 +316,9 @@
                 <!-- HOME PAGE VIEW -->
                 <div id="page-home" class="page-view active">
                     <div class="max-w-[1040px] mx-auto">
-                        <div id="welcome-box" elementtiming="lcp-welcome" class="bg-white rounded-[8px] border border-gray-200 mb-5 overflow-hidden" style="display:block !important; box-shadow: 0 2px 8px rgba(0,0,0,0.07);">
-                            <div class="flex items-center gap-8 p-6">
-                                <!-- Left: heading + text + CTA -->
-                                <div class="flex-1 min-w-0">
-                                    <h1 elementtiming="lcp-welcome-heading" class="text-[22px] font-bold text-[#303030] mb-2">Welcome aboard!</h1>
-                                    <p class="text-[13px] text-gray-600 leading-relaxed mb-5">Explore your store's filter and search tools - and help your customers find exactly what they're looking for.</p>
-                                    <div class="flex items-center gap-3 flex-wrap">
-                                        <button id="welcome-contact-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2 shadow-sm">
-                                            <i class="far fa-comment-dots text-xs"></i>
-                                            Contact us
-                                        </button>
-                                        <a href="#" class="text-[13px] font-medium text-gray-500 hover:text-gray-800 transition-colors inline-flex items-center gap-1.5">
-                                            View guide <i class="fas fa-external-link-alt text-[10px]"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <!-- Right: illustration -->
-                                <div class="shrink-0 hidden md:flex items-center justify-center pr-2">
-                                    <div class="relative w-[120px] h-[100px]">
-                                        <div class="absolute inset-0 rounded-2xl bg-gray-50"></div>
-                                        <div class="absolute top-3 left-4 w-14 h-14 bg-white rounded-xl shadow-md flex flex-col items-center justify-center gap-1 border border-gray-100">
-                                            <i class="fas fa-filter text-xl text-[#303030]"></i>
-                                            <span class="text-[8px] font-semibold text-gray-400 tracking-wide">FILTER</span>
-                                        </div>
-                                        <div class="absolute bottom-2 right-2 w-11 h-11 bg-white rounded-xl shadow-md flex flex-col items-center justify-center gap-0.5 border border-gray-100">
-                                            <i class="fas fa-search text-sm text-gray-500"></i>
-                                            <span class="text-[7px] font-semibold text-gray-400 tracking-wide">SEARCH</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div id="welcome-box" elementtiming="lcp-welcome" class="mb-4 px-1" style="display:block !important;">
+                            <h1 elementtiming="lcp-welcome-heading" class="text-[22px] font-bold text-[#303030] mb-1">Welcome aboard!</h1>
+                            <p class="text-[13px] text-gray-500 leading-relaxed">Explore your store's filter and search tools - and help your customers find exactly what they're looking for.</p>
                         </div>
 
                         <!-- PRICING NOTICE BANNER -->
@@ -356,9 +328,14 @@
                                     <i class="fas fa-info-circle text-blue-600 text-sm"></i>
                                     <span class="text-[#303030] font-semibold text-[14px]">Upcoming Plan Update</span>
                                 </div>
-                                <button id="pricing-notice-close-btn" class="text-gray-500 hover:text-gray-800 hover:bg-blue-200 rounded p-1 transition-colors" aria-label="Dismiss">
-                                    <i class="fas fa-times text-sm"></i>
-                                </button>
+                                <div class="flex items-center gap-1">
+                                    <button id="pricing-notice-collapse-btn" class="text-gray-500 hover:text-gray-800 hover:bg-blue-200 rounded p-1 transition-colors" aria-label="Collapse">
+                                        <i id="pricing-notice-chevron" class="fas fa-chevron-up text-sm"></i>
+                                    </button>
+                                    <button id="pricing-notice-close-btn" class="text-gray-500 hover:text-gray-800 hover:bg-blue-200 rounded p-1 transition-colors" aria-label="Dismiss">
+                                        <i class="fas fa-times text-sm"></i>
+                                    </button>
+                                </div>
                             </div>
                             <div id="pricing-notice-body" class="bg-white px-5 py-4">
                                 <p class="text-[13px] text-[#303030] leading-relaxed mb-3">Starting <strong>July 1, 2026</strong>, Findter will move to subscription-based plans to continue delivering powerful filter and search features, regular improvements, and dedicated support for your store.</p>
@@ -2080,7 +2057,19 @@
         // ========== PRICING NOTICE BANNER ==========
         var pricingNoticeBanner = document.getElementById('pricing-notice-banner');
         var pricingNoticeCloseBtn = document.getElementById('pricing-notice-close-btn');
+        var pricingNoticeCollapseBtn = document.getElementById('pricing-notice-collapse-btn');
+        var pricingNoticeBody = document.getElementById('pricing-notice-body');
+        var pricingNoticeChevron = document.getElementById('pricing-notice-chevron');
         var pricingNoticeContactLink = document.getElementById('pricing-notice-contact-link');
+
+        if (pricingNoticeCollapseBtn && pricingNoticeBody) {
+            pricingNoticeCollapseBtn.addEventListener('click', function() {
+                var isHidden = pricingNoticeBody.classList.contains('hidden');
+                pricingNoticeBody.classList.toggle('hidden');
+                pricingNoticeChevron.classList.toggle('fa-chevron-up', isHidden);
+                pricingNoticeChevron.classList.toggle('fa-chevron-down', !isHidden);
+            });
+        }
 
         if (pricingNoticeCloseBtn && pricingNoticeBanner) {
             pricingNoticeCloseBtn.addEventListener('click', function() {
