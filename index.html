@@ -350,27 +350,21 @@
                         </div>
 
                         <!-- PRICING NOTICE BANNER -->
-                        <div id="pricing-notice-banner" class="mb-5 rounded-[8px] overflow-hidden shadow-sm">
-                            <div class="flex items-center justify-between px-4 py-3 bg-[#2563eb]">
+                        <div id="pricing-notice-banner" class="mb-5 rounded-[8px] overflow-hidden border border-blue-200 shadow-sm">
+                            <div class="flex items-center justify-between px-4 py-3 bg-blue-100">
                                 <div class="flex items-center gap-2">
-                                    <i class="fas fa-info-circle text-white text-sm"></i>
-                                    <span class="text-white font-semibold text-[14px]">Upcoming Plan Update</span>
+                                    <i class="fas fa-info-circle text-blue-600 text-sm"></i>
+                                    <span class="text-[#303030] font-semibold text-[14px]">Upcoming Plan Update</span>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <button id="pricing-notice-collapse-btn" class="hover:bg-white/20 rounded p-1 transition-colors" aria-label="Collapse">
-                                        <i id="pricing-notice-chevron" class="fas fa-chevron-up text-white text-xs"></i>
-                                    </button>
-                                    <button id="pricing-notice-close-btn" class="hover:bg-white/20 rounded p-1 transition-colors ml-1" aria-label="Dismiss">
-                                        <i class="fas fa-times text-white text-sm"></i>
-                                    </button>
-                                </div>
+                                <button id="pricing-notice-close-btn" class="text-gray-500 hover:text-gray-800 hover:bg-blue-200 rounded p-1 transition-colors" aria-label="Dismiss">
+                                    <i class="fas fa-times text-sm"></i>
+                                </button>
                             </div>
-                            <div id="pricing-notice-body" class="bg-white border border-blue-100 border-t-0 px-5 py-4">
+                            <div id="pricing-notice-body" class="bg-white px-5 py-4">
                                 <p class="text-[13px] text-[#303030] leading-relaxed mb-3">Starting <strong>July 1, 2026</strong>, Findter will move to subscription-based plans to continue delivering powerful filter and search features, regular improvements, and dedicated support for your store.</p>
                                 <p class="text-[13px] text-[#303030] leading-relaxed mb-3">Your filter configurations, search settings, and all store data will remain completely intact. As a valued user, you will receive a <strong>30-day complimentary trial</strong> of the paid plan before any charges apply, giving you plenty of time to explore and decide at no cost.</p>
                                 <p class="text-[13px] text-[#303030] leading-relaxed mb-4">We are committed to keeping Findter affordable and impactful for merchants of every size. <a href="#" class="text-[#2563eb] font-semibold hover:underline">View upcoming plans</a> or <a href="#" id="pricing-notice-contact-link" class="text-[#2563eb] font-semibold hover:underline">contact our team</a> if you have any questions.</p>
                                 <button class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
-                                    <i class="fas fa-tag text-xs"></i>
                                     See pricing plans
                                 </button>
                             </div>
@@ -2085,29 +2079,12 @@
 
         // ========== PRICING NOTICE BANNER ==========
         var pricingNoticeBanner = document.getElementById('pricing-notice-banner');
-        var pricingNoticeCollapseBtn = document.getElementById('pricing-notice-collapse-btn');
         var pricingNoticeCloseBtn = document.getElementById('pricing-notice-close-btn');
-        var pricingNoticeBody = document.getElementById('pricing-notice-body');
-        var pricingNoticeChevron = document.getElementById('pricing-notice-chevron');
         var pricingNoticeContactLink = document.getElementById('pricing-notice-contact-link');
-
-        if (pricingNoticeBanner && localStorage.getItem('findter_pricing_notice_dismissed') === 'true') {
-            pricingNoticeBanner.style.display = 'none';
-        }
-
-        if (pricingNoticeCollapseBtn && pricingNoticeBody) {
-            pricingNoticeCollapseBtn.addEventListener('click', function() {
-                var isHidden = pricingNoticeBody.classList.contains('hidden');
-                pricingNoticeBody.classList.toggle('hidden');
-                pricingNoticeChevron.classList.toggle('fa-chevron-up', isHidden);
-                pricingNoticeChevron.classList.toggle('fa-chevron-down', !isHidden);
-            });
-        }
 
         if (pricingNoticeCloseBtn && pricingNoticeBanner) {
             pricingNoticeCloseBtn.addEventListener('click', function() {
                 pricingNoticeBanner.style.display = 'none';
-                localStorage.setItem('findter_pricing_notice_dismissed', 'true');
             });
         }
 
