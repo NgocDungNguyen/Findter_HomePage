@@ -321,7 +321,7 @@
                                 <!-- Left: heading + text + CTA -->
                                 <div class="flex-1 min-w-0">
                                     <h1 elementtiming="lcp-welcome-heading" class="text-[22px] font-bold text-[#303030] mb-2">Welcome aboard!</h1>
-                                    <p class="text-[13px] text-gray-600 leading-relaxed mb-5">Findter brings unlimited custom filters and instant search to your Shopify storefront, so customers can find products by tags, metafields, variants, vendors and more. Follow the setup guide below to go live in minutes.</p>
+                                    <p class="text-[13px] text-gray-600 leading-relaxed mb-5">Explore your store's filter and search tools - and help your customers find exactly what they're looking for.</p>
                                     <div class="flex items-center gap-3 flex-wrap">
                                         <button id="welcome-contact-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2 shadow-sm">
                                             <i class="far fa-comment-dots text-xs"></i>
@@ -346,6 +346,29 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- PRICING NOTICE BANNER -->
+                        <div id="pricing-notice-banner" class="mb-5 rounded-[8px] overflow-hidden shadow-sm">
+                            <div class="flex items-center justify-between px-4 py-3 bg-[#2563eb]">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-info-circle text-white text-sm"></i>
+                                    <span class="text-white font-semibold text-[14px]">Upcoming Plan Update</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button id="pricing-notice-collapse-btn" class="hover:bg-white/20 rounded p-1 transition-colors" aria-label="Collapse">
+                                        <i id="pricing-notice-chevron" class="fas fa-chevron-up text-white text-xs"></i>
+                                    </button>
+                                    <button id="pricing-notice-close-btn" class="hover:bg-white/20 rounded p-1 transition-colors ml-1" aria-label="Dismiss">
+                                        <i class="fas fa-times text-white text-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="pricing-notice-body" class="bg-white border border-blue-100 border-t-0 px-5 py-4">
+                                <p class="text-[13px] text-[#303030] leading-relaxed mb-3">Starting <strong>July 1, 2026</strong>, Findter will move to subscription-based plans to continue delivering powerful filter and search features, regular improvements, and dedicated support for your store.</p>
+                                <p class="text-[13px] text-[#303030] leading-relaxed mb-3">Your filter configurations, search settings, and all store data will remain completely intact. As a valued user, you will receive a <strong>30-day complimentary trial</strong> of the paid plan before any charges apply, giving you plenty of time to explore and decide at no cost.</p>
+                                <p class="text-[13px] text-[#303030] leading-relaxed">We are committed to keeping Findter affordable and impactful for merchants of every size. <a href="#" class="text-[#2563eb] font-semibold hover:underline">View upcoming plans</a> or <a href="#" id="pricing-notice-contact-link" class="text-[#2563eb] font-semibold hover:underline">contact our team</a> if you have any questions.</p>
                             </div>
                         </div>
 
@@ -2051,6 +2074,42 @@
         var welcomeContactBtn = document.getElementById('welcome-contact-btn');
         if (welcomeContactBtn && chatBubble) {
             welcomeContactBtn.addEventListener('click', function() {
+                chatBubble.classList.add('active');
+                if (chatBadge) chatBadge.classList.add('hidden');
+            });
+        }
+
+        // ========== PRICING NOTICE BANNER ==========
+        var pricingNoticeBanner = document.getElementById('pricing-notice-banner');
+        var pricingNoticeCollapseBtn = document.getElementById('pricing-notice-collapse-btn');
+        var pricingNoticeCloseBtn = document.getElementById('pricing-notice-close-btn');
+        var pricingNoticeBody = document.getElementById('pricing-notice-body');
+        var pricingNoticeChevron = document.getElementById('pricing-notice-chevron');
+        var pricingNoticeContactLink = document.getElementById('pricing-notice-contact-link');
+
+        if (pricingNoticeBanner && localStorage.getItem('findter_pricing_notice_dismissed') === 'true') {
+            pricingNoticeBanner.style.display = 'none';
+        }
+
+        if (pricingNoticeCollapseBtn && pricingNoticeBody) {
+            pricingNoticeCollapseBtn.addEventListener('click', function() {
+                var isHidden = pricingNoticeBody.classList.contains('hidden');
+                pricingNoticeBody.classList.toggle('hidden');
+                pricingNoticeChevron.classList.toggle('fa-chevron-up', isHidden);
+                pricingNoticeChevron.classList.toggle('fa-chevron-down', !isHidden);
+            });
+        }
+
+        if (pricingNoticeCloseBtn && pricingNoticeBanner) {
+            pricingNoticeCloseBtn.addEventListener('click', function() {
+                pricingNoticeBanner.style.display = 'none';
+                localStorage.setItem('findter_pricing_notice_dismissed', 'true');
+            });
+        }
+
+        if (pricingNoticeContactLink && chatBubble) {
+            pricingNoticeContactLink.addEventListener('click', function(e) {
+                e.preventDefault();
                 chatBubble.classList.add('active');
                 if (chatBadge) chatBadge.classList.add('hidden');
             });
