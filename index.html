@@ -318,7 +318,7 @@
                     <div class="max-w-[1040px] mx-auto">
                         <div id="welcome-box" elementtiming="lcp-welcome" class="mb-4 px-1" style="display:block !important;">
                             <h1 elementtiming="lcp-welcome-heading" class="text-[22px] font-bold text-[#303030] mb-1">👋 Welcome to Findter 👋</h1>
-                            <p class="text-[13px] text-gray-500 leading-relaxed">Explore your store's filter and search tools - and help your customers find exactly what they're looking for.</p>
+                            <p class="text-[13px] text-gray-500 leading-relaxed">Explore your store's filter and search tools and help your customers find exactly what they're looking for.</p>
                         </div>
 
                         <div id="unified-status-banner" class="mb-5 hidden"></div>
@@ -483,14 +483,6 @@
                                     </div>
                                 </div>
 
-                                <!-- PROMO BANNER 1: Metafield Filters -->
-                                <div id="promo-banner-1" class="rounded-[8px] overflow-hidden shadow-sm relative">
-                                    <button id="promo-banner-1-close" class="absolute top-2 right-2 z-10 text-white/80 hover:text-white hover:bg-black/25 rounded p-1 transition-colors" aria-label="Dismiss">
-                                        <i class="fas fa-times text-sm"></i>
-                                    </button>
-                                    <img src="Image1.png" alt="Metafield Filters feature spotlight" class="w-full block">
-                                </div>
-
                                 <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-3 lg:order-none">
                                     <div class="p-5 flex items-center justify-between border-b border-gray-100">
                                         <div class="flex items-center gap-3"><h3 class="font-semibold text-[15px] text-[#303030]">Data insight</h3><button class="border border-gray-300 rounded-[6px] px-2.5 py-1 text-[13px] font-medium text-[#303030] flex items-center gap-2 hover:bg-gray-50 shadow-sm"><i class="far fa-calendar text-gray-500 text-sm"></i> Last 30 days</button></div>
@@ -563,7 +555,7 @@
                                     <button id="promo-banner-2-close" class="absolute top-2 right-2 z-10 text-white/80 hover:text-white hover:bg-black/25 rounded p-1 transition-colors" aria-label="Dismiss">
                                         <i class="fas fa-times text-sm"></i>
                                     </button>
-                                    <img src="Image2.jpg" alt="Smart Search Suggestions feature" class="w-full block">
+                                    <img src="Image2.png" alt="Smart Search Suggestions feature" class="w-full block">
                                 </div>
                             </div>
                         </div>
@@ -2106,17 +2098,10 @@
             });
         }
 
-        // ========== PROMO BANNERS ==========
-        var promoBanner1 = document.getElementById('promo-banner-1');
-        var promoBanner1Close = document.getElementById('promo-banner-1-close');
+        // ========== PROMO BANNER 2 ==========
         var promoBanner2 = document.getElementById('promo-banner-2');
         var promoBanner2Close = document.getElementById('promo-banner-2-close');
 
-        if (promoBanner1Close && promoBanner1) {
-            promoBanner1Close.addEventListener('click', function() {
-                promoBanner1.style.display = 'none';
-            });
-        }
         if (promoBanner2Close && promoBanner2) {
             promoBanner2Close.addEventListener('click', function() {
                 promoBanner2.style.display = 'none';
