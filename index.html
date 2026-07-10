@@ -365,12 +365,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div id="limit-reached-body" class="bg-white px-5 py-4">
-                                        <p class="text-[13px] text-[#303030] leading-relaxed mb-3">Your store has exceeded the current limit with over <strong id="limit-reached-product-count">300</strong> products. Products beyond the limit will not be indexed and appear on the storefront. Contact us to consult about product limits.</p>
-                                        <button id="limit-reached-contact-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
-                                            Contact us
-                                        </button>
-                                    </div>
+                                    <div id="limit-reached-body" class="bg-white px-5 py-4"></div>
                                 </div>
 
                                 <div id="onboarding-guide-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 order-4 lg:order-none">
@@ -2158,12 +2153,60 @@
             }
         };
 
+        var LIMIT_BANNER_CONTENT = {
+            group1: {
+                bodyHTML: '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">Your catalog currently contains over <strong>300</strong> products. To keep your store running smoothly at no cost, <strong>5%</strong> of your visible products will be hidden each day until only <strong>300</strong> remain. Upgrade to keep your full catalog visible.</p>',
+                ctaLabel: 'Contact us',
+                ctaType: 'chat'
+            },
+            group2: {
+                bodyHTML: '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">Your store has exceeded the current limit with over <strong>300</strong> products. Products beyond the limit will not be indexed and appear on the storefront.</p>',
+                ctaLabel: 'View Pricing Plan',
+                ctaType: 'link'
+            }
+        };
+
+        function renderLimitReachedBanner(group) {
+            var content = LIMIT_BANNER_CONTENT[group];
+            var limitBody = document.getElementById('limit-reached-body');
+            if (!content || !limitBody) return;
+
+            limitBody.innerHTML = content.bodyHTML +
+                '<button type="button" id="limit-reached-cta-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">' + content.ctaLabel + '</button>';
+
+            var ctaBtn = document.getElementById('limit-reached-cta-btn');
+            if (ctaBtn) {
+                if (content.ctaType === 'chat') {
+                    ctaBtn.addEventListener('click', function() {
+                        chatBubble.classList.add('active');
+                        if (chatBadge) chatBadge.classList.add('hidden');
+                    });
+                } else {
+                    ctaBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                    });
+                }
+            }
+        }
+
         var currentPricingGroup = 'group2';
         var hasShownPricingPopup = false;
 
-        function buildPricingBodyHTML(content, ctaBtnId) {
+        function buildPricingBodyHTML(content, ctaBtnId, viewPricingId) {
             return content.introListHTML +
-                '<button type="button" id="' + ctaBtnId + '" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">' + content.ctaLabel + '</button>';
+                '<div class="flex items-center gap-5">' +
+                    '<button type="button" id="' + ctaBtnId + '" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">' + content.ctaLabel + '</button>' +
+                    '<a href="#" id="' + viewPricingId + '" class="text-[13px] font-semibold text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center gap-1">View Pricing <span aria-hidden="true">&rarr;</span></a>' +
+                '</div>';
+        }
+
+        function wireViewPricingLink(linkId) {
+            var link = document.getElementById(linkId);
+            if (link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                });
+            }
         }
 
         function renderPricingNoticeBanner(group) {
@@ -2172,7 +2215,7 @@
 
             if (pricingNoticeIcon) pricingNoticeIcon.className = 'fas ' + content.icon + ' text-blue-600 text-sm';
             if (pricingNoticeTitle) pricingNoticeTitle.textContent = content.title;
-            if (pricingNoticeBody) pricingNoticeBody.innerHTML = buildPricingBodyHTML(content, 'pricing-notice-cta-btn');
+            if (pricingNoticeBody) pricingNoticeBody.innerHTML = buildPricingBodyHTML(content, 'pricing-notice-cta-btn', 'pricing-notice-view-pricing-link');
 
             var ctaBtn = document.getElementById('pricing-notice-cta-btn');
             if (ctaBtn) {
@@ -2180,6 +2223,7 @@
                     openChatWithMessage(content.ctaMessage, content.ctaReply);
                 });
             }
+            wireViewPricingLink('pricing-notice-view-pricing-link');
         }
 
         function updateGroupButtonHighlight(group) {
@@ -2201,7 +2245,7 @@
 
             if (pricingPopupIcon) pricingPopupIcon.className = 'fas ' + content.icon + ' text-blue-600 text-sm';
             if (pricingPopupTitle) pricingPopupTitle.textContent = content.title;
-            if (pricingPopupBody) pricingPopupBody.innerHTML = buildPricingBodyHTML(content, 'pricing-popup-cta-btn');
+            if (pricingPopupBody) pricingPopupBody.innerHTML = buildPricingBodyHTML(content, 'pricing-popup-cta-btn', 'pricing-popup-view-pricing-link');
 
             var popupCtaBtn = document.getElementById('pricing-popup-cta-btn');
             if (popupCtaBtn) {
@@ -2210,6 +2254,7 @@
                     openChatWithMessage(content.ctaMessage, content.ctaReply);
                 });
             }
+            wireViewPricingLink('pricing-popup-view-pricing-link');
 
             pricingPopupModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
@@ -2275,6 +2320,7 @@
             }
 
             // Store limit reached banner stays visible and expanded.
+            renderLimitReachedBanner(group);
             var limitBody = document.getElementById('limit-reached-body');
             var limitChevron = document.getElementById('limit-reached-chevron');
             var limitBanner = document.getElementById('limit-reached-banner');
@@ -2322,7 +2368,6 @@
         var limitReachedCollapseBtn = document.getElementById('limit-reached-collapse-btn');
         var limitReachedBody = document.getElementById('limit-reached-body');
         var limitReachedChevron = document.getElementById('limit-reached-chevron');
-        var limitReachedContactBtn = document.getElementById('limit-reached-contact-btn');
 
         if (limitReachedCollapseBtn && limitReachedBody) {
             limitReachedCollapseBtn.addEventListener('click', function() {
@@ -2336,13 +2381,6 @@
         if (limitReachedCloseBtn && limitReachedBanner) {
             limitReachedCloseBtn.addEventListener('click', function() {
                 limitReachedBanner.style.display = 'none';
-            });
-        }
-
-        if (limitReachedContactBtn && chatBubble) {
-            limitReachedContactBtn.addEventListener('click', function() {
-                chatBubble.classList.add('active');
-                if (chatBadge) chatBadge.classList.add('hidden');
             });
         }
 
