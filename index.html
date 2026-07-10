@@ -242,6 +242,10 @@
             </div>
         </div>
         <div class="flex items-center gap-4 text-sm">
+            <div class="flex items-center gap-1.5 border-r border-[#3a3a3a] pr-4 mr-1" role="group" aria-label="Banner preview group">
+                <button type="button" id="group-1-btn" class="border border-[#555] bg-[#303030] hover:bg-[#3a3a3a] text-gray-300 text-[11px] font-semibold px-2.5 py-1.5 rounded transition-colors">GROUP 1</button>
+                <button type="button" id="group-2-btn" class="border border-[#555] bg-[#303030] hover:bg-[#3a3a3a] text-gray-300 text-[11px] font-semibold px-2.5 py-1.5 rounded transition-colors">GROUP 2</button>
+            </div>
             <button class="text-gray-400 hover:text-white transition-colors"><i class="fas fa-th"></i></button>
             <button class="text-gray-400 hover:text-white transition-colors"><i class="fas fa-bell"></i></button>
             <div class="flex items-center gap-2 hover:bg-[#303030] rounded px-2 py-1 cursor-pointer transition-colors -mr-2">
@@ -330,8 +334,8 @@
                                 <div id="pricing-notice-banner" class="order-1 lg:order-none rounded-[8px] overflow-hidden border border-blue-200 shadow-sm">
                                     <div class="flex items-center justify-between px-4 py-3 bg-blue-100">
                                         <div class="flex items-center gap-2">
-                                            <i class="fas fa-info-circle text-blue-600 text-sm"></i>
-                                            <span class="text-[#303030] font-semibold text-[14px]">Upcoming Plan Update</span>
+                                            <i id="pricing-notice-icon" class="fas fa-info-circle text-blue-600 text-sm"></i>
+                                            <span id="pricing-notice-title" class="text-[#303030] font-semibold text-[14px]">Upcoming Plan Update</span>
                                         </div>
                                         <div class="flex items-center gap-1">
                                             <button id="pricing-notice-collapse-btn" class="text-gray-500 hover:text-gray-800 hover:bg-blue-200 rounded p-1 transition-colors" aria-label="Collapse">
@@ -342,19 +346,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div id="pricing-notice-body" class="bg-white px-5 py-4">
-                                        <p class="text-[14px] font-bold text-[#303030] mb-3">Thank You for Using Findter ❤️</p>
-                                        <p class="text-[13px] text-[#303030] leading-relaxed mb-3">Starting <strong>July 1, 2026</strong>, Findter will introduce paid plans.</p>
-                                        <p class="text-[13px] text-[#303030] leading-relaxed mb-3">As an existing user, you'll receive a <strong>7-days free trial</strong> before billing begins.</p>
-                                        <ul class="mb-4 space-y-1.5">
-                                            <li class="text-[13px] text-[#303030]">✓ Your data and settings stay unchanged.</li>
-                                            <li class="text-[13px] text-[#303030]">✓ No setup required.</li>
-                                            <li class="text-[13px] text-[#303030]">✓ Decide during your trial.</li>
-                                        </ul>
-                                        <button class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
-                                            See pricing plans
-                                        </button>
-                                    </div>
+                                    <div id="pricing-notice-body" class="bg-white px-5 py-4"></div>
                                 </div>
 
                                 <!-- STORE LIMIT REACHED BANNER -->
@@ -1769,15 +1761,15 @@
         });
 
         // ========== CHAT ==========
-        function openChatWithMessage(msg) {
+        function openChatWithMessage(msg, replyMsg) {
             chatBubble.classList.add('active');
             chatInput.value = msg;
             chatBadge.classList.remove('hidden');
-            
+
             setTimeout(function() {
                 addMessageToChat(msg, true);
                 chatInput.value = '';
-                setTimeout(function() { addMessageToChat("Thank you for reaching out!", false); }, 800);
+                setTimeout(function() { addMessageToChat(replyMsg || "Thank you for reaching out!", false); }, 800);
             }, 300);
         }
 
@@ -2092,13 +2084,82 @@
             });
         }
 
-        // ========== PRICING NOTICE BANNER ==========
+        // ========== PRICING NOTICE BANNER (GROUP 1 / GROUP 2 preview) ==========
         var pricingNoticeBanner = document.getElementById('pricing-notice-banner');
         var pricingNoticeCloseBtn = document.getElementById('pricing-notice-close-btn');
         var pricingNoticeCollapseBtn = document.getElementById('pricing-notice-collapse-btn');
         var pricingNoticeBody = document.getElementById('pricing-notice-body');
         var pricingNoticeChevron = document.getElementById('pricing-notice-chevron');
-        var pricingNoticeContactLink = document.getElementById('pricing-notice-contact-link');
+        var pricingNoticeIcon = document.getElementById('pricing-notice-icon');
+        var pricingNoticeTitle = document.getElementById('pricing-notice-title');
+        var group1Btn = document.getElementById('group-1-btn');
+        var group2Btn = document.getElementById('group-2-btn');
+
+        var PRICING_BANNER_CONTENT = {
+            group1: {
+                icon: 'fa-gift',
+                title: 'A Special Thank You: Exclusive Pricing Inside',
+                bodyHTML:
+                    '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">Thank you for being with us since the start. We\'ve offered Findter <strong>free for almost a year</strong>, growing to over <strong>1,900 stores</strong> together. With this growth, we\'ll soon need to introduce paid plans to cover costs, keep things running smoothly and continue improving the app. As an early supporter, we want to thank you with a special offer.</p>' +
+                    '<ul class="mb-4 space-y-1.5">' +
+                        '<li class="text-[13px] text-[#303030]">✓ Monthly plan: <strong>30% off your first year</strong></li>' +
+                        '<li class="text-[13px] text-[#303030]">✓ Yearly plan: <strong>10% off</strong>, plus an <strong>extra 30%</strong> off your first year</li>' +
+                        '<li class="text-[13px] text-[#303030]">✓ No worries if you\'re not ready: if you don\'t upgrade, we\'ll keep your <strong>first 300 products visible</strong> so your store keeps running smoothly, at no cost</li>' +
+                        '<li class="text-[13px] text-[#303030]">✓ Your data and settings stay the same</li>' +
+                    '</ul>' +
+                    '<button type="button" id="pricing-notice-cta-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">Get discount code</button>',
+                ctaMessage: 'I want to get discount code for paid plans',
+                ctaReply: "Thanks for reaching out! Could you let us know if you'd like the discount code for our Monthly or Yearly plan?"
+            },
+            group2: {
+                icon: 'fa-info-circle',
+                title: 'Upcoming Plan Update',
+                bodyHTML:
+                    '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">Thank you for being with us since the start. We\'ve offered Findter <strong>free for almost a year</strong>, growing to over <strong>1,900 stores</strong> together. With this growth, we\'ll soon need to introduce paid plans to cover costs, keep things running smoothly and continue improving the app.</p>' +
+                    '<ul class="mb-4 space-y-1.5">' +
+                        '<li class="text-[13px] text-[#303030]">✓ Exact date coming shortly, we will notify you in advance</li>' +
+                        '<li class="text-[13px] text-[#303030]">✓ Your data and settings stay the same</li>' +
+                        '<li class="text-[13px] text-[#303030]">✓ Stay tuned, we\'re preparing special discount codes to help you save</li>' +
+                        '<li class="text-[13px] text-[#303030]">✓ No worries if you don\'t upgrade: your catalog will simply show <strong>up to 300 products</strong>, so your store keeps running smoothly, at no cost</li>' +
+                    '</ul>' +
+                    '<button type="button" id="pricing-notice-cta-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">Chat with us</button>',
+                ctaMessage: 'I want to ask further questions about paid plans',
+                ctaReply: "Thanks for reaching out! Could you share a bit more about your question? Our team will get back to you shortly."
+            }
+        };
+
+        function renderPricingBanner(group) {
+            var content = PRICING_BANNER_CONTENT[group];
+            if (!content) return;
+
+            if (pricingNoticeIcon) pricingNoticeIcon.className = 'fas ' + content.icon + ' text-blue-600 text-sm';
+            if (pricingNoticeTitle) pricingNoticeTitle.textContent = content.title;
+            if (pricingNoticeBody) pricingNoticeBody.innerHTML = content.bodyHTML;
+
+            var ctaBtn = document.getElementById('pricing-notice-cta-btn');
+            if (ctaBtn) {
+                ctaBtn.addEventListener('click', function() {
+                    openChatWithMessage(content.ctaMessage, content.ctaReply);
+                });
+            }
+
+            if (group1Btn && group2Btn) {
+                group1Btn.classList.toggle('bg-red-600', group === 'group1');
+                group1Btn.classList.toggle('border-red-600', group === 'group1');
+                group1Btn.classList.toggle('text-white', group === 'group1');
+                group1Btn.classList.toggle('text-gray-300', group !== 'group1');
+
+                group2Btn.classList.toggle('bg-red-600', group === 'group2');
+                group2Btn.classList.toggle('border-red-600', group === 'group2');
+                group2Btn.classList.toggle('text-white', group === 'group2');
+                group2Btn.classList.toggle('text-gray-300', group !== 'group2');
+            }
+        }
+
+        if (group1Btn) group1Btn.addEventListener('click', function() { renderPricingBanner('group1'); });
+        if (group2Btn) group2Btn.addEventListener('click', function() { renderPricingBanner('group2'); });
+
+        renderPricingBanner('group2');
 
         if (pricingNoticeCollapseBtn && pricingNoticeBody) {
             pricingNoticeCollapseBtn.addEventListener('click', function() {
@@ -2112,14 +2173,6 @@
         if (pricingNoticeCloseBtn && pricingNoticeBanner) {
             pricingNoticeCloseBtn.addEventListener('click', function() {
                 pricingNoticeBanner.style.display = 'none';
-            });
-        }
-
-        if (pricingNoticeContactLink && chatBubble) {
-            pricingNoticeContactLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                chatBubble.classList.add('active');
-                if (chatBadge) chatBadge.classList.add('hidden');
             });
         }
 
