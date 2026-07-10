@@ -315,7 +315,7 @@
                 </div>
             </div>
 
-            <div class="flex-1 overflow-y-auto px-8 pt-6 pb-12 relative">
+            <div id="main-scroll-area" class="flex-1 overflow-y-auto px-8 pt-6 pb-12 relative">
                 
                 <!-- HOME PAGE VIEW -->
                 <div id="page-home" class="page-view active">
@@ -331,7 +331,7 @@
                         <div class="homepage-grid">
                             <div class="homepage-column homepage-left">
                                 <!-- PRICING NOTICE BANNER -->
-                                <div id="pricing-notice-banner" class="order-1 lg:order-none rounded-[8px] overflow-hidden border border-blue-200 shadow-sm">
+                                <div id="pricing-notice-banner" class="hidden order-1 lg:order-none rounded-[8px] overflow-hidden border border-blue-200 shadow-sm">
                                     <div class="flex items-center justify-between px-4 py-3 bg-blue-100">
                                         <div class="flex items-center gap-2">
                                             <i id="pricing-notice-icon" class="fas fa-info-circle text-blue-600 text-sm"></i>
@@ -366,8 +366,7 @@
                                         </div>
                                     </div>
                                     <div id="limit-reached-body" class="bg-white px-5 py-4">
-                                        <p class="text-[13px] text-[#303030] leading-relaxed mb-3">Your store has exceeded the current limit with over <strong id="limit-reached-product-count">10,000</strong> products and <strong id="limit-reached-metafield-count">50</strong> metafields. Products beyond the limit will not be indexed and appear on the storefront.</p>
-                                        <p class="text-[13px] text-[#303030] leading-relaxed mb-4">Contact us to consult about product and metafield limits.</p>
+                                        <p class="text-[13px] text-[#303030] leading-relaxed mb-3">Your store has exceeded the current limit with over <strong id="limit-reached-product-count">3000</strong> products. Products beyond the limit will not be indexed and appear on the storefront. Contact us to consult about product limits.</p>
                                         <button id="limit-reached-contact-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
                                             Contact us
                                         </button>
@@ -818,6 +817,25 @@
                         Enable App in Theme Editor
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Upcoming Plan Update Popup (first-interaction reveal) -->
+    <div id="pricing-popup-modal" class="modal-wrapper fixed inset-0 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="pricing-popup-overlay"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg pointer-events-auto relative modal-content overflow-hidden max-h-[85vh] flex flex-col">
+                <div class="flex items-center justify-between px-5 py-3 bg-blue-100 shrink-0">
+                    <div class="flex items-center gap-2">
+                        <i id="pricing-popup-icon" class="fas fa-info-circle text-blue-600 text-sm"></i>
+                        <span id="pricing-popup-title" class="text-[#303030] font-semibold text-[15px]">Upcoming Plan Update</span>
+                    </div>
+                    <button type="button" id="pricing-popup-close-btn" class="text-gray-500 hover:text-gray-800 hover:bg-blue-200 rounded p-1 transition-colors" aria-label="Close">
+                        <i class="fas fa-times text-sm"></i>
+                    </button>
+                </div>
+                <div id="pricing-popup-body" class="px-5 py-5 overflow-y-auto"></div>
             </div>
         </div>
     </div>
@@ -2017,6 +2035,10 @@
                     closeRestrictedModalAndGoHome();
                     return;
                 }
+                if (pricingPopupModal && !pricingPopupModal.classList.contains('hidden')) {
+                    closePricingPopup();
+                    return;
+                }
                 if (themeModal && !themeModal.classList.contains('hidden')) {
                     closeThemeModal();
                 }
@@ -2094,47 +2116,63 @@
         var pricingNoticeTitle = document.getElementById('pricing-notice-title');
         var group1Btn = document.getElementById('group-1-btn');
         var group2Btn = document.getElementById('group-2-btn');
+        var mainScrollArea = document.getElementById('main-scroll-area');
+
+        var pricingPopupModal = document.getElementById('pricing-popup-modal');
+        var pricingPopupOverlay = document.getElementById('pricing-popup-overlay');
+        var pricingPopupCloseBtn = document.getElementById('pricing-popup-close-btn');
+        var pricingPopupIcon = document.getElementById('pricing-popup-icon');
+        var pricingPopupTitle = document.getElementById('pricing-popup-title');
+        var pricingPopupBody = document.getElementById('pricing-popup-body');
 
         var PRICING_BANNER_CONTENT = {
             group1: {
                 icon: 'fa-gift',
                 title: 'A Special Thank You: Exclusive Pricing Inside',
-                bodyHTML:
+                introListHTML:
                     '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">Thank you for being with us since the start. We\'ve offered Findter <strong>free for almost a year</strong>, growing to over <strong>1,900 stores</strong> together. With this growth, we\'ll soon need to introduce paid plans to cover costs, keep things running smoothly and continue improving the app. As an early supporter, we want to thank you with a special offer.</p>' +
                     '<ul class="mb-4 space-y-1.5">' +
                         '<li class="text-[13px] text-[#303030]">✓ Monthly plan: <strong>30% off your first year</strong></li>' +
                         '<li class="text-[13px] text-[#303030]">✓ Yearly plan: <strong>10% off</strong>, plus an <strong>extra 30%</strong> off your first year</li>' +
                         '<li class="text-[13px] text-[#303030]">✓ No worries if you\'re not ready: if you don\'t upgrade, we\'ll keep your <strong>first 300 products visible</strong> so your store keeps running smoothly, at no cost</li>' +
                         '<li class="text-[13px] text-[#303030]">✓ Your data and settings stay the same</li>' +
-                    '</ul>' +
-                    '<button type="button" id="pricing-notice-cta-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">Get discount code</button>',
+                    '</ul>',
+                ctaLabel: 'Get discount code',
                 ctaMessage: 'I want to get discount code for paid plans',
                 ctaReply: "Thanks for reaching out! Could you let us know if you'd like the discount code for our Monthly or Yearly plan?"
             },
             group2: {
                 icon: 'fa-info-circle',
                 title: 'Upcoming Plan Update',
-                bodyHTML:
+                introListHTML:
                     '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">Thank you for being with us since the start. We\'ve offered Findter <strong>free for almost a year</strong>, growing to over <strong>1,900 stores</strong> together. With this growth, we\'ll soon need to introduce paid plans to cover costs, keep things running smoothly and continue improving the app.</p>' +
                     '<ul class="mb-4 space-y-1.5">' +
                         '<li class="text-[13px] text-[#303030]">✓ Exact date coming shortly, we will notify you in advance</li>' +
                         '<li class="text-[13px] text-[#303030]">✓ Your data and settings stay the same</li>' +
                         '<li class="text-[13px] text-[#303030]">✓ Stay tuned, we\'re preparing special discount codes to help you save</li>' +
                         '<li class="text-[13px] text-[#303030]">✓ No worries if you don\'t upgrade: your catalog will simply show <strong>up to 300 products</strong>, so your store keeps running smoothly, at no cost</li>' +
-                    '</ul>' +
-                    '<button type="button" id="pricing-notice-cta-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">Chat with us</button>',
+                    '</ul>',
+                ctaLabel: 'Chat with us',
                 ctaMessage: 'I want to ask further questions about paid plans',
                 ctaReply: "Thanks for reaching out! Could you share a bit more about your question? Our team will get back to you shortly."
             }
         };
 
-        function renderPricingBanner(group) {
+        var currentPricingGroup = 'group2';
+        var hasShownPricingPopup = false;
+
+        function buildPricingBodyHTML(content, ctaBtnId) {
+            return content.introListHTML +
+                '<button type="button" id="' + ctaBtnId + '" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">' + content.ctaLabel + '</button>';
+        }
+
+        function renderPricingNoticeBanner(group) {
             var content = PRICING_BANNER_CONTENT[group];
             if (!content) return;
 
             if (pricingNoticeIcon) pricingNoticeIcon.className = 'fas ' + content.icon + ' text-blue-600 text-sm';
             if (pricingNoticeTitle) pricingNoticeTitle.textContent = content.title;
-            if (pricingNoticeBody) pricingNoticeBody.innerHTML = content.bodyHTML;
+            if (pricingNoticeBody) pricingNoticeBody.innerHTML = buildPricingBodyHTML(content, 'pricing-notice-cta-btn');
 
             var ctaBtn = document.getElementById('pricing-notice-cta-btn');
             if (ctaBtn) {
@@ -2142,24 +2180,126 @@
                     openChatWithMessage(content.ctaMessage, content.ctaReply);
                 });
             }
+        }
 
-            if (group1Btn && group2Btn) {
-                group1Btn.classList.toggle('bg-red-600', group === 'group1');
-                group1Btn.classList.toggle('border-red-600', group === 'group1');
-                group1Btn.classList.toggle('text-white', group === 'group1');
-                group1Btn.classList.toggle('text-gray-300', group !== 'group1');
+        function updateGroupButtonHighlight(group) {
+            if (!group1Btn || !group2Btn) return;
+            group1Btn.classList.toggle('bg-red-600', group === 'group1');
+            group1Btn.classList.toggle('border-red-600', group === 'group1');
+            group1Btn.classList.toggle('text-white', group === 'group1');
+            group1Btn.classList.toggle('text-gray-300', group !== 'group1');
 
-                group2Btn.classList.toggle('bg-red-600', group === 'group2');
-                group2Btn.classList.toggle('border-red-600', group === 'group2');
-                group2Btn.classList.toggle('text-white', group === 'group2');
-                group2Btn.classList.toggle('text-gray-300', group !== 'group2');
+            group2Btn.classList.toggle('bg-red-600', group === 'group2');
+            group2Btn.classList.toggle('border-red-600', group === 'group2');
+            group2Btn.classList.toggle('text-white', group === 'group2');
+            group2Btn.classList.toggle('text-gray-300', group !== 'group2');
+        }
+
+        function showPricingPopup() {
+            var content = PRICING_BANNER_CONTENT[currentPricingGroup];
+            if (!content || !pricingPopupModal) return;
+
+            if (pricingPopupIcon) pricingPopupIcon.className = 'fas ' + content.icon + ' text-blue-600 text-sm';
+            if (pricingPopupTitle) pricingPopupTitle.textContent = content.title;
+            if (pricingPopupBody) pricingPopupBody.innerHTML = buildPricingBodyHTML(content, 'pricing-popup-cta-btn');
+
+            var popupCtaBtn = document.getElementById('pricing-popup-cta-btn');
+            if (popupCtaBtn) {
+                popupCtaBtn.addEventListener('click', function() {
+                    closePricingPopup();
+                    openChatWithMessage(content.ctaMessage, content.ctaReply);
+                });
+            }
+
+            pricingPopupModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePricingPopup() {
+            if (pricingPopupModal) {
+                pricingPopupModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+
+            // Reveal the banner (rendered with the current group's content), then collapse both banners.
+            renderPricingNoticeBanner(currentPricingGroup);
+            if (pricingNoticeBanner) {
+                pricingNoticeBanner.classList.remove('hidden');
+                pricingNoticeBanner.style.display = '';
+            }
+            if (pricingNoticeBody && pricingNoticeChevron) {
+                pricingNoticeBody.classList.add('hidden');
+                pricingNoticeChevron.classList.remove('fa-chevron-up');
+                pricingNoticeChevron.classList.add('fa-chevron-down');
+            }
+
+            var limitBody = document.getElementById('limit-reached-body');
+            var limitChevron = document.getElementById('limit-reached-chevron');
+            if (limitBody && limitChevron) {
+                limitBody.classList.add('hidden');
+                limitChevron.classList.remove('fa-chevron-up');
+                limitChevron.classList.add('fa-chevron-down');
             }
         }
 
-        if (group1Btn) group1Btn.addEventListener('click', function() { renderPricingBanner('group1'); });
-        if (group2Btn) group2Btn.addEventListener('click', function() { renderPricingBanner('group2'); });
+        function handleFirstPageInteraction(e) {
+            if (e && e.target && e.target.closest && (e.target.closest('#group-1-btn') || e.target.closest('#group-2-btn'))) {
+                return;
+            }
+            if (hasShownPricingPopup) return;
+            hasShownPricingPopup = true;
+            if (mainScrollArea) mainScrollArea.removeEventListener('scroll', handleFirstPageInteraction);
+            document.removeEventListener('click', handleFirstPageInteraction);
+            showPricingPopup();
+        }
 
-        renderPricingBanner('group2');
+        function armPricingPopupTrigger() {
+            hasShownPricingPopup = false;
+            if (mainScrollArea) mainScrollArea.addEventListener('scroll', handleFirstPageInteraction, { passive: true });
+            document.addEventListener('click', handleFirstPageInteraction);
+        }
+
+        function resetPricingFlowState(group) {
+            currentPricingGroup = group;
+            updateGroupButtonHighlight(group);
+
+            // Hide the plan-update banner entirely until the popup has been closed.
+            if (pricingNoticeBanner) {
+                pricingNoticeBanner.classList.add('hidden');
+                pricingNoticeBanner.style.display = '';
+            }
+            if (pricingNoticeBody && pricingNoticeChevron) {
+                pricingNoticeBody.classList.remove('hidden');
+                pricingNoticeChevron.classList.add('fa-chevron-up');
+                pricingNoticeChevron.classList.remove('fa-chevron-down');
+            }
+
+            // Store limit reached banner stays visible and expanded.
+            var limitBody = document.getElementById('limit-reached-body');
+            var limitChevron = document.getElementById('limit-reached-chevron');
+            var limitBanner = document.getElementById('limit-reached-banner');
+            if (limitBanner) limitBanner.style.display = '';
+            if (limitBody && limitChevron) {
+                limitBody.classList.remove('hidden');
+                limitChevron.classList.add('fa-chevron-up');
+                limitChevron.classList.remove('fa-chevron-down');
+            }
+
+            if (pricingPopupModal) {
+                pricingPopupModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+
+            armPricingPopupTrigger();
+        }
+
+        if (group1Btn) group1Btn.addEventListener('click', function() { resetPricingFlowState('group1'); });
+        if (group2Btn) group2Btn.addEventListener('click', function() { resetPricingFlowState('group2'); });
+
+        if (pricingPopupCloseBtn) pricingPopupCloseBtn.addEventListener('click', closePricingPopup);
+        if (pricingPopupOverlay) pricingPopupOverlay.addEventListener('click', closePricingPopup);
+
+        resetPricingFlowState('group2');
 
         if (pricingNoticeCollapseBtn && pricingNoticeBody) {
             pricingNoticeCollapseBtn.addEventListener('click', function() {
