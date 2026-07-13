@@ -21,7 +21,8 @@
         }
         @media (min-width: 1024px) {
             .homepage-grid {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
+                grid-template-columns: 633.32px 316.66px;
+                column-gap: 16px;
             }
             .homepage-column {
                 display: flex;
@@ -29,10 +30,12 @@
                 gap: 20px;
             }
             .homepage-left {
-                grid-column: span 2 / span 2;
+                grid-column: 1 / 2;
+                max-width: 633.32px;
             }
             .homepage-right {
-                grid-column: span 1 / span 1;
+                grid-column: 2 / 3;
+                max-width: 316.66px;
             }
         }
         .sidebar-collapsed aside {
