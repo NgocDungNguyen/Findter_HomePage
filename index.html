@@ -1807,6 +1807,90 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
+        var DISCOUNT_PLAN_CODES = {
+            monthly: { label: 'Monthly', code: 'MONTHLY30', detail: '30% off your first year' },
+            annually: { label: 'Yearly', code: 'YEARLY40', detail: '10% off, plus an extra 30% off your first year' }
+        };
+
+        function offerDiscountCodeOptions(replyMsg) {
+            var div = document.createElement('div');
+            div.className = 'flex gap-2';
+            div.innerHTML =
+                '<div class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center text-red-600 shrink-0">' +
+                    '<i class="fas fa-robot text-xs"></i>' +
+                '</div>' +
+                '<div class="flex-1 max-w-[85%]">' +
+                    '<div class="bg-gray-100 rounded-lg rounded-tl-none px-3 py-2 text-[13px] text-gray-700 mb-2">' + replyMsg + '</div>' +
+                    '<div class="flex gap-2" id="discount-plan-options">' +
+                        '<button type="button" data-plan="monthly" class="discount-plan-btn border border-red-300 bg-white text-red-600 rounded-lg px-3 py-1.5 text-[12px] font-semibold hover:bg-red-50 transition-colors">Monthly</button>' +
+                        '<button type="button" data-plan="annually" class="discount-plan-btn border border-red-300 bg-white text-red-600 rounded-lg px-3 py-1.5 text-[12px] font-semibold hover:bg-red-50 transition-colors">Annually</button>' +
+                    '</div>' +
+                '</div>';
+
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            var optionsWrap = div.querySelector('#discount-plan-options');
+            optionsWrap.querySelectorAll('.discount-plan-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var choice = DISCOUNT_PLAN_CODES[btn.getAttribute('data-plan')];
+                    if (!choice) return;
+
+                    optionsWrap.querySelectorAll('.discount-plan-btn').forEach(function(b) { b.disabled = true; });
+                    optionsWrap.classList.add('opacity-50', 'pointer-events-none');
+
+                    addMessageToChat(choice.label, true);
+
+                    setTimeout(function() {
+                        var codeDiv = document.createElement('div');
+                        codeDiv.className = 'flex gap-2';
+                        codeDiv.innerHTML =
+                            '<div class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center text-red-600 shrink-0">' +
+                                '<i class="fas fa-robot text-xs"></i>' +
+                            '</div>' +
+                            '<div class="flex-1 max-w-[85%]">' +
+                                '<div class="bg-gray-100 rounded-lg rounded-tl-none px-3 py-2 text-[13px] text-gray-700 mb-2">' +
+                                    'Awesome! Here is your ' + choice.label + ' plan discount code: <strong>' + choice.code + '</strong> (' + choice.detail + '). Apply it at pricing tab.' +
+                                '</div>' +
+                                '<button type="button" class="discount-goto-pricing-btn bg-[#303030] text-white rounded-lg px-3 py-1.5 text-[12px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-1.5">' +
+                                    '<i class="fas fa-tags text-[11px]"></i> Go to Pricing' +
+                                '</button>' +
+                            '</div>';
+
+                        chatMessages.appendChild(codeDiv);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                        var gotoPricingBtn = codeDiv.querySelector('.discount-goto-pricing-btn');
+                        if (gotoPricingBtn) {
+                            gotoPricingBtn.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                chatBubble.classList.remove('active');
+                                if (pricingNoticeBanner) {
+                                    pricingNoticeBanner.classList.remove('guide-attention-animation');
+                                    void pricingNoticeBanner.offsetWidth;
+                                    pricingNoticeBanner.classList.add('guide-attention-animation');
+                                    pricingNoticeBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    setTimeout(function() { pricingNoticeBanner.classList.remove('guide-attention-animation'); }, 1200);
+                                }
+                            });
+                        }
+                    }, 700);
+                });
+            });
+        }
+
+        function openDiscountChatFlow(userMsg, replyMsg) {
+            chatBubble.classList.add('active');
+            chatInput.value = userMsg;
+            chatBadge.classList.remove('hidden');
+
+            setTimeout(function() {
+                addMessageToChat(userMsg, true);
+                chatInput.value = '';
+                setTimeout(function() { offerDiscountCodeOptions(replyMsg || "Could you let us know if you'd like the discount code for our Monthly or Yearly plan?"); }, 800);
+            }, 300);
+        }
+
         floatingChatBtn.addEventListener('click', function() { chatBubble.classList.toggle('active'); });
         closeChatBubble.addEventListener('click', function() { chatBubble.classList.remove('active'); });
 
@@ -2223,7 +2307,11 @@
             var ctaBtn = document.getElementById('pricing-notice-cta-btn');
             if (ctaBtn) {
                 ctaBtn.addEventListener('click', function() {
-                    openChatWithMessage(content.ctaMessage, content.ctaReply);
+                    if (group === 'group1') {
+                        openDiscountChatFlow(content.ctaMessage, content.ctaReply);
+                    } else {
+                        openChatWithMessage(content.ctaMessage, content.ctaReply);
+                    }
                 });
             }
             wireViewPricingLink('pricing-notice-view-pricing-link');
@@ -2254,7 +2342,11 @@
             if (popupCtaBtn) {
                 popupCtaBtn.addEventListener('click', function() {
                     closePricingPopup();
-                    openChatWithMessage(content.ctaMessage, content.ctaReply);
+                    if (currentPricingGroup === 'group1') {
+                        openDiscountChatFlow(content.ctaMessage, content.ctaReply);
+                    } else {
+                        openChatWithMessage(content.ctaMessage, content.ctaReply);
+                    }
                 });
             }
             wireViewPricingLink('pricing-popup-view-pricing-link');
