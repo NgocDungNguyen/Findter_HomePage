@@ -1809,7 +1809,7 @@
 
         var DISCOUNT_PLAN_CODES = {
             monthly: { label: 'Monthly', code: 'MONTHLY30', detail: '30% off your first year' },
-            annually: { label: 'Yearly', code: 'YEARLY40', detail: '10% off, plus an extra 30% off your first year' }
+            annually: { label: 'Annually', code: 'ANNUAL40', detail: '10% off, plus an extra 30% off your first year' }
         };
 
         function offerDiscountCodeOptions(replyMsg) {
@@ -1864,14 +1864,7 @@
                         if (gotoPricingBtn) {
                             gotoPricingBtn.addEventListener('click', function(e) {
                                 e.preventDefault();
-                                chatBubble.classList.remove('active');
-                                if (pricingNoticeBanner) {
-                                    pricingNoticeBanner.classList.remove('guide-attention-animation');
-                                    void pricingNoticeBanner.offsetWidth;
-                                    pricingNoticeBanner.classList.add('guide-attention-animation');
-                                    pricingNoticeBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                    setTimeout(function() { pricingNoticeBanner.classList.remove('guide-attention-animation'); }, 1200);
-                                }
+                                navigateToPricingBanner();
                             });
                         }
                     }, 700);
@@ -1887,7 +1880,7 @@
             setTimeout(function() {
                 addMessageToChat(userMsg, true);
                 chatInput.value = '';
-                setTimeout(function() { offerDiscountCodeOptions(replyMsg || "Could you let us know if you'd like the discount code for our Monthly or Yearly plan?"); }, 800);
+                setTimeout(function() { offerDiscountCodeOptions(replyMsg || "Could you let us know if you'd like the discount code for our Monthly or Annually plan?"); }, 800);
             }, 300);
         }
 
@@ -2215,13 +2208,13 @@
                     '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">Thank you for being with us since the start. We\'ve offered Findter <strong>free for almost a year</strong>, growing to over <strong>1,900 stores</strong> together. With this growth, we\'ll soon need to introduce paid plans to cover costs, keep things running smoothly and continue improving the app. As an early supporter, we want to thank you with a special offer.</p>' +
                     '<ul class="mb-4 space-y-1.5">' +
                         '<li class="text-[13px] text-[#303030]">✓ Monthly plan: <strong>30% off your first year</strong></li>' +
-                        '<li class="text-[13px] text-[#303030]">✓ Yearly plan: <strong>10% off</strong>, plus an <strong>extra 30%</strong> off your first year</li>' +
+                        '<li class="text-[13px] text-[#303030]">✓ Annually plan: <strong>10% off</strong>, plus an <strong>extra 30%</strong> off your first year</li>' +
                         '<li class="text-[13px] text-[#303030]">✓ No worries if you\'re not ready: if you don\'t upgrade, we\'ll keep your <strong>first 300 products visible</strong> so your store keeps running smoothly, at no cost</li>' +
                         '<li class="text-[13px] text-[#303030]">✓ Your data and settings stay the same</li>' +
                     '</ul>',
                 ctaLabel: 'Get discount code',
                 ctaMessage: 'I want to get discount code for paid plans',
-                ctaReply: "Thanks for reaching out! Could you let us know if you'd like the discount code for our Monthly or Yearly plan?"
+                ctaReply: "Thanks for reaching out! Could you let us know if you'd like the discount code for our Monthly or Annually plan?"
             },
             group2: {
                 icon: 'fa-info-circle',
@@ -2243,55 +2236,76 @@
         var LIMIT_BANNER_CONTENT = {
             group1: {
                 bodyHTML: '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">Your catalog currently contains over <strong>300</strong> products. To keep your store running smoothly at no cost, <strong>5%</strong> of your visible products will be hidden each day until only <strong>300</strong> remain. Upgrade to keep your full catalog visible.</p>',
-                ctaLabel: 'Contact us',
-                ctaType: 'chat'
-            },
-            group2: {
-                bodyHTML: '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">Your store has exceeded the current limit with over <strong>300</strong> products. Products beyond the limit will not be indexed and appear on the storefront.</p>',
-                ctaLabel: 'View Pricing Plan',
-                ctaType: 'link'
+                ctaMessage: 'I want to ask about Store limit reached'
             }
         };
 
         function renderLimitReachedBanner(group) {
-            var content = LIMIT_BANNER_CONTENT[group];
+            var limitBanner = document.getElementById('limit-reached-banner');
             var limitBody = document.getElementById('limit-reached-body');
-            if (!content || !limitBody) return;
+            if (!limitBanner || !limitBody) return;
+
+            // Only Group 1 has a product-limit warning; Group 2 doesn't show this banner at all.
+            if (group !== 'group1') {
+                limitBanner.style.display = 'none';
+                return;
+            }
+
+            limitBanner.style.display = '';
+            var content = LIMIT_BANNER_CONTENT.group1;
 
             limitBody.innerHTML = content.bodyHTML +
-                '<button type="button" id="limit-reached-cta-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">' + content.ctaLabel + '</button>';
+                '<div class="flex items-center gap-3">' +
+                    '<button type="button" id="limit-reached-contact-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">Contact us</button>' +
+                    '<button type="button" id="limit-reached-upgrade-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-gray-50 transition-colors inline-flex items-center gap-2">Upgrade now</button>' +
+                '</div>';
 
-            var ctaBtn = document.getElementById('limit-reached-cta-btn');
-            if (ctaBtn) {
-                if (content.ctaType === 'chat') {
-                    ctaBtn.addEventListener('click', function() {
-                        chatBubble.classList.add('active');
-                        if (chatBadge) chatBadge.classList.add('hidden');
-                    });
-                } else {
-                    ctaBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                    });
-                }
+            var contactBtn = document.getElementById('limit-reached-contact-btn');
+            if (contactBtn) {
+                contactBtn.addEventListener('click', function() {
+                    openChatWithMessage(content.ctaMessage);
+                });
+            }
+
+            var upgradeBtn = document.getElementById('limit-reached-upgrade-btn');
+            if (upgradeBtn) {
+                upgradeBtn.addEventListener('click', function() {
+                    navigateToPricingBanner();
+                });
             }
         }
 
         var currentPricingGroup = 'group2';
         var hasShownPricingPopup = false;
 
+        function navigateToPricingBanner() {
+            chatBubble.classList.remove('active');
+            if (pricingPopupModal) {
+                pricingPopupModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+            if (pricingNoticeBanner) {
+                pricingNoticeBanner.classList.remove('guide-attention-animation');
+                void pricingNoticeBanner.offsetWidth;
+                pricingNoticeBanner.classList.add('guide-attention-animation');
+                pricingNoticeBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(function() { pricingNoticeBanner.classList.remove('guide-attention-animation'); }, 1200);
+            }
+        }
+
         function buildPricingBodyHTML(content, ctaBtnId, viewPricingId) {
             return content.introListHTML +
-                '<div class="flex items-center gap-5">' +
+                '<div class="flex items-center gap-3">' +
                     '<button type="button" id="' + ctaBtnId + '" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">' + content.ctaLabel + '</button>' +
-                    '<a href="#" id="' + viewPricingId + '" class="text-[13px] font-semibold text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center gap-1">View Pricing <span aria-hidden="true">&rarr;</span></a>' +
+                    '<button type="button" id="' + viewPricingId + '" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-gray-50 transition-colors inline-flex items-center gap-2">View Pricing</button>' +
                 '</div>';
         }
 
-        function wireViewPricingLink(linkId) {
-            var link = document.getElementById(linkId);
-            if (link) {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
+        function wireViewPricingButton(btnId) {
+            var btn = document.getElementById(btnId);
+            if (btn) {
+                btn.addEventListener('click', function() {
+                    navigateToPricingBanner();
                 });
             }
         }
@@ -2314,7 +2328,7 @@
                     }
                 });
             }
-            wireViewPricingLink('pricing-notice-view-pricing-link');
+            wireViewPricingButton('pricing-notice-view-pricing-link');
         }
 
         function updateGroupButtonHighlight(group) {
@@ -2349,7 +2363,7 @@
                     }
                 });
             }
-            wireViewPricingLink('pricing-popup-view-pricing-link');
+            wireViewPricingButton('pricing-popup-view-pricing-link');
 
             pricingPopupModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
@@ -2414,16 +2428,16 @@
                 pricingNoticeChevron.classList.remove('fa-chevron-down');
             }
 
-            // Store limit reached banner stays visible and expanded.
+            // Store limit reached banner: only Group 1 shows it, expanded.
             renderLimitReachedBanner(group);
-            var limitBody = document.getElementById('limit-reached-body');
-            var limitChevron = document.getElementById('limit-reached-chevron');
-            var limitBanner = document.getElementById('limit-reached-banner');
-            if (limitBanner) limitBanner.style.display = '';
-            if (limitBody && limitChevron) {
-                limitBody.classList.remove('hidden');
-                limitChevron.classList.add('fa-chevron-up');
-                limitChevron.classList.remove('fa-chevron-down');
+            if (group === 'group1') {
+                var limitBody = document.getElementById('limit-reached-body');
+                var limitChevron = document.getElementById('limit-reached-chevron');
+                if (limitBody && limitChevron) {
+                    limitBody.classList.remove('hidden');
+                    limitChevron.classList.add('fa-chevron-up');
+                    limitChevron.classList.remove('fa-chevron-down');
+                }
             }
 
             if (pricingPopupModal) {
