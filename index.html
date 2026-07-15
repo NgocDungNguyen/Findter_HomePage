@@ -312,6 +312,8 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
+                    <button id="almost-limit-btn" class="border border-yellow-300 bg-yellow-50 text-yellow-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-yellow-100 transition-colors shadow-sm whitespace-nowrap">Almost Reach</button>
+                    <button id="reach-limit-btn" class="border border-red-300 bg-red-50 text-red-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-red-100 transition-colors shadow-sm whitespace-nowrap">Reach Limit</button>
                     <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">Reset Indexing</button>
                     <button id="end-index-btn" class="border border-green-300 bg-green-50 text-green-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-green-100 transition-colors shadow-sm whitespace-nowrap">End Index Now</button>
                     <button class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors"><i class="fas fa-ellipsis-h text-sm"></i></button>
@@ -352,8 +354,27 @@
                                     <div id="pricing-notice-body" class="bg-white px-5 py-4"></div>
                                 </div>
 
+                                <!-- ALMOST AT PRODUCT LIMIT BANNER -->
+                                <div id="almost-limit-banner" class="hidden order-2 lg:order-none rounded-[8px] overflow-hidden border border-yellow-200 shadow-sm">
+                                    <div class="flex items-center justify-between px-4 py-3 bg-yellow-100">
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-exclamation-triangle text-yellow-600 text-sm"></i>
+                                            <span class="text-[#303030] font-semibold text-[14px]">You're almost at your product limit</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <button id="almost-limit-collapse-btn" class="text-gray-500 hover:text-gray-800 hover:bg-yellow-200 rounded p-1 transition-colors" aria-label="Collapse">
+                                                <i id="almost-limit-chevron" class="fas fa-chevron-up text-sm"></i>
+                                            </button>
+                                            <button id="almost-limit-close-btn" class="text-gray-500 hover:text-gray-800 hover:bg-yellow-200 rounded p-1 transition-colors" aria-label="Dismiss">
+                                                <i class="fas fa-times text-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div id="almost-limit-body" class="bg-white px-5 py-4"></div>
+                                </div>
+
                                 <!-- STORE LIMIT REACHED BANNER -->
-                                <div id="limit-reached-banner" class="order-2 lg:order-none rounded-[8px] overflow-hidden border border-yellow-200 shadow-sm">
+                                <div id="limit-reached-banner" class="hidden order-2 lg:order-none rounded-[8px] overflow-hidden border border-yellow-200 shadow-sm">
                                     <div class="flex items-center justify-between px-4 py-3 bg-yellow-100">
                                         <div class="flex items-center gap-2">
                                             <i class="fas fa-exclamation-triangle text-yellow-600 text-sm"></i>
@@ -2240,6 +2261,31 @@
             }
         };
 
+        var ALMOST_LIMIT_CONTENT = {
+            currentProducts: 2901,
+            planLimit: 3000,
+            ctaMessage: 'I want to ask about my product limit'
+        };
+
+        function showBanner(el) {
+            if (!el) return;
+            el.classList.remove('hidden');
+            el.style.display = '';
+        }
+
+        function hideBanner(el) {
+            if (!el) return;
+            el.classList.add('hidden');
+            el.style.display = 'none';
+        }
+
+        function expandBannerBody(bodyEl, chevronEl) {
+            if (!bodyEl || !chevronEl) return;
+            bodyEl.classList.remove('hidden');
+            chevronEl.classList.add('fa-chevron-up');
+            chevronEl.classList.remove('fa-chevron-down');
+        }
+
         function renderLimitReachedBanner(group) {
             var limitBanner = document.getElementById('limit-reached-banner');
             var limitBody = document.getElementById('limit-reached-body');
@@ -2247,11 +2293,11 @@
 
             // Only Group 1 has a product-limit warning; Group 2 doesn't show this banner at all.
             if (group !== 'group1') {
-                limitBanner.style.display = 'none';
+                hideBanner(limitBanner);
                 return;
             }
 
-            limitBanner.style.display = '';
+            showBanner(limitBanner);
             var content = LIMIT_BANNER_CONTENT.group1;
 
             limitBody.innerHTML = content.bodyHTML +
@@ -2274,6 +2320,60 @@
                 });
             }
         }
+
+        function renderAlmostLimitBanner() {
+            var almostBanner = document.getElementById('almost-limit-banner');
+            var almostBody = document.getElementById('almost-limit-body');
+            if (!almostBanner || !almostBody) return;
+
+            showBanner(almostBanner);
+
+            almostBody.innerHTML =
+                '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">Your store now has <strong>' + ALMOST_LIMIT_CONTENT.currentProducts + '</strong> / <strong>' + ALMOST_LIMIT_CONTENT.planLimit + '</strong> products. New products added beyond this limit won\'t appear on your storefront. Upgrade to continue scaling.</p>' +
+                '<div class="flex items-center gap-3">' +
+                    '<button type="button" id="almost-limit-contact-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">Contact us</button>' +
+                    '<button type="button" id="almost-limit-upgrade-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-gray-50 transition-colors inline-flex items-center gap-2">Upgrade now</button>' +
+                '</div>';
+
+            var contactBtn = document.getElementById('almost-limit-contact-btn');
+            if (contactBtn) {
+                contactBtn.addEventListener('click', function() {
+                    openChatWithMessage(ALMOST_LIMIT_CONTENT.ctaMessage);
+                });
+            }
+
+            var upgradeBtn = document.getElementById('almost-limit-upgrade-btn');
+            if (upgradeBtn) {
+                upgradeBtn.addEventListener('click', function() {
+                    navigateToPricingBanner();
+                });
+            }
+        }
+
+        function showAlmostLimitBanner() {
+            var limitBanner = document.getElementById('limit-reached-banner');
+            hideBanner(limitBanner);
+
+            renderAlmostLimitBanner();
+            var almostBody = document.getElementById('almost-limit-body');
+            var almostChevron = document.getElementById('almost-limit-chevron');
+            expandBannerBody(almostBody, almostChevron);
+        }
+
+        function showReachLimitBanner() {
+            var almostBanner = document.getElementById('almost-limit-banner');
+            hideBanner(almostBanner);
+
+            renderLimitReachedBanner('group1');
+            var limitBody = document.getElementById('limit-reached-body');
+            var limitChevron = document.getElementById('limit-reached-chevron');
+            expandBannerBody(limitBody, limitChevron);
+        }
+
+        var almostLimitBtn = document.getElementById('almost-limit-btn');
+        var reachLimitBtn = document.getElementById('reach-limit-btn');
+        if (almostLimitBtn) almostLimitBtn.addEventListener('click', showAlmostLimitBanner);
+        if (reachLimitBtn) reachLimitBtn.addEventListener('click', showReachLimitBanner);
 
         var currentPricingGroup = 'group2';
         var hasShownPricingPopup = false;
@@ -2429,6 +2529,7 @@
             }
 
             // Store limit reached banner: only Group 1 shows it, expanded.
+            hideBanner(document.getElementById('almost-limit-banner'));
             renderLimitReachedBanner(group);
             if (group === 'group1') {
                 var limitBody = document.getElementById('limit-reached-body');
@@ -2489,7 +2590,29 @@
 
         if (limitReachedCloseBtn && limitReachedBanner) {
             limitReachedCloseBtn.addEventListener('click', function() {
-                limitReachedBanner.style.display = 'none';
+                hideBanner(limitReachedBanner);
+            });
+        }
+
+        // ========== ALMOST AT PRODUCT LIMIT BANNER ==========
+        var almostLimitBanner = document.getElementById('almost-limit-banner');
+        var almostLimitCloseBtn = document.getElementById('almost-limit-close-btn');
+        var almostLimitCollapseBtn = document.getElementById('almost-limit-collapse-btn');
+        var almostLimitBody = document.getElementById('almost-limit-body');
+        var almostLimitChevron = document.getElementById('almost-limit-chevron');
+
+        if (almostLimitCollapseBtn && almostLimitBody) {
+            almostLimitCollapseBtn.addEventListener('click', function() {
+                var isHidden = almostLimitBody.classList.contains('hidden');
+                almostLimitBody.classList.toggle('hidden');
+                almostLimitChevron.classList.toggle('fa-chevron-up', isHidden);
+                almostLimitChevron.classList.toggle('fa-chevron-down', !isHidden);
+            });
+        }
+
+        if (almostLimitCloseBtn && almostLimitBanner) {
+            almostLimitCloseBtn.addEventListener('click', function() {
+                hideBanner(almostLimitBanner);
             });
         }
 
