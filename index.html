@@ -248,6 +248,7 @@
             <div class="flex items-center gap-1.5 border-r border-[#3a3a3a] pr-4 mr-1" role="group" aria-label="Banner preview group">
                 <button type="button" id="group-1-btn" class="border border-[#555] bg-[#303030] hover:bg-[#3a3a3a] text-gray-300 text-[11px] font-semibold px-2.5 py-1.5 rounded transition-colors">GROUP 1</button>
                 <button type="button" id="group-2-btn" class="border border-[#555] bg-[#303030] hover:bg-[#3a3a3a] text-gray-300 text-[11px] font-semibold px-2.5 py-1.5 rounded transition-colors">GROUP 2</button>
+                <button type="button" id="group-3-btn" class="border border-[#555] bg-[#303030] hover:bg-[#3a3a3a] text-gray-300 text-[11px] font-semibold px-2.5 py-1.5 rounded transition-colors">GROUP 3</button>
             </div>
             <button class="text-gray-400 hover:text-white transition-colors"><i class="fas fa-th"></i></button>
             <button class="text-gray-400 hover:text-white transition-colors"><i class="fas fa-bell"></i></button>
@@ -1828,83 +1829,6 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        var DISCOUNT_PLAN_CODES = {
-            monthly: { label: 'Monthly', code: 'MONTHLY30', detail: '30% off your first year' },
-            annually: { label: 'Annually', code: 'ANNUAL40', detail: '10% off, plus an extra 30% off your first year' }
-        };
-
-        function offerDiscountCodeOptions(replyMsg) {
-            var div = document.createElement('div');
-            div.className = 'flex gap-2';
-            div.innerHTML =
-                '<div class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center text-red-600 shrink-0">' +
-                    '<i class="fas fa-robot text-xs"></i>' +
-                '</div>' +
-                '<div class="flex-1 max-w-[85%]">' +
-                    '<div class="bg-gray-100 rounded-lg rounded-tl-none px-3 py-2 text-[13px] text-gray-700 mb-2">' + replyMsg + '</div>' +
-                    '<div class="flex gap-2" id="discount-plan-options">' +
-                        '<button type="button" data-plan="monthly" class="discount-plan-btn border border-red-300 bg-white text-red-600 rounded-lg px-3 py-1.5 text-[12px] font-semibold hover:bg-red-50 transition-colors">Monthly</button>' +
-                        '<button type="button" data-plan="annually" class="discount-plan-btn border border-red-300 bg-white text-red-600 rounded-lg px-3 py-1.5 text-[12px] font-semibold hover:bg-red-50 transition-colors">Annually</button>' +
-                    '</div>' +
-                '</div>';
-
-            chatMessages.appendChild(div);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            var optionsWrap = div.querySelector('#discount-plan-options');
-            optionsWrap.querySelectorAll('.discount-plan-btn').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    var choice = DISCOUNT_PLAN_CODES[btn.getAttribute('data-plan')];
-                    if (!choice) return;
-
-                    optionsWrap.querySelectorAll('.discount-plan-btn').forEach(function(b) { b.disabled = true; });
-                    optionsWrap.classList.add('opacity-50', 'pointer-events-none');
-
-                    addMessageToChat(choice.label, true);
-
-                    setTimeout(function() {
-                        var codeDiv = document.createElement('div');
-                        codeDiv.className = 'flex gap-2';
-                        codeDiv.innerHTML =
-                            '<div class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center text-red-600 shrink-0">' +
-                                '<i class="fas fa-robot text-xs"></i>' +
-                            '</div>' +
-                            '<div class="flex-1 max-w-[85%]">' +
-                                '<div class="bg-gray-100 rounded-lg rounded-tl-none px-3 py-2 text-[13px] text-gray-700 mb-2">' +
-                                    'Awesome! Here is your ' + choice.label + ' plan discount code: <strong>' + choice.code + '</strong> (' + choice.detail + '). Apply it at pricing tab.' +
-                                '</div>' +
-                                '<button type="button" class="discount-goto-pricing-btn bg-[#303030] text-white rounded-lg px-3 py-1.5 text-[12px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-1.5">' +
-                                    '<i class="fas fa-tags text-[11px]"></i> Go to Pricing' +
-                                '</button>' +
-                            '</div>';
-
-                        chatMessages.appendChild(codeDiv);
-                        chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                        var gotoPricingBtn = codeDiv.querySelector('.discount-goto-pricing-btn');
-                        if (gotoPricingBtn) {
-                            gotoPricingBtn.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                navigateToPricingBanner();
-                            });
-                        }
-                    }, 700);
-                });
-            });
-        }
-
-        function openDiscountChatFlow(userMsg, replyMsg) {
-            chatBubble.classList.add('active');
-            chatInput.value = userMsg;
-            chatBadge.classList.remove('hidden');
-
-            setTimeout(function() {
-                addMessageToChat(userMsg, true);
-                chatInput.value = '';
-                setTimeout(function() { offerDiscountCodeOptions(replyMsg || "Could you let us know if you'd like the discount code for our Monthly or Annually plan?"); }, 800);
-            }, 300);
-        }
-
         floatingChatBtn.addEventListener('click', function() { chatBubble.classList.toggle('active'); });
         closeChatBubble.addEventListener('click', function() { chatBubble.classList.remove('active'); });
 
@@ -2212,6 +2136,7 @@
         var pricingNoticeTitle = document.getElementById('pricing-notice-title');
         var group1Btn = document.getElementById('group-1-btn');
         var group2Btn = document.getElementById('group-2-btn');
+        var group3Btn = document.getElementById('group-3-btn');
         var mainScrollArea = document.getElementById('main-scroll-area');
 
         var pricingPopupModal = document.getElementById('pricing-popup-modal');
@@ -2228,26 +2153,22 @@
                 introListHTML:
                     '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">We\'ve kept Findter <strong>free for almost a year</strong>, serving <strong>2,000+ stores</strong> at no profit to us. As one of our early supporters, we\'d like to thank you with <strong>exclusive pricing</strong> before paid plans roll out.</p>' +
                     '<ul class="mb-4 space-y-1.5">' +
-                        '<li class="text-[13px] text-[#303030]">✓ <strong>Time to update</strong>: 27th July, 2026</li>' +
-                        '<li class="text-[13px] text-[#303030]">✓ <strong>What changes</strong>: if you don\'t upgrade, your catalog will be <strong>cut down until it reaches</strong><div class="mt-1"><strong>300 products</strong> (free plan limit)</div></li>' +
-                        '<li class="text-[13px] text-[#303030]">✓ <strong>What stays the same</strong>: your old data and settings</li>' +
-                        '<li class="text-[13px] text-[#303030]">✓ <strong>Pricing: 30% off monthly</strong>, or <strong>10% off yearly + an extra 30% off</strong> with code</li>' +
+                        '<li class="text-[13px] text-[#303030]">✓ <strong>Special offer</strong>: discount code <strong>THANKYOU</strong> if you pay during:</li>' +
+                        '<li class="text-[13px] text-[#303030] pl-4">20-23 Jul: <strong>45%</strong> off monthly / <strong>50%</strong> off yearly</li>' +
+                        '<li class="text-[13px] text-[#303030] pl-4">24-25 Jul: <strong>35%</strong> off monthly / <strong>40%</strong> off yearly</li>' +
+                        '<li class="text-[13px] text-[#303030] pl-4">26 Jul: <strong>25%</strong> off monthly / <strong>30%</strong> off yearly</li>' +
+                        '<li class="text-[13px] text-[#303030]">✓ <strong>What changes</strong>: from 27th July, 2026, if you don\'t upgrade, your catalog will be <strong>cut down until it reaches</strong><div class="mt-1"><strong>300 products</strong> (free plan limit)</div></li>' +
                     '</ul>',
-                ctaLabel: 'Get discount code',
-                ctaMessage: 'I want to get discount code for paid plans',
-                ctaReply: "Thanks for reaching out! Could you let us know if you'd like the discount code for our Monthly or Annually plan?"
+                ctaLabel: 'Contact us',
+                ctaMessage: 'I want to ask about the exclusive pricing offer',
+                ctaReply: "Thanks for reaching out! Could you share a bit more about your question? Our team will get back to you shortly."
             },
             group2: {
                 icon: 'fa-info-circle',
                 title: 'Upcoming Plan Update',
                 introListHTML:
                     '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">We\'ve kept Findter <strong>free for almost a year</strong>, serving <strong>2,000+ stores at no profit</strong> to us. With this growth, we\'ll soon introduce paid plans to cover costs and keep improving the app.</p>' +
-                    '<ul class="mb-4 space-y-1.5">' +
-                        '<li class="text-[13px] text-[#303030]">✓ <strong>Time to update</strong>: to be updated, we\'ll notify you in advance</li>' +
-                        '<li class="text-[13px] text-[#303030]">✓ <strong>What changes</strong>: if you don\'t upgrade, your catalog will be <strong>cut down until it reaches</strong><div class="mt-1"><strong>300 products</strong> (free plan limit)</div></li>' +
-                        '<li class="text-[13px] text-[#303030]">✓ <strong>What stays the same</strong>: your old data and settings</li>' +
-                        '<li class="text-[13px] text-[#303030]">✓ <strong>Pricing</strong>: to be updated, with a special discount for you</li>' +
-                    '</ul>',
+                    '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">Rest assured, nothing is restricted yet. We\'ll notify you in advance before any changes take effect.</p>',
                 ctaLabel: 'Chat with us',
                 ctaMessage: 'I want to ask further questions about paid plans',
                 ctaReply: "Thanks for reaching out! Could you share a bit more about your question? Our team will get back to you shortly."
@@ -2421,11 +2342,7 @@
             var ctaBtn = document.getElementById('pricing-notice-cta-btn');
             if (ctaBtn) {
                 ctaBtn.addEventListener('click', function() {
-                    if (group === 'group1') {
-                        openDiscountChatFlow(content.ctaMessage, content.ctaReply);
-                    } else {
-                        openChatWithMessage(content.ctaMessage, content.ctaReply);
-                    }
+                    openChatWithMessage(content.ctaMessage, content.ctaReply);
                 });
             }
             wireViewPricingButton('pricing-notice-view-pricing-link');
@@ -2442,6 +2359,13 @@
             group2Btn.classList.toggle('border-red-600', group === 'group2');
             group2Btn.classList.toggle('text-white', group === 'group2');
             group2Btn.classList.toggle('text-gray-300', group !== 'group2');
+
+            if (group3Btn) {
+                group3Btn.classList.toggle('bg-red-600', group === 'group3');
+                group3Btn.classList.toggle('border-red-600', group === 'group3');
+                group3Btn.classList.toggle('text-white', group === 'group3');
+                group3Btn.classList.toggle('text-gray-300', group !== 'group3');
+            }
         }
 
         function showPricingPopup() {
@@ -2456,11 +2380,7 @@
             if (popupCtaBtn) {
                 popupCtaBtn.addEventListener('click', function() {
                     closePricingPopup();
-                    if (currentPricingGroup === 'group1') {
-                        openDiscountChatFlow(content.ctaMessage, content.ctaReply);
-                    } else {
-                        openChatWithMessage(content.ctaMessage, content.ctaReply);
-                    }
+                    openChatWithMessage(content.ctaMessage, content.ctaReply);
                 });
             }
             wireViewPricingButton('pricing-popup-view-pricing-link');
@@ -2513,6 +2433,12 @@
             document.addEventListener('click', handleFirstPageInteraction);
         }
 
+        function disarmPricingPopupTrigger() {
+            hasShownPricingPopup = true;
+            if (mainScrollArea) mainScrollArea.removeEventListener('scroll', handleFirstPageInteraction);
+            document.removeEventListener('click', handleFirstPageInteraction);
+        }
+
         function resetPricingFlowState(group) {
             currentPricingGroup = group;
             updateGroupButtonHighlight(group);
@@ -2546,11 +2472,16 @@
                 document.body.style.overflow = '';
             }
 
-            armPricingPopupTrigger();
+            if (group === 'group3') {
+                disarmPricingPopupTrigger();
+            } else {
+                armPricingPopupTrigger();
+            }
         }
 
         if (group1Btn) group1Btn.addEventListener('click', function() { resetPricingFlowState('group1'); });
         if (group2Btn) group2Btn.addEventListener('click', function() { resetPricingFlowState('group2'); });
+        if (group3Btn) group3Btn.addEventListener('click', function() { resetPricingFlowState('group3'); });
 
         if (pricingPopupCloseBtn) pricingPopupCloseBtn.addEventListener('click', closePricingPopup);
         if (pricingPopupOverlay) pricingPopupOverlay.addEventListener('click', closePricingPopup);
