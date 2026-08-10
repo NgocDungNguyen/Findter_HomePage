@@ -21,8 +21,7 @@
         }
         @media (min-width: 1024px) {
             .homepage-grid {
-                grid-template-columns: 633.32px 316.66px;
-                column-gap: 16px;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
             }
             .homepage-column {
                 display: flex;
@@ -30,13 +29,14 @@
                 gap: 20px;
             }
             .homepage-left {
-                grid-column: 1 / 2;
-                max-width: 633.32px;
+                grid-column: span 2 / span 2;
             }
             .homepage-right {
-                grid-column: 2 / 3;
-                max-width: 316.66px;
+                grid-column: span 1 / span 1;
             }
+        }
+        .app-rec-card {
+            width: calc((100% - 24px) / 3);
         }
         .sidebar-collapsed aside {
             width: 0 !important;
@@ -223,6 +223,37 @@
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.5; transform: scale(0.9); }
         }
+        .review1-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 15, 15, 0.45);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 39;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .review1-backdrop.review1-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .review1-toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 360px;
+            z-index: 40;
+            transform: translate(-50%, -50%) scale(0.96);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .review1-toast.review1-visible {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
     </style>
 </head>
 <body class="bg-[#f1f2f4] h-screen flex flex-col overflow-hidden text-[#303030]">
@@ -245,11 +276,6 @@
             </div>
         </div>
         <div class="flex items-center gap-4 text-sm">
-            <div class="flex items-center gap-1.5 border-r border-[#3a3a3a] pr-4 mr-1" role="group" aria-label="Banner preview group">
-                <button type="button" id="group-1-btn" class="border border-[#555] bg-[#303030] hover:bg-[#3a3a3a] text-gray-300 text-[11px] font-semibold px-2.5 py-1.5 rounded transition-colors">GROUP 1</button>
-                <button type="button" id="group-2-btn" class="border border-[#555] bg-[#303030] hover:bg-[#3a3a3a] text-gray-300 text-[11px] font-semibold px-2.5 py-1.5 rounded transition-colors">GROUP 2</button>
-                <button type="button" id="group-3-btn" class="border border-[#555] bg-[#303030] hover:bg-[#3a3a3a] text-gray-300 text-[11px] font-semibold px-2.5 py-1.5 rounded transition-colors">GROUP 3</button>
-            </div>
             <button class="text-gray-400 hover:text-white transition-colors"><i class="fas fa-th"></i></button>
             <button class="text-gray-400 hover:text-white transition-colors"><i class="fas fa-bell"></i></button>
             <div class="flex items-center gap-2 hover:bg-[#303030] rounded px-2 py-1 cursor-pointer transition-colors -mr-2">
@@ -313,15 +339,14 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button id="almost-limit-btn" class="border border-yellow-300 bg-yellow-50 text-yellow-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-yellow-100 transition-colors shadow-sm whitespace-nowrap">Almost Reach</button>
-                    <button id="reach-limit-btn" class="border border-red-300 bg-red-50 text-red-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-red-100 transition-colors shadow-sm whitespace-nowrap">Reach Limit</button>
+                    <button id="review1-trigger-btn" class="border border-purple-300 bg-purple-50 text-purple-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-purple-100 transition-colors shadow-sm whitespace-nowrap">Review 1</button>
                     <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">Reset Indexing</button>
                     <button id="end-index-btn" class="border border-green-300 bg-green-50 text-green-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-green-100 transition-colors shadow-sm whitespace-nowrap">End Index Now</button>
                     <button class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors"><i class="fas fa-ellipsis-h text-sm"></i></button>
                 </div>
             </div>
 
-            <div id="main-scroll-area" class="flex-1 overflow-y-auto px-8 pt-6 pb-12 relative">
+            <div class="flex-1 overflow-y-auto px-8 pt-6 pb-12 relative">
                 
                 <!-- HOME PAGE VIEW -->
                 <div id="page-home" class="page-view active">
@@ -337,11 +362,11 @@
                         <div class="homepage-grid">
                             <div class="homepage-column homepage-left">
                                 <!-- PRICING NOTICE BANNER -->
-                                <div id="pricing-notice-banner" class="hidden order-1 lg:order-none rounded-[8px] overflow-hidden border border-blue-200 shadow-sm">
+                                <div id="pricing-notice-banner" class="order-1 lg:order-none rounded-[8px] overflow-hidden border border-blue-200 shadow-sm">
                                     <div class="flex items-center justify-between px-4 py-3 bg-blue-100">
                                         <div class="flex items-center gap-2">
-                                            <i id="pricing-notice-icon" class="fas fa-info-circle text-blue-600 text-sm"></i>
-                                            <span id="pricing-notice-title" class="text-[#303030] font-semibold text-[14px]">Upcoming Plan Update</span>
+                                            <i class="fas fa-info-circle text-blue-600 text-sm"></i>
+                                            <span class="text-[#303030] font-semibold text-[14px]">Upcoming Plan Update</span>
                                         </div>
                                         <div class="flex items-center gap-1">
                                             <button id="pricing-notice-collapse-btn" class="text-gray-500 hover:text-gray-800 hover:bg-blue-200 rounded p-1 transition-colors" aria-label="Collapse">
@@ -352,30 +377,23 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div id="pricing-notice-body" class="bg-white px-5 py-4"></div>
-                                </div>
-
-                                <!-- ALMOST AT PRODUCT LIMIT BANNER -->
-                                <div id="almost-limit-banner" class="hidden order-2 lg:order-none rounded-[8px] overflow-hidden border border-yellow-200 shadow-sm">
-                                    <div class="flex items-center justify-between px-4 py-3 bg-yellow-100">
-                                        <div class="flex items-center gap-2">
-                                            <i class="fas fa-exclamation-triangle text-yellow-600 text-sm"></i>
-                                            <span class="text-[#303030] font-semibold text-[14px]">You're almost at your product limit</span>
-                                        </div>
-                                        <div class="flex items-center gap-1">
-                                            <button id="almost-limit-collapse-btn" class="text-gray-500 hover:text-gray-800 hover:bg-yellow-200 rounded p-1 transition-colors" aria-label="Collapse">
-                                                <i id="almost-limit-chevron" class="fas fa-chevron-up text-sm"></i>
-                                            </button>
-                                            <button id="almost-limit-close-btn" class="text-gray-500 hover:text-gray-800 hover:bg-yellow-200 rounded p-1 transition-colors" aria-label="Dismiss">
-                                                <i class="fas fa-times text-sm"></i>
-                                            </button>
-                                        </div>
+                                    <div id="pricing-notice-body" class="bg-white px-5 py-4">
+                                        <p class="text-[14px] font-bold text-[#303030] mb-3">Thank You for Using Findter ❤️</p>
+                                        <p class="text-[13px] text-[#303030] leading-relaxed mb-3">Starting <strong>July 1, 2026</strong>, Findter will introduce paid plans.</p>
+                                        <p class="text-[13px] text-[#303030] leading-relaxed mb-3">As an existing user, you'll receive a <strong>7-days free trial</strong> before billing begins.</p>
+                                        <ul class="mb-4 space-y-1.5">
+                                            <li class="text-[13px] text-[#303030]">✓ Your data and settings stay unchanged.</li>
+                                            <li class="text-[13px] text-[#303030]">✓ No setup required.</li>
+                                            <li class="text-[13px] text-[#303030]">✓ Decide during your trial.</li>
+                                        </ul>
+                                        <button class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
+                                            See pricing plans
+                                        </button>
                                     </div>
-                                    <div id="almost-limit-body" class="bg-white px-5 py-4"></div>
                                 </div>
 
                                 <!-- STORE LIMIT REACHED BANNER -->
-                                <div id="limit-reached-banner" class="hidden order-2 lg:order-none rounded-[8px] overflow-hidden border border-yellow-200 shadow-sm">
+                                <div id="limit-reached-banner" class="order-2 lg:order-none rounded-[8px] overflow-hidden border border-yellow-200 shadow-sm">
                                     <div class="flex items-center justify-between px-4 py-3 bg-yellow-100">
                                         <div class="flex items-center gap-2">
                                             <i class="fas fa-exclamation-triangle text-yellow-600 text-sm"></i>
@@ -390,7 +408,13 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div id="limit-reached-body" class="bg-white px-5 py-4"></div>
+                                    <div id="limit-reached-body" class="bg-white px-5 py-4">
+                                        <p class="text-[13px] text-[#303030] leading-relaxed mb-3">Your store has exceeded the current limit with over <strong id="limit-reached-product-count">10,000</strong> products and <strong id="limit-reached-metafield-count">50</strong> metafields. Products beyond the limit will not be indexed and appear on the storefront.</p>
+                                        <p class="text-[13px] text-[#303030] leading-relaxed mb-4">Contact us to consult about product and metafield limits.</p>
+                                        <button id="limit-reached-contact-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
+                                            Contact us
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <div id="onboarding-guide-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 order-4 lg:order-none">
@@ -530,6 +554,218 @@
                                     </div>
                                 </div>
 
+                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-8 lg:order-none">
+                                    <div class="p-5 flex items-center justify-between border-b border-gray-100">
+                                        <h3 class="font-semibold text-[15px] text-[#303030]">Recommend Apps</h3>
+                                        <div class="flex items-center gap-2">
+                                            <button id="appCarouselPrev" class="w-7 h-7 rounded-full border border-gray-300 bg-white flex items-center justify-center text-gray-600 hover:bg-gray-50 shadow-sm" aria-label="Previous apps"><i class="fas fa-chevron-left text-[10px]"></i></button>
+                                            <button id="appCarouselNext" class="w-7 h-7 rounded-full border border-gray-300 bg-white flex items-center justify-center text-gray-600 hover:bg-gray-50 shadow-sm" aria-label="Next apps"><i class="fas fa-chevron-right text-[10px]"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="p-5 overflow-hidden">
+                                        <div id="appCarouselTrack" class="flex gap-3 transition-transform duration-300 ease-in-out">
+                                            <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
+                                                <div class="flex flex-col items-start min-w-0">
+                                                    <img src="https://cdn.shopify.com/s/files/1/0765/0302/3847/files/0660674ca187cb7b90a9.png?v=1785833456" class="w-8 h-8 rounded-md object-cover shrink-0 mb-2" alt="Judge.me Product Reviews App">
+                                                    <div class="min-w-0">
+                                                        <div class="text-[12px] font-semibold text-[#303030] truncate">Judge.me Product Reviews App</div>
+                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Rating</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Display product Ratings</p>
+                                                <a href="https://apps.shopify.com/judgeme" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                            </div>
+                                            <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
+                                                <div class="flex flex-col items-start min-w-0">
+                                                    <img src="https://cdn.shopify.com/s/files/1/0765/0302/3847/files/934849961d1522ef7302.png?v=1785833460" class="w-8 h-8 rounded-md object-cover shrink-0 mb-2" alt="Yotpo: Product Reviews App">
+                                                    <div class="min-w-0">
+                                                        <div class="text-[12px] font-semibold text-[#303030] truncate">Yotpo: Product Reviews App</div>
+                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Reviews</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Display product reviews</p>
+                                                <a href="https://apps.shopify.com/yotpo-social-reviews" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                            </div>
+                                            <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
+                                                <div class="flex flex-col items-start min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/d1fbe4acf738bfaa4fa03ef985d8477e/icon/CM_PravDr4YDEAE=.png" class="w-8 h-8 rounded-md object-cover shrink-0 mb-2" alt="OT Section: Theme Sections">
+                                                    <div class="min-w-0">
+                                                        <div class="text-[12px] font-semibold text-[#303030] truncate">OT Section: Theme Sections</div>
+                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Page Builder</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">200+ premium drag-and-drop sections, templates &amp; blocks for any store</p>
+                                                <a href="https://apps.shopify.com/ot-theme-sections-store-page-builder" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                            </div>
+                                            <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
+                                                <div class="flex flex-col items-start min-w-0">
+                                                    <img src="https://omnithemes.com/wp-content/uploads/2024/04/logo.png" class="w-8 h-8 rounded-md object-cover shrink-0 mb-2" alt="Eurus Theme">
+                                                    <div class="min-w-0">
+                                                        <div class="text-[12px] font-semibold text-[#303030] truncate">Eurus Theme</div>
+                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Theme</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Conversion-focused theme with mega menus, pop-ups &amp; unlimited product badges</p>
+                                                <a href="https://themes.shopify.com/themes/eurus/presets/eurus" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                            </div>
+                                            <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
+                                                <div class="flex flex-col items-start min-w-0">
+                                                    <img src="https://omnithemes.com/wp-content/uploads/2024/04/logo.png" class="w-8 h-8 rounded-md object-cover shrink-0 mb-2" alt="Maximize Theme">
+                                                    <div class="min-w-0">
+                                                        <div class="text-[12px] font-semibold text-[#303030] truncate">Maximize Theme</div>
+                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Theme</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Speed-optimized B2B theme for 500+ SKU catalogs with smart search &amp; mega menus</p>
+                                                <a href="https://themes.shopify.com/themes/maximize/presets/maximize" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                            </div>
+                                            <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
+                                                <div class="flex flex-col items-start min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/5e7100d6dd8a25eae7b75d50f0d897df/icon/COWZ0fD0zosDEAE=.png" class="w-8 h-8 rounded-md object-cover shrink-0 mb-2" alt="OPTIS Product Options, Variant">
+                                                    <div class="min-w-0">
+                                                        <div class="text-[12px] font-semibold text-[#303030] truncate">OPTIS Product Options, Variant</div>
+                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Product Customization</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Infinite product options with text, swatches, file uploads &amp; price addons</p>
+                                                <a href="https://apps.shopify.com/product-options-by-bss" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                            </div>
+                                            <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
+                                                <div class="flex flex-col items-start min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/4639b295c8340737b2c240f10481cb85/icon/CIad9ra1140DEAE=.png" class="w-8 h-8 rounded-md object-cover shrink-0 mb-2" alt="OP Color Swatch Variant Images">
+                                                    <div class="min-w-0">
+                                                        <div class="text-[12px] font-semibold text-[#303030] truncate">OP Color Swatch Variant Images</div>
+                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Product variants</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Visual color/image swatches with combined listings &amp; variant image automator</p>
+                                                <a href="https://apps.shopify.com/optis-color-swatch-variants" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                            </div>
+                                            <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
+                                                <div class="flex flex-col items-start min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/c0ba322d64f9554b2f2917c3bb2f0ca0/icon/CKmvg5WrgJMDEAE=.png" class="w-8 h-8 rounded-md object-cover shrink-0 mb-2" alt="TA AI Product Labels &amp; Badges">
+                                                    <div class="min-w-0">
+                                                        <div class="text-[12px] font-semibold text-[#303030] truncate">TA AI Product Labels &amp; Badges</div>
+                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Product Labels &amp; Badges</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">AI-generated labels/badges with translations, stock &amp; discount-based display rules</p>
+                                                <a href="https://apps.shopify.com/product-labels-by-bss" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                            </div>
+                                            <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
+                                                <div class="flex flex-col items-start min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/c0ba322d64f9554b2f2917c3bb2f0ca0/icon/CKmvg5WrgJMDEAE=.png" class="w-8 h-8 rounded-md object-cover shrink-0 mb-2" alt="TA Banner Slider, Sales Pop up">
+                                                    <div class="min-w-0">
+                                                        <div class="text-[12px] font-semibold text-[#303030] truncate">TA Banner Slider, Sales Pop up</div>
+                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Promotions &amp; Banners</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Announcement bars, countdown timers, popups &amp; multi-banner sliders</p>
+                                                <a href="https://apps.shopify.com/bss-banner-pop-up" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                            </div>
+                                            <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
+                                                <div class="flex flex-col items-start min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/c0ba322d64f9554b2f2917c3bb2f0ca0/icon/CKmvg5WrgJMDEAE=.png" class="w-8 h-8 rounded-md object-cover shrink-0 mb-2" alt="TA Preorder &amp; Back In Stock">
+                                                    <div class="min-w-0">
+                                                        <div class="text-[12px] font-semibold text-[#303030] truncate">TA Preorder &amp; Back In Stock</div>
+                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Preorder &amp; Stock</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Preorders with deposits, back-in-stock alerts, waitlists &amp; presale campaigns</p>
+                                                <a href="https://apps.shopify.com/dotsy-preorder-presale" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                            </div>
+                                            <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
+                                                <div class="flex flex-col items-start min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/af0a3ec102358241ae7823679d9ccda3/icon/CKH57aSigpEDEAE=.png" class="w-8 h-8 rounded-md object-cover shrink-0 mb-2" alt="BSS B2B Order, Request a Quote">
+                                                    <div class="min-w-0">
+                                                        <div class="text-[12px] font-semibold text-[#303030] truncate">BSS B2B Order, Request a Quote</div>
+                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">B2B Order &amp; Quote</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Request quotes, bulk orders via CSV upload &amp; easy reorder from history</p>
+                                                <a href="https://apps.shopify.com/b2b-customer-portal-quick-order" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                            </div>
+                                            <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
+                                                <div class="flex flex-col items-start min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/f406cf0e469d052e1fb506a0898d801f/icon/CMn5zMuggpEDEAE=.png" class="w-8 h-8 rounded-md object-cover shrink-0 mb-2" alt="BSS B2B Wholesale Pricing">
+                                                    <div class="min-w-0">
+                                                        <div class="text-[12px] font-semibold text-[#303030] truncate">BSS B2B Wholesale Pricing</div>
+                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">B2B Wholesale</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Custom pricing, volume discounts, price lists, net terms &amp; tax control</p>
+                                                <a href="https://apps.shopify.com/b2b-solution-custom-pricing" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                            </div>
+                                            <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
+                                                <div class="flex flex-col items-start min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/6649510d2d88bde754b08607b0b6a328/icon/COicvrf8rYoDEAE=.png" class="w-8 h-8 rounded-md object-cover shrink-0 mb-2" alt="B2Bridge B2B Wholesale Pricing">
+                                                    <div class="min-w-0">
+                                                        <div class="text-[12px] font-semibold text-[#303030] truncate">B2Bridge B2B Wholesale Pricing</div>
+                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">B2B Wholesale</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Customer-specific pricing, bulk orders, MOQ, net terms &amp; quick order page</p>
+                                                <a href="https://apps.shopify.com/b2bridge-b2b-all-in-one" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                            </div>
+                                            <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
+                                                <div class="flex flex-col items-start min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/dc7f7058c1348d662ca3919f8d9b693b/icon/CM6ZgtWMxpEDEAE=.png" class="w-8 h-8 rounded-md object-cover shrink-0 mb-2" alt="TL: Free Gifts BOGO &amp; Upsell">
+                                                    <div class="min-w-0">
+                                                        <div class="text-[12px] font-semibold text-[#303030] truncate">TL: Free Gifts BOGO &amp; Upsell</div>
+                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Upsell &amp; BOGO</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">BOGO, Buy X Get Y, free gifts with purchase &amp; cart upsell offers</p>
+                                                <a href="https://apps.shopify.com/salepify" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                            </div>
+                                            <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
+                                                <div class="flex flex-col items-start min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/1188f0cb74707478f04a7ab4f9563933/icon/CMqW-bav1ZEDEAE=.png" class="w-8 h-8 rounded-md object-cover shrink-0 mb-2" alt="MIDA Replay, Heatmap &amp; Insight">
+                                                    <div class="min-w-0">
+                                                        <div class="text-[12px] font-semibold text-[#303030] truncate">MIDA Replay, Heatmap &amp; Insight</div>
+                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Analytics &amp; Heatmap</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Session replays, revenue heatmaps &amp; AI insights to fix UX friction</p>
+                                                <a href="https://apps.shopify.com/mida-session-recording-replay" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                            </div>
+                                            <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
+                                                <div class="flex flex-col items-start min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/a9d339e5e1fd198bffdae82904deaec6/icon/CNeZtO2llJADEAE=.png" class="w-8 h-8 rounded-md object-cover shrink-0 mb-2" alt="Chizy: AI Chatbot &amp; Live Chat">
+                                                    <div class="min-w-0">
+                                                        <div class="text-[12px] font-semibold text-[#303030] truncate">Chizy: AI Chatbot &amp; Live Chat</div>
+                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">AI Chatbot</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">24/7 AI chatbot with product browsing, live chat handover &amp; smart follow-ups</p>
+                                                <a href="https://apps.shopify.com/chizy-ai-chatbot" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                (function() {
+                                    var track = document.getElementById('appCarouselTrack');
+                                    var prevBtn = document.getElementById('appCarouselPrev');
+                                    var nextBtn = document.getElementById('appCarouselNext');
+                                    if (!track || !prevBtn || !nextBtn) return;
+                                    var index = 0;
+                                    function move(dir) {
+                                        var cards = track.children;
+                                        var visible = 3;
+                                        var maxIndex = Math.max(0, cards.length - visible);
+                                        index = Math.max(0, Math.min(index + dir, maxIndex));
+                                        var card = cards[0];
+                                        var gap = 12;
+                                        var step = card.offsetWidth + gap;
+                                        track.style.transform = 'translateX(-' + (index * step) + 'px)';
+                                    }
+                                    prevBtn.addEventListener('click', function() { move(-1); });
+                                    nextBtn.addEventListener('click', function() { move(1); });
+                                })();
+                                </script>
+
                                 <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-9 lg:order-none"><h3 class="font-semibold text-[15px] text-[#303030] mb-3">Master</h3><button class="border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 shadow-sm">Master</button></div>
                             </div>
 
@@ -657,6 +893,35 @@
             <i class="fas fa-search text-xl"></i>
             <span id="chat-badge" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-red-600 rounded-full text-[10px] font-bold flex items-center justify-center border-2 border-white">1</span>
         </button>
+    </div>
+
+    <!-- Review Request Modal -->
+    <div id="review1-backdrop" class="review1-backdrop"></div>
+    <div id="review1-toast" class="review1-toast bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden">
+        <button id="review1-close-btn" class="absolute top-2.5 right-2.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full w-7 h-7 flex items-center justify-center transition-colors" aria-label="Close">
+            <i class="fas fa-times text-sm"></i>
+        </button>
+        <div class="p-5 pr-9">
+            <div class="flex items-start gap-3 mb-3">
+                <img src="https://cdn.shopify.com/app-store/listing_images/393b6ef120968ea1931a5ec86b58d041/icon/CIr75oPv944DEAE=.png" alt="Findter" class="w-10 h-10 rounded-[10px] shrink-0 object-cover shadow-sm">
+                <h3 class="font-semibold text-[14px] text-[#303030] leading-snug pt-0.5">Thank you for being with Findter! 🎉</h3>
+            </div>
+            <p class="text-[13px] text-gray-500 leading-relaxed mb-3">Your journey means a lot to us. We'd love to hear your thoughts to help us grow and help merchants find the right tools.</p>
+            <div class="mb-4">
+                <p class="text-[12px] font-semibold text-gray-700 mb-1.5">What to share:</p>
+                <ul class="text-[12px] text-gray-500 leading-relaxed space-y-1 list-disc pl-4">
+                    <li>How our features work for your store</li>
+                    <li>Your experience with our support team</li>
+                    <li>Any features you'd love to see next</li>
+                    <li>Anything else you think would help others</li>
+                </ul>
+            </div>
+            <button id="review1-cta-btn" class="w-full bg-[#303030] hover:bg-[#4a4a4a] text-white text-[13px] font-semibold rounded-[6px] px-4 py-2.5 transition-colors mb-3">Share your review &rarr;</button>
+            <label class="flex items-center gap-2 text-[12px] text-gray-600 cursor-pointer">
+                <input type="checkbox" id="review1-never-show" class="w-4 h-4 rounded border-gray-300 text-[#303030] focus:ring-0 cursor-pointer">
+                Never show this again
+            </label>
+        </div>
     </div>
 
     <!-- Chat Bubble -->
@@ -837,25 +1102,6 @@
                         Enable App in Theme Editor
                     </button>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: Upcoming Plan Update Popup (first-interaction reveal) -->
-    <div id="pricing-popup-modal" class="modal-wrapper fixed inset-0 hidden">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="pricing-popup-overlay"></div>
-        <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
-            <div class="bg-white rounded-xl shadow-2xl w-full max-w-[620px] pointer-events-auto relative modal-content overflow-hidden max-h-[85vh] flex flex-col">
-                <div class="flex items-center justify-between px-5 py-3 bg-blue-100 shrink-0">
-                    <div class="flex items-center gap-2">
-                        <i id="pricing-popup-icon" class="fas fa-info-circle text-blue-600 text-sm"></i>
-                        <span id="pricing-popup-title" class="text-[#303030] font-semibold text-[15px]">Upcoming Plan Update</span>
-                    </div>
-                    <button type="button" id="pricing-popup-close-btn" class="text-gray-500 hover:text-gray-800 hover:bg-blue-200 rounded p-1 transition-colors" aria-label="Close">
-                        <i class="fas fa-times text-sm"></i>
-                    </button>
-                </div>
-                <div id="pricing-popup-body" class="px-5 py-5 overflow-y-auto"></div>
             </div>
         </div>
     </div>
@@ -1799,15 +2045,15 @@
         });
 
         // ========== CHAT ==========
-        function openChatWithMessage(msg, replyMsg) {
+        function openChatWithMessage(msg) {
             chatBubble.classList.add('active');
             chatInput.value = msg;
             chatBadge.classList.remove('hidden');
-
+            
             setTimeout(function() {
                 addMessageToChat(msg, true);
                 chatInput.value = '';
-                setTimeout(function() { addMessageToChat(replyMsg || "Thank you for reaching out!", false); }, 800);
+                setTimeout(function() { addMessageToChat("Thank you for reaching out!", false); }, 800);
             }, 300);
         }
 
@@ -2055,10 +2301,6 @@
                     closeRestrictedModalAndGoHome();
                     return;
                 }
-                if (pricingPopupModal && !pricingPopupModal.classList.contains('hidden')) {
-                    closePricingPopup();
-                    return;
-                }
                 if (themeModal && !themeModal.classList.contains('hidden')) {
                     closeThemeModal();
                 }
@@ -2126,367 +2368,13 @@
             });
         }
 
-        // ========== PRICING NOTICE BANNER (GROUP 1 / GROUP 2 preview) ==========
+        // ========== PRICING NOTICE BANNER ==========
         var pricingNoticeBanner = document.getElementById('pricing-notice-banner');
         var pricingNoticeCloseBtn = document.getElementById('pricing-notice-close-btn');
         var pricingNoticeCollapseBtn = document.getElementById('pricing-notice-collapse-btn');
         var pricingNoticeBody = document.getElementById('pricing-notice-body');
         var pricingNoticeChevron = document.getElementById('pricing-notice-chevron');
-        var pricingNoticeIcon = document.getElementById('pricing-notice-icon');
-        var pricingNoticeTitle = document.getElementById('pricing-notice-title');
-        var group1Btn = document.getElementById('group-1-btn');
-        var group2Btn = document.getElementById('group-2-btn');
-        var group3Btn = document.getElementById('group-3-btn');
-        var mainScrollArea = document.getElementById('main-scroll-area');
-
-        var pricingPopupModal = document.getElementById('pricing-popup-modal');
-        var pricingPopupOverlay = document.getElementById('pricing-popup-overlay');
-        var pricingPopupCloseBtn = document.getElementById('pricing-popup-close-btn');
-        var pricingPopupIcon = document.getElementById('pricing-popup-icon');
-        var pricingPopupTitle = document.getElementById('pricing-popup-title');
-        var pricingPopupBody = document.getElementById('pricing-popup-body');
-
-        var PRICING_BANNER_CONTENT = {
-            group1: {
-                icon: 'fa-gift',
-                title: 'A Special Thank You: Exclusive Pricing Inside',
-                introListHTML:
-                    '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">We\'ve kept Findter <strong>free for almost a year</strong>, serving <strong>2,000+ stores</strong> at no profit to us. As one of our early supporters, we\'d like to thank you with <strong>exclusive pricing</strong> before paid plans roll out.</p>' +
-                    '<ul class="mb-4 space-y-1.5">' +
-                        '<li class="text-[13px] text-[#303030]">✓ <strong>Special offer</strong>: discount code <strong>THANKYOU</strong> if you pay during:</li>' +
-                        '<li class="text-[13px] text-[#303030] pl-4">20-23 Jul: <strong>45%</strong> off monthly / <strong>50%</strong> off yearly</li>' +
-                        '<li class="text-[13px] text-[#303030] pl-4">24-25 Jul: <strong>35%</strong> off monthly / <strong>40%</strong> off yearly</li>' +
-                        '<li class="text-[13px] text-[#303030] pl-4">26 Jul: <strong>25%</strong> off monthly / <strong>30%</strong> off yearly</li>' +
-                        '<li class="text-[13px] text-[#303030]">✓ <strong>What changes</strong>: from 27th July, 2026, if you don\'t upgrade, your catalog will be <strong>cut down until it reaches 300 products </strong>(free plan limit)</li>' +
-                    '</ul>',
-                ctaLabel: 'Contact us',
-                ctaMessage: 'I want to ask about the exclusive pricing offer',
-                ctaReply: "Thanks for reaching out! Could you share a bit more about your question? Our team will get back to you shortly."
-            },
-            group2: {
-                icon: 'fa-info-circle',
-                title: 'Upcoming Plan Update',
-                introListHTML:
-                    '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">We\'ve kept Findter <strong>free for almost a year</strong>, serving <strong>2,000+ stores at no profit</strong> to us. With this growth, we\'ll soon introduce paid plans to cover costs and keep improving the app.</p>' +
-                    '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">Rest assured, nothing is restricted yet. We\'ll notify you in advance before any changes take effect.</p>',
-                ctaLabel: 'Chat with us',
-                ctaMessage: 'I want to ask further questions about paid plans',
-                ctaReply: "Thanks for reaching out! Could you share a bit more about your question? Our team will get back to you shortly."
-            }
-        };
-
-        var LIMIT_BANNER_CONTENT = {
-            group1: {
-                bodyHTML: '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">Your catalog currently contains over <strong>300</strong> products. To keep your store running smoothly at no cost, <strong>5%</strong> of your visible products will be hidden each day until only <strong>300</strong> remain. Upgrade to keep your full catalog visible.</p>',
-                ctaMessage: 'I want to ask about Store limit reached'
-            }
-        };
-
-        var ALMOST_LIMIT_CONTENT = {
-            currentProducts: 2901,
-            planLimit: 3000,
-            ctaMessage: 'I want to ask about my product limit'
-        };
-
-        function showBanner(el) {
-            if (!el) return;
-            el.classList.remove('hidden');
-            el.style.display = '';
-        }
-
-        function hideBanner(el) {
-            if (!el) return;
-            el.classList.add('hidden');
-            el.style.display = 'none';
-        }
-
-        function expandBannerBody(bodyEl, chevronEl) {
-            if (!bodyEl || !chevronEl) return;
-            bodyEl.classList.remove('hidden');
-            chevronEl.classList.add('fa-chevron-up');
-            chevronEl.classList.remove('fa-chevron-down');
-        }
-
-        function renderLimitReachedBanner(group) {
-            var limitBanner = document.getElementById('limit-reached-banner');
-            var limitBody = document.getElementById('limit-reached-body');
-            if (!limitBanner || !limitBody) return;
-
-            // Only Group 1 has a product-limit warning; Group 2 doesn't show this banner at all.
-            if (group !== 'group1') {
-                hideBanner(limitBanner);
-                return;
-            }
-
-            showBanner(limitBanner);
-            var content = LIMIT_BANNER_CONTENT.group1;
-
-            limitBody.innerHTML = content.bodyHTML +
-                '<div class="flex items-center gap-3">' +
-                    '<button type="button" id="limit-reached-contact-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">Contact us</button>' +
-                    '<button type="button" id="limit-reached-upgrade-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-gray-50 transition-colors inline-flex items-center gap-2">Upgrade now</button>' +
-                '</div>';
-
-            var contactBtn = document.getElementById('limit-reached-contact-btn');
-            if (contactBtn) {
-                contactBtn.addEventListener('click', function() {
-                    openChatWithMessage(content.ctaMessage);
-                });
-            }
-
-            var upgradeBtn = document.getElementById('limit-reached-upgrade-btn');
-            if (upgradeBtn) {
-                upgradeBtn.addEventListener('click', function() {
-                    navigateToPricingBanner();
-                });
-            }
-        }
-
-        function renderAlmostLimitBanner() {
-            var almostBanner = document.getElementById('almost-limit-banner');
-            var almostBody = document.getElementById('almost-limit-body');
-            if (!almostBanner || !almostBody) return;
-
-            showBanner(almostBanner);
-
-            almostBody.innerHTML =
-                '<p class="text-[13px] text-[#303030] leading-relaxed mb-3">Your store now has <strong>' + ALMOST_LIMIT_CONTENT.currentProducts + '</strong> / <strong>' + ALMOST_LIMIT_CONTENT.planLimit + '</strong> products. New products added beyond this limit won\'t appear on your storefront. Upgrade to continue scaling.</p>' +
-                '<div class="flex items-center gap-3">' +
-                    '<button type="button" id="almost-limit-contact-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">Contact us</button>' +
-                    '<button type="button" id="almost-limit-upgrade-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-gray-50 transition-colors inline-flex items-center gap-2">Upgrade now</button>' +
-                '</div>';
-
-            var contactBtn = document.getElementById('almost-limit-contact-btn');
-            if (contactBtn) {
-                contactBtn.addEventListener('click', function() {
-                    openChatWithMessage(ALMOST_LIMIT_CONTENT.ctaMessage);
-                });
-            }
-
-            var upgradeBtn = document.getElementById('almost-limit-upgrade-btn');
-            if (upgradeBtn) {
-                upgradeBtn.addEventListener('click', function() {
-                    navigateToPricingBanner();
-                });
-            }
-        }
-
-        function showAlmostLimitBanner() {
-            var limitBanner = document.getElementById('limit-reached-banner');
-            hideBanner(limitBanner);
-
-            renderAlmostLimitBanner();
-            var almostBody = document.getElementById('almost-limit-body');
-            var almostChevron = document.getElementById('almost-limit-chevron');
-            expandBannerBody(almostBody, almostChevron);
-        }
-
-        function showReachLimitBanner() {
-            var almostBanner = document.getElementById('almost-limit-banner');
-            hideBanner(almostBanner);
-
-            renderLimitReachedBanner('group1');
-            var limitBody = document.getElementById('limit-reached-body');
-            var limitChevron = document.getElementById('limit-reached-chevron');
-            expandBannerBody(limitBody, limitChevron);
-        }
-
-        var almostLimitBtn = document.getElementById('almost-limit-btn');
-        var reachLimitBtn = document.getElementById('reach-limit-btn');
-        if (almostLimitBtn) almostLimitBtn.addEventListener('click', showAlmostLimitBanner);
-        if (reachLimitBtn) reachLimitBtn.addEventListener('click', showReachLimitBanner);
-
-        var currentPricingGroup = 'group2';
-        var hasShownPricingPopup = false;
-
-        function navigateToPricingBanner() {
-            chatBubble.classList.remove('active');
-            if (pricingPopupModal) {
-                pricingPopupModal.classList.add('hidden');
-                document.body.style.overflow = '';
-            }
-            if (pricingNoticeBanner) {
-                pricingNoticeBanner.classList.remove('guide-attention-animation');
-                void pricingNoticeBanner.offsetWidth;
-                pricingNoticeBanner.classList.add('guide-attention-animation');
-                pricingNoticeBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                setTimeout(function() { pricingNoticeBanner.classList.remove('guide-attention-animation'); }, 1200);
-            }
-        }
-
-        function buildPricingBodyHTML(content, ctaBtnId, viewPricingId) {
-            return content.introListHTML +
-                '<div class="flex items-center gap-3">' +
-                    '<button type="button" id="' + ctaBtnId + '" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">' + content.ctaLabel + '</button>' +
-                    '<button type="button" id="' + viewPricingId + '" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-gray-50 transition-colors inline-flex items-center gap-2">View Pricing</button>' +
-                '</div>';
-        }
-
-        function wireViewPricingButton(btnId) {
-            var btn = document.getElementById(btnId);
-            if (btn) {
-                btn.addEventListener('click', function() {
-                    navigateToPricingBanner();
-                });
-            }
-        }
-
-        function renderPricingNoticeBanner(group) {
-            var content = PRICING_BANNER_CONTENT[group];
-            if (!content) return;
-
-            if (pricingNoticeIcon) pricingNoticeIcon.className = 'fas ' + content.icon + ' text-blue-600 text-sm';
-            if (pricingNoticeTitle) pricingNoticeTitle.textContent = content.title;
-            if (pricingNoticeBody) pricingNoticeBody.innerHTML = buildPricingBodyHTML(content, 'pricing-notice-cta-btn', 'pricing-notice-view-pricing-link');
-
-            var ctaBtn = document.getElementById('pricing-notice-cta-btn');
-            if (ctaBtn) {
-                ctaBtn.addEventListener('click', function() {
-                    openChatWithMessage(content.ctaMessage, content.ctaReply);
-                });
-            }
-            wireViewPricingButton('pricing-notice-view-pricing-link');
-        }
-
-        function updateGroupButtonHighlight(group) {
-            if (!group1Btn || !group2Btn) return;
-            group1Btn.classList.toggle('bg-red-600', group === 'group1');
-            group1Btn.classList.toggle('border-red-600', group === 'group1');
-            group1Btn.classList.toggle('text-white', group === 'group1');
-            group1Btn.classList.toggle('text-gray-300', group !== 'group1');
-
-            group2Btn.classList.toggle('bg-red-600', group === 'group2');
-            group2Btn.classList.toggle('border-red-600', group === 'group2');
-            group2Btn.classList.toggle('text-white', group === 'group2');
-            group2Btn.classList.toggle('text-gray-300', group !== 'group2');
-
-            if (group3Btn) {
-                group3Btn.classList.toggle('bg-red-600', group === 'group3');
-                group3Btn.classList.toggle('border-red-600', group === 'group3');
-                group3Btn.classList.toggle('text-white', group === 'group3');
-                group3Btn.classList.toggle('text-gray-300', group !== 'group3');
-            }
-        }
-
-        function showPricingPopup() {
-            var content = PRICING_BANNER_CONTENT[currentPricingGroup];
-            if (!content || !pricingPopupModal) return;
-
-            if (pricingPopupIcon) pricingPopupIcon.className = 'fas ' + content.icon + ' text-blue-600 text-sm';
-            if (pricingPopupTitle) pricingPopupTitle.textContent = content.title;
-            if (pricingPopupBody) pricingPopupBody.innerHTML = buildPricingBodyHTML(content, 'pricing-popup-cta-btn', 'pricing-popup-view-pricing-link');
-
-            var popupCtaBtn = document.getElementById('pricing-popup-cta-btn');
-            if (popupCtaBtn) {
-                popupCtaBtn.addEventListener('click', function() {
-                    closePricingPopup();
-                    openChatWithMessage(content.ctaMessage, content.ctaReply);
-                });
-            }
-            wireViewPricingButton('pricing-popup-view-pricing-link');
-
-            pricingPopupModal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closePricingPopup() {
-            if (pricingPopupModal) {
-                pricingPopupModal.classList.add('hidden');
-                document.body.style.overflow = '';
-            }
-
-            // Reveal the banner (rendered with the current group's content), then collapse both banners.
-            renderPricingNoticeBanner(currentPricingGroup);
-            if (pricingNoticeBanner) {
-                pricingNoticeBanner.classList.remove('hidden');
-                pricingNoticeBanner.style.display = '';
-            }
-            if (pricingNoticeBody && pricingNoticeChevron) {
-                pricingNoticeBody.classList.add('hidden');
-                pricingNoticeChevron.classList.remove('fa-chevron-up');
-                pricingNoticeChevron.classList.add('fa-chevron-down');
-            }
-
-            var limitBody = document.getElementById('limit-reached-body');
-            var limitChevron = document.getElementById('limit-reached-chevron');
-            if (limitBody && limitChevron) {
-                limitBody.classList.add('hidden');
-                limitChevron.classList.remove('fa-chevron-up');
-                limitChevron.classList.add('fa-chevron-down');
-            }
-        }
-
-        function handleFirstPageInteraction(e) {
-            if (e && e.target && e.target.closest && (e.target.closest('#group-1-btn') || e.target.closest('#group-2-btn'))) {
-                return;
-            }
-            if (hasShownPricingPopup) return;
-            hasShownPricingPopup = true;
-            if (mainScrollArea) mainScrollArea.removeEventListener('scroll', handleFirstPageInteraction);
-            document.removeEventListener('click', handleFirstPageInteraction);
-            showPricingPopup();
-        }
-
-        function armPricingPopupTrigger() {
-            hasShownPricingPopup = false;
-            if (mainScrollArea) mainScrollArea.addEventListener('scroll', handleFirstPageInteraction, { passive: true });
-            document.addEventListener('click', handleFirstPageInteraction);
-        }
-
-        function disarmPricingPopupTrigger() {
-            hasShownPricingPopup = true;
-            if (mainScrollArea) mainScrollArea.removeEventListener('scroll', handleFirstPageInteraction);
-            document.removeEventListener('click', handleFirstPageInteraction);
-        }
-
-        function resetPricingFlowState(group) {
-            currentPricingGroup = group;
-            updateGroupButtonHighlight(group);
-
-            // Hide the plan-update banner entirely until the popup has been closed.
-            if (pricingNoticeBanner) {
-                pricingNoticeBanner.classList.add('hidden');
-                pricingNoticeBanner.style.display = '';
-            }
-            if (pricingNoticeBody && pricingNoticeChevron) {
-                pricingNoticeBody.classList.remove('hidden');
-                pricingNoticeChevron.classList.add('fa-chevron-up');
-                pricingNoticeChevron.classList.remove('fa-chevron-down');
-            }
-
-            // Store limit reached banner: only Group 1 shows it, expanded.
-            hideBanner(document.getElementById('almost-limit-banner'));
-            renderLimitReachedBanner(group);
-            if (group === 'group1') {
-                var limitBody = document.getElementById('limit-reached-body');
-                var limitChevron = document.getElementById('limit-reached-chevron');
-                if (limitBody && limitChevron) {
-                    limitBody.classList.remove('hidden');
-                    limitChevron.classList.add('fa-chevron-up');
-                    limitChevron.classList.remove('fa-chevron-down');
-                }
-            }
-
-            if (pricingPopupModal) {
-                pricingPopupModal.classList.add('hidden');
-                document.body.style.overflow = '';
-            }
-
-            if (group === 'group3') {
-                disarmPricingPopupTrigger();
-            } else {
-                armPricingPopupTrigger();
-            }
-        }
-
-        if (group1Btn) group1Btn.addEventListener('click', function() { resetPricingFlowState('group1'); });
-        if (group2Btn) group2Btn.addEventListener('click', function() { resetPricingFlowState('group2'); });
-        if (group3Btn) group3Btn.addEventListener('click', function() { resetPricingFlowState('group3'); });
-
-        if (pricingPopupCloseBtn) pricingPopupCloseBtn.addEventListener('click', closePricingPopup);
-        if (pricingPopupOverlay) pricingPopupOverlay.addEventListener('click', closePricingPopup);
-
-        resetPricingFlowState('group2');
+        var pricingNoticeContactLink = document.getElementById('pricing-notice-contact-link');
 
         if (pricingNoticeCollapseBtn && pricingNoticeBody) {
             pricingNoticeCollapseBtn.addEventListener('click', function() {
@@ -2503,12 +2391,21 @@
             });
         }
 
+        if (pricingNoticeContactLink && chatBubble) {
+            pricingNoticeContactLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                chatBubble.classList.add('active');
+                if (chatBadge) chatBadge.classList.add('hidden');
+            });
+        }
+
         // ========== STORE LIMIT REACHED BANNER ==========
         var limitReachedBanner = document.getElementById('limit-reached-banner');
         var limitReachedCloseBtn = document.getElementById('limit-reached-close-btn');
         var limitReachedCollapseBtn = document.getElementById('limit-reached-collapse-btn');
         var limitReachedBody = document.getElementById('limit-reached-body');
         var limitReachedChevron = document.getElementById('limit-reached-chevron');
+        var limitReachedContactBtn = document.getElementById('limit-reached-contact-btn');
 
         if (limitReachedCollapseBtn && limitReachedBody) {
             limitReachedCollapseBtn.addEventListener('click', function() {
@@ -2521,29 +2418,49 @@
 
         if (limitReachedCloseBtn && limitReachedBanner) {
             limitReachedCloseBtn.addEventListener('click', function() {
-                hideBanner(limitReachedBanner);
+                limitReachedBanner.style.display = 'none';
             });
         }
 
-        // ========== ALMOST AT PRODUCT LIMIT BANNER ==========
-        var almostLimitBanner = document.getElementById('almost-limit-banner');
-        var almostLimitCloseBtn = document.getElementById('almost-limit-close-btn');
-        var almostLimitCollapseBtn = document.getElementById('almost-limit-collapse-btn');
-        var almostLimitBody = document.getElementById('almost-limit-body');
-        var almostLimitChevron = document.getElementById('almost-limit-chevron');
-
-        if (almostLimitCollapseBtn && almostLimitBody) {
-            almostLimitCollapseBtn.addEventListener('click', function() {
-                var isHidden = almostLimitBody.classList.contains('hidden');
-                almostLimitBody.classList.toggle('hidden');
-                almostLimitChevron.classList.toggle('fa-chevron-up', isHidden);
-                almostLimitChevron.classList.toggle('fa-chevron-down', !isHidden);
+        if (limitReachedContactBtn && chatBubble) {
+            limitReachedContactBtn.addEventListener('click', function() {
+                chatBubble.classList.add('active');
+                if (chatBadge) chatBadge.classList.add('hidden');
             });
         }
 
-        if (almostLimitCloseBtn && almostLimitBanner) {
-            almostLimitCloseBtn.addEventListener('click', function() {
-                hideBanner(almostLimitBanner);
+        // ========== REVIEW REQUEST TOAST ==========
+        var REVIEW1_STORAGE_KEY = 'findter_review1_never_show';
+        var REVIEW1_APP_STORE_URL = 'https://apps.shopify.com/findter-custom-filter-search#modal-show=WriteReviewModal&st_campaign=rate-app&st_source=admin-web';
+
+        var review1TriggerBtn = document.getElementById('review1-trigger-btn');
+        var review1Toast = document.getElementById('review1-toast');
+        var review1Backdrop = document.getElementById('review1-backdrop');
+        var review1CloseBtn = document.getElementById('review1-close-btn');
+        var review1NeverShow = document.getElementById('review1-never-show');
+        var review1CtaBtn = document.getElementById('review1-cta-btn');
+
+        function openReview1Toast() {
+            if (review1Toast) review1Toast.classList.add('review1-visible');
+            if (review1Backdrop) review1Backdrop.classList.add('review1-visible');
+        }
+
+        function closeReview1Toast() {
+            if (!review1Toast) return;
+            if (review1NeverShow && review1NeverShow.checked) {
+                localStorage.setItem(REVIEW1_STORAGE_KEY, 'true');
+            }
+            review1Toast.classList.remove('review1-visible');
+            if (review1Backdrop) review1Backdrop.classList.remove('review1-visible');
+        }
+
+        if (review1TriggerBtn) review1TriggerBtn.addEventListener('click', openReview1Toast);
+        if (review1CloseBtn) review1CloseBtn.addEventListener('click', closeReview1Toast);
+        if (review1Backdrop) review1Backdrop.addEventListener('click', closeReview1Toast);
+        if (review1CtaBtn) {
+            review1CtaBtn.addEventListener('click', function() {
+                window.open(REVIEW1_APP_STORE_URL, '_blank');
+                closeReview1Toast();
             });
         }
 
