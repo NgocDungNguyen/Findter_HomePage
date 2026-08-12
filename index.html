@@ -223,36 +223,8 @@
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.5; transform: scale(0.9); }
         }
-        .review1-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 15, 15, 0.45);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            z-index: 39;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        .review1-backdrop.review1-visible {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .review1-toast {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            width: 360px;
-            z-index: 40;
-            transform: translate(-50%, -50%) scale(0.96);
-            opacity: 0;
-            pointer-events: none;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-        .review1-toast.review1-visible {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-            pointer-events: auto;
+        .rating-star.is-filled i {
+            font-weight: 900;
         }
     </style>
 </head>
@@ -339,7 +311,7 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button id="review1-trigger-btn" class="border border-purple-300 bg-purple-50 text-purple-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-purple-100 transition-colors shadow-sm whitespace-nowrap">Review 1</button>
+                    <button id="rating-trigger-btn" class="border border-purple-300 bg-purple-50 text-purple-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-purple-100 transition-colors shadow-sm whitespace-nowrap">Rating</button>
                     <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">Reset Indexing</button>
                     <button id="end-index-btn" class="border border-green-300 bg-green-50 text-green-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-green-100 transition-colors shadow-sm whitespace-nowrap">End Index Now</button>
                     <button class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors"><i class="fas fa-ellipsis-h text-sm"></i></button>
@@ -354,6 +326,31 @@
                         <div id="welcome-box" elementtiming="lcp-welcome" class="mb-4 px-1" style="display:block !important;">
                             <h1 elementtiming="lcp-welcome-heading" class="text-[22px] font-bold text-[#303030] mb-1">👋 Welcome to Findter 👋</h1>
                             <p class="text-[13px] text-gray-500 leading-relaxed">Explore your store's filter and search tools and help your customers find exactly what they're looking for.</p>
+                        </div>
+
+                        <!-- RATING BANNER -->
+                        <div id="rating-banner" class="hidden mb-5 rounded-2xl overflow-hidden shadow-md border border-indigo-100">
+                            <div class="bg-gradient-to-r from-indigo-50 via-violet-50 to-indigo-50 px-6 py-5 relative">
+                                <button id="rating-banner-close" class="absolute top-3 right-3 text-indigo-300 hover:text-indigo-600 hover:bg-white/70 rounded-full w-7 h-7 flex items-center justify-center transition-colors" aria-label="Dismiss">
+                                    <i class="fas fa-times text-sm"></i>
+                                </button>
+                                <div class="flex items-start gap-4 pr-8">
+                                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-indigo-500 shrink-0 shadow-sm">
+                                        <i class="fas fa-smile-beam text-xl"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="text-[15px] font-bold text-[#303030] mb-1">Enjoying Findter so far? 💜</p>
+                                        <p class="text-[13px] text-gray-600 mb-3 leading-relaxed">We'd love to know how we're doing. Tap a star below, it takes two seconds and helps us make Findter even better for you.</p>
+                                        <div id="rating-stars" class="flex items-center gap-2">
+                                            <button type="button" class="rating-star text-gray-300 text-3xl leading-none hover:scale-110 transition-transform" data-value="1" aria-label="1 star"><i class="far fa-star"></i></button>
+                                            <button type="button" class="rating-star text-gray-300 text-3xl leading-none hover:scale-110 transition-transform" data-value="2" aria-label="2 stars"><i class="far fa-star"></i></button>
+                                            <button type="button" class="rating-star text-gray-300 text-3xl leading-none hover:scale-110 transition-transform" data-value="3" aria-label="3 stars"><i class="far fa-star"></i></button>
+                                            <button type="button" class="rating-star text-gray-300 text-3xl leading-none hover:scale-110 transition-transform" data-value="4" aria-label="4 stars"><i class="far fa-star"></i></button>
+                                            <button type="button" class="rating-star text-gray-300 text-3xl leading-none hover:scale-110 transition-transform" data-value="5" aria-label="5 stars"><i class="far fa-star"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div id="unified-status-banner" class="mb-5 hidden"></div>
@@ -540,6 +537,46 @@
                                             </div>
 
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 order-5 lg:order-none">
+                                    <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 p-5 flex flex-col">
+                                        <div class="flex items-center gap-3 mb-1">
+                                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 shrink-0">
+                                                <i class="fas fa-swatchbook text-sm"></i>
+                                            </div>
+                                            <h3 class="font-semibold text-[15px] text-[#303030]">Is your theme supported?</h3>
+                                        </div>
+                                        <p class="text-[13px] text-gray-500 mb-4 leading-relaxed">Findter works with all official Shopify themes. Browse the list to double-check yours.</p>
+                                        <div class="relative mb-4">
+                                            <button type="button" id="compat-theme-dropdown-btn" class="w-full border border-gray-300 rounded-[8px] px-4 py-2.5 text-[14px] text-[#303030] bg-white hover:bg-gray-50 outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors flex items-center justify-between">
+                                                <span class="font-medium">Browse supported themes</span>
+                                                <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+                                            </button>
+                                            <div id="compat-theme-dropdown-menu" class="hidden absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-64 overflow-auto">
+                                                <div id="compat-theme-dropdown-list" class="py-1"></div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-auto flex items-center justify-between gap-3 bg-gray-50 border border-gray-100 rounded-lg px-4 py-3">
+                                            <p class="text-[12px] text-gray-600 leading-relaxed">Don't see your theme? We'll get it working for you.</p>
+                                            <button type="button" id="request-theme-btn" class="shrink-0 border border-gray-300 bg-white text-[#303030] rounded-[6px] px-3 py-1.5 text-[12px] font-semibold hover:bg-gray-50 transition-colors shadow-sm whitespace-nowrap">
+                                                Request it
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 p-5 flex flex-col">
+                                        <div class="flex items-center gap-3 mb-1">
+                                            <div class="w-10 h-10 bg-violet-100 rounded-full flex items-center justify-center text-violet-600 shrink-0">
+                                                <i class="fas fa-lightbulb text-sm"></i>
+                                            </div>
+                                            <h3 class="font-semibold text-[15px] text-[#303030]">Got an idea for us?</h3>
+                                        </div>
+                                        <p class="text-[13px] text-gray-500 mb-5 leading-relaxed flex-1">We build Findter around what merchants actually need. If there's a feature that would make your store better, we want to hear it.</p>
+                                        <button type="button" id="request-feature-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2.5 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center justify-center gap-2 w-full">
+                                            <i class="fas fa-paper-plane text-xs"></i> Share your idea
+                                        </button>
                                     </div>
                                 </div>
 
@@ -893,35 +930,6 @@
             <i class="fas fa-search text-xl"></i>
             <span id="chat-badge" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-red-600 rounded-full text-[10px] font-bold flex items-center justify-center border-2 border-white">1</span>
         </button>
-    </div>
-
-    <!-- Review Request Modal -->
-    <div id="review1-backdrop" class="review1-backdrop"></div>
-    <div id="review1-toast" class="review1-toast bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden">
-        <button id="review1-close-btn" class="absolute top-2.5 right-2.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full w-7 h-7 flex items-center justify-center transition-colors" aria-label="Close">
-            <i class="fas fa-times text-sm"></i>
-        </button>
-        <div class="p-5 pr-9">
-            <div class="flex items-start gap-3 mb-3">
-                <img src="https://cdn.shopify.com/app-store/listing_images/393b6ef120968ea1931a5ec86b58d041/icon/CIr75oPv944DEAE=.png" alt="Findter" class="w-10 h-10 rounded-[10px] shrink-0 object-cover shadow-sm">
-                <h3 class="font-semibold text-[14px] text-[#303030] leading-snug pt-0.5">Thank you for being with Findter! 🎉</h3>
-            </div>
-            <p class="text-[13px] text-gray-500 leading-relaxed mb-3">Your journey means a lot to us. We'd love to hear your thoughts to help us grow and help merchants find the right tools.</p>
-            <div class="mb-4">
-                <p class="text-[12px] font-semibold text-gray-700 mb-1.5">What to share:</p>
-                <ul class="text-[12px] text-gray-500 leading-relaxed space-y-1 list-disc pl-4">
-                    <li>How our features work for your store</li>
-                    <li>Your experience with our support team</li>
-                    <li>Any features you'd love to see next</li>
-                    <li>Anything else you think would help others</li>
-                </ul>
-            </div>
-            <button id="review1-cta-btn" class="w-full bg-[#303030] hover:bg-[#4a4a4a] text-white text-[13px] font-semibold rounded-[6px] px-4 py-2.5 transition-colors mb-3">Share your review &rarr;</button>
-            <label class="flex items-center gap-2 text-[12px] text-gray-600 cursor-pointer">
-                <input type="checkbox" id="review1-never-show" class="w-4 h-4 rounded border-gray-300 text-[#303030] focus:ring-0 cursor-pointer">
-                Never show this again
-            </label>
-        </div>
     </div>
 
     <!-- Chat Bubble -->
@@ -2080,9 +2088,20 @@
 
         sendChatBtn.addEventListener('click', function() {
             var msg = chatInput.value.trim();
-            if (msg) {
-                addMessageToChat(msg, true);
-                chatInput.value = '';
+            if (!msg) return;
+            addMessageToChat(msg, true);
+            chatInput.value = '';
+
+            if (chatReplyMode === 'theme-request') {
+                var requestedTheme = msg;
+                chatReplyMode = null;
+                setTimeout(function() {
+                    addMessageToChat('Got it! We\'ve received your request for "' + requestedTheme + '". Our team will review it and let you know here once it\'s compatible with your store.', false);
+                }, 600);
+            } else if (chatReplyMode === 'feature-request') {
+                chatReplyMode = null;
+                // No auto-reply here, a human follows up on feature requests.
+            } else {
                 setTimeout(function() { addMessageToChat("Thank you! We'll respond soon.", false); }, 600);
             }
         });
@@ -2092,7 +2111,7 @@
         });
 
         // ========== THEME MODAL ==========
-        var THEMES = ['Dawn', 'Horizon v1', 'Horizon v2', 'Craft', 'Sense', 'Taste'];
+        var THEMES = ['Allure', 'Atelier', 'Be Yours', 'Broadcast', 'Colorblock', 'Concept', 'Craft', 'Crave', 'Dawn', 'Dwell', 'Enterprise', 'Eurus', 'Expanse', 'Fabric', 'Flawless', 'Focal', 'Heritage', 'Horizon', 'Hyper', 'Ignite', 'Impulse', 'Next', 'Noom', 'Origin', 'Pipeline', 'Pitch', 'Publisher', 'Refresh', 'Ride', 'Rise', 'Ritual', 'Savor', 'Sense', 'Sleek', 'Spotlight', 'Stiletto', 'Studio', 'Taste', 'Tinker', 'Trade', 'Vessel', 'Vivid', 'Wonder', 'Xtra'];
 
         function renderThemeDropdown() {
             var label = AppState.selectedTheme ? AppState.selectedTheme : '-- Select a theme --';
@@ -2429,40 +2448,133 @@
             });
         }
 
-        // ========== REVIEW REQUEST TOAST ==========
-        var REVIEW1_STORAGE_KEY = 'findter_review1_never_show';
-        var REVIEW1_APP_STORE_URL = 'https://apps.shopify.com/findter-custom-filter-search#modal-show=WriteReviewModal&st_campaign=rate-app&st_source=admin-web';
+        // ========== RATING BANNER ==========
+        var APP_STORE_REVIEW_URL = 'https://apps.shopify.com/findter-custom-filter-search#modal-show=WriteReviewModal&st_campaign=rate-app&st_source=admin-web';
 
-        var review1TriggerBtn = document.getElementById('review1-trigger-btn');
-        var review1Toast = document.getElementById('review1-toast');
-        var review1Backdrop = document.getElementById('review1-backdrop');
-        var review1CloseBtn = document.getElementById('review1-close-btn');
-        var review1NeverShow = document.getElementById('review1-never-show');
-        var review1CtaBtn = document.getElementById('review1-cta-btn');
+        var ratingTriggerBtn = document.getElementById('rating-trigger-btn');
+        var ratingBanner = document.getElementById('rating-banner');
+        var ratingBannerClose = document.getElementById('rating-banner-close');
+        var ratingStars = document.querySelectorAll('.rating-star');
 
-        function openReview1Toast() {
-            if (review1Toast) review1Toast.classList.add('review1-visible');
-            if (review1Backdrop) review1Backdrop.classList.add('review1-visible');
+        function openRatingBanner() {
+            if (!ratingBanner) return;
+            ratingBanner.classList.remove('hidden');
+            setRatingStarsFilled(0);
+            ratingBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        function closeReview1Toast() {
-            if (!review1Toast) return;
-            if (review1NeverShow && review1NeverShow.checked) {
-                localStorage.setItem(REVIEW1_STORAGE_KEY, 'true');
-            }
-            review1Toast.classList.remove('review1-visible');
-            if (review1Backdrop) review1Backdrop.classList.remove('review1-visible');
+        function closeRatingBanner() {
+            if (ratingBanner) ratingBanner.classList.add('hidden');
         }
 
-        if (review1TriggerBtn) review1TriggerBtn.addEventListener('click', openReview1Toast);
-        if (review1CloseBtn) review1CloseBtn.addEventListener('click', closeReview1Toast);
-        if (review1Backdrop) review1Backdrop.addEventListener('click', closeReview1Toast);
-        if (review1CtaBtn) {
-            review1CtaBtn.addEventListener('click', function() {
-                window.open(REVIEW1_APP_STORE_URL, '_blank');
-                closeReview1Toast();
+        function setRatingStarsFilled(count) {
+            ratingStars.forEach(function(star) {
+                var value = Number(star.getAttribute('data-value'));
+                var icon = star.querySelector('i');
+                var filled = value <= count;
+                star.classList.toggle('is-filled', filled);
+                if (icon) {
+                    icon.classList.toggle('fas', filled);
+                    icon.classList.toggle('far', !filled);
+                }
+                star.classList.toggle('text-indigo-500', filled);
+                star.classList.toggle('text-gray-300', !filled);
             });
         }
+
+        function handleLowRating(value) {
+            closeRatingBanner();
+            chatBubble.classList.add('active');
+            if (chatBadge) chatBadge.classList.add('hidden');
+            setTimeout(function() {
+                addMessageToChat("Hi, I'm not fully satisfied with the app right now.", true);
+                setTimeout(function() {
+                    addMessageToChat("Thanks so much for the honest feedback! Could you tell us a bit more about what's been frustrating so we can help make it right?", false);
+                }, 800);
+            }, 300);
+        }
+
+        function handleFiveStarRating() {
+            closeRatingBanner();
+            window.open(APP_STORE_REVIEW_URL, '_blank');
+        }
+
+        ratingStars.forEach(function(star) {
+            var value = Number(star.getAttribute('data-value'));
+            star.addEventListener('mouseenter', function() { setRatingStarsFilled(value); });
+            star.addEventListener('click', function() {
+                if (value < 5) {
+                    handleLowRating(value);
+                } else {
+                    handleFiveStarRating();
+                }
+            });
+        });
+
+        if (ratingStars.length) {
+            var ratingStarsWrap = document.getElementById('rating-stars');
+            if (ratingStarsWrap) {
+                ratingStarsWrap.addEventListener('mouseleave', function() { setRatingStarsFilled(0); });
+            }
+        }
+
+        if (ratingTriggerBtn) ratingTriggerBtn.addEventListener('click', openRatingBanner);
+        if (ratingBannerClose) ratingBannerClose.addEventListener('click', closeRatingBanner);
+
+        // ========== CHAT REPLY MODE (theme request / feature request) ==========
+        var chatReplyMode = null; // null | 'theme-request' | 'feature-request'
+
+        function requestThemeCompatibility() {
+            chatBubble.classList.add('active');
+            if (chatBadge) chatBadge.classList.add('hidden');
+            addMessageToChat("No worries! Please tell us the name of your theme below and we'll work on making Findter compatible with it.", false);
+            chatReplyMode = 'theme-request';
+            if (chatInput) chatInput.focus();
+        }
+
+        function requestFeature() {
+            chatBubble.classList.add('active');
+            if (chatBadge) chatBadge.classList.add('hidden');
+            setTimeout(function() {
+                addMessageToChat("Hi, I want to request a feature", true);
+                setTimeout(function() {
+                    addMessageToChat("We'd love to hear it! Please describe your idea as specifically as you can, feel free to include sample text, sample images, or reference links, and we'll get back to you shortly.", false);
+                    chatReplyMode = 'feature-request';
+                }, 800);
+            }, 300);
+        }
+
+        var requestThemeBtn = document.getElementById('request-theme-btn');
+        var requestFeatureBtn = document.getElementById('request-feature-btn');
+        if (requestThemeBtn) requestThemeBtn.addEventListener('click', requestThemeCompatibility);
+        if (requestFeatureBtn) requestFeatureBtn.addEventListener('click', requestFeature);
+
+        // ========== COMPATIBLE THEMES DROPDOWN ==========
+        var compatThemeDropdownBtn = document.getElementById('compat-theme-dropdown-btn');
+        var compatThemeDropdownMenu = document.getElementById('compat-theme-dropdown-menu');
+        var compatThemeDropdownList = document.getElementById('compat-theme-dropdown-list');
+
+        if (compatThemeDropdownList) {
+            compatThemeDropdownList.innerHTML = THEMES.map(function(theme) {
+                return '<div class="w-full px-4 py-2 flex items-center justify-between text-[14px] text-[#303030]">' +
+                    '<span class="font-medium">' + theme + '</span>' +
+                    '<i class="fas fa-check text-xs text-green-600"></i>' +
+                '</div>';
+            }).join('');
+        }
+
+        if (compatThemeDropdownBtn && compatThemeDropdownMenu) {
+            compatThemeDropdownBtn.addEventListener('click', function() {
+                compatThemeDropdownMenu.classList.toggle('hidden');
+            });
+        }
+
+        document.addEventListener('click', function(e) {
+            if (compatThemeDropdownMenu && compatThemeDropdownBtn) {
+                var clickedInside = compatThemeDropdownMenu.contains(e.target) || compatThemeDropdownBtn.contains(e.target);
+                if (!clickedInside) compatThemeDropdownMenu.classList.add('hidden');
+            }
+        });
 
         // ========== PROMO BANNER 2 ==========
         var promoBanner2 = document.getElementById('promo-banner-2');
