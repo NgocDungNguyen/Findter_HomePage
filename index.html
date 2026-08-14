@@ -544,57 +544,6 @@
                                     </div>
                                 </div>
 
-                                <div class="grid grid-cols-1 gap-5 order-5 lg:order-none">
-                                    <!-- THEME COMPATIBILITY REQUEST -->
-                                    <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 flex flex-col sm:flex-row">
-                                        <div class="flex-1 p-5">
-                                            <div class="flex items-center gap-2 mb-3">
-                                                <div class="w-8 h-8 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-500 shrink-0">
-                                                    <i class="fas fa-palette text-xs"></i>
-                                                </div>
-                                                <h3 class="font-semibold text-[15px] text-[#303030]">Theme support</h3>
-                                            </div>
-                                            <div class="relative mb-2">
-                                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-300 text-xs"></i>
-                                                <input type="text" id="compat-theme-search" placeholder="Search your theme" class="w-full border border-gray-200 rounded-md pl-8 pr-3 py-2 text-[13px] outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400">
-                                            </div>
-                                            <div id="compat-theme-dropdown-list" class="max-h-40 overflow-auto border border-gray-100 rounded-md divide-y divide-gray-50"></div>
-                                        </div>
-                                        <div class="sm:w-64 shrink-0 p-5 sm:border-l border-gray-100 flex flex-col justify-center">
-                                            <div id="theme-request-form">
-                                                <p class="text-[12px] text-gray-500 mb-2">Your theme not on the list? Request it.</p>
-                                                <input type="text" id="theme-request-input" placeholder="Your theme name" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px] outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 mb-2">
-                                                <button type="button" id="request-theme-btn" class="w-full bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors">Request support</button>
-                                                <p id="theme-request-count" class="text-[11px] text-gray-400 mt-2 text-center"></p>
-                                            </div>
-                                            <div id="theme-request-success" class="hidden text-center">
-                                                <i class="fas fa-check-circle text-indigo-500 text-xl mb-1"></i>
-                                                <p class="text-[13px] font-semibold text-[#303030]">Got it!</p>
-                                                <p class="text-[12px] text-gray-500">We'll let you know once it's ready.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- FEATURE / IDEA REQUEST -->
-                                    <div class="bg-gradient-to-r from-white to-gray-50 rounded-[8px] shadow-sm border border-gray-200 p-5 flex flex-col sm:flex-row sm:items-center gap-4">
-                                        <div class="flex items-center gap-3 flex-1 min-w-0">
-                                            <div class="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-500 shrink-0">
-                                                <i class="fas fa-lightbulb text-sm"></i>
-                                            </div>
-                                            <div class="min-w-0">
-                                                <h3 class="font-semibold text-[15px] text-[#303030]">Got a feature request?</h3>
-                                                <p class="text-[13px] text-gray-500">We build what merchants actually need.</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col items-start sm:items-end shrink-0">
-                                            <button type="button" id="request-feature-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2.5 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center justify-center gap-2 whitespace-nowrap">
-                                                Share your idea <i class="fas fa-arrow-right text-xs"></i>
-                                            </button>
-                                            <p class="text-[11px] text-gray-400 mt-2">128 ideas submitted so far</p>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-7 lg:order-none">
                                     <div class="p-5 flex items-center justify-between border-b border-gray-100">
                                         <div class="flex items-center gap-3"><h3 class="font-semibold text-[15px] text-[#303030]">Data insight</h3><button class="border border-gray-300 rounded-[6px] px-2.5 py-1 text-[13px] font-medium text-[#303030] flex items-center gap-2 hover:bg-gray-50 shadow-sm"><i class="far fa-calendar text-gray-500 text-sm"></i> Last 30 days</button></div>
@@ -2099,13 +2048,7 @@
             if (!msg) return;
             addMessageToChat(msg, true);
             chatInput.value = '';
-
-            if (chatReplyMode === 'feature-request') {
-                chatReplyMode = null;
-                // No auto-reply here, a human follows up on feature requests.
-            } else {
-                setTimeout(function() { addMessageToChat("Thank you! We'll respond soon.", false); }, 600);
-            }
+            setTimeout(function() { addMessageToChat("Thank you! We'll respond soon.", false); }, 600);
         });
 
         chatInput.addEventListener('keypress', function(e) {
@@ -2537,91 +2480,6 @@
 
         if (ratingTriggerBtn) ratingTriggerBtn.addEventListener('click', openRatingBanner);
         if (ratingBannerClose) ratingBannerClose.addEventListener('click', closeRatingBanner);
-
-        // ========== THEME COMPATIBILITY REQUEST ==========
-        var themeRequestInput = document.getElementById('theme-request-input');
-        var themeRequestForm = document.getElementById('theme-request-form');
-        var themeRequestSuccess = document.getElementById('theme-request-success');
-        var themeRequestCount = document.getElementById('theme-request-count');
-        var requestThemeBtn = document.getElementById('request-theme-btn');
-
-        if (themeRequestCount) themeRequestCount.textContent = THEMES.length + '+ themes supported';
-
-        function requestThemeCompatibility() {
-            var theme = themeRequestInput ? themeRequestInput.value.trim() : '';
-            if (!theme) {
-                if (themeRequestInput) themeRequestInput.focus();
-                return;
-            }
-
-            if (themeRequestForm) themeRequestForm.classList.add('hidden');
-            if (themeRequestSuccess) themeRequestSuccess.classList.remove('hidden');
-
-            chatBubble.classList.add('active');
-            if (chatBadge) chatBadge.classList.add('hidden');
-            setTimeout(function() {
-                addMessageToChat("Hi, I'd love to get " + theme + " theme compatible with Findter!", true);
-                setTimeout(function() {
-                    addMessageToChat("Thanks! We've added " + theme + " to our compatibility queue, our team typically turns these around within 48 hours. We'll follow up here once it's ready.", false);
-                }, 800);
-            }, 300);
-        }
-
-        if (requestThemeBtn) requestThemeBtn.addEventListener('click', requestThemeCompatibility);
-        if (themeRequestInput) {
-            themeRequestInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') requestThemeCompatibility();
-            });
-        }
-
-        // ========== SUPPORTED THEMES LIST + SEARCH ==========
-        var compatThemeDropdownList = document.getElementById('compat-theme-dropdown-list');
-        var compatThemeSearch = document.getElementById('compat-theme-search');
-
-        function renderCompatThemeList(filter) {
-            if (!compatThemeDropdownList) return;
-            var query = (filter || '').trim().toLowerCase();
-            var matches = THEMES.filter(function(theme) {
-                return theme.toLowerCase().indexOf(query) !== -1;
-            });
-
-            if (!matches.length) {
-                compatThemeDropdownList.innerHTML = '<div class="px-3 py-3 text-[13px] text-gray-400 text-center">No matching theme found</div>';
-                return;
-            }
-
-            compatThemeDropdownList.innerHTML = matches.map(function(theme) {
-                return '<div class="w-full px-3 py-1.5 flex items-center justify-between text-[13px] text-[#303030]">' +
-                    '<span>' + theme + '</span>' +
-                    '<i class="fas fa-check text-xs text-green-600"></i>' +
-                '</div>';
-            }).join('');
-        }
-
-        renderCompatThemeList('');
-
-        if (compatThemeSearch) {
-            compatThemeSearch.addEventListener('input', function() {
-                renderCompatThemeList(compatThemeSearch.value);
-            });
-        }
-
-        // ========== FEATURE / IDEA REQUEST ==========
-        function requestFeature() {
-            chatBubble.classList.add('active');
-            if (chatBadge) chatBadge.classList.add('hidden');
-            setTimeout(function() {
-                addMessageToChat("Hi, I want to request a feature", true);
-                setTimeout(function() {
-                    addMessageToChat("We'd love to hear it! Please describe your idea as specifically as you can, feel free to include sample text, sample images, or reference links, and we'll get back to you shortly.", false);
-                    chatReplyMode = 'feature-request';
-                }, 800);
-            }, 300);
-        }
-
-        var chatReplyMode = null; // null | 'feature-request'
-        var requestFeatureBtn = document.getElementById('request-feature-btn');
-        if (requestFeatureBtn) requestFeatureBtn.addEventListener('click', requestFeature);
 
         console.log('Ready!');
     });
