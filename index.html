@@ -223,9 +223,6 @@
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.5; transform: scale(0.9); }
         }
-        .rating-star.is-filled i {
-            font-weight: 900;
-        }
     </style>
 </head>
 <body class="bg-[#f1f2f4] h-screen flex flex-col overflow-hidden text-[#303030]">
@@ -311,12 +308,10 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button id="rating-trigger-btn" class="border border-purple-300 bg-purple-50 text-purple-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-purple-100 transition-colors shadow-sm whitespace-nowrap">Rating</button>
-                    <div class="flex bg-[#f1f2f4] border border-gray-200 rounded-[6px] p-0.5 gap-0.5">
-                        <button type="button" id="rating-pos-full" class="rating-pos-btn px-2.5 py-1 text-[11px] font-medium rounded-[4px] whitespace-nowrap transition-colors">Full</button>
-                        <button type="button" id="rating-pos-left" class="rating-pos-btn px-2.5 py-1 text-[11px] font-medium rounded-[4px] whitespace-nowrap transition-colors">Left</button>
-                        <button type="button" id="rating-pos-right" class="rating-pos-btn px-2.5 py-1 text-[11px] font-medium rounded-[4px] whitespace-nowrap transition-colors">Right</button>
-                    </div>
+                    <button id="show-pricing-notice-btn" class="border border-blue-300 bg-blue-50 text-blue-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-blue-100 transition-colors shadow-sm whitespace-nowrap">Plan Update</button>
+                    <button id="show-limit-reached-btn" class="border border-yellow-300 bg-yellow-50 text-yellow-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-yellow-100 transition-colors shadow-sm whitespace-nowrap">Store Limit</button>
+                    <button id="show-happy-box-btn" class="border border-emerald-300 bg-emerald-50 text-emerald-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-emerald-100 transition-colors shadow-sm whitespace-nowrap">Happy Box</button>
+                    <button id="show-unhappy-box-btn" class="border border-sky-300 bg-sky-50 text-sky-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-sky-100 transition-colors shadow-sm whitespace-nowrap">Feedback Box</button>
                     <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">Reset Indexing</button>
                     <button id="end-index-btn" class="border border-green-300 bg-green-50 text-green-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-green-100 transition-colors shadow-sm whitespace-nowrap">End Index Now</button>
                     <button class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors"><i class="fas fa-ellipsis-h text-sm"></i></button>
@@ -333,39 +328,13 @@
                             <p class="text-[13px] text-gray-500 leading-relaxed">Explore your store's filter and search tools and help your customers find exactly what they're looking for.</p>
                         </div>
 
-                        <div class="flex flex-col gap-5">
-                        <!-- RATING BANNER -->
-                        <div id="rating-slot-full"></div>
-                        <div id="rating-banner" class="rounded-[8px] shadow-sm relative overflow-hidden bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-600">
-                            <button id="rating-banner-close" class="absolute top-2.5 right-2.5 text-white/70 hover:text-white hover:bg-white/15 rounded-full w-6 h-6 flex items-center justify-center transition-colors z-10" aria-label="Dismiss">
-                                <i class="fas fa-times text-xs"></i>
-                            </button>
-
-                            <div id="rating-banner-body" class="flex flex-col items-center text-center gap-2 px-6 py-4">
-                                <p class="text-[14px] font-bold text-white">How's Findter working for you?</p>
-                                <div id="rating-stars" class="flex items-center gap-1.5">
-                                    <button type="button" class="rating-star text-white/40 text-2xl leading-none hover:scale-110 transition-transform" data-value="1" aria-label="1 star"><i class="far fa-star"></i></button>
-                                    <button type="button" class="rating-star text-white/40 text-2xl leading-none hover:scale-110 transition-transform" data-value="2" aria-label="2 stars"><i class="far fa-star"></i></button>
-                                    <button type="button" class="rating-star text-white/40 text-2xl leading-none hover:scale-110 transition-transform" data-value="3" aria-label="3 stars"><i class="far fa-star"></i></button>
-                                    <button type="button" class="rating-star text-white/40 text-2xl leading-none hover:scale-110 transition-transform" data-value="4" aria-label="4 stars"><i class="far fa-star"></i></button>
-                                    <button type="button" class="rating-star text-white/40 text-2xl leading-none hover:scale-110 transition-transform" data-value="5" aria-label="5 stars"><i class="far fa-star"></i></button>
-                                </div>
-                                <p class="text-[12px] text-white/80">Your feedback helps us make Findter better day by day.</p>
-                            </div>
-
-                            <div id="rating-banner-thanks" class="hidden px-6 py-6 text-center">
-                                <p class="text-[14px] font-bold text-white">Thanks for your feedback! 🎉</p>
-                            </div>
-                        </div>
-
-                        <div id="unified-status-banner" class="hidden"></div>
-                        <div id="indexing-banner-container" class="hidden"></div>
+                        <div id="unified-status-banner" class="mb-5 hidden"></div>
+                        <div id="indexing-banner-container" class="mb-5 hidden"></div>
 
                         <div class="homepage-grid">
                             <div class="homepage-column homepage-left">
-                                <div id="rating-slot-left"></div>
                                 <!-- PRICING NOTICE BANNER -->
-                                <div id="pricing-notice-banner" class="order-1 lg:order-none rounded-[8px] overflow-hidden border border-blue-200 shadow-sm">
+                                <div id="pricing-notice-banner" class="hidden order-1 lg:order-none rounded-[8px] overflow-hidden border border-blue-200 shadow-sm">
                                     <div class="flex items-center justify-between px-4 py-3 bg-blue-100">
                                         <div class="flex items-center gap-2">
                                             <i class="fas fa-info-circle text-blue-600 text-sm"></i>
@@ -396,7 +365,7 @@
                                 </div>
 
                                 <!-- STORE LIMIT REACHED BANNER -->
-                                <div id="limit-reached-banner" class="order-2 lg:order-none rounded-[8px] overflow-hidden border border-yellow-200 shadow-sm">
+                                <div id="limit-reached-banner" class="hidden order-2 lg:order-none rounded-[8px] overflow-hidden border border-yellow-200 shadow-sm">
                                     <div class="flex items-center justify-between px-4 py-3 bg-yellow-100">
                                         <div class="flex items-center gap-2">
                                             <i class="fas fa-exclamation-triangle text-yellow-600 text-sm"></i>
@@ -543,6 +512,38 @@
                                             </div>
 
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col gap-4 order-5 lg:order-none">
+                                    <!-- HAPPY CUSTOMERS BOX -->
+                                    <div id="happy-box" class="relative bg-gradient-to-r from-emerald-50 to-white rounded-[8px] border border-emerald-100 shadow-sm p-5 pr-10 flex items-center gap-4">
+                                        <button id="happy-box-close" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 hover:bg-white rounded-full w-6 h-6 flex items-center justify-center transition-colors z-10" aria-label="Dismiss">
+                                            <i class="fas fa-times text-xs"></i>
+                                        </button>
+                                        <div class="w-11 h-11 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                                            <i class="fas fa-heart"></i>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <h3 class="font-semibold text-[15px] text-[#303030]">Enjoying Findter so far?</h3>
+                                            <p class="text-[13px] text-gray-500">A quick review means a lot to us and helps other Shopify merchants find Findter too.</p>
+                                        </div>
+                                        <button class="happy-review-btn shrink-0 bg-emerald-600 text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-emerald-700 transition-colors whitespace-nowrap">Leave a review</button>
+                                    </div>
+
+                                    <!-- UNHAPPY CUSTOMERS BOX -->
+                                    <div id="unhappy-box" class="relative bg-[#F6F6F7] rounded-[8px] border border-[#E1E3E5] shadow-sm p-5 pr-10 flex items-center gap-4">
+                                        <button id="unhappy-box-close" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 hover:bg-white rounded-full w-6 h-6 flex items-center justify-center transition-colors z-10" aria-label="Dismiss">
+                                            <i class="fas fa-times text-xs"></i>
+                                        </button>
+                                        <div class="w-11 h-11 rounded-full bg-[#EAF4FB] text-blue-600 flex items-center justify-center shrink-0">
+                                            <i class="far fa-comment-dots"></i>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <h3 class="font-semibold text-[15px] text-[#303030]">Need help or have feedback?</h3>
+                                            <p class="text-[13px] text-gray-500">We're here to help. Share what's on your mind and our support team will get back to you shortly.</p>
+                                        </div>
+                                        <button class="unhappy-report-btn shrink-0 bg-[#008060] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#006e52] transition-colors whitespace-nowrap">Get in touch</button>
                                     </div>
                                 </div>
 
@@ -773,7 +774,6 @@
                             </div>
 
                             <div class="homepage-column homepage-right">
-                                <div id="rating-slot-right"></div>
                                 <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-3 lg:order-none">
                                     <h3 class="font-semibold text-[15px] text-[#303030] mb-4"><strong>Findter App Status</strong></h3>
                                     <div class="space-y-3">
@@ -827,7 +827,6 @@
                                 </div>
 
                             </div>
-                        </div>
                         </div>
                     </div>
                 </div>
@@ -1070,6 +1069,59 @@
                         <i class="fas fa-external-link-alt text-xs"></i>
                         Enable App in Theme Editor
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Feedback Modal (unhappy box) -->
+    <div id="feedback-modal" class="modal-wrapper fixed inset-0 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="feedback-modal-overlay"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-md pointer-events-auto relative modal-content">
+                <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-[16px] font-semibold text-[#303030]">How can we help you?</h3>
+                    <button type="button" id="close-feedback-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+
+                <div id="feedback-form-body" class="px-6 py-5 space-y-4">
+                    <p class="text-[13px] text-gray-500 leading-relaxed">Fill in the details below and our support team will respond directly in this chat.</p>
+                    <div>
+                        <label class="block text-[13px] font-semibold text-gray-700 mb-1.5">Category</label>
+                        <select id="feedback-category" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px] outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 bg-white">
+                            <option value="Something isn't working">Something isn't working</option>
+                            <option value="I can't find what I'm looking for">I can't find what I'm looking for</option>
+                            <option value="Issue with my order">Issue with my order</option>
+                            <option value="Payment or billing problem">Payment or billing problem</option>
+                            <option value="Shipping or delivery question">Shipping or delivery question</option>
+                            <option value="Return or refund request">Return or refund request</option>
+                            <option value="Confusing to use">Confusing to use</option>
+                            <option value="Feature suggestion">Feature suggestion</option>
+                            <option value="App is slow">App is slow</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[13px] font-semibold text-gray-700 mb-1.5">Tell us more</label>
+                        <textarea id="feedback-comment" rows="4" placeholder="Please describe your issue or feedback in as much detail as possible. The more you share, the faster we can help!" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px] outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-[13px] font-semibold text-gray-700 mb-1.5">Add a screenshot (optional)</label>
+                        <input type="file" id="feedback-files" multiple class="w-full text-[13px] text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-gray-100 file:text-[13px] file:font-medium file:text-gray-700 hover:file:bg-gray-200 cursor-pointer">
+                    </div>
+                </div>
+
+                <div id="feedback-success-body" class="hidden px-6 py-10 text-center">
+                    <i class="fas fa-check-circle text-emerald-500 text-3xl mb-2"></i>
+                    <p class="text-[14px] font-semibold text-[#303030]">Thanks, we've got it!</p>
+                    <p class="text-[13px] text-gray-500 mt-1">Our support team will follow up in the chat shortly.</p>
+                </div>
+
+                <div id="feedback-modal-footer" class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
+                    <button type="button" id="feedback-cancel-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">Never mind</button>
+                    <button type="button" id="feedback-submit-btn" class="bg-[#008060] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#006e52] transition-colors">Send to support</button>
                 </div>
             </div>
         </div>
@@ -2277,6 +2329,9 @@
                         closeEditorModal();
                     }
                 }
+                if (feedbackModal && !feedbackModal.classList.contains('hidden')) {
+                    closeFeedbackModal();
+                }
             }
         });
 
@@ -2355,7 +2410,15 @@
 
         if (pricingNoticeCloseBtn && pricingNoticeBanner) {
             pricingNoticeCloseBtn.addEventListener('click', function() {
-                pricingNoticeBanner.style.display = 'none';
+                pricingNoticeBanner.classList.add('hidden');
+            });
+        }
+
+        var showPricingNoticeBtn = document.getElementById('show-pricing-notice-btn');
+        if (showPricingNoticeBtn && pricingNoticeBanner) {
+            showPricingNoticeBtn.addEventListener('click', function() {
+                pricingNoticeBanner.classList.remove('hidden');
+                pricingNoticeBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         }
 
@@ -2386,7 +2449,48 @@
 
         if (limitReachedCloseBtn && limitReachedBanner) {
             limitReachedCloseBtn.addEventListener('click', function() {
-                limitReachedBanner.style.display = 'none';
+                limitReachedBanner.classList.add('hidden');
+            });
+        }
+
+        var showLimitReachedBtn = document.getElementById('show-limit-reached-btn');
+        if (showLimitReachedBtn && limitReachedBanner) {
+            showLimitReachedBtn.addEventListener('click', function() {
+                limitReachedBanner.classList.remove('hidden');
+                limitReachedBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        }
+
+        // ========== HAPPY / UNHAPPY BOX CLOSE + REOPEN ==========
+        var happyBox = document.getElementById('happy-box');
+        var happyBoxCloseBtn = document.getElementById('happy-box-close');
+        var showHappyBoxBtn = document.getElementById('show-happy-box-btn');
+
+        if (happyBoxCloseBtn && happyBox) {
+            happyBoxCloseBtn.addEventListener('click', function() {
+                happyBox.classList.add('hidden');
+            });
+        }
+        if (showHappyBoxBtn && happyBox) {
+            showHappyBoxBtn.addEventListener('click', function() {
+                happyBox.classList.remove('hidden');
+                happyBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        }
+
+        var unhappyBox = document.getElementById('unhappy-box');
+        var unhappyBoxCloseBtn = document.getElementById('unhappy-box-close');
+        var showUnhappyBoxBtn = document.getElementById('show-unhappy-box-btn');
+
+        if (unhappyBoxCloseBtn && unhappyBox) {
+            unhappyBoxCloseBtn.addEventListener('click', function() {
+                unhappyBox.classList.add('hidden');
+            });
+        }
+        if (showUnhappyBoxBtn && unhappyBox) {
+            showUnhappyBoxBtn.addEventListener('click', function() {
+                unhappyBox.classList.remove('hidden');
+                unhappyBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         }
 
@@ -2397,124 +2501,84 @@
             });
         }
 
-        // ========== RATING BANNER ==========
+        // ========== HAPPY BOX: leave a review ==========
         var APP_STORE_REVIEW_URL = 'https://apps.shopify.com/findter-custom-filter-search#modal-show=WriteReviewModal&st_campaign=rate-app&st_source=admin-web';
 
-        var ratingTriggerBtn = document.getElementById('rating-trigger-btn');
-        var ratingBanner = document.getElementById('rating-banner');
-        var ratingBannerClose = document.getElementById('rating-banner-close');
-        var ratingBannerBody = document.getElementById('rating-banner-body');
-        var ratingBannerThanks = document.getElementById('rating-banner-thanks');
-        var ratingStars = document.querySelectorAll('.rating-star');
-
-        function openRatingBanner() {
-            if (!ratingBanner) return;
-            ratingBanner.classList.remove('hidden');
-            if (ratingBannerBody) ratingBannerBody.classList.remove('hidden');
-            if (ratingBannerThanks) ratingBannerThanks.classList.add('hidden');
-            setRatingStarsFilled(0);
-            ratingBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        function closeRatingBanner() {
-            if (ratingBanner) ratingBanner.classList.add('hidden');
-        }
-
-        function setRatingStarsFilled(count) {
-            ratingStars.forEach(function(star) {
-                var value = Number(star.getAttribute('data-value'));
-                var icon = star.querySelector('i');
-                var filled = value <= count;
-                star.classList.toggle('is-filled', filled);
-                if (icon) {
-                    icon.classList.toggle('fas', filled);
-                    icon.classList.toggle('far', !filled);
-                }
-                star.classList.toggle('text-white', filled);
-                star.classList.toggle('text-white/40', !filled);
-            });
-        }
-
-        function handleLowRating(value) {
-            setTimeout(function() {
-                chatBubble.classList.add('active');
-                if (chatBadge) chatBadge.classList.add('hidden');
-                setTimeout(function() {
-                    addMessageToChat("Thanks so much for the honest feedback!", false);
-                }, 300);
-                closeRatingBanner();
-            }, 1200);
-        }
-
-        function handleFiveStarRating() {
-            setTimeout(function() {
+        document.querySelectorAll('.happy-review-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
                 window.open(APP_STORE_REVIEW_URL, '_blank');
-                closeRatingBanner();
-            }, 1200);
-        }
-
-        function showRatingThanks(value) {
-            if (ratingBannerBody) ratingBannerBody.classList.add('hidden');
-            if (ratingBannerThanks) ratingBannerThanks.classList.remove('hidden');
-            if (value < 5) {
-                handleLowRating(value);
-            } else {
-                handleFiveStarRating();
-            }
-        }
-
-        ratingStars.forEach(function(star) {
-            var value = Number(star.getAttribute('data-value'));
-            star.addEventListener('mouseenter', function() { setRatingStarsFilled(value); });
-            star.addEventListener('click', function() {
-                setRatingStarsFilled(value);
-                showRatingThanks(value);
             });
         });
 
-        if (ratingStars.length) {
-            var ratingStarsWrap = document.getElementById('rating-stars');
-            if (ratingStarsWrap) {
-                ratingStarsWrap.addEventListener('mouseleave', function() { setRatingStarsFilled(0); });
+        // ========== UNHAPPY BOX: feedback modal ==========
+        var feedbackModal = document.getElementById('feedback-modal');
+        var feedbackFormBody = document.getElementById('feedback-form-body');
+        var feedbackSuccessBody = document.getElementById('feedback-success-body');
+        var feedbackModalFooter = document.getElementById('feedback-modal-footer');
+        var feedbackCategory = document.getElementById('feedback-category');
+        var feedbackComment = document.getElementById('feedback-comment');
+        var feedbackFiles = document.getElementById('feedback-files');
+        var closeFeedbackModalBtn = document.getElementById('close-feedback-modal-btn');
+        var feedbackCancelBtn = document.getElementById('feedback-cancel-btn');
+        var feedbackSubmitBtn = document.getElementById('feedback-submit-btn');
+
+        function openFeedbackModal() {
+            if (!feedbackModal) return;
+            if (feedbackFormBody) feedbackFormBody.classList.remove('hidden');
+            if (feedbackSuccessBody) feedbackSuccessBody.classList.add('hidden');
+            if (feedbackModalFooter) feedbackModalFooter.classList.remove('hidden');
+            if (feedbackCategory) feedbackCategory.selectedIndex = 0;
+            if (feedbackComment) feedbackComment.value = '';
+            if (feedbackFiles) feedbackFiles.value = '';
+            feedbackModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeFeedbackModal() {
+            if (!feedbackModal) return;
+            feedbackModal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function submitFeedback() {
+            var category = feedbackCategory ? feedbackCategory.value : '';
+            var comment = feedbackComment ? feedbackComment.value.trim() : '';
+            var fileCount = feedbackFiles && feedbackFiles.files ? feedbackFiles.files.length : 0;
+
+            if (!comment) {
+                if (feedbackComment) feedbackComment.focus();
+                return;
             }
+
+            var attachmentsText = fileCount > 0 ? fileCount + ' file(s) attached' : 'None';
+            var summary = '📋 <strong>New Feedback Ticket</strong><br>' +
+                'Category: ' + category + '<br>' +
+                'Message: ' + comment + '<br>' +
+                'Attachments: ' + attachmentsText;
+
+            chatBubble.classList.add('active');
+            if (chatBadge) chatBadge.classList.add('hidden');
+            addMessageToChat(summary, true);
+            setTimeout(function() {
+                addMessageToChat("Thanks for reaching out! <br>We've received your message and our support team will get back to you shortly.", false);
+            }, 800);
+
+            if (feedbackFormBody) feedbackFormBody.classList.add('hidden');
+            if (feedbackModalFooter) feedbackModalFooter.classList.add('hidden');
+            if (feedbackSuccessBody) feedbackSuccessBody.classList.remove('hidden');
+
+            setTimeout(closeFeedbackModal, 1600);
         }
 
-        if (ratingTriggerBtn) ratingTriggerBtn.addEventListener('click', openRatingBanner);
-        if (ratingBannerClose) ratingBannerClose.addEventListener('click', closeRatingBanner);
+        document.querySelectorAll('.unhappy-report-btn').forEach(function(btn) {
+            btn.addEventListener('click', openFeedbackModal);
+        });
 
-        // ========== RATING BANNER POSITION SWITCH (dev preview) ==========
-        var ratingPosButtons = {
-            full: document.getElementById('rating-pos-full'),
-            left: document.getElementById('rating-pos-left'),
-            right: document.getElementById('rating-pos-right')
-        };
-
-        function setRatingPosActive(position) {
-            Object.keys(ratingPosButtons).forEach(function(key) {
-                var btn = ratingPosButtons[key];
-                if (!btn) return;
-                var active = key === position;
-                btn.classList.toggle('bg-white', active);
-                btn.classList.toggle('shadow-sm', active);
-                btn.classList.toggle('text-[#303030]', active);
-                btn.classList.toggle('text-gray-500', !active);
-            });
-        }
-
-        function moveRatingBanner(position) {
-            if (!ratingBanner) return;
-            var slot = document.getElementById('rating-slot-' + position);
-            if (!slot) return;
-            slot.insertAdjacentElement('afterend', ratingBanner);
-            setRatingPosActive(position);
-            openRatingBanner();
-        }
-
-        if (ratingPosButtons.full) ratingPosButtons.full.addEventListener('click', function() { moveRatingBanner('full'); });
-        if (ratingPosButtons.left) ratingPosButtons.left.addEventListener('click', function() { moveRatingBanner('left'); });
-        if (ratingPosButtons.right) ratingPosButtons.right.addEventListener('click', function() { moveRatingBanner('right'); });
-
-        setRatingPosActive('full');
+        if (closeFeedbackModalBtn) closeFeedbackModalBtn.addEventListener('click', closeFeedbackModal);
+        if (feedbackCancelBtn) feedbackCancelBtn.addEventListener('click', closeFeedbackModal);
+        if (feedbackSubmitBtn) feedbackSubmitBtn.addEventListener('click', submitFeedback);
+        var feedbackModalOverlay = document.getElementById('feedback-modal-overlay');
+        if (feedbackModalOverlay) feedbackModalOverlay.addEventListener('click', closeFeedbackModal);
 
         console.log('Ready!');
     });
