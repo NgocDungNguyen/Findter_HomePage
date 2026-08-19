@@ -310,8 +310,7 @@
                 <div class="flex items-center gap-2">
                     <button id="show-pricing-notice-btn" class="border border-blue-300 bg-blue-50 text-blue-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-blue-100 transition-colors shadow-sm whitespace-nowrap">Plan Update</button>
                     <button id="show-limit-reached-btn" class="border border-yellow-300 bg-yellow-50 text-yellow-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-yellow-100 transition-colors shadow-sm whitespace-nowrap">Store Limit</button>
-                    <button id="show-happy-box-btn" class="border border-emerald-300 bg-emerald-50 text-emerald-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-emerald-100 transition-colors shadow-sm whitespace-nowrap">Happy Box</button>
-                    <button id="show-unhappy-box-btn" class="border border-sky-300 bg-sky-50 text-sky-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-sky-100 transition-colors shadow-sm whitespace-nowrap">Feedback Box</button>
+                    <button id="show-feedback-banner-btn" class="border border-emerald-300 bg-emerald-50 text-emerald-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-emerald-100 transition-colors shadow-sm whitespace-nowrap">Feedback</button>
                     <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">Reset Indexing</button>
                     <button id="end-index-btn" class="border border-green-300 bg-green-50 text-green-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-green-100 transition-colors shadow-sm whitespace-nowrap">End Index Now</button>
                     <button class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors"><i class="fas fa-ellipsis-h text-sm"></i></button>
@@ -515,38 +514,6 @@
                                     </div>
                                 </div>
 
-                                <div class="flex flex-col gap-4 order-5 lg:order-none">
-                                    <!-- HAPPY CUSTOMERS BOX -->
-                                    <div id="happy-box" class="relative bg-gradient-to-r from-emerald-50 to-white rounded-[8px] border border-emerald-100 shadow-sm p-5 pr-10 flex items-center gap-4">
-                                        <button id="happy-box-close" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 hover:bg-white rounded-full w-6 h-6 flex items-center justify-center transition-colors z-10" aria-label="Dismiss">
-                                            <i class="fas fa-times text-xs"></i>
-                                        </button>
-                                        <div class="w-11 h-11 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
-                                            <i class="fas fa-heart"></i>
-                                        </div>
-                                        <div class="flex-1 min-w-0">
-                                            <h3 class="font-semibold text-[15px] text-[#303030]">Enjoying Findter so far?</h3>
-                                            <p class="text-[13px] text-gray-500">A quick review means a lot to us and helps other Shopify merchants find Findter too.</p>
-                                        </div>
-                                        <button class="happy-review-btn shrink-0 bg-emerald-600 text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-emerald-700 transition-colors whitespace-nowrap">Leave a review</button>
-                                    </div>
-
-                                    <!-- UNHAPPY CUSTOMERS BOX -->
-                                    <div id="unhappy-box" class="relative bg-[#F6F6F7] rounded-[8px] border border-[#E1E3E5] shadow-sm p-5 pr-10 flex items-center gap-4">
-                                        <button id="unhappy-box-close" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 hover:bg-white rounded-full w-6 h-6 flex items-center justify-center transition-colors z-10" aria-label="Dismiss">
-                                            <i class="fas fa-times text-xs"></i>
-                                        </button>
-                                        <div class="w-11 h-11 rounded-full bg-[#EAF4FB] text-blue-600 flex items-center justify-center shrink-0">
-                                            <i class="far fa-comment-dots"></i>
-                                        </div>
-                                        <div class="flex-1 min-w-0">
-                                            <h3 class="font-semibold text-[15px] text-[#303030]">Need help or have feedback?</h3>
-                                            <p class="text-[13px] text-gray-500">We're here to help. Share what's on your mind and our support team will get back to you shortly.</p>
-                                        </div>
-                                        <button class="unhappy-report-btn shrink-0 bg-[#008060] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#006e52] transition-colors whitespace-nowrap">Get in touch</button>
-                                    </div>
-                                </div>
-
                                 <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-7 lg:order-none">
                                     <div class="p-5 flex items-center justify-between border-b border-gray-100">
                                         <div class="flex items-center gap-3"><h3 class="font-semibold text-[15px] text-[#303030]">Data insight</h3><button class="border border-gray-300 rounded-[6px] px-2.5 py-1 text-[13px] font-medium text-[#303030] flex items-center gap-2 hover:bg-gray-50 shadow-sm"><i class="far fa-calendar text-gray-500 text-sm"></i> Last 30 days</button></div>
@@ -573,176 +540,176 @@
                                                     <img src="https://cdn.shopify.com/s/files/1/0765/0302/3847/files/0660674ca187cb7b90a9.png?v=1785833456" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="Judge.me Product Reviews App">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">Judge.me Product Reviews App</div>
-                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Rating</span>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Rating</span>
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Display product Ratings</p>
-                                                <a href="https://apps.shopify.com/judgeme" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/judgeme" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-col items-start min-w-0">
                                                     <img src="https://cdn.shopify.com/s/files/1/0765/0302/3847/files/934849961d1522ef7302.png?v=1785833460" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="Yotpo: Product Reviews App">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">Yotpo: Product Reviews App</div>
-                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Reviews</span>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Reviews</span>
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Display product reviews</p>
-                                                <a href="https://apps.shopify.com/yotpo-social-reviews" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/yotpo-social-reviews" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-col items-start min-w-0">
                                                     <img src="https://cdn.shopify.com/app-store/listing_images/d1fbe4acf738bfaa4fa03ef985d8477e/icon/CM_PravDr4YDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="OT Section: Theme Sections">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">OT Section: Theme Sections</div>
-                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Page Builder</span>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Page Builder</span>
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">200+ premium drag-and-drop sections, templates &amp; blocks for any store</p>
-                                                <a href="https://apps.shopify.com/ot-theme-sections-store-page-builder" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/ot-theme-sections-store-page-builder" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-col items-start min-w-0">
                                                     <img src="https://omnithemes.com/wp-content/uploads/2024/04/logo.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="Eurus Theme">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">Eurus Theme</div>
-                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Theme</span>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Theme</span>
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Conversion-focused theme with mega menus, pop-ups &amp; unlimited product badges</p>
-                                                <a href="https://themes.shopify.com/themes/eurus/presets/eurus" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                                <a href="https://themes.shopify.com/themes/eurus/presets/eurus" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-col items-start min-w-0">
                                                     <img src="https://omnithemes.com/wp-content/uploads/2024/04/logo.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="Maximize Theme">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">Maximize Theme</div>
-                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Theme</span>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Theme</span>
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Speed-optimized B2B theme for 500+ SKU catalogs with smart search &amp; mega menus</p>
-                                                <a href="https://themes.shopify.com/themes/maximize/presets/maximize" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                                <a href="https://themes.shopify.com/themes/maximize/presets/maximize" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-col items-start min-w-0">
                                                     <img src="https://cdn.shopify.com/app-store/listing_images/5e7100d6dd8a25eae7b75d50f0d897df/icon/COWZ0fD0zosDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="OPTIS Product Options, Variant">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">OPTIS Product Options, Variant</div>
-                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Product Customization</span>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Product Customization</span>
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Infinite product options with text, swatches, file uploads &amp; price addons</p>
-                                                <a href="https://apps.shopify.com/product-options-by-bss" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/product-options-by-bss" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-col items-start min-w-0">
                                                     <img src="https://cdn.shopify.com/app-store/listing_images/4639b295c8340737b2c240f10481cb85/icon/CIad9ra1140DEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="OP Color Swatch Variant Images">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">OP Color Swatch Variant Images</div>
-                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Product variants</span>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Product variants</span>
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Visual color/image swatches with combined listings &amp; variant image automator</p>
-                                                <a href="https://apps.shopify.com/optis-color-swatch-variants" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/optis-color-swatch-variants" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-col items-start min-w-0">
                                                     <img src="https://cdn.shopify.com/app-store/listing_images/c0ba322d64f9554b2f2917c3bb2f0ca0/icon/CKmvg5WrgJMDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="TA AI Product Labels &amp; Badges">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">TA AI Product Labels &amp; Badges</div>
-                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Product Labels &amp; Badges</span>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Product Labels &amp; Badges</span>
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">AI-generated labels/badges with translations, stock &amp; discount-based display rules</p>
-                                                <a href="https://apps.shopify.com/product-labels-by-bss" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/product-labels-by-bss" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-col items-start min-w-0">
                                                     <img src="https://cdn.shopify.com/app-store/listing_images/c0ba322d64f9554b2f2917c3bb2f0ca0/icon/CKmvg5WrgJMDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="TA Banner Slider, Sales Pop up">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">TA Banner Slider, Sales Pop up</div>
-                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Promotions &amp; Banners</span>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Promotions &amp; Banners</span>
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Announcement bars, countdown timers, popups &amp; multi-banner sliders</p>
-                                                <a href="https://apps.shopify.com/bss-banner-pop-up" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/bss-banner-pop-up" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-col items-start min-w-0">
                                                     <img src="https://cdn.shopify.com/app-store/listing_images/c0ba322d64f9554b2f2917c3bb2f0ca0/icon/CKmvg5WrgJMDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="TA Preorder &amp; Back In Stock">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">TA Preorder &amp; Back In Stock</div>
-                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Preorder &amp; Stock</span>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Preorder &amp; Stock</span>
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Preorders with deposits, back-in-stock alerts, waitlists &amp; presale campaigns</p>
-                                                <a href="https://apps.shopify.com/dotsy-preorder-presale" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/dotsy-preorder-presale" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-col items-start min-w-0">
                                                     <img src="https://cdn.shopify.com/app-store/listing_images/af0a3ec102358241ae7823679d9ccda3/icon/CKH57aSigpEDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="BSS B2B Order, Request a Quote">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">BSS B2B Order, Request a Quote</div>
-                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">B2B Order &amp; Quote</span>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">B2B Order &amp; Quote</span>
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Request quotes, bulk orders via CSV upload &amp; easy reorder from history</p>
-                                                <a href="https://apps.shopify.com/b2b-customer-portal-quick-order" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/b2b-customer-portal-quick-order" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-col items-start min-w-0">
                                                     <img src="https://cdn.shopify.com/app-store/listing_images/f406cf0e469d052e1fb506a0898d801f/icon/CMn5zMuggpEDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="BSS B2B Wholesale Pricing">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">BSS B2B Wholesale Pricing</div>
-                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">B2B Wholesale</span>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">B2B Wholesale</span>
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Custom pricing, volume discounts, price lists, net terms &amp; tax control</p>
-                                                <a href="https://apps.shopify.com/b2b-solution-custom-pricing" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/b2b-solution-custom-pricing" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-col items-start min-w-0">
                                                     <img src="https://cdn.shopify.com/app-store/listing_images/6649510d2d88bde754b08607b0b6a328/icon/COicvrf8rYoDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="B2Bridge B2B Wholesale Pricing">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">B2Bridge B2B Wholesale Pricing</div>
-                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">B2B Wholesale</span>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">B2B Wholesale</span>
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Customer-specific pricing, bulk orders, MOQ, net terms &amp; quick order page</p>
-                                                <a href="https://apps.shopify.com/b2bridge-b2b-all-in-one" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/b2bridge-b2b-all-in-one" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-col items-start min-w-0">
                                                     <img src="https://cdn.shopify.com/app-store/listing_images/dc7f7058c1348d662ca3919f8d9b693b/icon/CM6ZgtWMxpEDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="TL: Free Gifts BOGO &amp; Upsell">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">TL: Free Gifts BOGO &amp; Upsell</div>
-                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Upsell &amp; BOGO</span>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Upsell &amp; BOGO</span>
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">BOGO, Buy X Get Y, free gifts with purchase &amp; cart upsell offers</p>
-                                                <a href="https://apps.shopify.com/salepify" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/salepify" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-col items-start min-w-0">
                                                     <img src="https://cdn.shopify.com/app-store/listing_images/1188f0cb74707478f04a7ab4f9563933/icon/CMqW-bav1ZEDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="MIDA Replay, Heatmap &amp; Insight">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">MIDA Replay, Heatmap &amp; Insight</div>
-                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Analytics &amp; Heatmap</span>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Analytics &amp; Heatmap</span>
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Session replays, revenue heatmaps &amp; AI insights to fix UX friction</p>
-                                                <a href="https://apps.shopify.com/mida-session-recording-replay" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/mida-session-recording-replay" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-col items-start min-w-0">
                                                     <img src="https://cdn.shopify.com/app-store/listing_images/a9d339e5e1fd198bffdae82904deaec6/icon/CNeZtO2llJADEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="Chizy: AI Chatbot &amp; Live Chat">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">Chizy: AI Chatbot &amp; Live Chat</div>
-                                                        <span class="inline-block bg-[#f0f1ff] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">AI Chatbot</span>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[#5c6ac4] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">AI Chatbot</span>
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">24/7 AI chatbot with product browsing, live chat handover &amp; smart follow-ups</p>
-                                                <a href="https://apps.shopify.com/chizy-ai-chatbot" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[#5c6ac4] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[#4e5ba2] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/chizy-ai-chatbot" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-white text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                         </div>
                                     </div>
@@ -774,6 +741,31 @@
                             </div>
 
                             <div class="homepage-column homepage-right">
+                                <!-- FEEDBACK BANNER -->
+                                <div id="feedback-banner" class="relative bg-white rounded-[8px] border border-gray-200 shadow-sm p-5 order-2 lg:order-none">
+                                    <button id="feedback-banner-close" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full w-6 h-6 flex items-center justify-center transition-colors z-10" aria-label="Dismiss">
+                                        <i class="fas fa-times text-xs"></i>
+                                    </button>
+
+                                    <div id="feedback-banner-prompt" class="text-center">
+                                        <p class="text-[14px] font-semibold text-[#303030] mb-3">How's Findter working for you so far?</p>
+                                        <div class="flex items-center justify-center gap-6">
+                                            <button type="button" id="feedback-thumbs-up" class="feedback-thumb-btn text-gray-300 text-2xl transition-all duration-150 hover:scale-125 hover:text-emerald-500" aria-label="Thumbs up">
+                                                <i class="far fa-thumbs-up"></i>
+                                            </button>
+                                            <button type="button" id="feedback-thumbs-down" class="feedback-thumb-btn text-gray-300 text-2xl transition-all duration-150 hover:scale-125 hover:text-blue-500" aria-label="Thumbs down">
+                                                <i class="far fa-thumbs-down"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div id="feedback-banner-thanks" class="hidden text-center">
+                                        <i class="fas fa-heart text-emerald-500 text-2xl mb-2"></i>
+                                        <p class="text-[14px] font-semibold text-[#303030]">Thanks for the love! 🎉</p>
+                                        <p class="text-[12px] text-gray-500 mt-1">Taking you to leave a review...</p>
+                                    </div>
+                                </div>
+
                                 <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-3 lg:order-none">
                                     <h3 class="font-semibold text-[15px] text-[#303030] mb-4"><strong>Findter App Status</strong></h3>
                                     <div class="space-y-3">
@@ -2461,36 +2453,28 @@
             });
         }
 
-        // ========== HAPPY / UNHAPPY BOX CLOSE + REOPEN ==========
-        var happyBox = document.getElementById('happy-box');
-        var happyBoxCloseBtn = document.getElementById('happy-box-close');
-        var showHappyBoxBtn = document.getElementById('show-happy-box-btn');
+        // ========== FEEDBACK BANNER: close + reopen ==========
+        var feedbackBanner = document.getElementById('feedback-banner');
+        var feedbackBannerCloseBtn = document.getElementById('feedback-banner-close');
+        var showFeedbackBannerBtn = document.getElementById('show-feedback-banner-btn');
+        var feedbackBannerPrompt = document.getElementById('feedback-banner-prompt');
+        var feedbackBannerThanks = document.getElementById('feedback-banner-thanks');
 
-        if (happyBoxCloseBtn && happyBox) {
-            happyBoxCloseBtn.addEventListener('click', function() {
-                happyBox.classList.add('hidden');
-            });
-        }
-        if (showHappyBoxBtn && happyBox) {
-            showHappyBoxBtn.addEventListener('click', function() {
-                happyBox.classList.remove('hidden');
-                happyBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
+        function resetFeedbackBanner() {
+            if (feedbackBannerPrompt) feedbackBannerPrompt.classList.remove('hidden');
+            if (feedbackBannerThanks) feedbackBannerThanks.classList.add('hidden');
         }
 
-        var unhappyBox = document.getElementById('unhappy-box');
-        var unhappyBoxCloseBtn = document.getElementById('unhappy-box-close');
-        var showUnhappyBoxBtn = document.getElementById('show-unhappy-box-btn');
-
-        if (unhappyBoxCloseBtn && unhappyBox) {
-            unhappyBoxCloseBtn.addEventListener('click', function() {
-                unhappyBox.classList.add('hidden');
+        if (feedbackBannerCloseBtn && feedbackBanner) {
+            feedbackBannerCloseBtn.addEventListener('click', function() {
+                feedbackBanner.classList.add('hidden');
             });
         }
-        if (showUnhappyBoxBtn && unhappyBox) {
-            showUnhappyBoxBtn.addEventListener('click', function() {
-                unhappyBox.classList.remove('hidden');
-                unhappyBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (showFeedbackBannerBtn && feedbackBanner) {
+            showFeedbackBannerBtn.addEventListener('click', function() {
+                feedbackBanner.classList.remove('hidden');
+                resetFeedbackBanner();
+                feedbackBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         }
 
@@ -2501,16 +2485,28 @@
             });
         }
 
-        // ========== HAPPY BOX: leave a review ==========
+        // ========== FEEDBACK BANNER: thumbs up / down ==========
         var APP_STORE_REVIEW_URL = 'https://apps.shopify.com/findter-custom-filter-search#modal-show=WriteReviewModal&st_campaign=rate-app&st_source=admin-web';
+        var feedbackThumbsUpBtn = document.getElementById('feedback-thumbs-up');
+        var feedbackThumbsDownBtn = document.getElementById('feedback-thumbs-down');
 
-        document.querySelectorAll('.happy-review-btn').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                window.open(APP_STORE_REVIEW_URL, '_blank');
+        if (feedbackThumbsUpBtn) {
+            feedbackThumbsUpBtn.addEventListener('click', function() {
+                if (feedbackBannerPrompt) feedbackBannerPrompt.classList.add('hidden');
+                if (feedbackBannerThanks) feedbackBannerThanks.classList.remove('hidden');
+                setTimeout(function() {
+                    window.open(APP_STORE_REVIEW_URL, '_blank');
+                }, 3000);
             });
-        });
+        }
 
-        // ========== UNHAPPY BOX: feedback modal ==========
+        if (feedbackThumbsDownBtn) {
+            feedbackThumbsDownBtn.addEventListener('click', function() {
+                openFeedbackModal();
+            });
+        }
+
+        // ========== FEEDBACK MODAL (shared by thumbs down) ==========
         var feedbackModal = document.getElementById('feedback-modal');
         var feedbackFormBody = document.getElementById('feedback-form-body');
         var feedbackSuccessBody = document.getElementById('feedback-success-body');
@@ -2569,10 +2565,6 @@
 
             setTimeout(closeFeedbackModal, 1600);
         }
-
-        document.querySelectorAll('.unhappy-report-btn').forEach(function(btn) {
-            btn.addEventListener('click', openFeedbackModal);
-        });
 
         if (closeFeedbackModalBtn) closeFeedbackModalBtn.addEventListener('click', closeFeedbackModal);
         if (feedbackCancelBtn) feedbackCancelBtn.addEventListener('click', closeFeedbackModal);
