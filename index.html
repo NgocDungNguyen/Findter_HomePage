@@ -1079,7 +1079,7 @@
                 </div>
 
                 <div id="feedback-form-body" class="px-6 py-5 space-y-4">
-                    <p class="text-[13px] text-gray-500 leading-relaxed">Fill in the details below and our support team will respond directly in this chat.</p>
+                    <p class="text-[13px] text-gray-500 leading-relaxed">Fill in the details below and our support team will respond directly in the chat</p>
                     <div>
                         <label class="block text-[13px] font-semibold text-gray-700 mb-1.5">Category</label>
                         <select id="feedback-category" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px] outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 bg-white">
@@ -1097,7 +1097,7 @@
                     </div>
                     <div>
                         <label class="block text-[13px] font-semibold text-gray-700 mb-1.5">Tell us more</label>
-                        <textarea id="feedback-comment" rows="4" placeholder="Please describe your issue or feedback in as much detail as possible. The more you share, the faster we can help!" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px] outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"></textarea>
+                        <textarea id="feedback-comment" rows="4" placeholder="Please describe your issue or feedback as much detail as possible. The more you share, the better help we can do!" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px] outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"></textarea>
                     </div>
                     <div>
                         <label class="block text-[13px] font-semibold text-gray-700 mb-1.5">Add a screenshot (optional)</label>
@@ -2547,7 +2547,7 @@
             }
 
             var attachmentsText = fileCount > 0 ? fileCount + ' file(s) attached' : 'None';
-            var summary = '📋 <strong>New Feedback Ticket</strong><br>' +
+            var summary = '📋 <strong>New Support Ticket</strong><br>' +
                 'Category: ' + category + '<br>' +
                 'Message: ' + comment + '<br>' +
                 'Attachments: ' + attachmentsText;
@@ -2556,7 +2556,7 @@
             if (chatBadge) chatBadge.classList.add('hidden');
             addMessageToChat(summary, true);
             setTimeout(function() {
-                addMessageToChat("Thanks for reaching out! <br>We've received your message and our support team will get back to you shortly.", false);
+                addMessageToChat("Thanks for reaching out! <br>We've received your feedback and our support team will get back to you shortly.", false);
             }, 800);
 
             if (feedbackFormBody) feedbackFormBody.classList.add('hidden');
