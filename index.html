@@ -313,6 +313,14 @@
                     <button id="show-feedback-banner-btn" class="border border-emerald-300 bg-emerald-50 text-emerald-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-emerald-100 transition-colors shadow-sm whitespace-nowrap">Feedback</button>
                     <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">Reset Indexing</button>
                     <button id="end-index-btn" class="border border-green-300 bg-green-50 text-green-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-green-100 transition-colors shadow-sm whitespace-nowrap">End Index Now</button>
+                    <div class="relative">
+                        <button id="warning-trial-btn" class="border border-red-300 bg-red-50 text-red-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-red-100 transition-colors shadow-sm whitespace-nowrap">Warning</button>
+                        <div id="warning-trial-menu" class="hidden absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-20">
+                            <button type="button" data-days="7" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">7 days left</button>
+                            <button type="button" data-days="3" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">3 days left</button>
+                            <button type="button" data-days="1" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">1 day left</button>
+                        </div>
+                    </div>
                     <button class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors"><i class="fas fa-ellipsis-h text-sm"></i></button>
                 </div>
             </div>
@@ -384,6 +392,26 @@
                                         <p class="text-[13px] text-[#303030] leading-relaxed mb-4">Contact us to consult about product and metafield limits.</p>
                                         <button id="limit-reached-contact-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
                                             Contact us
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- TRIAL WARNING BANNER -->
+                                <div id="trial-warning-banner" class="hidden order-3 lg:order-none rounded-[8px] overflow-hidden border border-red-200 shadow-sm">
+                                    <div class="flex items-center justify-between px-4 py-3 bg-red-100">
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-exclamation-circle text-red-600 text-sm"></i>
+                                            <span class="text-[#303030] font-semibold text-[14px]">Trial ending soon</span>
+                                        </div>
+                                        <button id="trial-warning-close-btn" class="text-gray-500 hover:text-gray-800 hover:bg-red-200 rounded p-1 transition-colors" aria-label="Dismiss">
+                                            <i class="fas fa-times text-sm"></i>
+                                        </button>
+                                    </div>
+                                    <div class="bg-white px-5 py-4">
+                                        <p id="trial-warning-text" class="text-[13px] text-[#303030] leading-relaxed mb-3">Your trial will end soon, <strong>7 days</strong> left.</p>
+                                        <p class="text-[13px] text-gray-500 leading-relaxed mb-4">Upgrade to a paid plan to keep your filter and search features running without interruption.</p>
+                                        <button class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
+                                            See pricing plans
                                         </button>
                                     </div>
                                 </div>
@@ -526,6 +554,16 @@
                                 </div>
 
                                 <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-8 lg:order-none">
+                                    <div class="p-5 border-b border-gray-100">
+                                        <h3 class="font-semibold text-[15px] text-[#303030]">Highlight Featured</h3>
+                                    </div>
+                                    <div class="flex flex-col md:flex-row">
+                                        <div id="feature-highlight-list" class="w-full md:w-[38%] border-b md:border-b-0 md:border-r border-gray-100 py-2"></div>
+                                        <div id="feature-highlight-panel" class="w-full md:w-[62%] p-5"></div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-9 lg:order-none">
                                     <div class="p-5 flex items-center justify-between border-b border-gray-100">
                                         <h3 class="font-semibold text-[15px] text-[#303030]">Recommend Apps</h3>
                                         <div class="flex items-center gap-2">
@@ -737,7 +775,92 @@
                                 })();
                                 </script>
 
-                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-9 lg:order-none"><h3 class="font-semibold text-[15px] text-[#303030] mb-3">Master</h3><button class="border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 shadow-sm">Master</button></div>
+                                <script>
+                                (function() {
+                                    var listEl = document.getElementById('feature-highlight-list');
+                                    var panelEl = document.getElementById('feature-highlight-panel');
+                                    if (!listEl || !panelEl) return;
+
+                                    var FEATURE_TREE = [
+                                        { name: 'Filter', subs: ['Merged Value Group', 'Multi Source'] },
+                                        { name: 'Search', subs: ['Synonyms', 'Partial Search', 'Search in Collection', 'Search in Filter'] },
+                                        { name: 'Year Make Model', subs: [] },
+                                        { name: 'Market', subs: ['Auto Translate', 'Local Currency Adaption'] },
+                                        { name: 'Merchandising', subs: ['Boost In Stock Product', 'Hide Out of Stock Product'] }
+                                    ];
+
+                                    var openParent = FEATURE_TREE[0].name;
+                                    var selectedFeature = FEATURE_TREE[0].name;
+
+                                    function renderPanel() {
+                                        panelEl.innerHTML =
+                                            '<div class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex flex-col items-center justify-center text-gray-400" style="aspect-ratio: 16 / 9;">' +
+                                                '<i class="fas fa-image text-2xl mb-2"></i>' +
+                                                '<span class="text-[12px] font-medium px-4 text-center">' + selectedFeature + ' — image coming soon</span>' +
+                                            '</div>' +
+                                            '<button type="button" id="feature-highlight-view-btn" class="mt-4 bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">View Feature Now</button>';
+
+                                        var viewBtn = document.getElementById('feature-highlight-view-btn');
+                                        if (viewBtn) {
+                                            viewBtn.addEventListener('click', function() {
+                                                console.log('View Feature Now:', selectedFeature);
+                                            });
+                                        }
+                                    }
+
+                                    function renderList() {
+                                        var html = '';
+                                        FEATURE_TREE.forEach(function(item) {
+                                            var hasSubs = item.subs.length > 0;
+                                            var isOpen = openParent === item.name;
+                                            var isSelected = selectedFeature === item.name;
+                                            html += '<div>' +
+                                                '<div class="feature-parent-row flex items-center justify-between px-4 py-2.5 cursor-pointer hover:bg-gray-50 ' + (isSelected ? 'bg-gray-100' : '') + '" data-feature="' + item.name + '">' +
+                                                    '<span class="text-[13px] font-medium text-[#303030]">' + item.name + '</span>' +
+                                                    (hasSubs ? '<i class="fas fa-chevron-' + (isOpen ? 'up' : 'down') + ' text-gray-400 text-[10px]"></i>' : '') +
+                                                '</div>';
+                                            if (hasSubs) {
+                                                html += '<div class="' + (isOpen ? '' : 'hidden') + '">';
+                                                item.subs.forEach(function(sub) {
+                                                    var subSelected = selectedFeature === sub;
+                                                    html += '<div class="feature-sub-row px-4 py-2 pl-8 cursor-pointer text-[12px] text-gray-600 hover:bg-gray-50 hover:text-gray-900 ' + (subSelected ? 'bg-gray-100 text-gray-900 font-medium' : '') + '" data-feature="' + sub + '">' + sub + '</div>';
+                                                });
+                                                html += '</div>';
+                                            }
+                                            html += '</div>';
+                                        });
+                                        listEl.innerHTML = html;
+                                    }
+
+                                    listEl.addEventListener('click', function(e) {
+                                        var parentRow = e.target.closest('.feature-parent-row');
+                                        var subRow = e.target.closest('.feature-sub-row');
+
+                                        if (subRow) {
+                                            selectedFeature = subRow.getAttribute('data-feature');
+                                            renderList();
+                                            renderPanel();
+                                            return;
+                                        }
+
+                                        if (parentRow) {
+                                            var name = parentRow.getAttribute('data-feature');
+                                            var item = FEATURE_TREE.filter(function(f) { return f.name === name; })[0];
+                                            selectedFeature = name;
+                                            if (item && item.subs.length > 0) {
+                                                openParent = (openParent === name) ? null : name;
+                                            }
+                                            renderList();
+                                            renderPanel();
+                                        }
+                                    });
+
+                                    renderList();
+                                    renderPanel();
+                                })();
+                                </script>
+
+                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-10 lg:order-none"><h3 class="font-semibold text-[15px] text-[#303030] mb-3">Master</h3><button class="border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 shadow-sm">Master</button></div>
                             </div>
 
                             <div class="homepage-column homepage-right">
@@ -761,8 +884,7 @@
 
                                     <div id="feedback-banner-thanks" class="hidden text-center">
                                         <i class="fas fa-heart text-emerald-500 text-2xl mb-2"></i>
-                                        <p class="text-[14px] font-semibold text-[#303030]">Thanks for the love! 🎉</p>
-                                        <p class="text-[12px] text-gray-500 mt-1">Taking you to leave a review...</p>
+                                        <p class="text-[14px] font-semibold text-[#303030]">Thank you so much for your valuable feedback!</p>
                                     </div>
                                 </div>
 
@@ -781,6 +903,13 @@
                                             <span id="status-search-suggestion" class="flex items-center gap-2 px-2.5 py-1 rounded-md border border-gray-200 bg-white text-[11px] font-semibold text-gray-600">
                                                 <span class="w-2 h-2 rounded-full bg-gray-400"></span>
                                                 Inactive
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center justify-between text-[13px] text-[#303030]">
+                                            <span class="font-medium">App Plan</span>
+                                            <span id="status-app-plan" class="flex items-center gap-2 px-2.5 py-1 rounded-md border border-gray-200 bg-white text-[11px] font-semibold text-gray-600">
+                                                <span class="w-2 h-2 rounded-full bg-gray-400"></span>
+                                                Free
                                             </span>
                                         </div>
                                     </div>
@@ -1119,6 +1248,27 @@
         </div>
     </div>
 
+    <!-- MODAL: Welcome Gate Modal -->
+    <div id="welcome-gate-modal" class="modal-wrapper fixed inset-0 hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl pointer-events-auto relative modal-content">
+                <div class="px-6 pt-6">
+                    <img src="welcome-banner.png" alt="Enjoy 14-day free trial with unlimited features" class="w-full h-auto rounded-lg">
+                </div>
+                <div class="px-6 py-5">
+                    <label class="flex items-start gap-3 cursor-pointer select-none">
+                        <input type="checkbox" id="welcome-gate-checkbox" class="mt-0.5 w-4 h-4 rounded border-gray-300 text-[#303030] focus:ring-[#303030] cursor-pointer">
+                        <span class="text-[13px] text-[#303030] leading-relaxed">I acknowledged and agree with the provided information above</span>
+                    </label>
+                </div>
+                <div class="flex items-center justify-end px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
+                    <button type="button" id="welcome-gate-continue-btn" disabled class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         
@@ -1146,7 +1296,9 @@
             INDEXING_COMPLETE: 'findter_indexing_complete',
             SELECTED_THEME: 'findter_selected_theme',
             LAST_ENABLED_THEME: 'findter_last_enabled_theme',
-            FIRST_ENABLE_DONE: 'findter_first_enable_done'
+            FIRST_ENABLE_DONE: 'findter_first_enable_done',
+            WELCOME_GATE_DONE: 'findter_welcome_gate_done',
+            REVIEW_SUBMITTED: 'findter_review_submitted'
         };
 
         function loadPersistedState() {
@@ -1256,6 +1408,11 @@
 
         const statusAppEmbed = document.getElementById('status-app-embed');
         const statusSearchSuggestion = document.getElementById('status-search-suggestion');
+        const statusAppPlan = document.getElementById('status-app-plan');
+
+        const welcomeGateModal = document.getElementById('welcome-gate-modal');
+        const welcomeGateCheckbox = document.getElementById('welcome-gate-checkbox');
+        const welcomeGateContinueBtn = document.getElementById('welcome-gate-continue-btn');
 
         const allNavItems = document.querySelectorAll('[data-page]');
 
@@ -1511,6 +1668,16 @@
                 statusSearchSuggestion.innerHTML = suggestionLive
                     ? '<span class="w-2 h-2 rounded-full bg-green-500"></span>Active'
                     : '<span class="w-2 h-2 rounded-full bg-gray-400"></span>Inactive';
+            }
+
+            if (statusAppPlan) {
+                var onTrial = AppState.indexingComplete;
+                statusAppPlan.className = onTrial
+                    ? 'flex items-center gap-2 px-2.5 py-1 rounded-md border border-amber-200 bg-white text-[11px] font-semibold text-amber-700'
+                    : 'flex items-center gap-2 px-2.5 py-1 rounded-md border border-gray-200 bg-white text-[11px] font-semibold text-gray-600';
+                statusAppPlan.innerHTML = onTrial
+                    ? '<span class="w-2 h-2 rounded-full bg-amber-500"></span>Trial'
+                    : '<span class="w-2 h-2 rounded-full bg-gray-400"></span>Free';
             }
         }
 
@@ -1956,6 +2123,48 @@
         if (resetIndexingBtn) resetIndexingBtn.addEventListener('click', resetIndexing);
         if (endIndexBtn) endIndexBtn.addEventListener('click', forceEndIndexing);
 
+        // ========== WARNING / TRIAL COUNTDOWN BANNER ==========
+        var warningTrialBtn = document.getElementById('warning-trial-btn');
+        var warningTrialMenu = document.getElementById('warning-trial-menu');
+        var trialWarningBanner = document.getElementById('trial-warning-banner');
+        var trialWarningText = document.getElementById('trial-warning-text');
+        var trialWarningCloseBtn = document.getElementById('trial-warning-close-btn');
+
+        if (warningTrialBtn && warningTrialMenu) {
+            warningTrialBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                warningTrialMenu.classList.toggle('hidden');
+            });
+            document.addEventListener('click', function(e) {
+                if (!warningTrialMenu.classList.contains('hidden') &&
+                    !warningTrialMenu.contains(e.target) &&
+                    !warningTrialBtn.contains(e.target)) {
+                    warningTrialMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        document.querySelectorAll('.warning-trial-option').forEach(function(opt) {
+            opt.addEventListener('click', function() {
+                var days = this.getAttribute('data-days');
+                var unit = days === '1' ? 'day' : 'days';
+                if (trialWarningText) {
+                    trialWarningText.innerHTML = 'Your trial will end soon, <strong>' + days + ' ' + unit + '</strong> left.';
+                }
+                if (trialWarningBanner) {
+                    trialWarningBanner.classList.remove('hidden');
+                    trialWarningBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                if (warningTrialMenu) warningTrialMenu.classList.add('hidden');
+            });
+        });
+
+        if (trialWarningCloseBtn && trialWarningBanner) {
+            trialWarningCloseBtn.addEventListener('click', function() {
+                trialWarningBanner.classList.add('hidden');
+            });
+        }
+
         // ========== STEP PROGRESS ==========
         function updateProgressAndMessages() {
             var step1 = document.querySelector('.step-checkbox[data-step="1"]');
@@ -2105,6 +2314,11 @@
 
         // ========== THEME MODAL ==========
         var THEMES = ['Allure', 'Atelier', 'Be Yours', 'Broadcast', 'Colorblock', 'Concept', 'Craft', 'Crave', 'Dawn', 'Dwell', 'Enterprise', 'Eurus', 'Expanse', 'Fabric', 'Flawless', 'Focal', 'Heritage', 'Horizon', 'Hyper', 'Ignite', 'Impulse', 'Next', 'Noom', 'Origin', 'Pipeline', 'Pitch', 'Publisher', 'Refresh', 'Ride', 'Rise', 'Ritual', 'Savor', 'Sense', 'Sleek', 'Spotlight', 'Stiletto', 'Studio', 'Taste', 'Tinker', 'Trade', 'Vessel', 'Vivid', 'Wonder', 'Xtra'];
+        var NOT_COMPATIBLE_THEMES = ['Be Yours', 'Colorblock', 'Crave', 'Flawless', 'Hyper', 'Noom', 'Pitch', 'Ritual', 'Sense', 'Stiletto', 'Taste', 'Tinker', 'Vessel', 'Xtra'];
+
+        function isThemeCompatible(theme) {
+            return NOT_COMPATIBLE_THEMES.indexOf(theme) === -1;
+        }
 
         function renderThemeDropdown() {
             var label = AppState.selectedTheme ? AppState.selectedTheme : '-- Select a theme --';
@@ -2114,16 +2328,31 @@
             var html = '';
             THEMES.forEach(function(theme) {
                 var selected = AppState.selectedTheme === theme;
+                var compatible = isThemeCompatible(theme);
                 html +=
-                    '<button type="button" class="w-full px-4 py-2 text-left flex items-center justify-between text-[14px] ' +
-                        (selected ? 'bg-blue-50 text-[#303030]' : 'text-[#303030] hover:bg-gray-50') +
-                    '" data-theme="' + theme + '">' +
-                        '<span class="font-medium">' + theme + '</span>' +
-                    '</button>';
+                    '<div class="w-full px-4 py-2 flex items-center justify-between gap-2 text-[14px] ' +
+                        (selected ? 'bg-blue-50' : 'hover:bg-gray-50') +
+                    '">' +
+                        '<button type="button" class="flex-1 text-left font-medium text-[#303030]" data-theme="' + theme + '">' + theme + '</button>' +
+                        (compatible
+                            ? '<span class="shrink-0 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">Compatible</span>'
+                            : '<button type="button" class="shrink-0 border border-gray-300 bg-white text-[#303030] text-[11px] font-medium px-2 py-1 rounded-md hover:bg-gray-100 transition-colors" data-howto-theme="' + theme + '">How to</button>') +
+                    '</div>';
             });
 
             if (themeDropdownList) themeDropdownList.innerHTML = html;
             if (guideThemeDropdownList) guideThemeDropdownList.innerHTML = html;
+        }
+
+        function sendThemeCompatibilityRequest(theme) {
+            if (chatBubble) {
+                chatBubble.classList.add('active');
+            }
+            if (chatBadge) chatBadge.classList.add('hidden');
+            addMessageToChat("Hi! I'd love to use Findter with the " + theme + " theme, could you help make it compatible?", true);
+            setTimeout(function() {
+                addMessageToChat("We've received your request to support the " + theme + " theme, our team is already looking into it!", false);
+            }, 800);
         }
 
         function updateThemeModalAction() {
@@ -2201,6 +2430,12 @@
 
         if (themeDropdownList) {
             themeDropdownList.addEventListener('click', function(e) {
+                var howtoBtn = e.target.closest('[data-howto-theme]');
+                if (howtoBtn) {
+                    sendThemeCompatibilityRequest(howtoBtn.getAttribute('data-howto-theme'));
+                    if (themeDropdownMenu) themeDropdownMenu.classList.add('hidden');
+                    return;
+                }
                 var row = e.target.closest('[data-theme]');
                 if (!row) return;
                 AppState.selectedTheme = row.getAttribute('data-theme');
@@ -2214,6 +2449,12 @@
 
         if (guideThemeDropdownList) {
             guideThemeDropdownList.addEventListener('click', function(e) {
+                var howtoBtn = e.target.closest('[data-howto-theme]');
+                if (howtoBtn) {
+                    sendThemeCompatibilityRequest(howtoBtn.getAttribute('data-howto-theme'));
+                    if (guideThemeDropdownMenu) guideThemeDropdownMenu.classList.add('hidden');
+                    return;
+                }
                 var row = e.target.closest('[data-theme]');
                 if (!row) return;
                 AppState.selectedTheme = row.getAttribute('data-theme');
@@ -2330,17 +2571,44 @@
         // ========== INITIALIZATION ==========
         console.log('Initializing Dashboard...');
         loadPersistedState();
-        if (AppState.indexingComplete) {
-            showIndexingComplete();
-        } else {
-            startIndexingSimulation();
-        }
         updateLockStates();
         updateGuideStep1Status();
         updateSearchSuggestionGuideStatus();
         updateFindterStatus();
         if (shouldCollapseOnboardingOnReload()) {
             collapseOnboardingGuide();
+        }
+
+        function startAppAfterWelcomeGate() {
+            if (AppState.indexingComplete) {
+                showIndexingComplete();
+            } else {
+                startIndexingSimulation();
+            }
+        }
+
+        if (welcomeGateCheckbox && welcomeGateContinueBtn) {
+            welcomeGateCheckbox.addEventListener('change', function() {
+                welcomeGateContinueBtn.disabled = !welcomeGateCheckbox.checked;
+            });
+            welcomeGateContinueBtn.addEventListener('click', function() {
+                if (!welcomeGateCheckbox.checked) return;
+                localStorage.setItem(STORAGE_KEYS.WELCOME_GATE_DONE, 'true');
+                if (welcomeGateModal) {
+                    welcomeGateModal.classList.add('hidden');
+                }
+                document.body.style.overflow = '';
+                startAppAfterWelcomeGate();
+            });
+        }
+
+        if (localStorage.getItem(STORAGE_KEYS.WELCOME_GATE_DONE) === 'true') {
+            startAppAfterWelcomeGate();
+        } else if (welcomeGateModal) {
+            welcomeGateModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        } else {
+            startAppAfterWelcomeGate();
         }
         
         // ========== WHAT'S NEW DROPDOWN ==========
@@ -2465,6 +2733,18 @@
             if (feedbackBannerThanks) feedbackBannerThanks.classList.add('hidden');
         }
 
+        var feedbackThanksTimer = null;
+        function showFeedbackThanks() {
+            if (feedbackBanner) feedbackBanner.classList.remove('hidden');
+            if (feedbackBannerPrompt) feedbackBannerPrompt.classList.add('hidden');
+            if (feedbackBannerThanks) feedbackBannerThanks.classList.remove('hidden');
+            if (feedbackThanksTimer) clearTimeout(feedbackThanksTimer);
+            feedbackThanksTimer = setTimeout(function() {
+                resetFeedbackBanner();
+                feedbackThanksTimer = null;
+            }, 10000);
+        }
+
         if (feedbackBannerCloseBtn && feedbackBanner) {
             feedbackBannerCloseBtn.addEventListener('click', function() {
                 feedbackBanner.classList.add('hidden');
@@ -2489,14 +2769,24 @@
         var APP_STORE_REVIEW_URL = 'https://apps.shopify.com/findter-custom-filter-search#modal-show=WriteReviewModal&st_campaign=rate-app&st_source=admin-web';
         var feedbackThumbsUpBtn = document.getElementById('feedback-thumbs-up');
         var feedbackThumbsDownBtn = document.getElementById('feedback-thumbs-down');
+        var reviewSubmitPending = false;
+
+        window.addEventListener('focus', function() {
+            if (reviewSubmitPending) {
+                reviewSubmitPending = false;
+                localStorage.setItem(STORAGE_KEYS.REVIEW_SUBMITTED, 'true');
+                showFeedbackThanks();
+            }
+        });
 
         if (feedbackThumbsUpBtn) {
             feedbackThumbsUpBtn.addEventListener('click', function() {
-                if (feedbackBannerPrompt) feedbackBannerPrompt.classList.add('hidden');
-                if (feedbackBannerThanks) feedbackBannerThanks.classList.remove('hidden');
-                setTimeout(function() {
-                    window.open(APP_STORE_REVIEW_URL, '_blank');
-                }, 3000);
+                if (localStorage.getItem(STORAGE_KEYS.REVIEW_SUBMITTED) === 'true') {
+                    showFeedbackThanks();
+                    return;
+                }
+                reviewSubmitPending = true;
+                window.open(APP_STORE_REVIEW_URL, '_blank');
             });
         }
 
@@ -2563,7 +2853,10 @@
             if (feedbackModalFooter) feedbackModalFooter.classList.add('hidden');
             if (feedbackSuccessBody) feedbackSuccessBody.classList.remove('hidden');
 
-            setTimeout(closeFeedbackModal, 1600);
+            setTimeout(function() {
+                closeFeedbackModal();
+                showFeedbackThanks();
+            }, 1600);
         }
 
         if (closeFeedbackModalBtn) closeFeedbackModalBtn.addEventListener('click', closeFeedbackModal);
