@@ -465,7 +465,7 @@
                                                                     <span id="guide-theme-live-pill" class="hidden px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">Live</span>
                                                                     <i class="fas fa-chevron-down text-xs text-gray-400"></i>
                                                                 </button>
-                                                                <div id="guide-theme-dropdown-menu" class="hidden absolute left-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg max-h-40 overflow-y-auto">
+                                                                <div id="guide-theme-dropdown-menu" class="hidden absolute left-0 mt-2 w-96 bg-white border border-gray-200 rounded-lg shadow-lg max-h-56 overflow-y-auto">
                                                                     <div id="guide-theme-dropdown-list" class="py-1"></div>
                                                                 </div>
                                                             </div>
@@ -555,12 +555,10 @@
 
                                 <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-8 lg:order-none">
                                     <div class="p-5 border-b border-gray-100">
-                                        <h3 class="font-semibold text-[15px] text-[#303030]">Highlight Featured</h3>
+                                        <h3 class="font-semibold text-[15px] text-[#303030] mb-4">Highlight Features</h3>
+                                        <div id="feature-highlight-tabs" class="grid grid-cols-5 divide-x divide-gray-200 border border-gray-200 rounded-lg overflow-hidden"></div>
                                     </div>
-                                    <div class="flex flex-col md:flex-row">
-                                        <div id="feature-highlight-list" class="w-full md:w-[38%] border-b md:border-b-0 md:border-r border-gray-100 py-2"></div>
-                                        <div id="feature-highlight-panel" class="w-full md:w-[62%] p-5"></div>
-                                    </div>
+                                    <div id="feature-highlight-body" class="flex flex-col md:flex-row"></div>
                                 </div>
 
                                 <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-9 lg:order-none">
@@ -777,86 +775,115 @@
 
                                 <script>
                                 (function() {
-                                    var listEl = document.getElementById('feature-highlight-list');
-                                    var panelEl = document.getElementById('feature-highlight-panel');
-                                    if (!listEl || !panelEl) return;
+                                    var tabsEl = document.getElementById('feature-highlight-tabs');
+                                    var bodyEl = document.getElementById('feature-highlight-body');
+                                    if (!tabsEl || !bodyEl) return;
 
                                     var FEATURE_TREE = [
-                                        { name: 'Filter', subs: ['Merged Value Group', 'Multi Source'] },
-                                        { name: 'Search', subs: ['Synonyms', 'Partial Search', 'Search in Collection', 'Search in Filter'] },
+                                        { name: 'Filter', subs: [
+                                            { name: 'Merged Value Group', desc: 'Combine similar filter values into one group so shoppers see fewer, cleaner options.' },
+                                            { name: 'Multi Source', desc: 'Pull filter data from multiple sources like tags, metafields, and variants in one filter.' }
+                                        ] },
+                                        { name: 'Search', subs: [
+                                            { name: 'Synonyms', desc: 'Match search terms with their synonyms so shoppers find products even with different wording.' },
+                                            { name: 'Partial Search', desc: 'Return results for partial keyword matches, not just exact matches.' },
+                                            { name: 'Search in Collection', desc: 'Let shoppers search within a specific collection page.' },
+                                            { name: 'Search in Filter', desc: 'Add a search box directly inside the filter panel to quickly find filter values.' }
+                                        ] },
                                         { name: 'Year Make Model', subs: [] },
-                                        { name: 'Market', subs: ['Auto Translate', 'Local Currency Adaption'] },
-                                        { name: 'Merchandising', subs: ['Boost In Stock Product', 'Hide Out of Stock Product'] }
+                                        { name: 'Market', subs: [
+                                            { name: 'Auto Translate', desc: "Automatically translate filter and search content for each market's language." },
+                                            { name: 'Local Currency Adaption', desc: "Show prices in each shopper's local currency automatically." }
+                                        ] },
+                                        { name: 'Merchandising', subs: [
+                                            { name: 'Boost In Stock Product', desc: 'Push in-stock products higher in search and filter results.' },
+                                            { name: 'Hide Out of Stock Product', desc: 'Automatically hide out-of-stock products from search and filter results.' }
+                                        ] }
                                     ];
 
-                                    var openParent = FEATURE_TREE[0].name;
-                                    var selectedFeature = FEATURE_TREE[0].name;
+                                    var selectedParent = FEATURE_TREE[0].name;
+                                    var selectedSub = null;
 
-                                    function renderPanel() {
-                                        panelEl.innerHTML =
-                                            '<div class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex flex-col items-center justify-center text-gray-400" style="aspect-ratio: 16 / 9;">' +
-                                                '<i class="fas fa-image text-2xl mb-2"></i>' +
-                                                '<span class="text-[12px] font-medium px-4 text-center">' + selectedFeature + ' — image coming soon</span>' +
-                                            '</div>' +
-                                            '<button type="button" id="feature-highlight-view-btn" class="mt-4 bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">View Feature Now</button>';
-
-                                        var viewBtn = document.getElementById('feature-highlight-view-btn');
-                                        if (viewBtn) {
-                                            viewBtn.addEventListener('click', function() {
-                                                console.log('View Feature Now:', selectedFeature);
-                                            });
-                                        }
+                                    function getParentItem(name) {
+                                        return FEATURE_TREE.filter(function(f) { return f.name === name; })[0];
                                     }
 
-                                    function renderList() {
+                                    function placeholderBlock(label) {
+                                        return '<div class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex flex-col items-center justify-center text-gray-400" style="aspect-ratio: 16 / 9;">' +
+                                                '<i class="fas fa-photo-video text-2xl mb-2"></i>' +
+                                                '<span class="text-[12px] font-medium px-4 text-center">' + label + ' — image/video coming soon</span>' +
+                                            '</div>' +
+                                            '<div class="flex justify-end mt-4">' +
+                                                '<button type="button" class="feature-view-btn bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors" data-feature-view="' + label + '">View Feature Now</button>' +
+                                            '</div>';
+                                    }
+
+                                    function renderTabs() {
                                         var html = '';
                                         FEATURE_TREE.forEach(function(item) {
-                                            var hasSubs = item.subs.length > 0;
-                                            var isOpen = openParent === item.name;
-                                            var isSelected = selectedFeature === item.name;
-                                            html += '<div>' +
-                                                '<div class="feature-parent-row flex items-center justify-between px-4 py-2.5 cursor-pointer hover:bg-gray-50 ' + (isSelected ? 'bg-gray-100' : '') + '" data-feature="' + item.name + '">' +
-                                                    '<span class="text-[13px] font-medium text-[#303030]">' + item.name + '</span>' +
-                                                    (hasSubs ? '<i class="fas fa-chevron-' + (isOpen ? 'up' : 'down') + ' text-gray-400 text-[10px]"></i>' : '') +
-                                                '</div>';
-                                            if (hasSubs) {
-                                                html += '<div class="' + (isOpen ? '' : 'hidden') + '">';
-                                                item.subs.forEach(function(sub) {
-                                                    var subSelected = selectedFeature === sub;
-                                                    html += '<div class="feature-sub-row px-4 py-2 pl-8 cursor-pointer text-[12px] text-gray-600 hover:bg-gray-50 hover:text-gray-900 ' + (subSelected ? 'bg-gray-100 text-gray-900 font-medium' : '') + '" data-feature="' + sub + '">' + sub + '</div>';
-                                                });
-                                                html += '</div>';
-                                            }
-                                            html += '</div>';
+                                            var active = selectedParent === item.name;
+                                            html += '<button type="button" class="feature-tab-btn px-3 py-2.5 text-[13px] font-semibold text-center transition-colors ' +
+                                                (active ? 'bg-[#303030] text-white' : 'bg-white text-[#303030] hover:bg-gray-50') +
+                                                '" data-parent="' + item.name + '">' + item.name + '</button>';
                                         });
-                                        listEl.innerHTML = html;
+                                        tabsEl.innerHTML = html;
                                     }
 
-                                    listEl.addEventListener('click', function(e) {
-                                        var parentRow = e.target.closest('.feature-parent-row');
-                                        var subRow = e.target.closest('.feature-sub-row');
+                                    function renderBody() {
+                                        var item = getParentItem(selectedParent);
+                                        if (!item) return;
 
-                                        if (subRow) {
-                                            selectedFeature = subRow.getAttribute('data-feature');
-                                            renderList();
-                                            renderPanel();
+                                        if (item.subs.length === 0) {
+                                            bodyEl.className = 'p-5';
+                                            bodyEl.innerHTML = placeholderBlock(item.name);
                                             return;
                                         }
 
-                                        if (parentRow) {
-                                            var name = parentRow.getAttribute('data-feature');
-                                            var item = FEATURE_TREE.filter(function(f) { return f.name === name; })[0];
-                                            selectedFeature = name;
-                                            if (item && item.subs.length > 0) {
-                                                openParent = (openParent === name) ? null : name;
-                                            }
-                                            renderList();
-                                            renderPanel();
+                                        if (!selectedSub || !item.subs.some(function(s) { return s.name === selectedSub; })) {
+                                            selectedSub = item.subs[0].name;
+                                        }
+
+                                        var leftHtml = '';
+                                        item.subs.forEach(function(sub) {
+                                            var active = selectedSub === sub.name;
+                                            leftHtml += '<div class="feature-sub-row px-5 py-3 cursor-pointer border-b border-gray-50 ' +
+                                                (active ? 'bg-gray-100' : 'hover:bg-gray-50') +
+                                                '" data-sub="' + sub.name + '">' +
+                                                    '<div class="text-[14px] font-semibold text-[#303030]">' + sub.name + '</div>' +
+                                                    '<div class="text-[12px] text-gray-500 mt-0.5">' + sub.desc + '</div>' +
+                                                '</div>';
+                                        });
+
+                                        bodyEl.className = 'flex flex-col md:flex-row';
+                                        bodyEl.innerHTML =
+                                            '<div class="w-full md:w-[38%] border-b md:border-b-0 md:border-r border-gray-100 py-2">' + leftHtml + '</div>' +
+                                            '<div class="w-full md:w-[62%] p-5">' + placeholderBlock(selectedSub) + '</div>';
+                                    }
+
+                                    tabsEl.addEventListener('click', function(e) {
+                                        var tabBtn = e.target.closest('[data-parent]');
+                                        if (!tabBtn) return;
+                                        selectedParent = tabBtn.getAttribute('data-parent');
+                                        selectedSub = null;
+                                        renderTabs();
+                                        renderBody();
+                                    });
+
+                                    bodyEl.addEventListener('click', function(e) {
+                                        var viewBtn = e.target.closest('[data-feature-view]');
+                                        if (viewBtn) {
+                                            console.log('View Feature Now:', viewBtn.getAttribute('data-feature-view'));
+                                            return;
+                                        }
+                                        var subRow = e.target.closest('[data-sub]');
+                                        if (subRow) {
+                                            selectedSub = subRow.getAttribute('data-sub');
+                                            renderBody();
                                         }
                                     });
 
-                                    renderList();
-                                    renderPanel();
+                                    renderTabs();
+                                    renderBody();
                                 })();
                                 </script>
 
@@ -892,7 +919,7 @@
                                     <h3 class="font-semibold text-[15px] text-[#303030] mb-4"><strong>Findter App Status</strong></h3>
                                     <div class="space-y-3">
                                         <div class="flex items-center justify-between text-[13px] text-[#303030]">
-                                            <span class="font-medium">App Plan</span>
+                                            <span class="font-medium">Plan</span>
                                             <span id="status-app-plan" class="flex items-center gap-2 px-2.5 py-1 rounded-md border border-green-200 bg-white text-[11px] font-semibold text-green-700">
                                                 <span class="w-2 h-2 rounded-full bg-green-500"></span>
                                                 Free
@@ -1477,11 +1504,11 @@
         function getFirstTimeCompleteBannerHTML() {
             return '<div class="unified-status-banner complete-state rounded-lg p-4 border border-amber-300">' +
                 '<div class="flex items-start gap-3">' +
-                    '<div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shrink-0 mt-0.5">' +
+                    '<div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 shrink-0 mt-0.5">' +
                         '<i class="fas fa-check-circle text-sm"></i>' +
                     '</div>' +
                     '<div class="flex-1">' +
-                        '<p class="text-[14px] font-semibold text-amber-800 mb-1">Data indexing is completed.</p>' +
+                        '<p class="text-[14px] font-semibold text-green-800 mb-1">Data indexing is completed.</p>' +
                         '<p class="text-[13px] text-amber-700 leading-relaxed mb-3">' +
                             'Your data has been successfully indexed. To activate the app on your storefront, please enable it in your Theme Editor.' +
                         '</p>' +
@@ -2329,13 +2356,15 @@
                 var selected = AppState.selectedTheme === theme;
                 var compatible = isThemeCompatible(theme);
                 html +=
-                    '<div class="w-full px-4 py-2 flex items-center justify-between gap-2 text-[14px] ' +
-                        (selected ? 'bg-blue-50' : 'hover:bg-gray-50') +
-                    '">' +
-                        '<button type="button" class="flex-1 text-left font-medium text-[#303030]" data-theme="' + theme + '">' + theme + '</button>' +
-                        (compatible
-                            ? '<span class="shrink-0 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">Compatible</span>'
-                            : '<button type="button" class="shrink-0 border border-gray-300 bg-white text-[#303030] text-[11px] font-medium px-2 py-1 rounded-md hover:bg-gray-100 transition-colors" data-howto-theme="' + theme + '">How to</button>') +
+                    '<div class="w-full grid grid-cols-2 items-center py-2 ' +
+                        (selected ? 'bg-blue-50' : '') +
+                    '" ' + (compatible ? 'data-theme="' + theme + '"' : '') + '>' +
+                        '<div class="pl-4 pr-3 border-r border-gray-200 text-[14px] font-medium text-[#303030] truncate ' + (compatible ? 'hover:text-black cursor-pointer' : '') + '">' + theme + '</div>' +
+                        '<div class="pl-3 pr-4 flex justify-center">' +
+                            (compatible
+                                ? '<span class="w-fit px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">Compatible</span>'
+                                : '<button type="button" class="w-fit border border-gray-300 bg-white text-[#303030] text-[11px] font-medium px-2 py-1 rounded-md hover:bg-gray-100 transition-colors" data-howto-theme="' + theme + '">How to</button>') +
+                        '</div>' +
                     '</div>';
             });
 
@@ -2383,7 +2412,7 @@
                 openThemeModal();
             });
         }
-        
+
         if (closeThemeModalBtn) closeThemeModalBtn.addEventListener('click', closeThemeModal);
         if (themeModalCancelBtn) themeModalCancelBtn.addEventListener('click', closeThemeModal);
         if (themeModalOverlay) themeModalOverlay.addEventListener('click', closeThemeModal);
