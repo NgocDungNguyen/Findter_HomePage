@@ -397,21 +397,20 @@
                                 </div>
 
                                 <!-- TRIAL WARNING BANNER -->
-                                <div id="trial-warning-banner" class="hidden order-3 lg:order-none rounded-[8px] overflow-hidden border border-red-200 shadow-sm">
-                                    <div class="flex items-center justify-between px-4 py-3 bg-red-100">
+                                <div id="trial-warning-banner" class="hidden order-2 lg:order-none rounded-[8px] overflow-hidden border border-yellow-200 shadow-sm">
+                                    <div class="flex items-center justify-between px-4 py-3 bg-yellow-100">
                                         <div class="flex items-center gap-2">
-                                            <i class="fas fa-exclamation-circle text-red-600 text-sm"></i>
-                                            <span class="text-[#303030] font-semibold text-[14px]">Trial ending soon</span>
+                                            <i class="fas fa-exclamation-circle text-yellow-600 text-sm"></i>
+                                            <span id="trial-warning-heading" class="text-[#303030] font-semibold text-[14px]">7 Days Trial Left</span>
                                         </div>
-                                        <button id="trial-warning-close-btn" class="text-gray-500 hover:text-gray-800 hover:bg-red-200 rounded p-1 transition-colors" aria-label="Dismiss">
+                                        <button id="trial-warning-close-btn" class="text-gray-500 hover:text-gray-800 hover:bg-yellow-200 rounded p-1 transition-colors" aria-label="Dismiss">
                                             <i class="fas fa-times text-sm"></i>
                                         </button>
                                     </div>
                                     <div class="bg-white px-5 py-4">
-                                        <p id="trial-warning-text" class="text-[13px] text-[#303030] leading-relaxed mb-3">Your trial will end soon, <strong>7 days</strong> left.</p>
-                                        <p class="text-[13px] text-gray-500 leading-relaxed mb-4">Upgrade to a paid plan to keep your filter and search features running without interruption.</p>
+                                        <p id="trial-warning-text" class="text-[13px] text-gray-500 leading-relaxed mb-4">Your trial ends soon. Choose a plan to keep the app running without interruption.</p>
                                         <button class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
-                                            See pricing plans
+                                            Choose a plan
                                         </button>
                                     </div>
                                 </div>
@@ -1290,7 +1289,7 @@
                     </label>
                 </div>
                 <div class="flex items-center justify-end px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
-                    <button type="button" id="welcome-gate-continue-btn" disabled class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Continue</button>
+                    <button type="button" id="welcome-gate-continue-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">Continue</button>
                 </div>
             </div>
         </div>
@@ -2153,8 +2152,15 @@
         var warningTrialBtn = document.getElementById('warning-trial-btn');
         var warningTrialMenu = document.getElementById('warning-trial-menu');
         var trialWarningBanner = document.getElementById('trial-warning-banner');
+        var trialWarningHeading = document.getElementById('trial-warning-heading');
         var trialWarningText = document.getElementById('trial-warning-text');
         var trialWarningCloseBtn = document.getElementById('trial-warning-close-btn');
+
+        var TRIAL_WARNING_COPY = {
+            '7': { heading: '7 Days Trial Left', text: 'Your trial ends soon. Choose a plan to keep the app running without interruption.' },
+            '3': { heading: '3 Days Trial Left', text: 'Your trial ends soon. Choose a plan to keep the app running without interruption.' },
+            '1': { heading: '1 Day Trial Left', text: 'Your trial ends tomorrow. Choose a plan to keep the app running without interruption.' }
+        };
 
         if (warningTrialBtn && warningTrialMenu) {
             warningTrialBtn.addEventListener('click', function(e) {
@@ -2173,9 +2179,10 @@
         document.querySelectorAll('.warning-trial-option').forEach(function(opt) {
             opt.addEventListener('click', function() {
                 var days = this.getAttribute('data-days');
-                var unit = days === '1' ? 'day' : 'days';
-                if (trialWarningText) {
-                    trialWarningText.innerHTML = 'Your trial will end soon, <strong>' + days + ' ' + unit + '</strong> left.';
+                var copy = TRIAL_WARNING_COPY[days];
+                if (copy) {
+                    if (trialWarningHeading) trialWarningHeading.textContent = copy.heading;
+                    if (trialWarningText) trialWarningText.textContent = copy.text;
                 }
                 if (trialWarningBanner) {
                     trialWarningBanner.classList.remove('hidden');
@@ -2615,12 +2622,8 @@
             startIndexingSimulation();
         }
 
-        if (welcomeGateCheckbox && welcomeGateContinueBtn) {
-            welcomeGateCheckbox.addEventListener('change', function() {
-                welcomeGateContinueBtn.disabled = !welcomeGateCheckbox.checked;
-            });
+        if (welcomeGateContinueBtn) {
             welcomeGateContinueBtn.addEventListener('click', function() {
-                if (!welcomeGateCheckbox.checked) return;
                 if (welcomeGateModal) {
                     welcomeGateModal.classList.add('hidden');
                 }
