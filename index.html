@@ -21,22 +21,58 @@
         }
         @media (min-width: 1024px) {
             .homepage-grid {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
+                grid-template-columns: 633.32px 316.66px;
+                column-gap: 16px;
+                row-gap: 20px;
             }
             .homepage-column {
                 display: flex;
                 flex-direction: column;
                 gap: 20px;
+                min-width: 0;
             }
             .homepage-left {
-                grid-column: span 2 / span 2;
+                grid-column: 1 / span 1;
             }
             .homepage-right {
-                grid-column: span 1 / span 1;
+                grid-column: 2 / span 1;
+            }
+            .homepage-left > * {
+                box-sizing: border-box;
+                width: 633.32px;
+                max-width: 633.32px;
+                min-width: 633.32px;
+                padding: 8px;
+            }
+            .homepage-right > * {
+                box-sizing: border-box;
+                width: 316.66px;
+                max-width: 316.66px;
+                min-width: 316.66px;
+                padding: 8px;
+            }
+            .homepage-grid.indexing-mode {
+                grid-template-columns: 1fr;
+                justify-content: center;
+            }
+            .homepage-grid.indexing-mode .homepage-right {
+                display: none;
+            }
+            .homepage-grid.indexing-mode .homepage-left > * {
+                width: 700px;
+                max-width: 700px;
+                min-width: 0;
+                margin-left: auto;
+                margin-right: auto;
             }
         }
+        #unified-status-banner.indexing-centered {
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
         .app-rec-card {
-            width: calc((100% - 24px) / 3);
+            width: calc((100% - 12px) / 2);
         }
         .sidebar-collapsed aside {
             width: 0 !important;
@@ -289,6 +325,7 @@
                         <a href="#" id="nav-design" data-page="design" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer"><i class="fas fa-th-large w-5 text-center text-xs mr-1"></i>Filter & Product Grid Design</a>
                         <a href="#" id="nav-analytics-app" data-page="analytics-app" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer"><i class="fas fa-chart-bar w-5 text-center text-xs mr-1"></i>Analytics</a>
                         <a href="#" id="nav-advanced" data-page="advanced" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer"><i class="fas fa-cogs w-5 text-center text-xs mr-1"></i>Advanced Features</a>
+                        <a href="#" id="nav-master" data-page="master" class="app-sub-nav flex items-center px-2 py-1.5 text-[13px] text-gray-600 hover:text-gray-900 hover:bg-gray-300 py-1 px-2 rounded transition-colors cursor-pointer"><i class="fas fa-star w-5 text-center text-xs mr-1"></i>Master</a>
                     </div>
                 </div>
             </nav>
@@ -338,7 +375,7 @@
                         <div id="unified-status-banner" class="mb-5 hidden"></div>
                         <div id="indexing-banner-container" class="mb-5 hidden"></div>
 
-                        <div class="homepage-grid">
+                        <div id="homepage-grid" class="homepage-grid">
                             <div class="homepage-column homepage-left">
                                 <!-- PRICING NOTICE BANNER -->
                                 <div id="pricing-notice-banner" class="hidden order-1 lg:order-none rounded-[8px] overflow-hidden border border-blue-200 shadow-sm">
@@ -447,9 +484,8 @@
                                                         <div class="flex flex-wrap items-center gap-x-2 gap-y-2">
                                                             <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
                                                             <span class="text-[13px] text-gray-700">Theme Selection</span>
-                                                            <button type="button" id="select-theme-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-gray-50 transition-colors shadow-sm ml-1 inline-flex items-center gap-2">
-                                                                Select a theme
-                                                                <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+                                                            <button type="button" id="select-theme-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-gray-50 transition-colors shadow-sm ml-1">
+                                                                Choose Your Theme
                                                             </button>
                                                         </div>
                                                     </div>
@@ -458,16 +494,11 @@
                                                         <div class="flex flex-wrap items-center gap-x-2 gap-y-2 mb-3">
                                                             <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
                                                             <span class="text-[13px] text-gray-700">Theme Selection</span>
-                                                            <div class="relative">
-                                                                <button type="button" id="guide-theme-dropdown-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-3 py-1.5 text-[13px] font-medium hover:bg-gray-50 transition-colors inline-flex items-center gap-2 w-full">
-                                                                    <span id="guide-theme-dropdown-label" class="text-gray-700 flex-1 text-left">-- Select a theme --</span>
-                                                                    <span id="guide-theme-live-pill" class="hidden px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">Live</span>
-                                                                    <i class="fas fa-chevron-down text-xs text-gray-400"></i>
-                                                                </button>
-                                                                <div id="guide-theme-dropdown-menu" class="hidden absolute left-0 mt-2 w-96 bg-white border border-gray-200 rounded-lg shadow-lg max-h-56 overflow-y-auto">
-                                                                    <div id="guide-theme-dropdown-list" class="py-1"></div>
-                                                                </div>
-                                                            </div>
+                                                            <span id="guide-theme-dropdown-label" class="text-[13px] font-medium text-[#303030]">-- No theme selected --</span>
+                                                            <span id="guide-theme-live-pill" class="hidden px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">Live</span>
+                                                            <button type="button" id="guide-theme-dropdown-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-3 py-1.5 text-[13px] font-medium hover:bg-gray-50 transition-colors">
+                                                                Choose Your Theme
+                                                            </button>
                                                         </div>
                                                         
                                                         <p class="text-[13px] text-[#303030] mb-3">
@@ -541,7 +572,7 @@
                                     </div>
                                 </div>
 
-                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-7 lg:order-none">
+                                <div id="data-insight-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-7 lg:order-none">
                                     <div class="p-5 flex items-center justify-between border-b border-gray-100">
                                         <div class="flex items-center gap-3"><h3 class="font-semibold text-[15px] text-[#303030]">Data insight</h3><button class="border border-gray-300 rounded-[6px] px-2.5 py-1 text-[13px] font-medium text-[#303030] flex items-center gap-2 hover:bg-gray-50 shadow-sm"><i class="far fa-calendar text-gray-500 text-sm"></i> Last 30 days</button></div>
                                         <button class="border border-gray-300 rounded-[6px] w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-50 shadow-sm"><i class="fas fa-chart-bar text-sm"></i></button>
@@ -552,15 +583,15 @@
                                     </div>
                                 </div>
 
-                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-8 lg:order-none">
+                                <div id="highlight-featured-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-8 lg:order-none">
                                     <div class="p-5 border-b border-gray-100">
                                         <h3 class="font-semibold text-[15px] text-[#303030] mb-4">Highlight Features</h3>
-                                        <div id="feature-highlight-tabs" class="grid grid-cols-5 divide-x divide-gray-200 border border-gray-200 rounded-lg overflow-hidden"></div>
+                                        <div id="feature-highlight-tabs" class="flex divide-x divide-gray-200 border border-gray-200 rounded-lg overflow-hidden"></div>
                                     </div>
                                     <div id="feature-highlight-body" class="flex flex-col md:flex-row"></div>
                                 </div>
 
-                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-9 lg:order-none">
+                                <div id="recommend-apps-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-9 lg:order-none">
                                     <div class="p-5 flex items-center justify-between border-b border-gray-100">
                                         <h3 class="font-semibold text-[15px] text-[#303030]">Recommend Apps</h3>
                                         <div class="flex items-center gap-2">
@@ -571,19 +602,19 @@
                                     <div class="p-5 overflow-hidden">
                                         <div id="appCarouselTrack" class="flex gap-3 transition-transform duration-300 ease-in-out">
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
-                                                <div class="flex flex-col items-start min-w-0">
-                                                    <img src="https://cdn.shopify.com/s/files/1/0765/0302/3847/files/0660674ca187cb7b90a9.png?v=1785833456" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="Judge.me Product Reviews App">
+                                                <div class="flex flex-row items-center gap-2 min-w-0">
+                                                    <img src="https://cdn.shopify.com/s/files/1/0820/9668/5276/files/Flat_-_White_1.webp?v=1787712772" class="w-[60px] h-[60px] rounded-md object-cover shrink-0" alt="Chizy: AI Chatbot & Live Chat">
                                                     <div class="min-w-0">
-                                                        <div class="text-[13px] font-semibold text-[#303030] leading-snug">Judge.me Product Reviews App</div>
-                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Rating</span>
+                                                        <div class="text-[13px] font-semibold text-[#303030] leading-snug">Chizy: AI Chatbot & Live Chat</div>
+                                                        <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Code: FINDTER (-15%)</span>
                                                     </div>
                                                 </div>
-                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Display product Ratings</p>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Smart AI agent: complementing your filters with instant support, product recommendations</p>
                                                 <a href="https://apps.shopify.com/judgeme" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
-                                                <div class="flex flex-col items-start min-w-0">
-                                                    <img src="https://cdn.shopify.com/s/files/1/0765/0302/3847/files/934849961d1522ef7302.png?v=1785833460" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="Yotpo: Product Reviews App">
+                                                <div class="flex flex-row items-center gap-2 min-w-0">
+                                                    <img src="https://cdn.shopify.com/s/files/1/0765/0302/3847/files/934849961d1522ef7302.png?v=1785833460" class="w-[60px] h-[60px] rounded-md object-cover shrink-0" alt="Yotpo: Product Reviews App">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">Yotpo: Product Reviews App</div>
                                                         <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Reviews</span>
@@ -593,8 +624,8 @@
                                                 <a href="https://apps.shopify.com/yotpo-social-reviews" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
-                                                <div class="flex flex-col items-start min-w-0">
-                                                    <img src="https://cdn.shopify.com/app-store/listing_images/d1fbe4acf738bfaa4fa03ef985d8477e/icon/CM_PravDr4YDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="OT Section: Theme Sections">
+                                                <div class="flex flex-row items-center gap-2 min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/d1fbe4acf738bfaa4fa03ef985d8477e/icon/CM_PravDr4YDEAE=.png" class="w-[60px] h-[60px] rounded-md object-cover shrink-0" alt="OT Section: Theme Sections">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">OT Section: Theme Sections</div>
                                                         <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Page Builder</span>
@@ -604,8 +635,8 @@
                                                 <a href="https://apps.shopify.com/ot-theme-sections-store-page-builder" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
-                                                <div class="flex flex-col items-start min-w-0">
-                                                    <img src="https://omnithemes.com/wp-content/uploads/2024/04/logo.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="Eurus Theme">
+                                                <div class="flex flex-row items-center gap-2 min-w-0">
+                                                    <img src="https://omnithemes.com/wp-content/uploads/2024/04/logo.png" class="w-[60px] h-[60px] rounded-md object-cover shrink-0" alt="Eurus Theme">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">Eurus Theme</div>
                                                         <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Theme</span>
@@ -615,8 +646,8 @@
                                                 <a href="https://themes.shopify.com/themes/eurus/presets/eurus" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
-                                                <div class="flex flex-col items-start min-w-0">
-                                                    <img src="https://omnithemes.com/wp-content/uploads/2024/04/logo.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="Maximize Theme">
+                                                <div class="flex flex-row items-center gap-2 min-w-0">
+                                                    <img src="https://omnithemes.com/wp-content/uploads/2024/04/logo.png" class="w-[60px] h-[60px] rounded-md object-cover shrink-0" alt="Maximize Theme">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">Maximize Theme</div>
                                                         <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Theme</span>
@@ -626,8 +657,8 @@
                                                 <a href="https://themes.shopify.com/themes/maximize/presets/maximize" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
-                                                <div class="flex flex-col items-start min-w-0">
-                                                    <img src="https://cdn.shopify.com/app-store/listing_images/5e7100d6dd8a25eae7b75d50f0d897df/icon/COWZ0fD0zosDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="OPTIS Product Options, Variant">
+                                                <div class="flex flex-row items-center gap-2 min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/5e7100d6dd8a25eae7b75d50f0d897df/icon/COWZ0fD0zosDEAE=.png" class="w-[60px] h-[60px] rounded-md object-cover shrink-0" alt="OPTIS Product Options, Variant">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">OPTIS Product Options, Variant</div>
                                                         <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Product Customization</span>
@@ -637,8 +668,8 @@
                                                 <a href="https://apps.shopify.com/product-options-by-bss" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
-                                                <div class="flex flex-col items-start min-w-0">
-                                                    <img src="https://cdn.shopify.com/app-store/listing_images/4639b295c8340737b2c240f10481cb85/icon/CIad9ra1140DEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="OP Color Swatch Variant Images">
+                                                <div class="flex flex-row items-center gap-2 min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/4639b295c8340737b2c240f10481cb85/icon/CIad9ra1140DEAE=.png" class="w-[60px] h-[60px] rounded-md object-cover shrink-0" alt="OP Color Swatch Variant Images">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">OP Color Swatch Variant Images</div>
                                                         <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Product variants</span>
@@ -648,8 +679,8 @@
                                                 <a href="https://apps.shopify.com/optis-color-swatch-variants" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
-                                                <div class="flex flex-col items-start min-w-0">
-                                                    <img src="https://cdn.shopify.com/app-store/listing_images/c0ba322d64f9554b2f2917c3bb2f0ca0/icon/CKmvg5WrgJMDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="TA AI Product Labels &amp; Badges">
+                                                <div class="flex flex-row items-center gap-2 min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/c0ba322d64f9554b2f2917c3bb2f0ca0/icon/CKmvg5WrgJMDEAE=.png" class="w-[60px] h-[60px] rounded-md object-cover shrink-0" alt="TA AI Product Labels &amp; Badges">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">TA AI Product Labels &amp; Badges</div>
                                                         <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Product Labels &amp; Badges</span>
@@ -659,8 +690,8 @@
                                                 <a href="https://apps.shopify.com/product-labels-by-bss" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
-                                                <div class="flex flex-col items-start min-w-0">
-                                                    <img src="https://cdn.shopify.com/app-store/listing_images/c0ba322d64f9554b2f2917c3bb2f0ca0/icon/CKmvg5WrgJMDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="TA Banner Slider, Sales Pop up">
+                                                <div class="flex flex-row items-center gap-2 min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/c0ba322d64f9554b2f2917c3bb2f0ca0/icon/CKmvg5WrgJMDEAE=.png" class="w-[60px] h-[60px] rounded-md object-cover shrink-0" alt="TA Banner Slider, Sales Pop up">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">TA Banner Slider, Sales Pop up</div>
                                                         <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Promotions &amp; Banners</span>
@@ -670,8 +701,8 @@
                                                 <a href="https://apps.shopify.com/bss-banner-pop-up" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
-                                                <div class="flex flex-col items-start min-w-0">
-                                                    <img src="https://cdn.shopify.com/app-store/listing_images/c0ba322d64f9554b2f2917c3bb2f0ca0/icon/CKmvg5WrgJMDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="TA Preorder &amp; Back In Stock">
+                                                <div class="flex flex-row items-center gap-2 min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/c0ba322d64f9554b2f2917c3bb2f0ca0/icon/CKmvg5WrgJMDEAE=.png" class="w-[60px] h-[60px] rounded-md object-cover shrink-0" alt="TA Preorder &amp; Back In Stock">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">TA Preorder &amp; Back In Stock</div>
                                                         <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Preorder &amp; Stock</span>
@@ -681,8 +712,8 @@
                                                 <a href="https://apps.shopify.com/dotsy-preorder-presale" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
-                                                <div class="flex flex-col items-start min-w-0">
-                                                    <img src="https://cdn.shopify.com/app-store/listing_images/af0a3ec102358241ae7823679d9ccda3/icon/CKH57aSigpEDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="BSS B2B Order, Request a Quote">
+                                                <div class="flex flex-row items-center gap-2 min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/af0a3ec102358241ae7823679d9ccda3/icon/CKH57aSigpEDEAE=.png" class="w-[60px] h-[60px] rounded-md object-cover shrink-0" alt="BSS B2B Order, Request a Quote">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">BSS B2B Order, Request a Quote</div>
                                                         <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">B2B Order &amp; Quote</span>
@@ -692,8 +723,8 @@
                                                 <a href="https://apps.shopify.com/b2b-customer-portal-quick-order" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
-                                                <div class="flex flex-col items-start min-w-0">
-                                                    <img src="https://cdn.shopify.com/app-store/listing_images/f406cf0e469d052e1fb506a0898d801f/icon/CMn5zMuggpEDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="BSS B2B Wholesale Pricing">
+                                                <div class="flex flex-row items-center gap-2 min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/f406cf0e469d052e1fb506a0898d801f/icon/CMn5zMuggpEDEAE=.png" class="w-[60px] h-[60px] rounded-md object-cover shrink-0" alt="BSS B2B Wholesale Pricing">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">BSS B2B Wholesale Pricing</div>
                                                         <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">B2B Wholesale</span>
@@ -703,8 +734,8 @@
                                                 <a href="https://apps.shopify.com/b2b-solution-custom-pricing" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
-                                                <div class="flex flex-col items-start min-w-0">
-                                                    <img src="https://cdn.shopify.com/app-store/listing_images/6649510d2d88bde754b08607b0b6a328/icon/COicvrf8rYoDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="B2Bridge B2B Wholesale Pricing">
+                                                <div class="flex flex-row items-center gap-2 min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/6649510d2d88bde754b08607b0b6a328/icon/COicvrf8rYoDEAE=.png" class="w-[60px] h-[60px] rounded-md object-cover shrink-0" alt="B2Bridge B2B Wholesale Pricing">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">B2Bridge B2B Wholesale Pricing</div>
                                                         <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">B2B Wholesale</span>
@@ -714,8 +745,8 @@
                                                 <a href="https://apps.shopify.com/b2bridge-b2b-all-in-one" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
-                                                <div class="flex flex-col items-start min-w-0">
-                                                    <img src="https://cdn.shopify.com/app-store/listing_images/dc7f7058c1348d662ca3919f8d9b693b/icon/CM6ZgtWMxpEDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="TL: Free Gifts BOGO &amp; Upsell">
+                                                <div class="flex flex-row items-center gap-2 min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/dc7f7058c1348d662ca3919f8d9b693b/icon/CM6ZgtWMxpEDEAE=.png" class="w-[60px] h-[60px] rounded-md object-cover shrink-0" alt="TL: Free Gifts BOGO &amp; Upsell">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">TL: Free Gifts BOGO &amp; Upsell</div>
                                                         <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Upsell &amp; BOGO</span>
@@ -725,8 +756,8 @@
                                                 <a href="https://apps.shopify.com/salepify" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
-                                                <div class="flex flex-col items-start min-w-0">
-                                                    <img src="https://cdn.shopify.com/app-store/listing_images/1188f0cb74707478f04a7ab4f9563933/icon/CMqW-bav1ZEDEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="MIDA Replay, Heatmap &amp; Insight">
+                                                <div class="flex flex-row items-center gap-2 min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/1188f0cb74707478f04a7ab4f9563933/icon/CMqW-bav1ZEDEAE=.png" class="w-[60px] h-[60px] rounded-md object-cover shrink-0" alt="MIDA Replay, Heatmap &amp; Insight">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">MIDA Replay, Heatmap &amp; Insight</div>
                                                         <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">Analytics &amp; Heatmap</span>
@@ -736,8 +767,8 @@
                                                 <a href="https://apps.shopify.com/mida-session-recording-replay" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
-                                                <div class="flex flex-col items-start min-w-0">
-                                                    <img src="https://cdn.shopify.com/app-store/listing_images/a9d339e5e1fd198bffdae82904deaec6/icon/CNeZtO2llJADEAE=.png" class="w-12 h-12 rounded-md object-cover shrink-0 mb-2" alt="Chizy: AI Chatbot &amp; Live Chat">
+                                                <div class="flex flex-row items-center gap-2 min-w-0">
+                                                    <img src="https://cdn.shopify.com/app-store/listing_images/a9d339e5e1fd198bffdae82904deaec6/icon/CNeZtO2llJADEAE=.png" class="w-[60px] h-[60px] rounded-md object-cover shrink-0" alt="Chizy: AI Chatbot &amp; Live Chat">
                                                     <div class="min-w-0">
                                                         <div class="text-[13px] font-semibold text-[#303030] leading-snug">Chizy: AI Chatbot &amp; Live Chat</div>
                                                         <span class="inline-block bg-[rgb(213,235,255)] text-[rgb(0,58,90)] text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">AI Chatbot</span>
@@ -759,7 +790,7 @@
                                     var index = 0;
                                     function move(dir) {
                                         var cards = track.children;
-                                        var visible = 3;
+                                        var visible = 2;
                                         var maxIndex = Math.max(0, cards.length - visible);
                                         index = Math.max(0, Math.min(index + dir, maxIndex));
                                         var card = cards[0];
@@ -774,89 +805,176 @@
 
                                 <script>
                                 (function() {
+                                    var STORAGE_KEY = 'findter_highlight_items';
+
+                                    var DEFAULT_ITEMS = [
+                                        { code: 'filter', parentCode: null, standalone: false, name: 'Filter', description: 'Let shoppers narrow down products by any attribute.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 0, link1: 'advanced', link2: 'filter' },
+                                        { code: 'filter-merged-value-group', parentCode: 'filter', name: 'Merged Value Group', description: 'Combine similar filter values into one group so shoppers see fewer, cleaner options.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 0, link1: 'advanced', link2: 'filter' },
+                                        { code: 'filter-multi-source', parentCode: 'filter', name: 'Multi Source', description: 'Pull filter data from multiple sources like tags, metafields, and variants in one filter.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 1, link1: 'advanced', link2: 'filter' },
+
+                                        { code: 'search', parentCode: null, standalone: false, name: 'Search', description: 'Help shoppers find exactly what they need, fast.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 1, link1: 'advanced', link2: 'search' },
+                                        { code: 'search-synonyms', parentCode: 'search', name: 'Synonyms', description: 'Match search terms with their synonyms so shoppers find products even with different wording.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 0, link1: 'advanced', link2: 'search' },
+                                        { code: 'search-partial-search', parentCode: 'search', name: 'Partial Search', description: 'Return results for partial keyword matches, not just exact matches.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 1, link1: 'advanced', link2: 'search' },
+                                        { code: 'search-in-collection', parentCode: 'search', name: 'Search in Collection', description: 'Let shoppers search within a specific collection page.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 2, link1: 'advanced', link2: 'search' },
+                                        { code: 'search-in-filter', parentCode: 'search', name: 'Search in Filter', description: 'Add a search box directly inside the filter panel to quickly find filter values.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 3, link1: 'advanced', link2: 'search' },
+
+                                        { code: 'year-make-model', parentCode: null, standalone: true, name: 'Year Make Model', description: 'Powerful YMM search built for automotive stores to boost conversion.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 2, link1: 'advanced', link2: '' },
+
+                                        { code: 'market', parentCode: null, standalone: false, name: 'Market', description: 'Adapt your store for every market you sell to.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 3, link1: 'advanced', link2: '' },
+                                        { code: 'market-auto-translate', parentCode: 'market', name: 'Auto Translate', description: 'Automatically translate filter and search content for each market’s language.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 0, link1: 'advanced', link2: '' },
+                                        { code: 'market-local-currency-adaption', parentCode: 'market', name: 'Local Currency Adaption', description: 'Show prices in each shopper’s local currency automatically.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 1, link1: 'advanced', link2: '' },
+
+                                        { code: 'merchandising', parentCode: null, standalone: false, name: 'Merchandising', description: 'Control how products are ranked and displayed.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 4, link1: 'advanced', link2: '' },
+                                        { code: 'merchandising-boost-in-stock', parentCode: 'merchandising', name: 'Boost In Stock Product', description: 'Push in-stock products higher in search and filter results.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 0, link1: 'advanced', link2: '' },
+                                        { code: 'merchandising-hide-out-of-stock', parentCode: 'merchandising', name: 'Hide Out of Stock Product', description: 'Automatically hide out-of-stock products from search and filter results.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 1, link1: 'advanced', link2: '' }
+                                    ];
+
+                                    function getAll() {
+                                        try {
+                                            var raw = localStorage.getItem(STORAGE_KEY);
+                                            if (!raw) return [];
+                                            var parsed = JSON.parse(raw);
+                                            return Array.isArray(parsed) ? parsed : [];
+                                        } catch (e) {
+                                            return [];
+                                        }
+                                    }
+
+                                    function save(items) {
+                                        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+                                    }
+
+                                    function seedDefaultsIfEmpty() {
+                                        if (getAll().length === 0) {
+                                            save(DEFAULT_ITEMS);
+                                        }
+                                    }
+
+                                    function upsert(item) {
+                                        var items = getAll();
+                                        var idx = -1;
+                                        items.forEach(function(i, index) {
+                                            if (i.code === item.code) idx = index;
+                                        });
+                                        if (idx === -1) {
+                                            items.push(item);
+                                        } else {
+                                            items[idx] = item;
+                                        }
+                                        save(items);
+                                    }
+
+                                    function remove(code) {
+                                        var items = getAll().filter(function(i) { return i.code !== code && i.parentCode !== code; });
+                                        save(items);
+                                    }
+
+                                    seedDefaultsIfEmpty();
+
+                                    window.HighlightStore = {
+                                        getAll: getAll,
+                                        save: save,
+                                        seedDefaultsIfEmpty: seedDefaultsIfEmpty,
+                                        upsert: upsert,
+                                        remove: remove
+                                    };
+                                })();
+                                </script>
+
+                                <script>
+                                (function() {
                                     var tabsEl = document.getElementById('feature-highlight-tabs');
                                     var bodyEl = document.getElementById('feature-highlight-body');
                                     if (!tabsEl || !bodyEl) return;
 
-                                    var FEATURE_TREE = [
-                                        { name: 'Filter', subs: [
-                                            { name: 'Merged Value Group', desc: 'Combine similar filter values into one group so shoppers see fewer, cleaner options.' },
-                                            { name: 'Multi Source', desc: 'Pull filter data from multiple sources like tags, metafields, and variants in one filter.' }
-                                        ] },
-                                        { name: 'Search', subs: [
-                                            { name: 'Synonyms', desc: 'Match search terms with their synonyms so shoppers find products even with different wording.' },
-                                            { name: 'Partial Search', desc: 'Return results for partial keyword matches, not just exact matches.' },
-                                            { name: 'Search in Collection', desc: 'Let shoppers search within a specific collection page.' },
-                                            { name: 'Search in Filter', desc: 'Add a search box directly inside the filter panel to quickly find filter values.' }
-                                        ] },
-                                        { name: 'Year Make Model', subs: [] },
-                                        { name: 'Market', subs: [
-                                            { name: 'Auto Translate', desc: "Automatically translate filter and search content for each market's language." },
-                                            { name: 'Local Currency Adaption', desc: "Show prices in each shopper's local currency automatically." }
-                                        ] },
-                                        { name: 'Merchandising', subs: [
-                                            { name: 'Boost In Stock Product', desc: 'Push in-stock products higher in search and filter results.' },
-                                            { name: 'Hide Out of Stock Product', desc: 'Automatically hide out-of-stock products from search and filter results.' }
-                                        ] }
-                                    ];
-
-                                    var selectedParent = FEATURE_TREE[0].name;
-                                    var selectedSub = null;
-
-                                    function getParentItem(name) {
-                                        return FEATURE_TREE.filter(function(f) { return f.name === name; })[0];
+                                    function getFeatureTree() {
+                                        var items = (window.HighlightStore ? window.HighlightStore.getAll() : []).filter(function(i) { return i.enabled; });
+                                        var parents = items.filter(function(i) { return !i.parentCode; }).sort(function(a, b) { return a.order - b.order; });
+                                        return parents.map(function(p) {
+                                            return {
+                                                code: p.code,
+                                                name: p.name,
+                                                description: p.description,
+                                                thumbnail: p.thumbnail,
+                                                media: p.media,
+                                                subs: items.filter(function(i) { return i.parentCode === p.code; }).sort(function(a, b) { return a.order - b.order; })
+                                            };
+                                        });
                                     }
 
-                                    function placeholderBlock(label) {
+                                    var initialTree = getFeatureTree();
+                                    var selectedParent = initialTree.length ? initialTree[0].code : null;
+                                    var selectedSub = null;
+
+                                    function mediaBlockHtml(item) {
+                                        var src = item.media || item.thumbnail;
+                                        if (src) {
+                                            if (src.indexOf('data:video') === 0) {
+                                                return '<video src="' + src + '" controls class="w-full rounded-lg" style="aspect-ratio: 16 / 9; object-fit: cover;"></video>';
+                                            }
+                                            return '<img src="' + src + '" alt="' + item.name + '" class="w-full rounded-lg object-cover" style="aspect-ratio: 16 / 9;">';
+                                        }
                                         return '<div class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex flex-col items-center justify-center text-gray-400" style="aspect-ratio: 16 / 9;">' +
                                                 '<i class="fas fa-photo-video text-2xl mb-2"></i>' +
-                                                '<span class="text-[12px] font-medium px-4 text-center">' + label + ' — image/video coming soon</span>' +
-                                            '</div>' +
+                                                '<span class="text-[12px] font-medium px-4 text-center">' + item.name + ' — image/video coming soon</span>' +
+                                            '</div>';
+                                    }
+
+                                    function placeholderBlock(item) {
+                                        return mediaBlockHtml(item) +
                                             '<div class="flex justify-end mt-4">' +
-                                                '<button type="button" class="feature-view-btn bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors" data-feature-view="' + label + '">View Feature Now</button>' +
+                                                '<button type="button" class="feature-view-btn bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors" data-feature-view-code="' + item.code + '">View Feature Now</button>' +
                                             '</div>';
                                     }
 
                                     function renderTabs() {
+                                        var tree = getFeatureTree();
                                         var html = '';
-                                        FEATURE_TREE.forEach(function(item) {
-                                            var active = selectedParent === item.name;
-                                            html += '<button type="button" class="feature-tab-btn px-3 py-2.5 text-[13px] font-semibold text-center transition-colors ' +
+                                        tree.forEach(function(item) {
+                                            var active = selectedParent === item.code;
+                                            html += '<button type="button" class="feature-tab-btn flex-1 px-3 py-2.5 text-[13px] font-semibold text-center transition-colors ' +
                                                 (active ? 'bg-[#303030] text-white' : 'bg-white text-[#303030] hover:bg-gray-50') +
-                                                '" data-parent="' + item.name + '">' + item.name + '</button>';
+                                                '" data-parent="' + item.code + '">' + item.name + '</button>';
                                         });
                                         tabsEl.innerHTML = html;
                                     }
 
                                     function renderBody() {
-                                        var item = getParentItem(selectedParent);
-                                        if (!item) return;
-
-                                        if (item.subs.length === 0) {
+                                        var tree = getFeatureTree();
+                                        var item = tree.filter(function(f) { return f.code === selectedParent; })[0];
+                                        if (!item) {
                                             bodyEl.className = 'p-5';
-                                            bodyEl.innerHTML = placeholderBlock(item.name);
+                                            bodyEl.innerHTML = '<p class="text-[13px] text-gray-500">No highlight features to show yet.</p>';
                                             return;
                                         }
 
-                                        if (!selectedSub || !item.subs.some(function(s) { return s.name === selectedSub; })) {
-                                            selectedSub = item.subs[0].name;
+                                        if (item.subs.length === 0) {
+                                            bodyEl.className = 'p-5';
+                                            bodyEl.innerHTML = placeholderBlock(item);
+                                            return;
+                                        }
+
+                                        if (!selectedSub || !item.subs.some(function(s) { return s.code === selectedSub; })) {
+                                            selectedSub = item.subs[0].code;
                                         }
 
                                         var leftHtml = '';
                                         item.subs.forEach(function(sub) {
-                                            var active = selectedSub === sub.name;
+                                            var active = selectedSub === sub.code;
                                             leftHtml += '<div class="feature-sub-row px-5 py-3 cursor-pointer border-b border-gray-50 ' +
                                                 (active ? 'bg-gray-100' : 'hover:bg-gray-50') +
-                                                '" data-sub="' + sub.name + '">' +
+                                                '" data-sub="' + sub.code + '">' +
                                                     '<div class="text-[14px] font-semibold text-[#303030]">' + sub.name + '</div>' +
-                                                    '<div class="text-[12px] text-gray-500 mt-0.5">' + sub.desc + '</div>' +
+                                                    '<div class="text-[12px] text-gray-500 mt-0.5">' + sub.description + '</div>' +
                                                 '</div>';
                                         });
+
+                                        var selectedItem = item.subs.filter(function(s) { return s.code === selectedSub; })[0];
 
                                         bodyEl.className = 'flex flex-col md:flex-row';
                                         bodyEl.innerHTML =
                                             '<div class="w-full md:w-[38%] border-b md:border-b-0 md:border-r border-gray-100 py-2">' + leftHtml + '</div>' +
-                                            '<div class="w-full md:w-[62%] p-5">' + placeholderBlock(selectedSub) + '</div>';
+                                            '<div class="w-full md:w-[62%] p-5">' + placeholderBlock(selectedItem) + '</div>';
                                     }
 
                                     tabsEl.addEventListener('click', function(e) {
@@ -869,9 +987,13 @@
                                     });
 
                                     bodyEl.addEventListener('click', function(e) {
-                                        var viewBtn = e.target.closest('[data-feature-view]');
+                                        var viewBtn = e.target.closest('[data-feature-view-code]');
                                         if (viewBtn) {
-                                            console.log('View Feature Now:', viewBtn.getAttribute('data-feature-view'));
+                                            var code = viewBtn.getAttribute('data-feature-view-code');
+                                            var item = (window.HighlightStore ? window.HighlightStore.getAll() : []).filter(function(i) { return i.code === code; })[0];
+                                            if (window.viewFeatureNowForHighlight) {
+                                                window.viewFeatureNowForHighlight(item);
+                                            }
                                             return;
                                         }
                                         var subRow = e.target.closest('[data-sub]');
@@ -881,12 +1003,21 @@
                                         }
                                     });
 
-                                    renderTabs();
-                                    renderBody();
+                                    window.refreshHighlightFeaturedSection = function() {
+                                        var tree = getFeatureTree();
+                                        if (!selectedParent || !tree.some(function(f) { return f.code === selectedParent; })) {
+                                            selectedParent = tree.length ? tree[0].code : null;
+                                            selectedSub = null;
+                                        }
+                                        renderTabs();
+                                        renderBody();
+                                    };
+
+                                    window.refreshHighlightFeaturedSection();
                                 })();
                                 </script>
 
-                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-10 lg:order-none"><h3 class="font-semibold text-[15px] text-[#303030] mb-3">Master</h3><button class="border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 shadow-sm">Master</button></div>
+                                <div id="master-shortcut-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-10 lg:order-none"><h3 class="font-semibold text-[15px] text-[#303030] mb-3">Master</h3><p class="text-[12px] text-gray-500 mb-3">Manage the Highlight Features shown on this homepage.</p><button id="master-shortcut-btn" class="border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 shadow-sm">Go to Master</button></div>
                             </div>
 
                             <div class="homepage-column homepage-right">
@@ -914,7 +1045,7 @@
                                     </div>
                                 </div>
 
-                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-3 lg:order-none">
+                                <div id="findter-status-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-3 lg:order-none">
                                     <h3 class="font-semibold text-[15px] text-[#303030] mb-4"><strong>Findter App Status</strong></h3>
                                     <div class="space-y-3">
                                         <div class="flex items-center justify-between text-[13px] text-[#303030]">
@@ -941,7 +1072,7 @@
                                     </div>
                                 </div>
 
-                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-8 lg:order-none">
+                                <div id="help-support-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-8 lg:order-none">
                                     <h3 class="font-semibold text-[15px] text-[#303030] mb-3">Help & Support</h3>
                                     <p class="text-[13px] text-[#303030] mb-3 leading-relaxed">Find out more User Guidelines <a href="#" class="text-blue-600 hover:underline">here</a>.</p>
                                     <div class="text-[13px] text-[#303030] space-y-1 mb-4">
@@ -960,7 +1091,7 @@
                                     </div>
                                 </div>
 
-                                <div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-5 lg:order-none">
+                                <div id="sync-updates-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-5 lg:order-none">
                                     <div class="flex items-center gap-2 mb-3">
                                         <h3 class="font-semibold text-[15px] text-[#303030]">Sync recent updates</h3>
                                         <span id="sync-status-badge" class="bg-[#cbf1c4] text-[#1f5119] text-[11px] px-2 py-0.5 rounded-full font-semibold">Completed</span>
@@ -1023,7 +1154,22 @@
                     <div class="max-w-[1040px] mx-auto">
                         <div class="mb-6"><h1 class="text-[22px] font-bold text-[#303030]">Advanced Features</h1></div>
                         <div id="unified-banner-advanced" class="mb-5 hidden"></div>
+                        <div id="advanced-locked-callout" class="hidden mb-5 rounded-[8px] border border-amber-200 bg-amber-50 px-5 py-4 flex items-start gap-3">
+                            <i class="fas fa-lock text-amber-600 mt-0.5"></i>
+                            <div class="flex-1">
+                                <p id="advanced-locked-callout-text" class="text-[13px] text-amber-800 leading-relaxed"></p>
+                            </div>
+                            <button id="advanced-locked-callout-close" class="text-amber-500 hover:text-amber-700 hover:bg-amber-100 rounded p-1" aria-label="Dismiss"><i class="fas fa-times text-sm"></i></button>
+                        </div>
                         <div id="advanced-page-content"></div>
+                    </div>
+                </div>
+
+                <div id="page-master" class="page-view">
+                    <div class="max-w-[1040px] mx-auto">
+                        <div class="mb-6"><h1 class="text-[22px] font-bold text-[#303030]">Master</h1></div>
+                        <div id="master-tabs" class="flex gap-2 border-b border-gray-200 mb-5"></div>
+                        <div id="master-tab-content"></div>
                     </div>
                 </div>
 
@@ -1121,45 +1267,22 @@
         </div>
     </div>
 
-    <!-- MODAL 1: Theme Selection Modal -->
-    <div id="theme-modal" class="modal-wrapper fixed inset-0 hidden">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="theme-modal-overlay"></div>
+    <!-- MODAL 1: Theme Picker Modal -->
+    <div id="theme-picker-modal" class="modal-wrapper fixed inset-0 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="theme-picker-modal-overlay"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
-            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg pointer-events-auto max-h-[90vh] flex flex-col relative modal-content">
-                <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-[16px] font-semibold text-[#303030]">Select Your Theme</h3>
-                    <button type="button" id="close-theme-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl pointer-events-auto max-h-[85vh] flex flex-col relative modal-content">
+                <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 shrink-0">
+                    <h3 class="text-[16px] font-semibold text-[#303030]">Choose Your Theme</h3>
+                    <button type="button" id="close-theme-picker-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
                         <i class="fas fa-times text-lg"></i>
                     </button>
                 </div>
-                <div class="px-6 py-5 overflow-y-auto flex-1">
-                    <div id="theme-support-notice" class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-5 relative">
-                        <button type="button" id="close-theme-notice" class="absolute top-3 right-3 text-blue-400 hover:text-blue-600 transition-colors p-1 rounded-full hover:bg-blue-100">
-                            <i class="fas fa-times text-sm"></i>
-                        </button>
-                        <p class="text-[13px] text-[#303030] leading-relaxed pr-6">
-                            <strong class="font-bold">Supported Themes:</strong> View the list of themes currently supported by our app <a href="#" class="font-bold underline hover:text-blue-800">[here]</a>.<br><br>
-                            If your theme is not listed, please contact us <a href="#" id="live-chat-link" class="font-bold underline hover:text-blue-800">via live chat</a> for assistance.
-                        </p>
-                    </div>
-                    <p class="text-[13px] text-[#303030] mb-4">Please choose a duplicate/draft theme to test the app before going live.</p>
-                    <div class="mb-4">
-                        <label class="block text-[14px] font-semibold text-[#303030] mb-2">Theme Selection</label>
-                        <div class="relative">
-                            <button type="button" id="theme-dropdown-btn" class="w-full border border-gray-300 rounded-[8px] px-4 py-2.5 text-[14px] text-[#303030] bg-white hover:bg-gray-50 outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors flex items-center justify-between">
-                                <span id="theme-dropdown-label" class="text-gray-500">-- Select a theme --</span>
-                                <i class="fas fa-chevron-down text-xs text-gray-400"></i>
-                            </button>
-                            <div id="theme-dropdown-menu" class="hidden absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-64 overflow-auto">
-                                <div id="theme-dropdown-list" class="py-1"></div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="grid grid-cols-[1fr_140px] gap-3 px-6 py-2.5 border-b border-gray-200 bg-gray-50 shrink-0">
+                    <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Your theme</span>
+                    <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Compatibility</span>
                 </div>
-                <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
-                    <button type="button" id="theme-modal-cancel-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">Cancel</button>
-                    <button type="button" id="modal-save-btn" disabled class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
-                </div>
+                <div id="theme-picker-list" class="overflow-y-auto flex-1"></div>
             </div>
         </div>
     </div>
@@ -1365,19 +1488,15 @@
 
         // ========== ELEMENT REFERENCES ==========
         const selectThemeBtn = document.getElementById('select-theme-btn');
-        const themeModal = document.getElementById('theme-modal');
         const editorModal = document.getElementById('editor-modal');
         const restrictedModal = document.getElementById('restricted-modal');
-        const themeDropdownBtn = document.getElementById('theme-dropdown-btn');
-        const themeDropdownLabel = document.getElementById('theme-dropdown-label');
-        const themeDropdownMenu = document.getElementById('theme-dropdown-menu');
-        const themeDropdownList = document.getElementById('theme-dropdown-list');
+        const themePickerModal = document.getElementById('theme-picker-modal');
+        const themePickerModalOverlay = document.getElementById('theme-picker-modal-overlay');
+        const closeThemePickerModalBtn = document.getElementById('close-theme-picker-modal-btn');
+        const themePickerList = document.getElementById('theme-picker-list');
         const guideThemeDropdownBtn = document.getElementById('guide-theme-dropdown-btn');
         const guideThemeDropdownLabel = document.getElementById('guide-theme-dropdown-label');
-        const guideThemeDropdownMenu = document.getElementById('guide-theme-dropdown-menu');
-        const guideThemeDropdownList = document.getElementById('guide-theme-dropdown-list');
         const guideThemeLivePill = document.getElementById('guide-theme-live-pill');
-        const modalSaveBtn = document.getElementById('modal-save-btn');
         const enableEditorModalBtn = document.getElementById('enable-editor-modal-btn');
         
         const indexingBannerContainer = document.getElementById('indexing-banner-container');
@@ -1392,6 +1511,15 @@
         const goToFilterBtn = document.getElementById('go-to-filter-btn');
         const filterLockHint = document.getElementById('filter-lock-hint');
 
+        const welcomeBox = document.getElementById('welcome-box');
+        const dataInsightCard = document.getElementById('data-insight-card');
+        const recommendAppsCard = document.getElementById('recommend-apps-card');
+        const masterShortcutCard = document.getElementById('master-shortcut-card');
+        const findterStatusCard = document.getElementById('findter-status-card');
+        const helpSupportCard = document.getElementById('help-support-card');
+        const syncUpdatesCard = document.getElementById('sync-updates-card');
+        const feedbackBannerCard = document.getElementById('feedback-banner');
+
         const closeRestrictedModalBtn = document.getElementById('close-restricted-modal-btn');
         const restrictedModalOverlay = document.getElementById('restricted-modal-overlay');
         const restrictedModalHomeBtn = document.getElementById('restricted-modal-home-btn');
@@ -1402,16 +1530,9 @@
         const restrictionItem2 = document.getElementById('restriction-item-2');
         const restrictionCheck2 = document.getElementById('restriction-check-2');
 
-        const closeThemeModalBtn = document.getElementById('close-theme-modal-btn');
-        const themeModalCancelBtn = document.getElementById('theme-modal-cancel-btn');
-        const themeModalOverlay = document.getElementById('theme-modal-overlay');
         const closeEditorModalBtn = document.getElementById('close-editor-modal-btn');
         const editorModalBackBtn = document.getElementById('editor-modal-back-btn');
         const editorModalOverlay = document.getElementById('editor-modal-overlay');
-
-        const closeThemeNoticeBtn = document.getElementById('close-theme-notice');
-        const themeSupportNotice = document.getElementById('theme-support-notice');
-        const liveChatLink = document.getElementById('live-chat-link');
 
         const appHeaderTitle = document.getElementById('app-header-title');
         const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
@@ -1439,6 +1560,13 @@
         const welcomeGateCheckbox = document.getElementById('welcome-gate-checkbox');
         const welcomeGateContinueBtn = document.getElementById('welcome-gate-continue-btn');
 
+        const masterShortcutBtn = document.getElementById('master-shortcut-btn');
+        const masterTabsEl = document.getElementById('master-tabs');
+        const masterContentEl = document.getElementById('master-tab-content');
+        const advancedLockedCallout = document.getElementById('advanced-locked-callout');
+        const advancedLockedCalloutText = document.getElementById('advanced-locked-callout-text');
+        const advancedLockedCalloutClose = document.getElementById('advanced-locked-callout-close');
+
         const allNavItems = document.querySelectorAll('[data-page]');
 
         const unifiedBannerContainers = {
@@ -1464,9 +1592,8 @@
                     localStorage.setItem(STORAGE_KEYS.FIRST_ENABLE_DONE, 'true');
                     localStorage.setItem(STORAGE_KEYS.LAST_ENABLED_THEME, AppState.lastEnabledTheme);
                 }
-                if (themeModal && !themeModal.classList.contains('hidden')) {
+                if (themePickerModal && !themePickerModal.classList.contains('hidden')) {
                     renderThemeDropdown();
-                    updateThemeModalAction();
                 }
                 updateAllBanners();
                 updateGuideStep1Status();
@@ -1581,9 +1708,8 @@
                 localStorage.setItem(STORAGE_KEYS.LAST_ENABLED_THEME, AppState.lastEnabledTheme);
             }
             localStorage.setItem(STORAGE_KEYS.APP_TOGGLE_STATE, state);
-            if (themeModal && !themeModal.classList.contains('hidden')) {
+            if (themePickerModal && !themePickerModal.classList.contains('hidden')) {
                 renderThemeDropdown();
-                updateThemeModalAction();
             }
             updateLockStates();
             updateGuideStep1Status();
@@ -1611,7 +1737,7 @@
             }
 
             if (guideThemeDropdownLabel) {
-                guideThemeDropdownLabel.textContent = AppState.selectedTheme || '-- Select a theme --';
+                guideThemeDropdownLabel.textContent = AppState.selectedTheme || '-- No theme selected --';
             }
 
             if (guideThemeLivePill) {
@@ -1713,7 +1839,7 @@
                 return;
             }
             if (!AppState.selectedTheme) {
-                openThemeModal();
+                openThemePickerModal();
                 return;
             }
             openEditorWithAutoEnable();
@@ -1741,7 +1867,7 @@
                 return;
             }
             if (!AppState.selectedTheme) {
-                openThemeModal();
+                openThemePickerModal();
                 return;
             }
             window.open('Editor.html?autoEnableSuggestion=1', '_blank');
@@ -1785,11 +1911,47 @@
                     }
                 });
 
-                renderSubPageContent(pageId);
+                if (advancedLockedCallout) advancedLockedCallout.classList.add('hidden');
+
+                if (pageId === 'master') {
+                    renderMasterPage();
+                } else {
+                    renderSubPageContent(pageId);
+                }
+                if (pageId === 'home' && window.refreshHighlightFeaturedSection) {
+                    window.refreshHighlightFeaturedSection();
+                }
                 updateAllBanners();
 
             }
         }
+
+        window.navigateToPage = navigateToPage;
+
+        var KNOWN_HIGHLIGHT_PAGE_IDS = ['home', 'filter', 'search', 'metafield', 'design', 'analytics-app', 'advanced', 'master'];
+
+        function showAdvancedLockedCallout(name) {
+            if (!advancedLockedCallout || !advancedLockedCalloutText) return;
+            advancedLockedCalloutText.innerHTML = '<strong>' + name + '</strong> isn\'t unlocked yet — reach out to support once your theme compatibility is confirmed.';
+            advancedLockedCallout.classList.remove('hidden');
+        }
+
+        window.viewFeatureNowForHighlight = function(item) {
+            if (!item) return;
+            if (item.unlocked) {
+                if (item.link2 && KNOWN_HIGHLIGHT_PAGE_IDS.indexOf(item.link2) !== -1) {
+                    navigateToPage(item.link2);
+                } else {
+                    console.log('View Feature Now: no valid config tab link set for', item.name);
+                }
+                return;
+            }
+            var target = (item.link1 && KNOWN_HIGHLIGHT_PAGE_IDS.indexOf(item.link1) !== -1) ? item.link1 : 'advanced';
+            navigateToPage(target);
+            if (target === 'advanced') {
+                showAdvancedLockedCallout(item.name);
+            }
+        };
 
         function renderSubPageContent(pageId) {
             var container = document.getElementById(pageId + '-page-content');
@@ -1886,7 +2048,7 @@
             guideEnableEditorBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 if (!AppState.selectedTheme) {
-                    openThemeModal();
+                    openThemePickerModal();
                     return;
                 }
                 openEditorWithAutoEnable();
@@ -1912,16 +2074,37 @@
             return h + ':' + m + ':' + s + ' ' + d + '/' + mo + '/' + y;
         }
 
+        function updateHomepageIndexingVisibility() {
+            var indexing = !AppState.indexingComplete;
+
+            if (welcomeBox) welcomeBox.style.display = indexing ? 'none' : '';
+
+            var hideDuringIndexing = [
+                onboardingGuideCard, dataInsightCard, recommendAppsCard, masterShortcutCard,
+                feedbackBannerCard, findterStatusCard, helpSupportCard, syncUpdatesCard
+            ];
+            hideDuringIndexing.forEach(function(el) {
+                if (el) el.classList.toggle('hidden', indexing);
+            });
+
+            var homepageGridEl = document.getElementById('homepage-grid');
+            if (homepageGridEl) homepageGridEl.classList.toggle('indexing-mode', indexing);
+
+            var unifiedStatusBannerEl = document.getElementById('unified-status-banner');
+            if (unifiedStatusBannerEl) unifiedStatusBannerEl.classList.toggle('indexing-centered', indexing);
+        }
+
         function showIndexingInProgress() {
             syncStatusBadge.className = 'bg-amber-100 text-amber-800 text-[11px] px-2 py-0.5 rounded-full font-semibold';
             syncStatusBadge.textContent = 'In progress';
             syncTimestamp.textContent = getCurrentTimestamp();
-            
+
             syncIcon.className = 'fas fa-sync-alt text-gray-400 text-sm animate-spin';
             syncBtnText.textContent = 'Syncing...';
             manualSyncBtn.disabled = true;
             manualSyncBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
+            updateHomepageIndexingVisibility();
             updateAllBanners();
             updateEditorModalBanner();
         }
@@ -1946,6 +2129,7 @@
             manualSyncBtn.disabled = false;
             manualSyncBtn.classList.remove('opacity-50', 'cursor-not-allowed');
 
+            updateHomepageIndexingVisibility();
             updateRestrictedModalContent();
             updateEditorModalBanner();
             checkAndUnlockFeatures();
@@ -2147,6 +2331,12 @@
 
         if (resetIndexingBtn) resetIndexingBtn.addEventListener('click', resetIndexing);
         if (endIndexBtn) endIndexBtn.addEventListener('click', forceEndIndexing);
+        if (manualSyncBtn) {
+            manualSyncBtn.addEventListener('click', function() {
+                if (manualSyncBtn.disabled) return;
+                startIndexingSimulation();
+            });
+        }
 
         // ========== WARNING / TRIAL COUNTDOWN BANNER ==========
         var warningTrialBtn = document.getElementById('warning-trial-btn');
@@ -2345,7 +2535,7 @@
             if (e.key === 'Enter') sendChatBtn.click();
         });
 
-        // ========== THEME MODAL ==========
+        // ========== THEME PICKER MODAL ==========
         var THEMES = ['Allure', 'Atelier', 'Be Yours', 'Broadcast', 'Colorblock', 'Concept', 'Craft', 'Crave', 'Dawn', 'Dwell', 'Enterprise', 'Eurus', 'Expanse', 'Fabric', 'Flawless', 'Focal', 'Heritage', 'Horizon', 'Hyper', 'Ignite', 'Impulse', 'Next', 'Noom', 'Origin', 'Pipeline', 'Pitch', 'Publisher', 'Refresh', 'Ride', 'Rise', 'Ritual', 'Savor', 'Sense', 'Sleek', 'Spotlight', 'Stiletto', 'Studio', 'Taste', 'Tinker', 'Trade', 'Vessel', 'Vivid', 'Wonder', 'Xtra'];
         var NOT_COMPATIBLE_THEMES = ['Be Yours', 'Colorblock', 'Crave', 'Flawless', 'Hyper', 'Noom', 'Pitch', 'Ritual', 'Sense', 'Stiletto', 'Taste', 'Tinker', 'Vessel', 'Xtra'];
 
@@ -2354,8 +2544,7 @@
         }
 
         function renderThemeDropdown() {
-            var label = AppState.selectedTheme ? AppState.selectedTheme : '-- Select a theme --';
-            if (themeDropdownLabel) themeDropdownLabel.textContent = label;
+            var label = AppState.selectedTheme ? AppState.selectedTheme : '-- No theme selected --';
             if (guideThemeDropdownLabel) guideThemeDropdownLabel.textContent = label;
 
             var html = '';
@@ -2363,11 +2552,11 @@
                 var selected = AppState.selectedTheme === theme;
                 var compatible = isThemeCompatible(theme);
                 html +=
-                    '<div class="w-full grid grid-cols-2 items-center py-2 ' +
+                    '<div class="grid grid-cols-[1fr_140px] items-center py-2.5 border-b border-gray-50 ' +
                         (selected ? 'bg-blue-50' : '') +
                     '" ' + (compatible ? 'data-theme="' + theme + '"' : '') + '>' +
-                        '<div class="pl-4 pr-3 border-r border-gray-200 text-[14px] font-medium text-[#303030] truncate ' + (compatible ? 'hover:text-black cursor-pointer' : '') + '">' + theme + '</div>' +
-                        '<div class="pl-3 pr-4 flex justify-center">' +
+                        '<div class="pl-6 pr-3 text-[14px] font-medium text-[#303030] ' + (compatible ? 'hover:text-black cursor-pointer' : '') + '">' + theme + '</div>' +
+                        '<div class="pl-3 pr-6 flex justify-center">' +
                             (compatible
                                 ? '<span class="w-fit px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">Compatible</span>'
                                 : '<button type="button" class="w-fit border border-gray-300 bg-white text-[#303030] text-[11px] font-medium px-2 py-1 rounded-md hover:bg-gray-100 transition-colors" data-howto-theme="' + theme + '">How to</button>') +
@@ -2375,8 +2564,7 @@
                     '</div>';
             });
 
-            if (themeDropdownList) themeDropdownList.innerHTML = html;
-            if (guideThemeDropdownList) guideThemeDropdownList.innerHTML = html;
+            if (themePickerList) themePickerList.innerHTML = html;
         }
 
         function sendThemeCompatibilityRequest(theme) {
@@ -2390,24 +2578,17 @@
             }, 800);
         }
 
-        function updateThemeModalAction() {
-            if (!modalSaveBtn) return;
-            modalSaveBtn.textContent = 'Next';
-        }
-
-        function openThemeModal() {
-            if (themeModal) {
-                themeModal.classList.remove('hidden');
+        function openThemePickerModal() {
+            if (themePickerModal) {
+                themePickerModal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
                 renderThemeDropdown();
-                updateThemeModalAction();
-                if (modalSaveBtn) modalSaveBtn.disabled = !AppState.selectedTheme;
             }
         }
 
-        function closeThemeModal() {
-            if (themeModal) {
-                themeModal.classList.add('hidden');
+        function closeThemePickerModal() {
+            if (themePickerModal) {
+                themePickerModal.classList.add('hidden');
                 document.body.style.overflow = '';
             }
         }
@@ -2416,78 +2597,27 @@
             selectThemeBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                openThemeModal();
+                openThemePickerModal();
             });
         }
 
-        if (closeThemeModalBtn) closeThemeModalBtn.addEventListener('click', closeThemeModal);
-        if (themeModalCancelBtn) themeModalCancelBtn.addEventListener('click', closeThemeModal);
-        if (themeModalOverlay) themeModalOverlay.addEventListener('click', closeThemeModal);
-
-        if (closeThemeNoticeBtn && themeSupportNotice) {
-            closeThemeNoticeBtn.addEventListener('click', function() { themeSupportNotice.style.display = 'none'; });
-        }
-
-        if (liveChatLink) {
-            liveChatLink.addEventListener('click', function(e) {
+        if (guideThemeDropdownBtn) {
+            guideThemeDropdownBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                closeThemeModal();
-                setTimeout(function() { openChatWithMessage("I need help with theme support"); }, 350);
+                e.stopPropagation();
+                openThemePickerModal();
             });
         }
 
-        if (themeDropdownBtn && themeDropdownMenu) {
-            themeDropdownBtn.addEventListener('click', function() {
-                themeDropdownMenu.classList.toggle('hidden');
-            });
-        }
+        if (closeThemePickerModalBtn) closeThemePickerModalBtn.addEventListener('click', closeThemePickerModal);
+        if (themePickerModalOverlay) themePickerModalOverlay.addEventListener('click', closeThemePickerModal);
 
-        if (guideThemeDropdownBtn && guideThemeDropdownMenu) {
-            guideThemeDropdownBtn.addEventListener('click', function() {
-                guideThemeDropdownMenu.classList.toggle('hidden');
-            });
-        }
-
-        document.addEventListener('click', function(e) {
-            if (themeDropdownMenu && themeDropdownBtn) {
-                var clickedInsideModal = themeDropdownMenu.contains(e.target) || themeDropdownBtn.contains(e.target);
-                if (!clickedInsideModal) {
-                    themeDropdownMenu.classList.add('hidden');
-                }
-            }
-            if (guideThemeDropdownMenu && guideThemeDropdownBtn) {
-                var clickedInsideGuide = guideThemeDropdownMenu.contains(e.target) || guideThemeDropdownBtn.contains(e.target);
-                if (!clickedInsideGuide) {
-                    guideThemeDropdownMenu.classList.add('hidden');
-                }
-            }
-        });
-
-        if (themeDropdownList) {
-            themeDropdownList.addEventListener('click', function(e) {
+        if (themePickerList) {
+            themePickerList.addEventListener('click', function(e) {
                 var howtoBtn = e.target.closest('[data-howto-theme]');
                 if (howtoBtn) {
                     sendThemeCompatibilityRequest(howtoBtn.getAttribute('data-howto-theme'));
-                    if (themeDropdownMenu) themeDropdownMenu.classList.add('hidden');
-                    return;
-                }
-                var row = e.target.closest('[data-theme]');
-                if (!row) return;
-                AppState.selectedTheme = row.getAttribute('data-theme');
-                localStorage.setItem(STORAGE_KEYS.SELECTED_THEME, AppState.selectedTheme);
-                renderThemeDropdown();
-                updateThemeModalAction();
-                if (modalSaveBtn) modalSaveBtn.disabled = !AppState.selectedTheme;
-                if (themeDropdownMenu) themeDropdownMenu.classList.add('hidden');
-            });
-        }
-
-        if (guideThemeDropdownList) {
-            guideThemeDropdownList.addEventListener('click', function(e) {
-                var howtoBtn = e.target.closest('[data-howto-theme]');
-                if (howtoBtn) {
-                    sendThemeCompatibilityRequest(howtoBtn.getAttribute('data-howto-theme'));
-                    if (guideThemeDropdownMenu) guideThemeDropdownMenu.classList.add('hidden');
+                    closeThemePickerModal();
                     return;
                 }
                 var row = e.target.closest('[data-theme]');
@@ -2496,18 +2626,8 @@
                 localStorage.setItem(STORAGE_KEYS.SELECTED_THEME, AppState.selectedTheme);
                 renderThemeDropdown();
                 updateGuideStep1Status();
-                if (guideThemeDropdownMenu) guideThemeDropdownMenu.classList.add('hidden');
-            });
-        }
-
-        if (modalSaveBtn) {
-            modalSaveBtn.addEventListener('click', function() {
-                if (!AppState.selectedTheme) return;
-                localStorage.setItem(STORAGE_KEYS.SELECTED_THEME, AppState.selectedTheme);
-                updateThemeModalAction();
-
-                closeThemeModal();
-                setTimeout(function() { openEditorModal(); }, 250);
+                closeThemePickerModal();
+                setTimeout(function() { openEditorModal(); }, 200);
             });
         }
 
@@ -2534,7 +2654,7 @@
 
         function goBackToThemeModal() {
             if (editorModal) editorModal.classList.add('hidden');
-            setTimeout(function() { openThemeModal(); }, 150);
+            setTimeout(function() { openThemePickerModal(); }, 150);
         }
 
         function completeFlow() {
@@ -2589,8 +2709,8 @@
                     closeRestrictedModalAndGoHome();
                     return;
                 }
-                if (themeModal && !themeModal.classList.contains('hidden')) {
-                    closeThemeModal();
+                if (themePickerModal && !themePickerModal.classList.contains('hidden')) {
+                    closeThemePickerModal();
                 }
                 if (editorModal && !editorModal.classList.contains('hidden')) {
                     if (AppState.hasEnabledInEditor || AppState.flowCompleted) {
@@ -2638,7 +2758,476 @@
         } else {
             startFreshReindexAfterWelcomeGate();
         }
-        
+
+        // ========== MASTER SHORTCUT & ADVANCED LOCKED CALLOUT ==========
+        if (masterShortcutBtn) {
+            masterShortcutBtn.addEventListener('click', function() {
+                navigateToPage('master');
+            });
+        }
+
+        if (advancedLockedCalloutClose && advancedLockedCallout) {
+            advancedLockedCalloutClose.addEventListener('click', function() {
+                advancedLockedCallout.classList.add('hidden');
+            });
+        }
+
+        // ========== MASTER PAGE: HIGHLIGHT FEATURES ==========
+        function renderMasterTabs() {
+            if (!masterTabsEl) return;
+            masterTabsEl.innerHTML = '<button type="button" class="master-tab-btn px-4 py-2 text-[13px] font-semibold border-b-2 border-[#303030] text-[#303030]">Highlight Features</button>';
+        }
+
+        function renderMasterPage() {
+            renderMasterTabs();
+            renderHighlightList();
+        }
+
+        function thumbnailCellHtml(item) {
+            var src = item.thumbnail || item.media;
+            if (src && src.indexOf('data:video') !== 0) {
+                return '<img src="' + src + '" class="w-8 h-8 rounded object-cover border border-gray-200">';
+            }
+            return '<div class="w-8 h-8 rounded bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-400"><i class="fas fa-image text-[10px]"></i></div>';
+        }
+
+        function toggleSwitchHtml(id, on) {
+            return '<button type="button" id="' + id + '" class="w-9 h-5 rounded-full relative transition-colors shrink-0 ' + (on ? 'bg-green-500' : 'bg-gray-300') + '">' +
+                '<span class="absolute top-0.5 ' + (on ? 'right-0.5' : 'left-0.5') + ' w-4 h-4 bg-white rounded-full shadow transition-all"></span>' +
+            '</button>';
+        }
+
+        function highlightRowHtml(item, depth) {
+            return '<tr class="highlight-row border-b border-gray-100" draggable="true" data-code="' + item.code + '" data-parent="' + (item.parentCode || '') + '">' +
+                '<td class="px-3 py-2.5 text-gray-400 cursor-grab w-8"><i class="fas fa-grip-vertical"></i></td>' +
+                '<td class="px-3 py-2.5"><button type="button" class="highlight-status-toggle w-9 h-5 rounded-full relative transition-colors ' + (item.enabled ? 'bg-green-500' : 'bg-gray-300') + '" data-code="' + item.code + '"><span class="absolute top-0.5 ' + (item.enabled ? 'right-0.5' : 'left-0.5') + ' w-4 h-4 bg-white rounded-full shadow transition-all"></span></button></td>' +
+                '<td class="px-3 py-2.5 text-[13px] ' + (depth ? 'text-gray-600' : 'text-[#303030] font-semibold') + '" style="padding-left: ' + (12 + depth * 20) + 'px;">' + (depth ? '<span class="text-gray-300 mr-1">&#8627;</span>' : '') + item.name + (!depth && item.standalone ? ' <span class="text-[10px] font-normal text-gray-400">(standalone)</span>' : '') + '</td>' +
+                '<td class="px-3 py-2.5 text-[12px] text-gray-500 font-mono">' + item.code + '</td>' +
+                '<td class="px-3 py-2.5">' + thumbnailCellHtml(item) + '</td>' +
+                '<td class="px-3 py-2.5 text-right whitespace-nowrap">' +
+                    '<button type="button" class="highlight-edit-btn text-gray-500 hover:text-[#303030] px-2" data-code="' + item.code + '"><i class="fas fa-pen text-xs"></i></button>' +
+                    '<button type="button" class="highlight-delete-btn text-gray-500 hover:text-red-600 px-2" data-code="' + item.code + '"><i class="fas fa-trash text-xs"></i></button>' +
+                '</td>' +
+            '</tr>';
+        }
+
+        function renderHighlightList() {
+            if (!masterContentEl) return;
+            var items = window.HighlightStore ? window.HighlightStore.getAll() : [];
+            var groups = items.filter(function(i) { return !i.parentCode; }).sort(function(a, b) { return a.order - b.order; });
+
+            var rowsHtml = '';
+            groups.forEach(function(g) {
+                rowsHtml += highlightRowHtml(g, 0);
+                if (!g.standalone) {
+                    items.filter(function(i) { return i.parentCode === g.code; })
+                        .sort(function(a, b) { return a.order - b.order; })
+                        .forEach(function(f) { rowsHtml += highlightRowHtml(f, 1); });
+                    rowsHtml += '<tr class="border-b border-gray-100"><td></td><td></td><td colspan="4" class="pl-8 pb-2.5 pt-1"><button type="button" class="add-feature-btn text-[12px] text-gray-500 hover:text-[#303030] inline-flex items-center gap-1" data-group="' + g.code + '"><i class="fas fa-plus text-[10px]"></i> Add feature</button></td></tr>';
+                }
+            });
+
+            if (!rowsHtml) {
+                rowsHtml = '<tr><td colspan="6" class="px-3 py-6 text-center text-[13px] text-gray-500">No groups yet — click "Add group" to create one.</td></tr>';
+            }
+
+            masterContentEl.innerHTML =
+                '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">' +
+                    '<div class="p-5 flex items-center justify-between border-b border-gray-100">' +
+                        '<h3 class="font-semibold text-[15px] text-[#303030]">Highlight Feature</h3>' +
+                        '<button type="button" id="add-group-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">Add group</button>' +
+                    '</div>' +
+                    '<div class="overflow-x-auto">' +
+                        '<table class="w-full text-left">' +
+                            '<thead class="bg-gray-50 border-b border-gray-100">' +
+                                '<tr class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">' +
+                                    '<th class="px-3 py-2 w-8"></th>' +
+                                    '<th class="px-3 py-2">Status</th>' +
+                                    '<th class="px-3 py-2">Name</th>' +
+                                    '<th class="px-3 py-2">Code</th>' +
+                                    '<th class="px-3 py-2">Thumbnail</th>' +
+                                    '<th class="px-3 py-2 text-right">Action</th>' +
+                                '</tr>' +
+                            '</thead>' +
+                            '<tbody id="highlight-table-body">' + rowsHtml + '</tbody>' +
+                        '</table>' +
+                    '</div>' +
+                '</div>';
+
+            wireHighlightListEvents();
+        }
+
+        function wireHighlightListEvents() {
+            var addGroupBtn = document.getElementById('add-group-btn');
+            if (addGroupBtn) {
+                addGroupBtn.addEventListener('click', function() { renderGroupForm(null); });
+            }
+
+            document.querySelectorAll('.add-feature-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() { renderFeatureForm(btn.getAttribute('data-group'), null); });
+            });
+
+            document.querySelectorAll('.highlight-edit-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var code = btn.getAttribute('data-code');
+                    var item = window.HighlightStore.getAll().filter(function(i) { return i.code === code; })[0];
+                    if (!item) return;
+                    if (item.parentCode) {
+                        renderFeatureForm(item.parentCode, code);
+                    } else {
+                        renderGroupForm(code);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.highlight-delete-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var code = btn.getAttribute('data-code');
+                    if (confirm('Delete this? Features under it will be deleted too.')) {
+                        window.HighlightStore.remove(code);
+                        renderHighlightList();
+                    }
+                });
+            });
+
+            document.querySelectorAll('.highlight-status-toggle').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var code = btn.getAttribute('data-code');
+                    var items = window.HighlightStore.getAll();
+                    var item = items.filter(function(i) { return i.code === code; })[0];
+                    if (!item) return;
+                    item.enabled = !item.enabled;
+                    window.HighlightStore.save(items);
+                    renderHighlightList();
+                });
+            });
+
+            wireHighlightDragReorder();
+        }
+
+        function wireHighlightDragReorder() {
+            var tbody = document.getElementById('highlight-table-body');
+            if (!tbody) return;
+            var draggedRow = null;
+
+            tbody.querySelectorAll('tr.highlight-row').forEach(function(row) {
+                row.addEventListener('dragstart', function() {
+                    draggedRow = row;
+                    row.classList.add('opacity-50');
+                });
+                row.addEventListener('dragend', function() {
+                    row.classList.remove('opacity-50');
+                    draggedRow = null;
+                });
+                row.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    if (!draggedRow || draggedRow === row) return;
+                    if (draggedRow.getAttribute('data-parent') !== row.getAttribute('data-parent')) return;
+                    var rect = row.getBoundingClientRect();
+                    var before = (e.clientY - rect.top) < rect.height / 2;
+                    tbody.insertBefore(draggedRow, before ? row : row.nextSibling);
+                });
+                row.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    persistHighlightOrderFromDom();
+                });
+            });
+        }
+
+        function persistHighlightOrderFromDom() {
+            var tbody = document.getElementById('highlight-table-body');
+            if (!tbody) return;
+            var items = window.HighlightStore.getAll();
+            var groups = {};
+            Array.prototype.forEach.call(tbody.querySelectorAll('tr.highlight-row'), function(row) {
+                var parent = row.getAttribute('data-parent') || '';
+                if (!groups[parent]) groups[parent] = [];
+                groups[parent].push(row.getAttribute('data-code'));
+            });
+            Object.keys(groups).forEach(function(parent) {
+                groups[parent].forEach(function(code, index) {
+                    var item = items.filter(function(i) { return i.code === code; })[0];
+                    if (item) item.order = index;
+                });
+            });
+            window.HighlightStore.save(items);
+            renderHighlightList();
+        }
+
+        function featureFieldsHtml(draft) {
+            return '<div class="p-5 space-y-3 border-b border-gray-100">' +
+                    '<div class="flex items-center justify-between">' +
+                        '<span class="text-[13px] text-[#303030]">Unlocked (demo)</span>' +
+                        toggleSwitchHtml('highlight-unlocked-toggle', draft.unlocked) +
+                    '</div>' +
+                    '<div><label class="block text-[12px] text-gray-500 mb-1">Description</label><textarea id="highlight-description-input" rows="2" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]">' + draft.description + '</textarea></div>' +
+                    '<div class="grid grid-cols-2 gap-3">' +
+                        '<div><label class="block text-[12px] text-gray-500 mb-1">Thumbnail</label><input type="file" id="highlight-thumbnail-input" accept="image/*" class="w-full text-[12px]"><img src="' + (draft.thumbnail || '') + '" class="mt-2 w-14 h-14 rounded object-cover border border-gray-200 ' + (draft.thumbnail ? '' : 'hidden') + '" id="highlight-thumbnail-preview"></div>' +
+                        '<div><label class="block text-[12px] text-gray-500 mb-1">Media</label><input type="file" id="highlight-media-input" accept="image/*,video/*" class="w-full text-[12px]"><div class="mt-1 text-[11px] text-gray-400" id="highlight-media-filename">' + (draft.media ? 'Attached' : '') + '</div></div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="p-5">' +
+                    '<div class="grid grid-cols-2 gap-3">' +
+                        '<div><label class="block text-[12px] text-gray-500 mb-1">Link 1 (locked)</label><input type="text" id="highlight-link1-input" value="' + draft.link1 + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="advanced"></div>' +
+                        '<div><label class="block text-[12px] text-gray-500 mb-1">Link 2 (unlocked)</label><input type="text" id="highlight-link2-input" value="' + draft.link2 + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="filter"></div>' +
+                    '</div>' +
+                '</div>';
+        }
+
+        function flipToggleBtn(btn, currentVal) {
+            var next = !currentVal;
+            btn.classList.toggle('bg-green-500', next);
+            btn.classList.toggle('bg-gray-300', !next);
+            var dot = btn.querySelector('span');
+            if (dot) {
+                dot.classList.toggle('right-0.5', next);
+                dot.classList.toggle('left-0.5', !next);
+            }
+            return next;
+        }
+
+        function wireCommonFormFieldEvents(draft) {
+            var backBtn = document.getElementById('highlight-form-back-btn');
+            var cancelBtn = document.getElementById('highlight-form-cancel-btn');
+            var enabledToggle = document.getElementById('highlight-enabled-toggle');
+            var unlockedToggle = document.getElementById('highlight-unlocked-toggle');
+            var thumbnailInput = document.getElementById('highlight-thumbnail-input');
+            var thumbnailPreview = document.getElementById('highlight-thumbnail-preview');
+            var mediaInput = document.getElementById('highlight-media-input');
+            var mediaFilename = document.getElementById('highlight-media-filename');
+
+            if (backBtn) backBtn.addEventListener('click', renderHighlightList);
+            if (cancelBtn) cancelBtn.addEventListener('click', renderHighlightList);
+
+            if (enabledToggle) {
+                enabledToggle.addEventListener('click', function() {
+                    draft.enabled = flipToggleBtn(enabledToggle, draft.enabled);
+                });
+            }
+            if (unlockedToggle) {
+                unlockedToggle.addEventListener('click', function() {
+                    draft.unlocked = flipToggleBtn(unlockedToggle, draft.unlocked);
+                });
+            }
+            if (thumbnailInput) {
+                thumbnailInput.addEventListener('change', function() {
+                    var file = thumbnailInput.files && thumbnailInput.files[0];
+                    if (!file) return;
+                    var reader = new FileReader();
+                    reader.onload = function() {
+                        draft.thumbnail = reader.result;
+                        if (thumbnailPreview) {
+                            thumbnailPreview.src = reader.result;
+                            thumbnailPreview.classList.remove('hidden');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+            if (mediaInput) {
+                mediaInput.addEventListener('change', function() {
+                    var file = mediaInput.files && mediaInput.files[0];
+                    if (!file) return;
+                    var reader = new FileReader();
+                    reader.onload = function() {
+                        draft.media = reader.result;
+                        if (mediaFilename) mediaFilename.textContent = file.name;
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+
+        function renderGroupForm(code) {
+            if (!masterContentEl) return;
+            var items = window.HighlightStore.getAll();
+            var editing = code ? items.filter(function(i) { return i.code === code; })[0] : null;
+            var isNew = !editing;
+            var draft = editing ? Object.assign({}, editing) : {
+                code: '', parentCode: null, standalone: false, name: '', description: '', thumbnail: '', media: '',
+                enabled: true, unlocked: false, order: 0, link1: '', link2: ''
+            };
+
+            masterContentEl.innerHTML =
+                '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">' +
+                    '<div class="p-5 border-b border-gray-100 flex items-center justify-between">' +
+                        '<button type="button" id="highlight-form-back-btn" class="text-[13px] text-gray-500 hover:text-[#303030] inline-flex items-center gap-1"><i class="fas fa-arrow-left text-xs"></i> Back</button>' +
+                        '<h3 class="font-semibold text-[15px] text-[#303030]">' + (isNew ? 'Add group' : 'Edit group') + '</h3>' +
+                    '</div>' +
+                    '<div class="p-5 space-y-3 border-b border-gray-100">' +
+                        '<div class="grid grid-cols-2 gap-3">' +
+                            '<div><label class="block text-[12px] text-gray-500 mb-1">Name</label><input type="text" id="highlight-name-input" value="' + draft.name + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="Filter"></div>' +
+                            '<div><label class="block text-[12px] text-gray-500 mb-1">Code</label><input type="text" id="highlight-code-input" value="' + draft.code + '" ' + (isNew ? '' : 'readonly') + ' class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px] ' + (isNew ? '' : 'bg-gray-100 text-gray-500') + '" placeholder="filter"></div>' +
+                        '</div>' +
+                        '<div class="flex items-center justify-between">' +
+                            '<span class="text-[13px] text-[#303030]">Show on homepage</span>' +
+                            toggleSwitchHtml('highlight-enabled-toggle', draft.enabled) +
+                        '</div>' +
+                        '<label class="flex items-center gap-2 cursor-pointer">' +
+                            '<input type="checkbox" id="highlight-standalone-input" ' + (draft.standalone ? 'checked' : '') + ' class="w-4 h-4 rounded border-gray-300">' +
+                            '<span class="text-[13px] text-[#303030]">Standalone (no sub-features, e.g. Year Make Model)</span>' +
+                        '</label>' +
+                    '</div>' +
+                    '<div id="standalone-fields" class="' + (draft.standalone ? '' : 'hidden') + '">' + featureFieldsHtml(draft) + '</div>' +
+                    '<div class="flex items-center justify-end gap-3 px-5 py-4 border-t border-gray-200 bg-gray-50">' +
+                        '<button type="button" id="highlight-form-cancel-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">Cancel</button>' +
+                        '<button type="button" id="highlight-form-save-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">Save</button>' +
+                    '</div>' +
+                '</div>';
+
+            wireGroupFormEvents(draft, isNew);
+        }
+
+        function wireGroupFormEvents(draft, isNew) {
+            wireCommonFormFieldEvents(draft);
+
+            var standaloneInput = document.getElementById('highlight-standalone-input');
+            var standaloneFields = document.getElementById('standalone-fields');
+            if (standaloneInput) {
+                standaloneInput.addEventListener('change', function() {
+                    draft.standalone = standaloneInput.checked;
+                    if (standaloneFields) standaloneFields.classList.toggle('hidden', !draft.standalone);
+                });
+            }
+
+            var saveBtn = document.getElementById('highlight-form-save-btn');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', function() {
+                    var nameInput = document.getElementById('highlight-name-input');
+                    var codeInput = document.getElementById('highlight-code-input');
+                    var descInput = document.getElementById('highlight-description-input');
+                    var link1Input = document.getElementById('highlight-link1-input');
+                    var link2Input = document.getElementById('highlight-link2-input');
+
+                    var name = nameInput.value.trim();
+                    var code = codeInput.value.trim();
+
+                    if (!code || !name) {
+                        alert('Name and Code are required.');
+                        return;
+                    }
+
+                    var items = window.HighlightStore.getAll();
+                    if (isNew) {
+                        var dup = items.filter(function(i) { return i.code === code; })[0];
+                        if (dup) {
+                            alert('That code is already in use.');
+                            return;
+                        }
+                    }
+
+                    var siblingOrder = items.filter(function(i) { return !i.parentCode && i.code !== draft.code; }).length;
+
+                    var finalItem = {
+                        code: isNew ? code : draft.code,
+                        parentCode: null,
+                        standalone: !!draft.standalone,
+                        name: name,
+                        description: descInput ? descInput.value : '',
+                        thumbnail: draft.thumbnail || '',
+                        media: draft.media || '',
+                        enabled: draft.enabled,
+                        unlocked: draft.unlocked,
+                        order: isNew ? siblingOrder : draft.order,
+                        link1: link1Input ? link1Input.value.trim() : '',
+                        link2: link2Input ? link2Input.value.trim() : ''
+                    };
+
+                    window.HighlightStore.upsert(finalItem);
+                    renderHighlightList();
+                });
+            }
+        }
+
+        function renderFeatureForm(groupCode, code) {
+            if (!masterContentEl) return;
+            var items = window.HighlightStore.getAll();
+            var group = items.filter(function(i) { return i.code === groupCode; })[0];
+            if (!group) { renderHighlightList(); return; }
+            var editing = code ? items.filter(function(i) { return i.code === code; })[0] : null;
+            var isNew = !editing;
+            var draft = editing ? Object.assign({}, editing) : {
+                code: '', parentCode: groupCode, name: '', description: '', thumbnail: '', media: '',
+                enabled: true, unlocked: false, order: 0, link1: group.link1 || '', link2: group.link2 || ''
+            };
+
+            masterContentEl.innerHTML =
+                '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">' +
+                    '<div class="p-5 border-b border-gray-100 flex items-center justify-between">' +
+                        '<button type="button" id="highlight-form-back-btn" class="text-[13px] text-gray-500 hover:text-[#303030] inline-flex items-center gap-1"><i class="fas fa-arrow-left text-xs"></i> Back</button>' +
+                        '<h3 class="font-semibold text-[15px] text-[#303030]">' + (isNew ? 'Add feature — ' : 'Edit feature — ') + group.name + '</h3>' +
+                    '</div>' +
+                    '<div class="p-5 space-y-3 border-b border-gray-100">' +
+                        '<div class="grid grid-cols-2 gap-3">' +
+                            '<div><label class="block text-[12px] text-gray-500 mb-1">Name</label><input type="text" id="highlight-name-input" value="' + draft.name + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="Merged Value Group"></div>' +
+                            '<div><label class="block text-[12px] text-gray-500 mb-1">Code</label><input type="text" id="highlight-code-input" value="' + draft.code + '" ' + (isNew ? '' : 'readonly') + ' class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px] ' + (isNew ? '' : 'bg-gray-100 text-gray-500') + '" placeholder="filter-merged-value-group"></div>' +
+                        '</div>' +
+                        '<div class="flex items-center justify-between">' +
+                            '<span class="text-[13px] text-[#303030]">Show on homepage</span>' +
+                            toggleSwitchHtml('highlight-enabled-toggle', draft.enabled) +
+                        '</div>' +
+                    '</div>' +
+                    featureFieldsHtml(draft) +
+                    '<div class="flex items-center justify-end gap-3 px-5 py-4 border-t border-gray-200 bg-gray-50">' +
+                        '<button type="button" id="highlight-form-cancel-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">Cancel</button>' +
+                        '<button type="button" id="highlight-form-save-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">Save</button>' +
+                    '</div>' +
+                '</div>';
+
+            wireFeatureFormEvents(draft, isNew, groupCode);
+        }
+
+        function wireFeatureFormEvents(draft, isNew, groupCode) {
+            wireCommonFormFieldEvents(draft);
+
+            var saveBtn = document.getElementById('highlight-form-save-btn');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', function() {
+                    var nameInput = document.getElementById('highlight-name-input');
+                    var codeInput = document.getElementById('highlight-code-input');
+                    var descInput = document.getElementById('highlight-description-input');
+                    var link1Input = document.getElementById('highlight-link1-input');
+                    var link2Input = document.getElementById('highlight-link2-input');
+
+                    var name = nameInput.value.trim();
+                    var code = codeInput.value.trim();
+
+                    if (!code || !name) {
+                        alert('Name and Code are required.');
+                        return;
+                    }
+
+                    var items = window.HighlightStore.getAll();
+                    if (isNew) {
+                        var dup = items.filter(function(i) { return i.code === code; })[0];
+                        if (dup) {
+                            alert('That code is already in use.');
+                            return;
+                        }
+                    }
+
+                    var siblingOrder = items.filter(function(i) { return i.parentCode === groupCode && i.code !== draft.code; }).length;
+
+                    var finalItem = {
+                        code: isNew ? code : draft.code,
+                        parentCode: groupCode,
+                        name: name,
+                        description: descInput.value,
+                        thumbnail: draft.thumbnail || '',
+                        media: draft.media || '',
+                        enabled: draft.enabled,
+                        unlocked: draft.unlocked,
+                        order: isNew ? siblingOrder : draft.order,
+                        link1: link1Input.value.trim(),
+                        link2: link2Input.value.trim()
+                    };
+
+                    window.HighlightStore.upsert(finalItem);
+                    renderHighlightList();
+                });
+            }
+        }
+
         // ========== WHAT'S NEW DROPDOWN ==========
         var whatsNewBtn = document.getElementById('whats-new-btn');
         var whatsNewDropdown = document.getElementById('whats-new-dropdown');
