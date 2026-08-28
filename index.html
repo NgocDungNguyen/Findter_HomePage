@@ -223,9 +223,9 @@
             50% { transform: scale(1.3); opacity: 0.7; }
         }
         .feedback-banner-glow {
-            background: linear-gradient(135deg, #fecaca 0%, #fdba9c 50%, #fed7aa 100%);
-            border-color: #fca5a5;
-            box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.15), 0 10px 30px -6px rgba(234, 88, 12, 0.55);
+            background: linear-gradient(135deg, #DE6698 0%, #FA8F45 100%);
+            border-color: #DE6698;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.06), 0 10px 28px -6px rgba(222, 102, 152, 0.35);
         }
         .unified-status-banner {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -367,13 +367,6 @@
                             <button type="button" data-days="7" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">7 days left</button>
                             <button type="button" data-days="3" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">3 days left</button>
                             <button type="button" data-days="1" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">1 day left</button>
-                        </div>
-                    </div>
-                    <div class="relative">
-                        <button id="feature-options-btn" class="border border-purple-300 bg-purple-50 text-purple-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-purple-100 transition-colors shadow-sm whitespace-nowrap">Feature</button>
-                        <div id="feature-options-menu" class="hidden absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg py-1.5 z-20 max-h-80 overflow-y-auto">
-                            <div class="px-3 py-1 text-[10px] font-semibold text-gray-400 uppercase tracking-wide">Feedback banner color</div>
-                            <div id="feedback-color-option-list"></div>
                         </div>
                     </div>
                     <button class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors"><i class="fas fa-ellipsis-h text-sm"></i></button>
@@ -1087,7 +1080,7 @@
                                     </button>
 
                                     <div id="feedback-banner-prompt" class="text-center">
-                                        <p id="feedback-banner-prompt-text" class="text-[14px] font-semibold text-[#303030] mb-5">How was your experience with Findter so far?</p>
+                                        <p id="feedback-banner-prompt-text" class="text-[14px] font-semibold text-white mb-5">How was your experience with Findter so far?</p>
                                         <div class="flex items-center justify-center gap-10">
                                             <button type="button" id="feedback-thumbs-down" class="feedback-thumb-btn transition-all duration-150 hover:scale-125" aria-label="Thumbs down">
                                                 <img src="slightly_frowning_face_3d.png" alt="Thumbs down" class="w-10 h-10 drop-shadow-[0_6px_10px_rgba(0,0,0,0.6)]">
@@ -1100,7 +1093,7 @@
 
                                     <div id="feedback-banner-thanks" class="hidden text-center">
                                         <img src="partying_face_3d.png" alt="Thank you" class="w-10 h-10 mx-auto mb-2 drop-shadow-[0_6px_10px_rgba(0,0,0,0.6)]">
-                                        <p id="feedback-banner-thanks-text" class="text-[14px] font-semibold text-[#303030]">Thank you so much for your valuable feedback!</p>
+                                        <p id="feedback-banner-thanks-text" class="text-[14px] font-semibold text-white">Thank you so much for your valuable feedback!</p>
                                     </div>
                                 </div>
 
@@ -2464,93 +2457,6 @@
             });
         });
 
-        // ========== FEATURE OPTIONS: FEEDBACK BANNER COLOR ==========
-        var featureOptionsBtn = document.getElementById('feature-options-btn');
-        var featureOptionsMenu = document.getElementById('feature-options-menu');
-        var feedbackColorOptionList = document.getElementById('feedback-color-option-list');
-        var feedbackBannerEl = document.getElementById('feedback-banner');
-
-        var FEEDBACK_BANNER_COLORS = [
-            { name: 'Ember Blaze', bgFrom: '#D84124', bgTo: '#E85E0F', text: '#FFFFFF', up: '#FFFFFF', upHover: '#4ADE80', down: '#FFFFFF', downHover: '#FDA4AF' },
-            { name: 'Sunfire Crimson', bgFrom: '#E85E0F', bgTo: '#BE223C', text: '#FFFFFF', up: '#FFFFFF', upHover: '#4ADE80', down: '#FFFFFF', downHover: '#FDA4AF' },
-            { name: 'Amber Ruby', bgFrom: '#ED771B', bgTo: '#CE3134', text: '#FFFFFF', up: '#FFFFFF', upHover: '#4ADE80', down: '#FFFFFF', downHover: '#FDA4AF' },
-            { name: 'Sandstone', bgFrom: '#E5D0AC', bgTo: '#E5D0AC', text: '#000000', up: '#000000', upHover: '#166534', down: '#000000', downHover: '#9F1239' },
-            { name: 'Cream', bgFrom: '#FEF9E1', bgTo: '#FEF9E1', text: '#000000', up: '#000000', upHover: '#166534', down: '#000000', downHover: '#9F1239' },
-            { name: 'Magenta Sunset', bgFrom: '#DE6698', bgTo: '#FA8F45', text: '#FFFFFF', up: '#FFFFFF', upHover: '#4ADE80', down: '#FFFFFF', downHover: '#FDA4AF' }
-        ];
-
-        function hexToRgba(hex, alpha) {
-            var h = hex.replace('#', '');
-            var r = parseInt(h.substring(0, 2), 16);
-            var g = parseInt(h.substring(2, 4), 16);
-            var b = parseInt(h.substring(4, 6), 16);
-            return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
-        }
-
-        function applyThumbColors(color) {
-            if (!color) return;
-            if (feedbackThumbsUpBtn) {
-                feedbackThumbsUpBtn.style.color = color.up;
-                feedbackThumbsUpBtn.onmouseenter = function() { feedbackThumbsUpBtn.style.color = color.upHover; };
-                feedbackThumbsUpBtn.onmouseleave = function() { feedbackThumbsUpBtn.style.color = color.up; };
-            }
-            if (feedbackThumbsDownBtn) {
-                feedbackThumbsDownBtn.style.color = color.down;
-                feedbackThumbsDownBtn.onmouseenter = function() { feedbackThumbsDownBtn.style.color = color.downHover; };
-                feedbackThumbsDownBtn.onmouseleave = function() { feedbackThumbsDownBtn.style.color = color.down; };
-            }
-        }
-
-        function applyFeedbackBannerText(color) {
-            if (!color) return;
-            var promptText = document.getElementById('feedback-banner-prompt-text');
-            var thanksText = document.getElementById('feedback-banner-thanks-text');
-            if (promptText) promptText.style.color = color.text;
-            if (thanksText) thanksText.style.color = color.text;
-        }
-
-        function applyFeedbackBannerColor(colorIndex) {
-            var color = FEEDBACK_BANNER_COLORS[colorIndex];
-            if (!color || !feedbackBannerEl) return;
-            feedbackBannerEl.style.background = 'linear-gradient(135deg, ' + color.bgFrom + ' 0%, ' + color.bgTo + ' 100%)';
-            feedbackBannerEl.style.borderColor = color.bgFrom;
-            feedbackBannerEl.style.boxShadow = '0 0 0 1px rgba(0,0,0,0.06), 0 10px 28px -6px ' + hexToRgba(color.bgFrom, 0.35);
-            applyThumbColors(color);
-            applyFeedbackBannerText(color);
-        }
-
-        function renderFeedbackColorOptions() {
-            if (!feedbackColorOptionList) return;
-            feedbackColorOptionList.innerHTML = FEEDBACK_BANNER_COLORS.map(function(color, index) {
-                return '<button type="button" class="feedback-color-option w-full flex items-center gap-2 px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50" data-color-index="' + index + '">' +
-                    '<span class="w-5 h-5 rounded-full border border-gray-200 shrink-0" style="background:linear-gradient(135deg, ' + color.bgFrom + ' 0%, ' + color.bgTo + ' 100%);"></span>' +
-                    '<span>' + color.name + '</span>' +
-                '</button>';
-            }).join('');
-
-            document.querySelectorAll('.feedback-color-option').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    applyFeedbackBannerColor(parseInt(btn.getAttribute('data-color-index'), 10));
-                    if (featureOptionsMenu) featureOptionsMenu.classList.add('hidden');
-                });
-            });
-        }
-        renderFeedbackColorOptions();
-
-        if (featureOptionsBtn && featureOptionsMenu) {
-            featureOptionsBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                featureOptionsMenu.classList.toggle('hidden');
-            });
-            document.addEventListener('click', function(e) {
-                if (!featureOptionsMenu.classList.contains('hidden') &&
-                    !featureOptionsMenu.contains(e.target) &&
-                    !featureOptionsBtn.contains(e.target)) {
-                    featureOptionsMenu.classList.add('hidden');
-                }
-            });
-        }
-
         // ========== STEP PROGRESS ==========
         function updateProgressAndMessages() {
             var step1 = document.querySelector('.step-checkbox[data-step="1"]');
@@ -3674,7 +3580,6 @@
         var APP_STORE_REVIEW_URL = 'https://apps.shopify.com/findter-custom-filter-search#modal-show=WriteReviewModal&st_campaign=rate-app&st_source=admin-web';
         var feedbackThumbsUpBtn = document.getElementById('feedback-thumbs-up');
         var feedbackThumbsDownBtn = document.getElementById('feedback-thumbs-down');
-        applyFeedbackBannerColor(5);
         var reviewSubmitPending = false;
 
         window.addEventListener('focus', function() {
