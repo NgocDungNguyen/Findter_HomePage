@@ -71,6 +71,12 @@
             margin-left: auto;
             margin-right: auto;
         }
+        @media (min-width: 1024px) {
+            #unified-status-banner:not(.indexing-centered),
+            #indexing-banner-container {
+                max-width: 965.98px;
+            }
+        }
         .app-rec-card {
             width: calc((100% - 12px) / 2);
         }
@@ -354,7 +360,6 @@
                         <button id="warning-trial-btn" class="border border-red-300 bg-red-50 text-red-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-red-100 transition-colors shadow-sm whitespace-nowrap">Warning</button>
                         <div id="warning-trial-menu" class="hidden absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-20">
                             <button type="button" data-days="7" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">7 days left</button>
-                            <button type="button" data-days="3" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">3 days left</button>
                             <button type="button" data-days="1" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">1 day left</button>
                         </div>
                     </div>
@@ -433,25 +438,6 @@
                                     </div>
                                 </div>
 
-                                <!-- TRIAL WARNING BANNER -->
-                                <div id="trial-warning-banner" class="hidden order-2 lg:order-none rounded-[8px] overflow-hidden border border-yellow-200 shadow-sm">
-                                    <div class="flex items-center justify-between px-4 py-3 bg-yellow-100">
-                                        <div class="flex items-center gap-2">
-                                            <i class="fas fa-exclamation-circle text-yellow-600 text-sm"></i>
-                                            <span id="trial-warning-heading" class="text-[#303030] font-semibold text-[14px]">7 Days Trial Left</span>
-                                        </div>
-                                        <button id="trial-warning-close-btn" class="text-gray-500 hover:text-gray-800 hover:bg-yellow-200 rounded p-1 transition-colors" aria-label="Dismiss">
-                                            <i class="fas fa-times text-sm"></i>
-                                        </button>
-                                    </div>
-                                    <div class="bg-white px-5 py-4">
-                                        <p id="trial-warning-text" class="text-[13px] text-gray-500 leading-relaxed mb-4">Your trial ends soon. Choose a plan to keep the app running without interruption.</p>
-                                        <button class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
-                                            Choose a plan
-                                        </button>
-                                    </div>
-                                </div>
-
                                 <div id="onboarding-guide-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 order-4 lg:order-none">
                                     <div class="p-5">
                                         <div class="flex items-center justify-between mb-5">
@@ -484,19 +470,21 @@
                                                         <div class="flex flex-wrap items-center gap-x-2 gap-y-2">
                                                             <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
                                                             <span class="text-[13px] text-gray-700">Theme Selection</span>
-                                                            <button type="button" id="select-theme-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-gray-50 transition-colors shadow-sm ml-1">
-                                                                Choose Your Theme
-                                                            </button>
                                                         </div>
+                                                        <button type="button" id="select-theme-btn" class="mt-2 bg-[#303030] text-white rounded-[6px] px-4 py-1.5 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors shadow-sm">
+                                                            Choose Your Theme
+                                                        </button>
                                                     </div>
 
                                                     <div id="step1-completed" class="hidden">
-                                                        <div class="flex flex-wrap items-center gap-x-2 gap-y-2 mb-3">
-                                                            <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
-                                                            <span class="text-[13px] text-gray-700">Theme Selection</span>
-                                                            <span id="guide-theme-dropdown-label" class="text-[13px] font-medium text-[#303030]">-- No theme selected --</span>
-                                                            <span id="guide-theme-live-pill" class="hidden px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">Live</span>
-                                                            <button type="button" id="guide-theme-dropdown-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-3 py-1.5 text-[13px] font-medium hover:bg-gray-50 transition-colors">
+                                                        <div class="mb-3">
+                                                            <div class="flex flex-wrap items-center gap-x-2 gap-y-2">
+                                                                <span class="text-[13px] font-bold text-gray-800 whitespace-nowrap">Step 1:</span>
+                                                                <span class="text-[13px] text-gray-700">Theme Selection</span>
+                                                                <span id="guide-theme-dropdown-label" class="text-[13px] font-medium text-[#303030]">-- No theme selected --</span>
+                                                                <span id="guide-theme-live-pill" class="hidden px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">Live</span>
+                                                            </div>
+                                                            <button type="button" id="guide-theme-dropdown-btn" class="mt-2 bg-[#303030] text-white rounded-[6px] px-3 py-1.5 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">
                                                                 Choose Your Theme
                                                             </button>
                                                         </div>
@@ -811,12 +799,21 @@
                                         { code: 'filter', parentCode: null, standalone: false, name: 'Filter', description: 'Let shoppers narrow down products by any attribute.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 0, link1: 'advanced', link2: 'filter' },
                                         { code: 'filter-merged-value-group', parentCode: 'filter', name: 'Merged Value Group', description: 'Combine similar filter values into one group so shoppers see fewer, cleaner options.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 0, link1: 'advanced', link2: 'filter' },
                                         { code: 'filter-multi-source', parentCode: 'filter', name: 'Multi Source', description: 'Pull filter data from multiple sources like tags, metafields, and variants in one filter.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 1, link1: 'advanced', link2: 'filter' },
+                                        { code: 'filter-by-tag', parentCode: 'filter', name: 'Filter by Tag', description: 'Turn product tags into filter options shoppers can browse by.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 2, link1: 'advanced', link2: 'filter' },
+                                        { code: 'filter-by-metafield', parentCode: 'filter', name: 'Filter by Metafield', description: 'Build filters from any product or variant metafield.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 3, link1: 'advanced', link2: 'filter' },
+                                        { code: 'filter-by-variant-option', parentCode: 'filter', name: 'Filter by Variant Option', description: 'Let shoppers filter by size, color and other variant options.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 4, link1: 'advanced', link2: 'filter' },
+                                        { code: 'filter-price-range', parentCode: 'filter', name: 'Price Range Filter', description: 'Add a price slider so shoppers can narrow results by budget.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 5, link1: 'advanced', link2: 'filter' },
+                                        { code: 'filter-in-stock', parentCode: 'filter', name: 'In Stock Filter', description: 'Let shoppers show only products that are currently available.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 6, link1: 'advanced', link2: 'filter' },
 
                                         { code: 'search', parentCode: null, standalone: false, name: 'Search', description: 'Help shoppers find exactly what they need, fast.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 1, link1: 'advanced', link2: 'search' },
                                         { code: 'search-synonyms', parentCode: 'search', name: 'Synonyms', description: 'Match search terms with their synonyms so shoppers find products even with different wording.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 0, link1: 'advanced', link2: 'search' },
                                         { code: 'search-partial-search', parentCode: 'search', name: 'Partial Search', description: 'Return results for partial keyword matches, not just exact matches.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 1, link1: 'advanced', link2: 'search' },
                                         { code: 'search-in-collection', parentCode: 'search', name: 'Search in Collection', description: 'Let shoppers search within a specific collection page.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 2, link1: 'advanced', link2: 'search' },
                                         { code: 'search-in-filter', parentCode: 'search', name: 'Search in Filter', description: 'Add a search box directly inside the filter panel to quickly find filter values.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 3, link1: 'advanced', link2: 'search' },
+                                        { code: 'search-instant-autocomplete', parentCode: 'search', name: 'Instant Autocomplete', description: 'Show product and suggestion results instantly as shoppers type.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 4, link1: 'advanced', link2: 'search' },
+                                        { code: 'search-typo-tolerance', parentCode: 'search', name: 'Typo Tolerance', description: 'Still return the right products when shoppers misspell a query.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 5, link1: 'advanced', link2: 'search' },
+                                        { code: 'search-suggestions', parentCode: 'search', name: 'Search Suggestions', description: 'Suggest popular queries and categories in the search box.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 6, link1: 'advanced', link2: 'search' },
+                                        { code: 'search-recent', parentCode: 'search', name: 'Recent Searches', description: 'Show each shopper their recent searches for quick access.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 7, link1: 'advanced', link2: 'search' },
 
                                         { code: 'year-make-model', parentCode: null, standalone: true, name: 'Year Make Model', description: 'Powerful YMM search built for automotive stores to boost conversion.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 2, link1: 'advanced', link2: '' },
 
@@ -845,9 +842,20 @@
                                     }
 
                                     function seedDefaultsIfEmpty() {
-                                        if (getAll().length === 0) {
+                                        var items = getAll();
+                                        if (items.length === 0) {
                                             save(DEFAULT_ITEMS);
+                                            return;
                                         }
+                                        // Additive: pull in any newly shipped default items without
+                                        // clobbering the merchant's own edits.
+                                        var known = {};
+                                        items.forEach(function(i) { known[i.code] = true; });
+                                        var added = false;
+                                        DEFAULT_ITEMS.forEach(function(d) {
+                                            if (!known[d.code]) { items.push(d); added = true; }
+                                        });
+                                        if (added) save(items);
                                     }
 
                                     function upsert(item) {
@@ -965,7 +973,6 @@
                                                 (active ? 'bg-gray-100' : 'hover:bg-gray-50') +
                                                 '" data-sub="' + sub.code + '">' +
                                                     '<div class="text-[14px] font-semibold text-[#303030]">' + sub.name + '</div>' +
-                                                    '<div class="text-[12px] text-gray-500 mt-0.5">' + sub.description + '</div>' +
                                                 '</div>';
                                         });
 
@@ -1271,7 +1278,7 @@
     <div id="theme-picker-modal" class="modal-wrapper fixed inset-0 hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="theme-picker-modal-overlay"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
-            <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl pointer-events-auto max-h-[85vh] flex flex-col relative modal-content">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm pointer-events-auto max-h-[55vh] flex flex-col relative modal-content">
                 <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 shrink-0">
                     <h3 class="text-[16px] font-semibold text-[#303030]">Choose Your Theme</h3>
                     <button type="button" id="close-theme-picker-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
@@ -1436,7 +1443,8 @@
             indexingInterval: null,
             currentPage: 'home',
             appToggleState: 'off',
-            searchSuggestionState: 'off'
+            searchSuggestionState: 'off',
+            hasOnboarded: false
         };
 
         const STORAGE_KEYS = {
@@ -1446,7 +1454,8 @@
             SELECTED_THEME: 'findter_selected_theme',
             LAST_ENABLED_THEME: 'findter_last_enabled_theme',
             FIRST_ENABLE_DONE: 'findter_first_enable_done',
-            REVIEW_SUBMITTED: 'findter_review_submitted'
+            REVIEW_SUBMITTED: 'findter_review_submitted',
+            HAS_ONBOARDED: 'findter_has_onboarded'
         };
 
         function loadPersistedState() {
@@ -1481,6 +1490,15 @@
 
             if (storedFirstEnable === 'true') {
                 AppState.firstEnableDone = true;
+            }
+
+            if (localStorage.getItem(STORAGE_KEYS.HAS_ONBOARDED) === 'true') {
+                AppState.hasOnboarded = true;
+            }
+
+            // If indexing already finished in a past session, the user is past onboarding.
+            if (AppState.indexingComplete) {
+                AppState.hasOnboarded = true;
             }
 
             // Enabled theme status is not tracked in the simplified flow.
@@ -2076,22 +2094,27 @@
 
         function updateHomepageIndexingVisibility() {
             var indexing = !AppState.indexingComplete;
+            // The stripped-down "pre-app" screen (only the Collecting data banner +
+            // Highlight Features) is shown for the very first indexing run only.
+            // After the user has completed onboarding once, a Manual sync / Reset
+            // Indexing keeps the full homepage and just surfaces the indexing banner.
+            var preApp = indexing && !AppState.hasOnboarded;
 
-            if (welcomeBox) welcomeBox.style.display = indexing ? 'none' : '';
+            if (welcomeBox) welcomeBox.style.display = preApp ? 'none' : '';
 
             var hideDuringIndexing = [
                 onboardingGuideCard, dataInsightCard, recommendAppsCard, masterShortcutCard,
                 feedbackBannerCard, findterStatusCard, helpSupportCard, syncUpdatesCard
             ];
             hideDuringIndexing.forEach(function(el) {
-                if (el) el.classList.toggle('hidden', indexing);
+                if (el) el.classList.toggle('hidden', preApp);
             });
 
             var homepageGridEl = document.getElementById('homepage-grid');
-            if (homepageGridEl) homepageGridEl.classList.toggle('indexing-mode', indexing);
+            if (homepageGridEl) homepageGridEl.classList.toggle('indexing-mode', preApp);
 
             var unifiedStatusBannerEl = document.getElementById('unified-status-banner');
-            if (unifiedStatusBannerEl) unifiedStatusBannerEl.classList.toggle('indexing-centered', indexing);
+            if (unifiedStatusBannerEl) unifiedStatusBannerEl.classList.toggle('indexing-centered', preApp);
         }
 
         function showIndexingInProgress() {
@@ -2119,6 +2142,11 @@
             }
 
             localStorage.setItem(STORAGE_KEYS.INDEXING_COMPLETE, 'true');
+
+            if (!AppState.hasOnboarded) {
+                AppState.hasOnboarded = true;
+                localStorage.setItem(STORAGE_KEYS.HAS_ONBOARDED, 'true');
+            }
 
             syncStatusBadge.className = 'bg-[#cbf1c4] text-[#1f5119] text-[11px] px-2 py-0.5 rounded-full font-semibold';
             syncStatusBadge.textContent = 'Completed';
@@ -2338,19 +2366,14 @@
             });
         }
 
-        // ========== WARNING / TRIAL COUNTDOWN BANNER ==========
+        // ========== WARNING / TRIAL FEEDBACK CHAT FLOW ==========
         var warningTrialBtn = document.getElementById('warning-trial-btn');
         var warningTrialMenu = document.getElementById('warning-trial-menu');
-        var trialWarningBanner = document.getElementById('trial-warning-banner');
-        var trialWarningHeading = document.getElementById('trial-warning-heading');
-        var trialWarningText = document.getElementById('trial-warning-text');
-        var trialWarningCloseBtn = document.getElementById('trial-warning-close-btn');
 
-        var TRIAL_WARNING_COPY = {
-            '7': { heading: '7 Days Trial Left', text: 'Your trial ends soon. Choose a plan to keep the app running without interruption.' },
-            '3': { heading: '3 Days Trial Left', text: 'Your trial ends soon. Choose a plan to keep the app running without interruption.' },
-            '1': { heading: '1 Day Trial Left', text: 'Your trial ends tomorrow. Choose a plan to keep the app running without interruption.' }
-        };
+        // While non-zero and not yet elapsed, the next customer chat message gets
+        // an automatic "thanks for the feedback" reply. Set when a Warning option
+        // (7d / 1d) is picked; expires 5 minutes later.
+        var trialFeedbackReplyUntil = 0;
 
         if (warningTrialBtn && warningTrialMenu) {
             warningTrialBtn.addEventListener('click', function(e) {
@@ -2368,25 +2391,17 @@
 
         document.querySelectorAll('.warning-trial-option').forEach(function(opt) {
             opt.addEventListener('click', function() {
-                var days = this.getAttribute('data-days');
-                var copy = TRIAL_WARNING_COPY[days];
-                if (copy) {
-                    if (trialWarningHeading) trialWarningHeading.textContent = copy.heading;
-                    if (trialWarningText) trialWarningText.textContent = copy.text;
-                }
-                if (trialWarningBanner) {
-                    trialWarningBanner.classList.remove('hidden');
-                    trialWarningBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
                 if (warningTrialMenu) warningTrialMenu.classList.add('hidden');
+                if (chatBubble) chatBubble.classList.add('active');
+                if (chatBadge) chatBadge.classList.add('hidden');
+                addMessageToChat(
+                    'Hi! 👋 How’s your experience with Findter so far?<br><br>' +
+                    'Have any feedback or feature requests? We’d love to hear them and make Findter even better for you! 💙',
+                    false
+                );
+                trialFeedbackReplyUntil = Date.now() + 5 * 60 * 1000;
             });
         });
-
-        if (trialWarningCloseBtn && trialWarningBanner) {
-            trialWarningCloseBtn.addEventListener('click', function() {
-                trialWarningBanner.classList.add('hidden');
-            });
-        }
 
         // ========== STEP PROGRESS ==========
         function updateProgressAndMessages() {
@@ -2523,11 +2538,27 @@
         floatingChatBtn.addEventListener('click', function() { chatBubble.classList.toggle('active'); });
         closeChatBubble.addEventListener('click', function() { chatBubble.classList.remove('active'); });
 
+        var awaitingCollabCode = false;
+
         sendChatBtn.addEventListener('click', function() {
             var msg = chatInput.value.trim();
             if (!msg) return;
             addMessageToChat(msg, true);
             chatInput.value = '';
+            if (awaitingCollabCode) {
+                awaitingCollabCode = false;
+                setTimeout(function() {
+                    addMessageToChat("Thanks for providing the information. Our team has received your request and will get back to you as soon as possible.", false);
+                }, 700);
+                return;
+            }
+            if (trialFeedbackReplyUntil && Date.now() <= trialFeedbackReplyUntil) {
+                trialFeedbackReplyUntil = 0;
+                setTimeout(function() {
+                    addMessageToChat('Thanks for sharing! 😊 We really appreciate your feedback. We’ll keep it in mind as we make Findter even better. If you have any other ideas or requests, we’d love to hear them!', false);
+                }, 700);
+                return;
+            }
             setTimeout(function() { addMessageToChat("Thank you! We'll respond soon.", false); }, 600);
         });
 
@@ -2573,8 +2604,16 @@
             }
             if (chatBadge) chatBadge.classList.add('hidden');
             addMessageToChat("Hi! I'd love to use Findter with the " + theme + " theme, could you help make it compatible?", true);
+            awaitingCollabCode = true;
             setTimeout(function() {
-                addMessageToChat("We've received your request to support the " + theme + " theme, our team is already looking into it!", false);
+                addMessageToChat(
+                    "We've received your request to support the " + theme + " theme.<br>" +
+                    "To proceed, please send us your collaborator code. You can find it by going to:<br>" +
+                    "Shopify Admin &rarr; Settings &rarr; Users and permissions &rarr; Security &rarr; Store security &rarr; Collaborators &mdash; your code will be displayed there.<br><br>" +
+                    "Once we receive your code, we&rsquo;ll send a collaboration request. Please grant us access when it arrives.<br><br>" +
+                    "For your safety, we will duplicate your live theme and apply all fixes to the duplicated version, ensuring your live store remains unaffected",
+                    false
+                );
             }, 800);
         }
 
@@ -2896,7 +2935,14 @@
                     var items = window.HighlightStore.getAll();
                     var item = items.filter(function(i) { return i.code === code; })[0];
                     if (!item) return;
-                    item.enabled = !item.enabled;
+                    var next = !item.enabled;
+                    item.enabled = next;
+                    // Toggling a group cascades to every feature under it.
+                    if (!item.parentCode) {
+                        items.forEach(function(i) {
+                            if (i.parentCode === code) i.enabled = next;
+                        });
+                    }
                     window.HighlightStore.save(items);
                     renderHighlightList();
                 });
@@ -2956,21 +3002,13 @@
 
         function featureFieldsHtml(draft) {
             return '<div class="p-5 space-y-3 border-b border-gray-100">' +
-                    '<div class="flex items-center justify-between">' +
-                        '<span class="text-[13px] text-[#303030]">Unlocked (demo)</span>' +
-                        toggleSwitchHtml('highlight-unlocked-toggle', draft.unlocked) +
-                    '</div>' +
-                    '<div><label class="block text-[12px] text-gray-500 mb-1">Description</label><textarea id="highlight-description-input" rows="2" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]">' + draft.description + '</textarea></div>' +
                     '<div class="grid grid-cols-2 gap-3">' +
                         '<div><label class="block text-[12px] text-gray-500 mb-1">Thumbnail</label><input type="file" id="highlight-thumbnail-input" accept="image/*" class="w-full text-[12px]"><img src="' + (draft.thumbnail || '') + '" class="mt-2 w-14 h-14 rounded object-cover border border-gray-200 ' + (draft.thumbnail ? '' : 'hidden') + '" id="highlight-thumbnail-preview"></div>' +
                         '<div><label class="block text-[12px] text-gray-500 mb-1">Media</label><input type="file" id="highlight-media-input" accept="image/*,video/*" class="w-full text-[12px]"><div class="mt-1 text-[11px] text-gray-400" id="highlight-media-filename">' + (draft.media ? 'Attached' : '') + '</div></div>' +
                     '</div>' +
                 '</div>' +
                 '<div class="p-5">' +
-                    '<div class="grid grid-cols-2 gap-3">' +
-                        '<div><label class="block text-[12px] text-gray-500 mb-1">Link 1 (locked)</label><input type="text" id="highlight-link1-input" value="' + draft.link1 + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="advanced"></div>' +
-                        '<div><label class="block text-[12px] text-gray-500 mb-1">Link 2 (unlocked)</label><input type="text" id="highlight-link2-input" value="' + draft.link2 + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="filter"></div>' +
-                    '</div>' +
+                    '<div><label class="block text-[12px] text-gray-500 mb-1">Link</label><input type="text" id="highlight-link1-input" value="' + draft.link1 + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="advanced"></div>' +
                 '</div>';
         }
 
@@ -3048,6 +3086,17 @@
                 enabled: true, unlocked: false, order: 0, link1: '', link2: ''
             };
 
+            var nameCodeHtml = isNew
+                ? '<div><label class="block text-[12px] text-gray-500 mb-1">Name</label><input type="text" id="highlight-name-input" value="' + draft.name + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="Filter"></div>'
+                : '<div class="grid grid-cols-2 gap-3">' +
+                        '<div><label class="block text-[12px] text-gray-500 mb-1">Name</label><input type="text" id="highlight-name-input" value="' + draft.name + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="Filter"></div>' +
+                        '<div><label class="block text-[12px] text-gray-500 mb-1">Code</label><input type="text" id="highlight-code-input" value="' + draft.code + '" readonly class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px] bg-gray-100 text-gray-500"></div>' +
+                    '</div>';
+
+            var standaloneCodeHtml = isNew
+                ? '<div class="p-5 border-b border-gray-100"><label class="block text-[12px] text-gray-500 mb-1">Code</label><input type="text" id="highlight-code-input" value="' + draft.code + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="year-make-model"></div>'
+                : '';
+
             masterContentEl.innerHTML =
                 '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">' +
                     '<div class="p-5 border-b border-gray-100 flex items-center justify-between">' +
@@ -3055,20 +3104,13 @@
                         '<h3 class="font-semibold text-[15px] text-[#303030]">' + (isNew ? 'Add group' : 'Edit group') + '</h3>' +
                     '</div>' +
                     '<div class="p-5 space-y-3 border-b border-gray-100">' +
-                        '<div class="grid grid-cols-2 gap-3">' +
-                            '<div><label class="block text-[12px] text-gray-500 mb-1">Name</label><input type="text" id="highlight-name-input" value="' + draft.name + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="Filter"></div>' +
-                            '<div><label class="block text-[12px] text-gray-500 mb-1">Code</label><input type="text" id="highlight-code-input" value="' + draft.code + '" ' + (isNew ? '' : 'readonly') + ' class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px] ' + (isNew ? '' : 'bg-gray-100 text-gray-500') + '" placeholder="filter"></div>' +
-                        '</div>' +
-                        '<div class="flex items-center justify-between">' +
-                            '<span class="text-[13px] text-[#303030]">Show on homepage</span>' +
-                            toggleSwitchHtml('highlight-enabled-toggle', draft.enabled) +
-                        '</div>' +
+                        nameCodeHtml +
                         '<label class="flex items-center gap-2 cursor-pointer">' +
                             '<input type="checkbox" id="highlight-standalone-input" ' + (draft.standalone ? 'checked' : '') + ' class="w-4 h-4 rounded border-gray-300">' +
                             '<span class="text-[13px] text-[#303030]">Standalone (no sub-features, e.g. Year Make Model)</span>' +
                         '</label>' +
                     '</div>' +
-                    '<div id="standalone-fields" class="' + (draft.standalone ? '' : 'hidden') + '">' + featureFieldsHtml(draft) + '</div>' +
+                    '<div id="standalone-fields" class="' + (draft.standalone ? '' : 'hidden') + '">' + standaloneCodeHtml + featureFieldsHtml(draft) + '</div>' +
                     '<div class="flex items-center justify-end gap-3 px-5 py-4 border-t border-gray-200 bg-gray-50">' +
                         '<button type="button" id="highlight-form-cancel-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">Cancel</button>' +
                         '<button type="button" id="highlight-form-save-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">Save</button>' +
@@ -3095,48 +3137,71 @@
                 saveBtn.addEventListener('click', function() {
                     var nameInput = document.getElementById('highlight-name-input');
                     var codeInput = document.getElementById('highlight-code-input');
-                    var descInput = document.getElementById('highlight-description-input');
                     var link1Input = document.getElementById('highlight-link1-input');
-                    var link2Input = document.getElementById('highlight-link2-input');
 
                     var name = nameInput.value.trim();
-                    var code = codeInput.value.trim();
-
-                    if (!code || !name) {
-                        alert('Name and Code are required.');
+                    if (!name) {
+                        alert('Name is required.');
                         return;
                     }
 
                     var items = window.HighlightStore.getAll();
+
+                    var code;
                     if (isNew) {
-                        var dup = items.filter(function(i) { return i.code === code; })[0];
-                        if (dup) {
-                            alert('That code is already in use.');
-                            return;
-                        }
+                        // Code is only entered for Standalone groups; otherwise derive it
+                        // from the name and keep it unique.
+                        var typed = codeInput && codeInput.value.trim();
+                        var base = slugifyHighlightCode(typed || name) || 'group';
+                        code = uniqueHighlightCode(base, items, draft.code);
+                    } else {
+                        code = draft.code;
                     }
 
                     var siblingOrder = items.filter(function(i) { return !i.parentCode && i.code !== draft.code; }).length;
 
                     var finalItem = {
-                        code: isNew ? code : draft.code,
+                        code: code,
                         parentCode: null,
                         standalone: !!draft.standalone,
                         name: name,
-                        description: descInput ? descInput.value : '',
+                        description: draft.description || '',
                         thumbnail: draft.thumbnail || '',
                         media: draft.media || '',
                         enabled: draft.enabled,
                         unlocked: draft.unlocked,
                         order: isNew ? siblingOrder : draft.order,
-                        link1: link1Input ? link1Input.value.trim() : '',
-                        link2: link2Input ? link2Input.value.trim() : ''
+                        link1: link1Input ? link1Input.value.trim() : (draft.link1 || ''),
+                        link2: draft.link2 || ''
                     };
 
                     window.HighlightStore.upsert(finalItem);
-                    renderHighlightList();
+
+                    // After creating a brand-new group with sub-features, drop the
+                    // merchant straight into adding its first feature.
+                    if (isNew && !finalItem.standalone) {
+                        renderFeatureForm(code, null);
+                    } else {
+                        renderHighlightList();
+                    }
                 });
             }
+        }
+
+        function slugifyHighlightCode(s) {
+            return String(s || '').toLowerCase().trim()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+        }
+
+        function uniqueHighlightCode(base, items, ignoreCode) {
+            var taken = function(c) {
+                return items.some(function(i) { return i.code === c && i.code !== ignoreCode; });
+            };
+            if (!taken(base)) return base;
+            var n = 2;
+            while (taken(base + '-' + n)) n++;
+            return base + '-' + n;
         }
 
         function renderFeatureForm(groupCode, code) {
@@ -3162,10 +3227,6 @@
                             '<div><label class="block text-[12px] text-gray-500 mb-1">Name</label><input type="text" id="highlight-name-input" value="' + draft.name + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="Merged Value Group"></div>' +
                             '<div><label class="block text-[12px] text-gray-500 mb-1">Code</label><input type="text" id="highlight-code-input" value="' + draft.code + '" ' + (isNew ? '' : 'readonly') + ' class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px] ' + (isNew ? '' : 'bg-gray-100 text-gray-500') + '" placeholder="filter-merged-value-group"></div>' +
                         '</div>' +
-                        '<div class="flex items-center justify-between">' +
-                            '<span class="text-[13px] text-[#303030]">Show on homepage</span>' +
-                            toggleSwitchHtml('highlight-enabled-toggle', draft.enabled) +
-                        '</div>' +
                     '</div>' +
                     featureFieldsHtml(draft) +
                     '<div class="flex items-center justify-end gap-3 px-5 py-4 border-t border-gray-200 bg-gray-50">' +
@@ -3185,41 +3246,39 @@
                 saveBtn.addEventListener('click', function() {
                     var nameInput = document.getElementById('highlight-name-input');
                     var codeInput = document.getElementById('highlight-code-input');
-                    var descInput = document.getElementById('highlight-description-input');
                     var link1Input = document.getElementById('highlight-link1-input');
-                    var link2Input = document.getElementById('highlight-link2-input');
 
                     var name = nameInput.value.trim();
-                    var code = codeInput.value.trim();
+                    var items = window.HighlightStore.getAll();
 
-                    if (!code || !name) {
-                        alert('Name and Code are required.');
-                        return;
+                    var code;
+                    if (isNew) {
+                        var typed = codeInput && codeInput.value.trim();
+                        var base = slugifyHighlightCode(typed || (groupCode + '-' + name)) || (groupCode + '-feature');
+                        code = uniqueHighlightCode(base, items, draft.code);
+                    } else {
+                        code = draft.code;
                     }
 
-                    var items = window.HighlightStore.getAll();
-                    if (isNew) {
-                        var dup = items.filter(function(i) { return i.code === code; })[0];
-                        if (dup) {
-                            alert('That code is already in use.');
-                            return;
-                        }
+                    if (!name) {
+                        alert('Name is required.');
+                        return;
                     }
 
                     var siblingOrder = items.filter(function(i) { return i.parentCode === groupCode && i.code !== draft.code; }).length;
 
                     var finalItem = {
-                        code: isNew ? code : draft.code,
+                        code: code,
                         parentCode: groupCode,
                         name: name,
-                        description: descInput.value,
+                        description: draft.description || '',
                         thumbnail: draft.thumbnail || '',
                         media: draft.media || '',
                         enabled: draft.enabled,
                         unlocked: draft.unlocked,
                         order: isNew ? siblingOrder : draft.order,
-                        link1: link1Input.value.trim(),
-                        link2: link2Input.value.trim()
+                        link1: link1Input ? link1Input.value.trim() : (draft.link1 || ''),
+                        link2: draft.link2 || ''
                     };
 
                     window.HighlightStore.upsert(finalItem);
