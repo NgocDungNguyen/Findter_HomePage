@@ -1087,7 +1087,7 @@
                                     </button>
 
                                     <div id="feedback-banner-prompt" class="text-center">
-                                        <p class="text-[14px] font-semibold text-[#303030] mb-3">How's Findter working for you so far?</p>
+                                        <p id="feedback-banner-prompt-text" class="text-[14px] font-semibold text-[#303030] mb-3">How's Findter working for you so far?</p>
                                         <div class="flex items-center justify-center gap-6">
                                             <button type="button" id="feedback-thumbs-up" class="feedback-thumb-btn text-2xl transition-all duration-150 hover:scale-125" aria-label="Thumbs up">
                                                 <i class="far fa-thumbs-up"></i>
@@ -1100,7 +1100,7 @@
 
                                     <div id="feedback-banner-thanks" class="hidden text-center">
                                         <i class="fas fa-heart text-emerald-500 text-2xl mb-2"></i>
-                                        <p class="text-[14px] font-semibold text-[#303030]">Thank you so much for your valuable feedback!</p>
+                                        <p id="feedback-banner-thanks-text" class="text-[14px] font-semibold text-[#303030]">Thank you so much for your valuable feedback!</p>
                                     </div>
                                 </div>
 
@@ -2480,17 +2480,21 @@
         var feedbackBannerEl = document.getElementById('feedback-banner');
 
         var FEEDBACK_BANNER_COLORS = [
-            { name: 'Fire Red', bg: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)', border: '#b91c1c', glow: 'rgba(220, 38, 38, 0.55)', up: '#BFDBFE', upHover: '#22C55E', down: '#BFDBFE', downHover: '#FDA4AF' },
-            { name: 'Bold Orange', bg: 'linear-gradient(135deg, #fb923c 0%, #ea580c 100%)', border: '#c2410c', glow: 'rgba(234, 88, 12, 0.55)', up: '#2563EB', upHover: '#16A34A', down: '#2563EB', downHover: '#E11D48' },
-            { name: 'Red-Orange Blaze', bg: 'linear-gradient(135deg, #ef4444 0%, #f97316 100%)', border: '#dc2626', glow: 'rgba(239, 68, 68, 0.55)', up: '#BFDBFE', upHover: '#22C55E', down: '#BFDBFE', downHover: '#FDA4AF' },
-            { name: 'Sunset Punch', bg: 'linear-gradient(135deg, #dc2626 0%, #f97316 50%, #fbbf24 100%)', border: '#dc2626', glow: 'rgba(234, 88, 12, 0.55)', up: '#1D4ED8', upHover: '#15803D', down: '#1D4ED8', downHover: '#BE123C' },
-            { name: 'Crimson Coral', bg: 'linear-gradient(135deg, #f87171 0%, #ef4444 60%, #fb923c 100%)', border: '#dc2626', glow: 'rgba(220, 38, 38, 0.55)', up: '#1D4ED8', upHover: '#15803D', down: '#1D4ED8', downHover: '#BE123C' },
-            { name: 'Tangerine Red', bg: 'linear-gradient(135deg, #f97316 0%, #ef4444 100%)', border: '#c2410c', glow: 'rgba(239, 68, 68, 0.55)', up: '#BFDBFE', upHover: '#22C55E', down: '#BFDBFE', downHover: '#FDA4AF' },
-            { name: 'Deep Ember', bg: 'linear-gradient(135deg, #b91c1c 0%, #ea580c 100%)', border: '#991b1b', glow: 'rgba(185, 28, 28, 0.55)', up: '#DBEAFE', upHover: '#4ADE80', down: '#DBEAFE', downHover: '#FB7185' },
-            { name: 'Amber Red', bg: 'linear-gradient(135deg, #dc2626 0%, #fbbf24 100%)', border: '#dc2626', glow: 'rgba(220, 38, 38, 0.5)', up: '#1E40AF', upHover: '#15803D', down: '#1E40AF', downHover: '#BE123C' },
-            { name: 'White-Edged Fire', bg: 'linear-gradient(135deg, #ffffff 0%, #ef4444 45%, #ea580c 100%)', border: '#dc2626', glow: 'rgba(220, 38, 38, 0.5)', up: '#1D4ED8', upHover: '#16A34A', down: '#1D4ED8', downHover: '#E11D48' },
-            { name: 'Orange Blaze', bg: 'linear-gradient(135deg, #fdba74 0%, #f97316 50%, #dc2626 100%)', border: '#ea580c', glow: 'rgba(234, 88, 12, 0.55)', up: '#1D4ED8', upHover: '#16A34A', down: '#1D4ED8', downHover: '#E11D48' }
+            { name: 'Garnet Sunset', bgFrom: '#A41B37', bgTo: '#D84124', text: '#FFFFFF', up: '#FFFFFF', upHover: '#4ADE80', down: '#FFFFFF', downHover: '#FDA4AF' },
+            { name: 'Ember Blaze', bgFrom: '#D84124', bgTo: '#E85E0F', text: '#FFFFFF', up: '#FFFFFF', upHover: '#4ADE80', down: '#FFFFFF', downHover: '#FDA4AF' },
+            { name: 'Sunfire Crimson', bgFrom: '#E85E0F', bgTo: '#BE223C', text: '#FFFFFF', up: '#FFFFFF', upHover: '#4ADE80', down: '#FFFFFF', downHover: '#FDA4AF' },
+            { name: 'Amber Ruby', bgFrom: '#ED771B', bgTo: '#CE3134', text: '#FFFFFF', up: '#FFFFFF', upHover: '#4ADE80', down: '#FFFFFF', downHover: '#FDA4AF' },
+            { name: 'Ruby Maroon', bgFrom: '#CE3134', bgTo: '#8A1432', text: '#FFFFFF', up: '#FFFFFF', upHover: '#4ADE80', down: '#FFFFFF', downHover: '#FDA4AF' },
+            { name: 'Maroon Tangerine', bgFrom: '#8A1432', bgTo: '#E35215', text: '#FFFFFF', up: '#FFFFFF', upHover: '#4ADE80', down: '#FFFFFF', downHover: '#FDA4AF' }
         ];
+
+        function hexToRgba(hex, alpha) {
+            var h = hex.replace('#', '');
+            var r = parseInt(h.substring(0, 2), 16);
+            var g = parseInt(h.substring(2, 4), 16);
+            var b = parseInt(h.substring(4, 6), 16);
+            return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+        }
 
         function applyThumbColors(color) {
             if (!color) return;
@@ -2506,20 +2510,29 @@
             }
         }
 
+        function applyFeedbackBannerText(color) {
+            if (!color) return;
+            var promptText = document.getElementById('feedback-banner-prompt-text');
+            var thanksText = document.getElementById('feedback-banner-thanks-text');
+            if (promptText) promptText.style.color = color.text;
+            if (thanksText) thanksText.style.color = color.text;
+        }
+
         function applyFeedbackBannerColor(colorIndex) {
             var color = FEEDBACK_BANNER_COLORS[colorIndex];
             if (!color || !feedbackBannerEl) return;
-            feedbackBannerEl.style.background = color.bg;
-            feedbackBannerEl.style.borderColor = color.border;
-            feedbackBannerEl.style.boxShadow = '0 0 0 1px rgba(0,0,0,0.05), 0 10px 30px -6px ' + color.glow;
+            feedbackBannerEl.style.background = 'linear-gradient(135deg, ' + color.bgFrom + ' 0%, ' + color.bgTo + ' 100%)';
+            feedbackBannerEl.style.borderColor = color.bgFrom;
+            feedbackBannerEl.style.boxShadow = '0 0 0 1px rgba(0,0,0,0.08), 0 10px 28px -6px ' + hexToRgba(color.bgFrom, 0.55);
             applyThumbColors(color);
+            applyFeedbackBannerText(color);
         }
 
         function renderFeedbackColorOptions() {
             if (!feedbackColorOptionList) return;
             feedbackColorOptionList.innerHTML = FEEDBACK_BANNER_COLORS.map(function(color, index) {
                 return '<button type="button" class="feedback-color-option w-full flex items-center gap-2 px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50" data-color-index="' + index + '">' +
-                    '<span class="w-5 h-5 rounded-full border border-gray-200 shrink-0" style="background:' + color.bg + ';"></span>' +
+                    '<span class="w-5 h-5 rounded-full border border-gray-200 shrink-0" style="background:linear-gradient(135deg, ' + color.bgFrom + ' 0%, ' + color.bgTo + ' 100%);"></span>' +
                     '<span>' + color.name + '</span>' +
                 '</button>';
             }).join('');
@@ -3670,7 +3683,7 @@
         var APP_STORE_REVIEW_URL = 'https://apps.shopify.com/findter-custom-filter-search#modal-show=WriteReviewModal&st_campaign=rate-app&st_source=admin-web';
         var feedbackThumbsUpBtn = document.getElementById('feedback-thumbs-up');
         var feedbackThumbsDownBtn = document.getElementById('feedback-thumbs-down');
-        applyThumbColors(FEEDBACK_BANNER_COLORS[0]);
+        applyFeedbackBannerColor(0);
         var reviewSubmitPending = false;
 
         window.addEventListener('focus', function() {
