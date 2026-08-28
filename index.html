@@ -222,6 +222,11 @@
             0%, 100% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.3); opacity: 0.7; }
         }
+        .feedback-banner-glow {
+            background: linear-gradient(135deg, #bfdbfe 0%, #c7d2fe 50%, #e9d5ff 100%);
+            border-color: #a5b4fc;
+            box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.18), 0 10px 30px -6px rgba(99, 102, 241, 0.55);
+        }
         .unified-status-banner {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border-left-width: 4px;
@@ -360,6 +365,7 @@
                         <button id="warning-trial-btn" class="border border-red-300 bg-red-50 text-red-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-red-100 transition-colors shadow-sm whitespace-nowrap">Warning</button>
                         <div id="warning-trial-menu" class="hidden absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-20">
                             <button type="button" data-days="7" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">7 days left</button>
+                            <button type="button" data-days="3" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">3 days left</button>
                             <button type="button" data-days="1" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">1 day left</button>
                         </div>
                     </div>
@@ -434,6 +440,25 @@
                                         <p class="text-[13px] text-[#303030] leading-relaxed mb-4">Contact us to consult about product and metafield limits.</p>
                                         <button id="limit-reached-contact-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
                                             Contact us
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- TRIAL WARNING BANNER -->
+                                <div id="trial-warning-banner" class="hidden order-2 lg:order-none rounded-[8px] overflow-hidden border border-yellow-200 shadow-sm">
+                                    <div class="flex items-center justify-between px-4 py-3 bg-yellow-100">
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-exclamation-circle text-yellow-600 text-sm"></i>
+                                            <span id="trial-warning-heading" class="text-[#303030] font-semibold text-[14px]">7 Days Trial Left</span>
+                                        </div>
+                                        <button id="trial-warning-close-btn" class="text-gray-500 hover:text-gray-800 hover:bg-yellow-200 rounded p-1 transition-colors" aria-label="Dismiss">
+                                            <i class="fas fa-times text-sm"></i>
+                                        </button>
+                                    </div>
+                                    <div class="bg-white px-5 py-4">
+                                        <p id="trial-warning-text" class="text-[13px] text-gray-500 leading-relaxed mb-4">Your trial ends soon. Choose a plan to keep the app running without interruption.</p>
+                                        <button class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
+                                            Choose a plan
                                         </button>
                                     </div>
                                 </div>
@@ -560,18 +585,7 @@
                                     </div>
                                 </div>
 
-                                <div id="data-insight-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-7 lg:order-none">
-                                    <div class="p-5 flex items-center justify-between border-b border-gray-100">
-                                        <div class="flex items-center gap-3"><h3 class="font-semibold text-[15px] text-[#303030]">Data insight</h3><button class="border border-gray-300 rounded-[6px] px-2.5 py-1 text-[13px] font-medium text-[#303030] flex items-center gap-2 hover:bg-gray-50 shadow-sm"><i class="far fa-calendar text-gray-500 text-sm"></i> Last 30 days</button></div>
-                                        <button class="border border-gray-300 rounded-[6px] w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-50 shadow-sm"><i class="fas fa-chart-bar text-sm"></i></button>
-                                    </div>
-                                    <div class="p-5 flex gap-5">
-                                        <div class="flex-1 border border-gray-200 rounded-[8px] p-5 relative overflow-hidden flex flex-col justify-between"><h4 class="text-[13px] font-semibold text-[#303030] border-b border-gray-300 border-dashed pb-3 mb-4">Total sessions</h4><div class="flex items-end justify-between"><div><div class="text-[13px] text-green-700 font-medium mb-1 flex items-center gap-1">0% <i class="fas fa-arrow-up text-[10px]"></i></div><div class="text-[32px] font-normal leading-none text-[#303030]">0</div></div><div class="w-20 h-[2px] bg-green-500 mb-2"></div></div></div>
-                                        <div class="flex-1 border border-gray-200 rounded-[8px] p-5 relative overflow-hidden flex flex-col justify-between"><h4 class="text-[13px] font-semibold text-[#303030] border-b border-gray-300 border-dashed pb-3 mb-4">Conversion rate</h4><div class="flex items-end justify-between"><div class="mt-6"><div class="text-[32px] font-normal leading-none text-[#303030]">0%</div></div><div class="w-20 h-[2px] bg-green-500 mb-2"></div></div></div>
-                                    </div>
-                                </div>
-
-                                <div id="highlight-featured-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-8 lg:order-none">
+                                <div id="highlight-featured-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-7 lg:order-none">
                                     <div class="p-5 border-b border-gray-100">
                                         <h3 class="font-semibold text-[15px] text-[#303030] mb-4">Highlight Features</h3>
                                         <div id="feature-highlight-tabs" class="flex divide-x divide-gray-200 border border-gray-200 rounded-lg overflow-hidden"></div>
@@ -579,7 +593,7 @@
                                     <div id="feature-highlight-body" class="flex flex-col md:flex-row"></div>
                                 </div>
 
-                                <div id="recommend-apps-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-9 lg:order-none">
+                                <div id="recommend-apps-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-8 lg:order-none">
                                     <div class="p-5 flex items-center justify-between border-b border-gray-100">
                                         <h3 class="font-semibold text-[15px] text-[#303030]">Recommend Apps</h3>
                                         <div class="flex items-center gap-2">
@@ -796,34 +810,34 @@
                                     var STORAGE_KEY = 'findter_highlight_items';
 
                                     var DEFAULT_ITEMS = [
-                                        { code: 'filter', parentCode: null, standalone: false, name: 'Filter', description: 'Let shoppers narrow down products by any attribute.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 0, link1: 'advanced', link2: 'filter' },
-                                        { code: 'filter-merged-value-group', parentCode: 'filter', name: 'Merged Value Group', description: 'Combine similar filter values into one group so shoppers see fewer, cleaner options.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 0, link1: 'advanced', link2: 'filter' },
-                                        { code: 'filter-multi-source', parentCode: 'filter', name: 'Multi Source', description: 'Pull filter data from multiple sources like tags, metafields, and variants in one filter.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 1, link1: 'advanced', link2: 'filter' },
-                                        { code: 'filter-by-tag', parentCode: 'filter', name: 'Filter by Tag', description: 'Turn product tags into filter options shoppers can browse by.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 2, link1: 'advanced', link2: 'filter' },
-                                        { code: 'filter-by-metafield', parentCode: 'filter', name: 'Filter by Metafield', description: 'Build filters from any product or variant metafield.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 3, link1: 'advanced', link2: 'filter' },
-                                        { code: 'filter-by-variant-option', parentCode: 'filter', name: 'Filter by Variant Option', description: 'Let shoppers filter by size, color and other variant options.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 4, link1: 'advanced', link2: 'filter' },
-                                        { code: 'filter-price-range', parentCode: 'filter', name: 'Price Range Filter', description: 'Add a price slider so shoppers can narrow results by budget.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 5, link1: 'advanced', link2: 'filter' },
-                                        { code: 'filter-in-stock', parentCode: 'filter', name: 'In Stock Filter', description: 'Let shoppers show only products that are currently available.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 6, link1: 'advanced', link2: 'filter' },
+                                        { code: 'filter', parentCode: null, standalone: false, name: 'Filter', thumbnail: '', media: '', enabled: true, order: 0, navigateUrl: 'filter' },
+                                        { code: 'filter-merged-value-group', parentCode: 'filter', name: 'Merged Value Group', thumbnail: '', media: '', enabled: true, order: 0, navigateUrl: 'filter' },
+                                        { code: 'filter-multi-source', parentCode: 'filter', name: 'Multi Source', thumbnail: '', media: '', enabled: true, order: 1, navigateUrl: 'filter' },
+                                        { code: 'filter-by-tag', parentCode: 'filter', name: 'Filter by Tag', thumbnail: '', media: '', enabled: true, order: 2, navigateUrl: 'filter' },
+                                        { code: 'filter-by-metafield', parentCode: 'filter', name: 'Filter by Metafield', thumbnail: '', media: '', enabled: true, order: 3, navigateUrl: 'filter' },
+                                        { code: 'filter-by-variant-option', parentCode: 'filter', name: 'Filter by Variant Option', thumbnail: '', media: '', enabled: true, order: 4, navigateUrl: 'filter' },
+                                        { code: 'filter-price-range', parentCode: 'filter', name: 'Price Range Filter', thumbnail: '', media: '', enabled: true, order: 5, navigateUrl: 'filter' },
+                                        { code: 'filter-in-stock', parentCode: 'filter', name: 'In Stock Filter', thumbnail: '', media: '', enabled: true, order: 6, navigateUrl: 'filter' },
 
-                                        { code: 'search', parentCode: null, standalone: false, name: 'Search', description: 'Help shoppers find exactly what they need, fast.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 1, link1: 'advanced', link2: 'search' },
-                                        { code: 'search-synonyms', parentCode: 'search', name: 'Synonyms', description: 'Match search terms with their synonyms so shoppers find products even with different wording.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 0, link1: 'advanced', link2: 'search' },
-                                        { code: 'search-partial-search', parentCode: 'search', name: 'Partial Search', description: 'Return results for partial keyword matches, not just exact matches.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 1, link1: 'advanced', link2: 'search' },
-                                        { code: 'search-in-collection', parentCode: 'search', name: 'Search in Collection', description: 'Let shoppers search within a specific collection page.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 2, link1: 'advanced', link2: 'search' },
-                                        { code: 'search-in-filter', parentCode: 'search', name: 'Search in Filter', description: 'Add a search box directly inside the filter panel to quickly find filter values.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 3, link1: 'advanced', link2: 'search' },
-                                        { code: 'search-instant-autocomplete', parentCode: 'search', name: 'Instant Autocomplete', description: 'Show product and suggestion results instantly as shoppers type.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 4, link1: 'advanced', link2: 'search' },
-                                        { code: 'search-typo-tolerance', parentCode: 'search', name: 'Typo Tolerance', description: 'Still return the right products when shoppers misspell a query.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 5, link1: 'advanced', link2: 'search' },
-                                        { code: 'search-suggestions', parentCode: 'search', name: 'Search Suggestions', description: 'Suggest popular queries and categories in the search box.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 6, link1: 'advanced', link2: 'search' },
-                                        { code: 'search-recent', parentCode: 'search', name: 'Recent Searches', description: 'Show each shopper their recent searches for quick access.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 7, link1: 'advanced', link2: 'search' },
+                                        { code: 'search', parentCode: null, standalone: false, name: 'Search', thumbnail: '', media: '', enabled: true, order: 1, navigateUrl: 'search' },
+                                        { code: 'search-synonyms', parentCode: 'search', name: 'Synonyms', thumbnail: '', media: '', enabled: true, order: 0, navigateUrl: 'search' },
+                                        { code: 'search-partial-search', parentCode: 'search', name: 'Partial Search', thumbnail: '', media: '', enabled: true, order: 1, navigateUrl: 'search' },
+                                        { code: 'search-in-collection', parentCode: 'search', name: 'Search in Collection', thumbnail: '', media: '', enabled: true, order: 2, navigateUrl: 'search' },
+                                        { code: 'search-in-filter', parentCode: 'search', name: 'Search in Filter', thumbnail: '', media: '', enabled: true, order: 3, navigateUrl: 'search' },
+                                        { code: 'search-instant-autocomplete', parentCode: 'search', name: 'Instant Autocomplete', thumbnail: '', media: '', enabled: true, order: 4, navigateUrl: 'search' },
+                                        { code: 'search-typo-tolerance', parentCode: 'search', name: 'Typo Tolerance', thumbnail: '', media: '', enabled: true, order: 5, navigateUrl: 'search' },
+                                        { code: 'search-suggestions', parentCode: 'search', name: 'Search Suggestions', thumbnail: '', media: '', enabled: true, order: 6, navigateUrl: 'search' },
+                                        { code: 'search-recent', parentCode: 'search', name: 'Recent Searches', thumbnail: '', media: '', enabled: true, order: 7, navigateUrl: 'search' },
 
-                                        { code: 'year-make-model', parentCode: null, standalone: true, name: 'Year Make Model', description: 'Powerful YMM search built for automotive stores to boost conversion.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 2, link1: 'advanced', link2: '' },
+                                        { code: 'year-make-model', parentCode: null, standalone: true, name: 'Year Make Model', thumbnail: '', media: '', enabled: true, order: 2, navigateUrl: 'advanced' },
 
-                                        { code: 'market', parentCode: null, standalone: false, name: 'Market', description: 'Adapt your store for every market you sell to.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 3, link1: 'advanced', link2: '' },
-                                        { code: 'market-auto-translate', parentCode: 'market', name: 'Auto Translate', description: 'Automatically translate filter and search content for each market’s language.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 0, link1: 'advanced', link2: '' },
-                                        { code: 'market-local-currency-adaption', parentCode: 'market', name: 'Local Currency Adaption', description: 'Show prices in each shopper’s local currency automatically.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 1, link1: 'advanced', link2: '' },
+                                        { code: 'market', parentCode: null, standalone: false, name: 'Market', thumbnail: '', media: '', enabled: true, order: 3, navigateUrl: 'advanced' },
+                                        { code: 'market-auto-translate', parentCode: 'market', name: 'Auto Translate', thumbnail: '', media: '', enabled: true, order: 0, navigateUrl: 'advanced' },
+                                        { code: 'market-local-currency-adaption', parentCode: 'market', name: 'Local Currency Adaption', thumbnail: '', media: '', enabled: true, order: 1, navigateUrl: 'advanced' },
 
-                                        { code: 'merchandising', parentCode: null, standalone: false, name: 'Merchandising', description: 'Control how products are ranked and displayed.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 4, link1: 'advanced', link2: '' },
-                                        { code: 'merchandising-boost-in-stock', parentCode: 'merchandising', name: 'Boost In Stock Product', description: 'Push in-stock products higher in search and filter results.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 0, link1: 'advanced', link2: '' },
-                                        { code: 'merchandising-hide-out-of-stock', parentCode: 'merchandising', name: 'Hide Out of Stock Product', description: 'Automatically hide out-of-stock products from search and filter results.', thumbnail: '', media: '', enabled: true, unlocked: false, order: 1, link1: 'advanced', link2: '' }
+                                        { code: 'merchandising', parentCode: null, standalone: false, name: 'Merchandising', thumbnail: '', media: '', enabled: true, order: 4, navigateUrl: 'advanced' },
+                                        { code: 'merchandising-boost-in-stock', parentCode: 'merchandising', name: 'Boost In Stock Product', thumbnail: '', media: '', enabled: true, order: 0, navigateUrl: 'advanced' },
+                                        { code: 'merchandising-hide-out-of-stock', parentCode: 'merchandising', name: 'Hide Out of Stock Product', thumbnail: '', media: '', enabled: true, order: 1, navigateUrl: 'advanced' }
                                     ];
 
                                     function getAll() {
@@ -858,6 +872,24 @@
                                         if (added) save(items);
                                     }
 
+                                    function slugify(text) {
+                                        return text.toLowerCase().trim()
+                                            .replace(/[^a-z0-9]+/g, '-')
+                                            .replace(/(^-|-$)/g, '') || 'item';
+                                    }
+
+                                    function uniqueCode(baseText) {
+                                        var items = getAll();
+                                        var base = slugify(baseText);
+                                        var candidate = base;
+                                        var n = 2;
+                                        while (items.some(function(i) { return i.code === candidate; })) {
+                                            candidate = base + '-' + n;
+                                            n++;
+                                        }
+                                        return candidate;
+                                    }
+
                                     function upsert(item) {
                                         var items = getAll();
                                         var idx = -1;
@@ -884,7 +916,8 @@
                                         save: save,
                                         seedDefaultsIfEmpty: seedDefaultsIfEmpty,
                                         upsert: upsert,
-                                        remove: remove
+                                        remove: remove,
+                                        uniqueCode: uniqueCode
                                     };
                                 })();
                                 </script>
@@ -902,7 +935,6 @@
                                             return {
                                                 code: p.code,
                                                 name: p.name,
-                                                description: p.description,
                                                 thumbnail: p.thumbnail,
                                                 media: p.media,
                                                 subs: items.filter(function(i) { return i.parentCode === p.code; }).sort(function(a, b) { return a.order - b.order; })
@@ -929,6 +961,8 @@
                                     }
 
                                     function placeholderBlock(item) {
+                                        var indexingComplete = window.isIndexingComplete ? window.isIndexingComplete() : true;
+                                        if (!indexingComplete) return mediaBlockHtml(item);
                                         return mediaBlockHtml(item) +
                                             '<div class="flex justify-end mt-4">' +
                                                 '<button type="button" class="feature-view-btn bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors" data-feature-view-code="' + item.code + '">View Feature Now</button>' +
@@ -1024,23 +1058,34 @@
                                 })();
                                 </script>
 
+                                <div id="data-insight-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-9 lg:order-none">
+                                    <div class="p-5 flex items-center justify-between border-b border-gray-100">
+                                        <div class="flex items-center gap-3"><h3 class="font-semibold text-[15px] text-[#303030]">Data insight</h3><button class="border border-gray-300 rounded-[6px] px-2.5 py-1 text-[13px] font-medium text-[#303030] flex items-center gap-2 hover:bg-gray-50 shadow-sm"><i class="far fa-calendar text-gray-500 text-sm"></i> Last 30 days</button></div>
+                                        <button class="border border-gray-300 rounded-[6px] w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-50 shadow-sm"><i class="fas fa-chart-bar text-sm"></i></button>
+                                    </div>
+                                    <div class="p-5 flex gap-5">
+                                        <div class="flex-1 border border-gray-200 rounded-[8px] p-5 relative overflow-hidden flex flex-col justify-between"><h4 class="text-[13px] font-semibold text-[#303030] border-b border-gray-300 border-dashed pb-3 mb-4">Total sessions</h4><div class="flex items-end justify-between"><div><div class="text-[13px] text-green-700 font-medium mb-1 flex items-center gap-1">0% <i class="fas fa-arrow-up text-[10px]"></i></div><div class="text-[32px] font-normal leading-none text-[#303030]">0</div></div><div class="w-20 h-[2px] bg-green-500 mb-2"></div></div></div>
+                                        <div class="flex-1 border border-gray-200 rounded-[8px] p-5 relative overflow-hidden flex flex-col justify-between"><h4 class="text-[13px] font-semibold text-[#303030] border-b border-gray-300 border-dashed pb-3 mb-4">Conversion rate</h4><div class="flex items-end justify-between"><div class="mt-6"><div class="text-[32px] font-normal leading-none text-[#303030]">0%</div></div><div class="w-20 h-[2px] bg-green-500 mb-2"></div></div></div>
+                                    </div>
+                                </div>
+
                                 <div id="master-shortcut-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-10 lg:order-none"><h3 class="font-semibold text-[15px] text-[#303030] mb-3">Master</h3><p class="text-[12px] text-gray-500 mb-3">Manage the Highlight Features shown on this homepage.</p><button id="master-shortcut-btn" class="border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 shadow-sm">Go to Master</button></div>
                             </div>
 
                             <div class="homepage-column homepage-right">
                                 <!-- FEEDBACK BANNER -->
-                                <div id="feedback-banner" class="relative bg-white rounded-[8px] border border-gray-200 shadow-sm p-5 order-2 lg:order-none">
-                                    <button id="feedback-banner-close" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full w-6 h-6 flex items-center justify-center transition-colors z-10" aria-label="Dismiss">
+                                <div id="feedback-banner" class="feedback-banner-glow relative rounded-[8px] border p-5 order-2 lg:order-none">
+                                    <button id="feedback-banner-close" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 hover:bg-white/60 rounded-full w-6 h-6 flex items-center justify-center transition-colors z-10" aria-label="Dismiss">
                                         <i class="fas fa-times text-xs"></i>
                                     </button>
 
                                     <div id="feedback-banner-prompt" class="text-center">
                                         <p class="text-[14px] font-semibold text-[#303030] mb-3">How's Findter working for you so far?</p>
                                         <div class="flex items-center justify-center gap-6">
-                                            <button type="button" id="feedback-thumbs-up" class="feedback-thumb-btn text-gray-300 text-2xl transition-all duration-150 hover:scale-125 hover:text-emerald-500" aria-label="Thumbs up">
+                                            <button type="button" id="feedback-thumbs-up" class="feedback-thumb-btn text-gray-500 text-2xl transition-all duration-150 hover:scale-125 hover:text-blue-500" aria-label="Thumbs up">
                                                 <i class="far fa-thumbs-up"></i>
                                             </button>
-                                            <button type="button" id="feedback-thumbs-down" class="feedback-thumb-btn text-gray-300 text-2xl transition-all duration-150 hover:scale-125 hover:text-blue-500" aria-label="Thumbs down">
+                                            <button type="button" id="feedback-thumbs-down" class="feedback-thumb-btn text-gray-500 text-2xl transition-all duration-150 hover:scale-125 hover:text-orange-500" aria-label="Thumbs down">
                                                 <i class="far fa-thumbs-down"></i>
                                             </button>
                                         </div>
@@ -1161,13 +1206,6 @@
                     <div class="max-w-[1040px] mx-auto">
                         <div class="mb-6"><h1 class="text-[22px] font-bold text-[#303030]">Advanced Features</h1></div>
                         <div id="unified-banner-advanced" class="mb-5 hidden"></div>
-                        <div id="advanced-locked-callout" class="hidden mb-5 rounded-[8px] border border-amber-200 bg-amber-50 px-5 py-4 flex items-start gap-3">
-                            <i class="fas fa-lock text-amber-600 mt-0.5"></i>
-                            <div class="flex-1">
-                                <p id="advanced-locked-callout-text" class="text-[13px] text-amber-800 leading-relaxed"></p>
-                            </div>
-                            <button id="advanced-locked-callout-close" class="text-amber-500 hover:text-amber-700 hover:bg-amber-100 rounded p-1" aria-label="Dismiss"><i class="fas fa-times text-sm"></i></button>
-                        </div>
                         <div id="advanced-page-content"></div>
                     </div>
                 </div>
@@ -1581,9 +1619,6 @@
         const masterShortcutBtn = document.getElementById('master-shortcut-btn');
         const masterTabsEl = document.getElementById('master-tabs');
         const masterContentEl = document.getElementById('master-tab-content');
-        const advancedLockedCallout = document.getElementById('advanced-locked-callout');
-        const advancedLockedCalloutText = document.getElementById('advanced-locked-callout-text');
-        const advancedLockedCalloutClose = document.getElementById('advanced-locked-callout-close');
 
         const allNavItems = document.querySelectorAll('[data-page]');
 
@@ -1929,8 +1964,6 @@
                     }
                 });
 
-                if (advancedLockedCallout) advancedLockedCallout.classList.add('hidden');
-
                 if (pageId === 'master') {
                     renderMasterPage();
                 } else {
@@ -1945,30 +1978,27 @@
         }
 
         window.navigateToPage = navigateToPage;
+        window.isIndexingComplete = function() { return AppState.indexingComplete; };
 
         var KNOWN_HIGHLIGHT_PAGE_IDS = ['home', 'filter', 'search', 'metafield', 'design', 'analytics-app', 'advanced', 'master'];
 
-        function showAdvancedLockedCallout(name) {
-            if (!advancedLockedCallout || !advancedLockedCalloutText) return;
-            advancedLockedCalloutText.innerHTML = '<strong>' + name + '</strong> isn\'t unlocked yet — reach out to support once your theme compatibility is confirmed.';
-            advancedLockedCallout.classList.remove('hidden');
-        }
-
         window.viewFeatureNowForHighlight = function(item) {
-            if (!item) return;
-            if (item.unlocked) {
-                if (item.link2 && KNOWN_HIGHLIGHT_PAGE_IDS.indexOf(item.link2) !== -1) {
-                    navigateToPage(item.link2);
-                } else {
-                    console.log('View Feature Now: no valid config tab link set for', item.name);
-                }
+            if (!item || !item.navigateUrl) return;
+            var url = item.navigateUrl.trim();
+            if (!url) return;
+
+            var hashIndex = url.indexOf('#');
+            var pageId = hashIndex === -1 ? url : url.substring(0, hashIndex);
+
+            if (KNOWN_HIGHLIGHT_PAGE_IDS.indexOf(pageId) !== -1) {
+                navigateToPage(pageId);
                 return;
             }
-            var target = (item.link1 && KNOWN_HIGHLIGHT_PAGE_IDS.indexOf(item.link1) !== -1) ? item.link1 : 'advanced';
-            navigateToPage(target);
-            if (target === 'advanced') {
-                showAdvancedLockedCallout(item.name);
+            if (/^https?:\/\//i.test(url)) {
+                window.open(url, '_blank');
+                return;
             }
+            console.log('View Feature Now: unrecognized navigate URL', url);
         };
 
         function renderSubPageContent(pageId) {
@@ -2115,6 +2145,8 @@
 
             var unifiedStatusBannerEl = document.getElementById('unified-status-banner');
             if (unifiedStatusBannerEl) unifiedStatusBannerEl.classList.toggle('indexing-centered', preApp);
+
+            if (window.refreshHighlightFeaturedSection) window.refreshHighlightFeaturedSection();
         }
 
         function showIndexingInProgress() {
@@ -2366,9 +2398,19 @@
             });
         }
 
-        // ========== WARNING / TRIAL FEEDBACK CHAT FLOW ==========
+        // ========== WARNING / TRIAL COUNTDOWN BANNER + FEEDBACK CHAT FLOW ==========
         var warningTrialBtn = document.getElementById('warning-trial-btn');
         var warningTrialMenu = document.getElementById('warning-trial-menu');
+        var trialWarningBanner = document.getElementById('trial-warning-banner');
+        var trialWarningHeading = document.getElementById('trial-warning-heading');
+        var trialWarningText = document.getElementById('trial-warning-text');
+        var trialWarningCloseBtn = document.getElementById('trial-warning-close-btn');
+
+        var TRIAL_WARNING_COPY = {
+            '7': { heading: '7 Days Trial Left', text: 'Your trial ends soon. Choose a plan to keep the app running without interruption.' },
+            '3': { heading: '3 Days Trial Left', text: 'Your trial ends in 3 days. Choose a plan to keep the app running without interruption.' },
+            '1': { heading: '1 Day Trial Left', text: 'Your trial ends tomorrow. Choose a plan to keep the app running without interruption.' }
+        };
 
         // While non-zero and not yet elapsed, the next customer chat message gets
         // an automatic "thanks for the feedback" reply. Set when a Warning option
@@ -2389,17 +2431,38 @@
             });
         }
 
+        if (trialWarningCloseBtn && trialWarningBanner) {
+            trialWarningCloseBtn.addEventListener('click', function() {
+                trialWarningBanner.classList.add('hidden');
+            });
+        }
+
         document.querySelectorAll('.warning-trial-option').forEach(function(opt) {
             opt.addEventListener('click', function() {
+                var days = opt.getAttribute('data-days');
+                var copy = TRIAL_WARNING_COPY[days];
+                if (copy) {
+                    if (trialWarningHeading) trialWarningHeading.textContent = copy.heading;
+                    if (trialWarningText) trialWarningText.textContent = copy.text;
+                }
+                if (trialWarningBanner) {
+                    trialWarningBanner.classList.remove('hidden');
+                    trialWarningBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
                 if (warningTrialMenu) warningTrialMenu.classList.add('hidden');
-                if (chatBubble) chatBubble.classList.add('active');
-                if (chatBadge) chatBadge.classList.add('hidden');
-                addMessageToChat(
-                    'Hi! 👋 How’s your experience with Findter so far?<br><br>' +
-                    'Have any feedback or feature requests? We’d love to hear them and make Findter even better for you! 💙',
-                    false
-                );
-                trialFeedbackReplyUntil = Date.now() + 5 * 60 * 1000;
+
+                // Only the 7-day and 1-day warnings also nudge the merchant for
+                // feedback in chat; the 3-day one just shows the banner.
+                if (days === '7' || days === '1') {
+                    if (chatBubble) chatBubble.classList.add('active');
+                    if (chatBadge) chatBadge.classList.add('hidden');
+                    addMessageToChat(
+                        'Hi! 👋 How’s your experience with Findter so far?<br><br>' +
+                        'Have any feedback or feature requests? We’d love to hear them and make Findter even better for you! 💙',
+                        false
+                    );
+                    trialFeedbackReplyUntil = Date.now() + 5 * 60 * 1000;
+                }
             });
         });
 
@@ -2805,13 +2868,9 @@
             });
         }
 
-        if (advancedLockedCalloutClose && advancedLockedCallout) {
-            advancedLockedCalloutClose.addEventListener('click', function() {
-                advancedLockedCallout.classList.add('hidden');
-            });
-        }
-
         // ========== MASTER PAGE: HIGHLIGHT FEATURES ==========
+        var collapsedGroupCodes = {};
+
         function renderMasterTabs() {
             if (!masterTabsEl) return;
             masterTabsEl.innerHTML = '<button type="button" class="master-tab-btn px-4 py-2 text-[13px] font-semibold border-b-2 border-[#303030] text-[#303030]">Highlight Features</button>';
@@ -2822,27 +2881,62 @@
             renderHighlightList();
         }
 
-        function thumbnailCellHtml(item) {
-            var src = item.thumbnail || item.media;
-            if (src && src.indexOf('data:video') !== 0) {
-                return '<img src="' + src + '" class="w-8 h-8 rounded object-cover border border-gray-200">';
-            }
-            return '<div class="w-8 h-8 rounded bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-400"><i class="fas fa-image text-[10px]"></i></div>';
-        }
-
         function toggleSwitchHtml(id, on) {
             return '<button type="button" id="' + id + '" class="w-9 h-5 rounded-full relative transition-colors shrink-0 ' + (on ? 'bg-green-500' : 'bg-gray-300') + '">' +
                 '<span class="absolute top-0.5 ' + (on ? 'right-0.5' : 'left-0.5') + ' w-4 h-4 bg-white rounded-full shadow transition-all"></span>' +
             '</button>';
         }
 
-        function highlightRowHtml(item, depth) {
-            return '<tr class="highlight-row border-b border-gray-100" draggable="true" data-code="' + item.code + '" data-parent="' + (item.parentCode || '') + '">' +
+        function flipToggleBtn(btn, currentVal) {
+            var next = !currentVal;
+            btn.classList.toggle('bg-green-500', next);
+            btn.classList.toggle('bg-gray-300', !next);
+            var dot = btn.querySelector('span');
+            if (dot) {
+                dot.classList.toggle('right-0.5', next);
+                dot.classList.toggle('left-0.5', !next);
+            }
+            return next;
+        }
+
+        function slugifyHighlightCode(s) {
+            return String(s || '').toLowerCase().trim()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+        }
+
+        function uniqueHighlightCode(base, items, ignoreCode) {
+            var taken = function(c) {
+                return items.some(function(i) { return i.code === c && i.code !== ignoreCode; });
+            };
+            if (!taken(base)) return base;
+            var n = 2;
+            while (taken(base + '-' + n)) n++;
+            return base + '-' + n;
+        }
+
+        function highlightGroupRowHtml(item, expanded, hasChildren) {
+            var expandBtn = hasChildren
+                ? '<button type="button" class="group-expand-toggle text-gray-400 hover:text-gray-600 mr-1.5" data-code="' + item.code + '"><i class="fas fa-chevron-' + (expanded ? 'down' : 'right') + ' text-[10px]"></i></button>'
+                : '<span class="inline-block w-[18px]"></span>';
+            return '<tr class="highlight-row border-b border-gray-100 bg-gray-50/60" draggable="true" data-code="' + item.code + '" data-parent="">' +
                 '<td class="px-3 py-2.5 text-gray-400 cursor-grab w-8"><i class="fas fa-grip-vertical"></i></td>' +
+                '<td class="px-3 py-2.5 text-[13px] text-[#303030] font-semibold">' + expandBtn + item.name + '</td>' +
                 '<td class="px-3 py-2.5"><button type="button" class="highlight-status-toggle w-9 h-5 rounded-full relative transition-colors ' + (item.enabled ? 'bg-green-500' : 'bg-gray-300') + '" data-code="' + item.code + '"><span class="absolute top-0.5 ' + (item.enabled ? 'right-0.5' : 'left-0.5') + ' w-4 h-4 bg-white rounded-full shadow transition-all"></span></button></td>' +
-                '<td class="px-3 py-2.5 text-[13px] ' + (depth ? 'text-gray-600' : 'text-[#303030] font-semibold') + '" style="padding-left: ' + (12 + depth * 20) + 'px;">' + (depth ? '<span class="text-gray-300 mr-1">&#8627;</span>' : '') + item.name + (!depth && item.standalone ? ' <span class="text-[10px] font-normal text-gray-400">(standalone)</span>' : '') + '</td>' +
-                '<td class="px-3 py-2.5 text-[12px] text-gray-500 font-mono">' + item.code + '</td>' +
-                '<td class="px-3 py-2.5">' + thumbnailCellHtml(item) + '</td>' +
+                '<td class="px-3 py-2.5 text-[12px]">' + (item.standalone ? '<span class="font-medium text-green-700">Yes</span>' : '<span class="text-gray-400">No</span>') + '</td>' +
+                '<td class="px-3 py-2.5 text-right whitespace-nowrap">' +
+                    '<button type="button" class="highlight-edit-btn text-gray-500 hover:text-[#303030] px-2" data-code="' + item.code + '"><i class="fas fa-pen text-xs"></i></button>' +
+                    '<button type="button" class="highlight-delete-btn text-gray-500 hover:text-red-600 px-2" data-code="' + item.code + '"><i class="fas fa-trash text-xs"></i></button>' +
+                '</td>' +
+            '</tr>';
+        }
+
+        function highlightFeatureRowHtml(item) {
+            return '<tr class="highlight-row border-b border-gray-100" draggable="true" data-code="' + item.code + '" data-parent="' + item.parentCode + '">' +
+                '<td class="px-3 py-2.5 text-gray-400 cursor-grab w-8"><i class="fas fa-grip-vertical"></i></td>' +
+                '<td class="px-3 py-2.5 text-[13px] text-gray-600 pl-8"><span class="text-gray-300 mr-1">&#8627;</span>' + item.name + '</td>' +
+                '<td class="px-3 py-2.5"><button type="button" class="highlight-status-toggle w-9 h-5 rounded-full relative transition-colors ' + (item.enabled ? 'bg-green-500' : 'bg-gray-300') + '" data-code="' + item.code + '"><span class="absolute top-0.5 ' + (item.enabled ? 'right-0.5' : 'left-0.5') + ' w-4 h-4 bg-white rounded-full shadow transition-all"></span></button></td>' +
+                '<td class="px-3 py-2.5"></td>' +
                 '<td class="px-3 py-2.5 text-right whitespace-nowrap">' +
                     '<button type="button" class="highlight-edit-btn text-gray-500 hover:text-[#303030] px-2" data-code="' + item.code + '"><i class="fas fa-pen text-xs"></i></button>' +
                     '<button type="button" class="highlight-delete-btn text-gray-500 hover:text-red-600 px-2" data-code="' + item.code + '"><i class="fas fa-trash text-xs"></i></button>' +
@@ -2857,39 +2951,41 @@
 
             var rowsHtml = '';
             groups.forEach(function(g) {
-                rowsHtml += highlightRowHtml(g, 0);
-                if (!g.standalone) {
-                    items.filter(function(i) { return i.parentCode === g.code; })
-                        .sort(function(a, b) { return a.order - b.order; })
-                        .forEach(function(f) { rowsHtml += highlightRowHtml(f, 1); });
-                    rowsHtml += '<tr class="border-b border-gray-100"><td></td><td></td><td colspan="4" class="pl-8 pb-2.5 pt-1"><button type="button" class="add-feature-btn text-[12px] text-gray-500 hover:text-[#303030] inline-flex items-center gap-1" data-group="' + g.code + '"><i class="fas fa-plus text-[10px]"></i> Add feature</button></td></tr>';
+                var children = g.standalone ? [] : items.filter(function(i) { return i.parentCode === g.code; }).sort(function(a, b) { return a.order - b.order; });
+                var expanded = !collapsedGroupCodes[g.code];
+                rowsHtml += highlightGroupRowHtml(g, expanded, !g.standalone);
+                if (!g.standalone && expanded) {
+                    children.forEach(function(f) { rowsHtml += highlightFeatureRowHtml(f); });
+                    rowsHtml += '<tr class="border-b border-gray-100"><td></td><td colspan="4" class="pl-8 pb-2.5 pt-1"><button type="button" class="add-feature-btn text-[12px] text-gray-500 hover:text-[#303030] inline-flex items-center gap-1" data-group="' + g.code + '"><i class="fas fa-plus text-[10px]"></i> Add Feature</button></td></tr>';
                 }
             });
 
             if (!rowsHtml) {
-                rowsHtml = '<tr><td colspan="6" class="px-3 py-6 text-center text-[13px] text-gray-500">No groups yet — click "Add group" to create one.</td></tr>';
+                rowsHtml = '<tr><td colspan="5" class="px-3 py-6 text-center text-[13px] text-gray-500">No groups yet — click "Add Group" to create one.</td></tr>';
             }
 
             masterContentEl.innerHTML =
                 '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">' +
                     '<div class="p-5 flex items-center justify-between border-b border-gray-100">' +
                         '<h3 class="font-semibold text-[15px] text-[#303030]">Highlight Feature</h3>' +
-                        '<button type="button" id="add-group-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">Add group</button>' +
+                        '<button type="button" id="add-group-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">Add Group</button>' +
                     '</div>' +
                     '<div class="overflow-x-auto">' +
                         '<table class="w-full text-left">' +
                             '<thead class="bg-gray-50 border-b border-gray-100">' +
                                 '<tr class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">' +
-                                    '<th class="px-3 py-2 w-8"></th>' +
+                                    '<th class="px-3 py-2 w-8">#</th>' +
+                                    '<th class="px-3 py-2">Group Name</th>' +
                                     '<th class="px-3 py-2">Status</th>' +
-                                    '<th class="px-3 py-2">Name</th>' +
-                                    '<th class="px-3 py-2">Code</th>' +
-                                    '<th class="px-3 py-2">Thumbnail</th>' +
+                                    '<th class="px-3 py-2">Standalone</th>' +
                                     '<th class="px-3 py-2 text-right">Action</th>' +
                                 '</tr>' +
                             '</thead>' +
                             '<tbody id="highlight-table-body">' + rowsHtml + '</tbody>' +
                         '</table>' +
+                    '</div>' +
+                    '<div class="p-4 border-t border-gray-100 flex justify-center">' +
+                        '<button type="button" id="add-feature-global-btn" class="text-[13px] text-gray-600 hover:text-[#303030] font-medium inline-flex items-center gap-1"><i class="fas fa-plus text-[10px]"></i> Add Feature</button>' +
                     '</div>' +
                 '</div>';
 
@@ -2901,6 +2997,20 @@
             if (addGroupBtn) {
                 addGroupBtn.addEventListener('click', function() { renderGroupForm(null); });
             }
+
+            var addFeatureGlobalBtn = document.getElementById('add-feature-global-btn');
+            if (addFeatureGlobalBtn) {
+                addFeatureGlobalBtn.addEventListener('click', function() { renderGlobalFeatureForm(); });
+            }
+
+            document.querySelectorAll('.group-expand-toggle').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var code = btn.getAttribute('data-code');
+                    collapsedGroupCodes[code] = !collapsedGroupCodes[code];
+                    renderHighlightList();
+                });
+            });
 
             document.querySelectorAll('.add-feature-btn').forEach(function(btn) {
                 btn.addEventListener('click', function() { renderFeatureForm(btn.getAttribute('data-group'), null); });
@@ -2922,7 +3032,12 @@
             document.querySelectorAll('.highlight-delete-btn').forEach(function(btn) {
                 btn.addEventListener('click', function() {
                     var code = btn.getAttribute('data-code');
-                    if (confirm('Delete this? Features under it will be deleted too.')) {
+                    var item = window.HighlightStore.getAll().filter(function(i) { return i.code === code; })[0];
+                    var isGroup = item && !item.parentCode;
+                    var msg = isGroup
+                        ? 'Are you sure you want to delete this group? All features inside it will be deleted too.'
+                        : 'Are you sure you want to delete this feature?';
+                    if (confirm(msg)) {
                         window.HighlightStore.remove(code);
                         renderHighlightList();
                     }
@@ -2937,7 +3052,8 @@
                     if (!item) return;
                     var next = !item.enabled;
                     item.enabled = next;
-                    // Toggling a group cascades to every feature under it.
+                    // Disabling a group hides every feature under it; disabling a single
+                    // feature only hides that one.
                     if (!item.parentCode) {
                         items.forEach(function(i) {
                             if (i.parentCode === code) i.enabled = next;
@@ -3002,37 +3118,18 @@
 
         function featureFieldsHtml(draft) {
             return '<div class="p-5 space-y-3 border-b border-gray-100">' +
-                    '<div class="grid grid-cols-2 gap-3">' +
-                        '<div><label class="block text-[12px] text-gray-500 mb-1">Thumbnail</label><input type="file" id="highlight-thumbnail-input" accept="image/*" class="w-full text-[12px]"><img src="' + (draft.thumbnail || '') + '" class="mt-2 w-14 h-14 rounded object-cover border border-gray-200 ' + (draft.thumbnail ? '' : 'hidden') + '" id="highlight-thumbnail-preview"></div>' +
-                        '<div><label class="block text-[12px] text-gray-500 mb-1">Media</label><input type="file" id="highlight-media-input" accept="image/*,video/*" class="w-full text-[12px]"><div class="mt-1 text-[11px] text-gray-400" id="highlight-media-filename">' + (draft.media ? 'Attached' : '') + '</div></div>' +
-                    '</div>' +
+                    '<div><label class="block text-[12px] text-gray-500 mb-1">Thumbnail Link</label><input type="text" id="highlight-thumbnail-input" value="' + (draft.thumbnail || '') + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="https://... (image URL)"></div>' +
+                    '<div><label class="block text-[12px] text-gray-500 mb-1">Media Link (image or video)</label><input type="text" id="highlight-media-input" value="' + (draft.media || '') + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="https://..."></div>' +
                 '</div>' +
                 '<div class="p-5">' +
-                    '<div><label class="block text-[12px] text-gray-500 mb-1">Link</label><input type="text" id="highlight-link1-input" value="' + draft.link1 + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="advanced"></div>' +
+                    '<label class="block text-[12px] text-gray-500 mb-1">Navigate URL</label><input type="text" id="highlight-navigate-input" value="' + (draft.navigateUrl || '') + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="filter or advanced#filter">' +
                 '</div>';
-        }
-
-        function flipToggleBtn(btn, currentVal) {
-            var next = !currentVal;
-            btn.classList.toggle('bg-green-500', next);
-            btn.classList.toggle('bg-gray-300', !next);
-            var dot = btn.querySelector('span');
-            if (dot) {
-                dot.classList.toggle('right-0.5', next);
-                dot.classList.toggle('left-0.5', !next);
-            }
-            return next;
         }
 
         function wireCommonFormFieldEvents(draft) {
             var backBtn = document.getElementById('highlight-form-back-btn');
             var cancelBtn = document.getElementById('highlight-form-cancel-btn');
             var enabledToggle = document.getElementById('highlight-enabled-toggle');
-            var unlockedToggle = document.getElementById('highlight-unlocked-toggle');
-            var thumbnailInput = document.getElementById('highlight-thumbnail-input');
-            var thumbnailPreview = document.getElementById('highlight-thumbnail-preview');
-            var mediaInput = document.getElementById('highlight-media-input');
-            var mediaFilename = document.getElementById('highlight-media-filename');
 
             if (backBtn) backBtn.addEventListener('click', renderHighlightList);
             if (cancelBtn) cancelBtn.addEventListener('click', renderHighlightList);
@@ -3040,38 +3137,6 @@
             if (enabledToggle) {
                 enabledToggle.addEventListener('click', function() {
                     draft.enabled = flipToggleBtn(enabledToggle, draft.enabled);
-                });
-            }
-            if (unlockedToggle) {
-                unlockedToggle.addEventListener('click', function() {
-                    draft.unlocked = flipToggleBtn(unlockedToggle, draft.unlocked);
-                });
-            }
-            if (thumbnailInput) {
-                thumbnailInput.addEventListener('change', function() {
-                    var file = thumbnailInput.files && thumbnailInput.files[0];
-                    if (!file) return;
-                    var reader = new FileReader();
-                    reader.onload = function() {
-                        draft.thumbnail = reader.result;
-                        if (thumbnailPreview) {
-                            thumbnailPreview.src = reader.result;
-                            thumbnailPreview.classList.remove('hidden');
-                        }
-                    };
-                    reader.readAsDataURL(file);
-                });
-            }
-            if (mediaInput) {
-                mediaInput.addEventListener('change', function() {
-                    var file = mediaInput.files && mediaInput.files[0];
-                    if (!file) return;
-                    var reader = new FileReader();
-                    reader.onload = function() {
-                        draft.media = reader.result;
-                        if (mediaFilename) mediaFilename.textContent = file.name;
-                    };
-                    reader.readAsDataURL(file);
                 });
             }
         }
@@ -3082,35 +3147,27 @@
             var editing = code ? items.filter(function(i) { return i.code === code; })[0] : null;
             var isNew = !editing;
             var draft = editing ? Object.assign({}, editing) : {
-                code: '', parentCode: null, standalone: false, name: '', description: '', thumbnail: '', media: '',
-                enabled: true, unlocked: false, order: 0, link1: '', link2: ''
+                code: '', parentCode: null, standalone: false, name: '', thumbnail: '', media: '',
+                enabled: true, order: 0, navigateUrl: ''
             };
-
-            var nameCodeHtml = isNew
-                ? '<div><label class="block text-[12px] text-gray-500 mb-1">Name</label><input type="text" id="highlight-name-input" value="' + draft.name + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="Filter"></div>'
-                : '<div class="grid grid-cols-2 gap-3">' +
-                        '<div><label class="block text-[12px] text-gray-500 mb-1">Name</label><input type="text" id="highlight-name-input" value="' + draft.name + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="Filter"></div>' +
-                        '<div><label class="block text-[12px] text-gray-500 mb-1">Code</label><input type="text" id="highlight-code-input" value="' + draft.code + '" readonly class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px] bg-gray-100 text-gray-500"></div>' +
-                    '</div>';
-
-            var standaloneCodeHtml = isNew
-                ? '<div class="p-5 border-b border-gray-100"><label class="block text-[12px] text-gray-500 mb-1">Code</label><input type="text" id="highlight-code-input" value="' + draft.code + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="year-make-model"></div>'
-                : '';
 
             masterContentEl.innerHTML =
                 '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">' +
                     '<div class="p-5 border-b border-gray-100 flex items-center justify-between">' +
                         '<button type="button" id="highlight-form-back-btn" class="text-[13px] text-gray-500 hover:text-[#303030] inline-flex items-center gap-1"><i class="fas fa-arrow-left text-xs"></i> Back</button>' +
-                        '<h3 class="font-semibold text-[15px] text-[#303030]">' + (isNew ? 'Add group' : 'Edit group') + '</h3>' +
+                        '<h3 class="font-semibold text-[15px] text-[#303030]">' + (isNew ? 'Add Group' : 'Edit Group') + '</h3>' +
                     '</div>' +
                     '<div class="p-5 space-y-3 border-b border-gray-100">' +
-                        nameCodeHtml +
-                        '<label class="flex items-center gap-2 cursor-pointer">' +
-                            '<input type="checkbox" id="highlight-standalone-input" ' + (draft.standalone ? 'checked' : '') + ' class="w-4 h-4 rounded border-gray-300">' +
-                            '<span class="text-[13px] text-[#303030]">Standalone (no sub-features, e.g. Year Make Model)</span>' +
+                        '<div class="flex items-end justify-between gap-3">' +
+                            '<div class="flex-1"><label class="block text-[12px] text-gray-500 mb-1">Group Name</label><input type="text" id="highlight-name-input" value="' + draft.name + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="Filter"></div>' +
+                            '<div class="pb-2">' + toggleSwitchHtml('highlight-enabled-toggle', draft.enabled) + '</div>' +
+                        '</div>' +
+                        '<label class="flex items-start gap-2 cursor-pointer">' +
+                            '<input type="checkbox" id="highlight-standalone-input" ' + (draft.standalone ? 'checked' : '') + ' class="w-4 h-4 rounded border-gray-300 mt-0.5">' +
+                            '<span class="text-[13px] text-[#303030]">Standalone — tick if this Group is itself a Feature (e.g. Year Make Model)</span>' +
                         '</label>' +
                     '</div>' +
-                    '<div id="standalone-fields" class="' + (draft.standalone ? '' : 'hidden') + '">' + standaloneCodeHtml + featureFieldsHtml(draft) + '</div>' +
+                    '<div id="standalone-fields" class="' + (draft.standalone ? '' : 'hidden') + '">' + featureFieldsHtml(draft) + '</div>' +
                     '<div class="flex items-center justify-end gap-3 px-5 py-4 border-t border-gray-200 bg-gray-50">' +
                         '<button type="button" id="highlight-form-cancel-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">Cancel</button>' +
                         '<button type="button" id="highlight-form-save-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">Save</button>' +
@@ -3136,28 +3193,18 @@
             if (saveBtn) {
                 saveBtn.addEventListener('click', function() {
                     var nameInput = document.getElementById('highlight-name-input');
-                    var codeInput = document.getElementById('highlight-code-input');
-                    var link1Input = document.getElementById('highlight-link1-input');
+                    var thumbnailInput = document.getElementById('highlight-thumbnail-input');
+                    var mediaInput = document.getElementById('highlight-media-input');
+                    var navigateInput = document.getElementById('highlight-navigate-input');
 
                     var name = nameInput.value.trim();
                     if (!name) {
-                        alert('Name is required.');
+                        alert('Group Name is required.');
                         return;
                     }
 
                     var items = window.HighlightStore.getAll();
-
-                    var code;
-                    if (isNew) {
-                        // Code is only entered for Standalone groups; otherwise derive it
-                        // from the name and keep it unique.
-                        var typed = codeInput && codeInput.value.trim();
-                        var base = slugifyHighlightCode(typed || name) || 'group';
-                        code = uniqueHighlightCode(base, items, draft.code);
-                    } else {
-                        code = draft.code;
-                    }
-
+                    var code = isNew ? uniqueHighlightCode(slugifyHighlightCode(name) || 'group', items, draft.code) : draft.code;
                     var siblingOrder = items.filter(function(i) { return !i.parentCode && i.code !== draft.code; }).length;
 
                     var finalItem = {
@@ -3165,14 +3212,11 @@
                         parentCode: null,
                         standalone: !!draft.standalone,
                         name: name,
-                        description: draft.description || '',
-                        thumbnail: draft.thumbnail || '',
-                        media: draft.media || '',
+                        thumbnail: thumbnailInput ? thumbnailInput.value.trim() : (draft.thumbnail || ''),
+                        media: mediaInput ? mediaInput.value.trim() : (draft.media || ''),
                         enabled: draft.enabled,
-                        unlocked: draft.unlocked,
                         order: isNew ? siblingOrder : draft.order,
-                        link1: link1Input ? link1Input.value.trim() : (draft.link1 || ''),
-                        link2: draft.link2 || ''
+                        navigateUrl: navigateInput ? navigateInput.value.trim() : (draft.navigateUrl || '')
                     };
 
                     window.HighlightStore.upsert(finalItem);
@@ -3188,22 +3232,6 @@
             }
         }
 
-        function slugifyHighlightCode(s) {
-            return String(s || '').toLowerCase().trim()
-                .replace(/[^a-z0-9]+/g, '-')
-                .replace(/^-+|-+$/g, '');
-        }
-
-        function uniqueHighlightCode(base, items, ignoreCode) {
-            var taken = function(c) {
-                return items.some(function(i) { return i.code === c && i.code !== ignoreCode; });
-            };
-            if (!taken(base)) return base;
-            var n = 2;
-            while (taken(base + '-' + n)) n++;
-            return base + '-' + n;
-        }
-
         function renderFeatureForm(groupCode, code) {
             if (!masterContentEl) return;
             var items = window.HighlightStore.getAll();
@@ -3212,20 +3240,20 @@
             var editing = code ? items.filter(function(i) { return i.code === code; })[0] : null;
             var isNew = !editing;
             var draft = editing ? Object.assign({}, editing) : {
-                code: '', parentCode: groupCode, name: '', description: '', thumbnail: '', media: '',
-                enabled: true, unlocked: false, order: 0, link1: group.link1 || '', link2: group.link2 || ''
+                code: '', parentCode: groupCode, name: '', thumbnail: '', media: '',
+                enabled: true, order: 0, navigateUrl: group.navigateUrl || ''
             };
 
             masterContentEl.innerHTML =
                 '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">' +
                     '<div class="p-5 border-b border-gray-100 flex items-center justify-between">' +
                         '<button type="button" id="highlight-form-back-btn" class="text-[13px] text-gray-500 hover:text-[#303030] inline-flex items-center gap-1"><i class="fas fa-arrow-left text-xs"></i> Back</button>' +
-                        '<h3 class="font-semibold text-[15px] text-[#303030]">' + (isNew ? 'Add feature — ' : 'Edit feature — ') + group.name + '</h3>' +
+                        '<h3 class="font-semibold text-[15px] text-[#303030]">' + (isNew ? 'Add Feature — ' : 'Edit Feature — ') + group.name + '</h3>' +
                     '</div>' +
                     '<div class="p-5 space-y-3 border-b border-gray-100">' +
-                        '<div class="grid grid-cols-2 gap-3">' +
-                            '<div><label class="block text-[12px] text-gray-500 mb-1">Name</label><input type="text" id="highlight-name-input" value="' + draft.name + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="Merged Value Group"></div>' +
-                            '<div><label class="block text-[12px] text-gray-500 mb-1">Code</label><input type="text" id="highlight-code-input" value="' + draft.code + '" ' + (isNew ? '' : 'readonly') + ' class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px] ' + (isNew ? '' : 'bg-gray-100 text-gray-500') + '" placeholder="filter-merged-value-group"></div>' +
+                        '<div class="flex items-end justify-between gap-3">' +
+                            '<div class="flex-1"><label class="block text-[12px] text-gray-500 mb-1">Title</label><input type="text" id="highlight-name-input" value="' + draft.name + '" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="Merged Value Group"></div>' +
+                            '<div class="pb-2">' + toggleSwitchHtml('highlight-enabled-toggle', draft.enabled) + '</div>' +
                         '</div>' +
                     '</div>' +
                     featureFieldsHtml(draft) +
@@ -3245,43 +3273,139 @@
             if (saveBtn) {
                 saveBtn.addEventListener('click', function() {
                     var nameInput = document.getElementById('highlight-name-input');
-                    var codeInput = document.getElementById('highlight-code-input');
-                    var link1Input = document.getElementById('highlight-link1-input');
+                    var thumbnailInput = document.getElementById('highlight-thumbnail-input');
+                    var mediaInput = document.getElementById('highlight-media-input');
+                    var navigateInput = document.getElementById('highlight-navigate-input');
 
                     var name = nameInput.value.trim();
-                    var items = window.HighlightStore.getAll();
-
-                    var code;
-                    if (isNew) {
-                        var typed = codeInput && codeInput.value.trim();
-                        var base = slugifyHighlightCode(typed || (groupCode + '-' + name)) || (groupCode + '-feature');
-                        code = uniqueHighlightCode(base, items, draft.code);
-                    } else {
-                        code = draft.code;
-                    }
-
                     if (!name) {
-                        alert('Name is required.');
+                        alert('Title is required.');
                         return;
                     }
 
+                    var items = window.HighlightStore.getAll();
+                    var code = isNew ? uniqueHighlightCode(slugifyHighlightCode(groupCode + '-' + name) || (groupCode + '-feature'), items, draft.code) : draft.code;
                     var siblingOrder = items.filter(function(i) { return i.parentCode === groupCode && i.code !== draft.code; }).length;
 
                     var finalItem = {
                         code: code,
                         parentCode: groupCode,
                         name: name,
-                        description: draft.description || '',
-                        thumbnail: draft.thumbnail || '',
-                        media: draft.media || '',
+                        thumbnail: thumbnailInput.value.trim(),
+                        media: mediaInput.value.trim(),
                         enabled: draft.enabled,
-                        unlocked: draft.unlocked,
                         order: isNew ? siblingOrder : draft.order,
-                        link1: link1Input ? link1Input.value.trim() : (draft.link1 || ''),
-                        link2: draft.link2 || ''
+                        navigateUrl: navigateInput.value.trim()
                     };
 
                     window.HighlightStore.upsert(finalItem);
+                    renderHighlightList();
+                });
+            }
+        }
+
+        function renderGlobalFeatureForm() {
+            if (!masterContentEl) return;
+            var items = window.HighlightStore.getAll();
+            var groupOptions = items.filter(function(i) { return !i.parentCode && !i.standalone; }).sort(function(a, b) { return a.order - b.order; });
+            var draft = { enabled: true, thumbnail: '', media: '', navigateUrl: '' };
+
+            var groupSelectHtml = groupOptions.map(function(g) {
+                return '<option value="' + g.code + '">' + g.name + '</option>';
+            }).join('') + '<option value="__new__">+ Create new group</option>';
+
+            masterContentEl.innerHTML =
+                '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">' +
+                    '<div class="p-5 border-b border-gray-100 flex items-center justify-between">' +
+                        '<button type="button" id="highlight-form-back-btn" class="text-[13px] text-gray-500 hover:text-[#303030] inline-flex items-center gap-1"><i class="fas fa-arrow-left text-xs"></i> Back</button>' +
+                        '<h3 class="font-semibold text-[15px] text-[#303030]">Add Feature</h3>' +
+                    '</div>' +
+                    '<div class="p-5 space-y-3 border-b border-gray-100">' +
+                        '<div>' +
+                            '<label class="block text-[12px] text-gray-500 mb-1">Parent Group</label>' +
+                            '<select id="highlight-group-select" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px] bg-white">' + groupSelectHtml + '</select>' +
+                        '</div>' +
+                        '<div id="new-group-name-field" class="hidden">' +
+                            '<label class="block text-[12px] text-gray-500 mb-1">New Group Name</label>' +
+                            '<input type="text" id="highlight-new-group-name-input" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="e.g. Merchandising">' +
+                        '</div>' +
+                        '<div class="flex items-end justify-between gap-3">' +
+                            '<div class="flex-1"><label class="block text-[12px] text-gray-500 mb-1">Title</label><input type="text" id="highlight-name-input" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px]" placeholder="Feature title"></div>' +
+                            '<div class="pb-2">' + toggleSwitchHtml('highlight-enabled-toggle', true) + '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    featureFieldsHtml(draft) +
+                    '<div class="flex items-center justify-end gap-3 px-5 py-4 border-t border-gray-200 bg-gray-50">' +
+                        '<button type="button" id="highlight-form-cancel-btn" class="border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-gray-100 transition-colors">Cancel</button>' +
+                        '<button type="button" id="highlight-form-save-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">Save</button>' +
+                    '</div>' +
+                '</div>';
+
+            wireGlobalFeatureFormEvents(draft);
+        }
+
+        function wireGlobalFeatureFormEvents(draft) {
+            wireCommonFormFieldEvents(draft);
+
+            var groupSelect = document.getElementById('highlight-group-select');
+            var newGroupField = document.getElementById('new-group-name-field');
+
+            function syncNewGroupFieldVisibility() {
+                var isNewGroup = !groupSelect || groupSelect.value === '__new__';
+                if (newGroupField) newGroupField.classList.toggle('hidden', !isNewGroup);
+            }
+            syncNewGroupFieldVisibility();
+            if (groupSelect) groupSelect.addEventListener('change', syncNewGroupFieldVisibility);
+
+            var saveBtn = document.getElementById('highlight-form-save-btn');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', function() {
+                    var nameInput = document.getElementById('highlight-name-input');
+                    var thumbnailInput = document.getElementById('highlight-thumbnail-input');
+                    var mediaInput = document.getElementById('highlight-media-input');
+                    var navigateInput = document.getElementById('highlight-navigate-input');
+
+                    var name = nameInput.value.trim();
+                    if (!name) {
+                        alert('Title is required.');
+                        return;
+                    }
+
+                    var items = window.HighlightStore.getAll();
+                    var groupCode;
+
+                    if (!groupSelect || groupSelect.value === '__new__') {
+                        var newGroupNameInput = document.getElementById('highlight-new-group-name-input');
+                        var groupName = newGroupNameInput ? newGroupNameInput.value.trim() : '';
+                        if (!groupName) {
+                            alert('Enter a name for the new group.');
+                            return;
+                        }
+                        groupCode = uniqueHighlightCode(slugifyHighlightCode(groupName) || 'group', items, null);
+                        var groupOrder = items.filter(function(i) { return !i.parentCode; }).length;
+                        window.HighlightStore.upsert({
+                            code: groupCode, parentCode: null, standalone: false, name: groupName,
+                            thumbnail: '', media: '', enabled: true, order: groupOrder, navigateUrl: ''
+                        });
+                        items = window.HighlightStore.getAll();
+                    } else {
+                        groupCode = groupSelect.value;
+                    }
+
+                    var featureCode = uniqueHighlightCode(slugifyHighlightCode(groupCode + '-' + name) || (groupCode + '-feature'), items, null);
+                    var siblingOrder = items.filter(function(i) { return i.parentCode === groupCode; }).length;
+
+                    window.HighlightStore.upsert({
+                        code: featureCode,
+                        parentCode: groupCode,
+                        name: name,
+                        thumbnail: thumbnailInput.value.trim(),
+                        media: mediaInput.value.trim(),
+                        navigateUrl: navigateInput.value.trim(),
+                        enabled: draft.enabled,
+                        order: siblingOrder
+                    });
+
                     renderHighlightList();
                 });
             }
