@@ -222,11 +222,6 @@
             0%, 100% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.3); opacity: 0.7; }
         }
-        .feedback-banner-glow {
-            background: linear-gradient(135deg, #DE6698 0%, #FA8F45 100%);
-            border-color: #DE6698;
-            box-shadow: 0 0 0 1px rgba(0,0,0,0.06), 0 10px 28px -6px rgba(222, 102, 152, 0.35);
-        }
         .unified-status-banner {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border-left-width: 4px;
@@ -352,7 +347,7 @@
                     </button>
                     <div class="flex items-center gap-2 app-header-clickable px-2 -mx-2 py-1 rounded-md" id="app-header-title" data-page="home">
                     <div class="rounded-[4px] w-[22px] h-[22px] overflow-hidden"><img src="https://cdn.shopify.com/app-store/listing_images/393b6ef120968ea1931a5ec86b58d041/icon/CIr75oPv944DEAE=.png" alt="Findter" class="w-full h-full object-cover"></div>
-                    <h1 class="font-semibold text-[18px] text-[#303030]">Findter Filter & Search</h1>
+                    <h1 class="font-semibold text-[18px] text-[#303030]">Findter filter & search</h1>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
@@ -379,7 +374,7 @@
                 <div id="page-home" class="page-view active">
                     <div class="max-w-[1040px] mx-auto">
                         <div id="welcome-box" elementtiming="lcp-welcome" class="mb-4 px-1" style="display:block !important;">
-                            <h1 elementtiming="lcp-welcome-heading" class="text-[22px] font-bold text-[#303030] mb-1">👋 Welcome to Findter 👋</h1>
+                            <h1 elementtiming="lcp-welcome-heading" class="text-[22px] font-bold text-[#303030] mb-1">👋 Welcome to findter 👋</h1>
                             <p class="text-[13px] text-gray-500 leading-relaxed">Explore your store's filter and search tools and help your customers find exactly what they're looking for.</p>
                         </div>
 
@@ -463,7 +458,7 @@
                                     </div>
                                 </div>
 
-                                <div id="onboarding-guide-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 order-4 lg:order-none">
+                                <div id="onboarding-guide-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 order-6 lg:order-none">
                                     <div class="p-5">
                                         <div class="flex items-center justify-between mb-5">
                                             <h3 class="font-semibold text-[15px] text-[#303030]">Onboarding guide</h3>
@@ -587,15 +582,15 @@
 
                                 <div id="highlight-featured-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-7 lg:order-none">
                                     <div class="p-5 border-b border-gray-100">
-                                        <h3 class="font-semibold text-[15px] text-[#303030] mb-4">Highlight Features</h3>
-                                        <div id="feature-highlight-tabs" class="flex divide-x divide-gray-200 border border-gray-200 rounded-lg overflow-hidden"></div>
+                                        <h3 class="font-semibold text-[15px] text-[#303030] mb-4">Highlight features</h3>
+                                        <div id="feature-highlight-tabs" class="flex flex-wrap justify-center gap-2"></div>
                                     </div>
                                     <div id="feature-highlight-body" class="flex flex-col md:flex-row"></div>
                                 </div>
 
-                                <div id="recommend-apps-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-8 lg:order-none">
+                                <div id="recommend-apps-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-9 lg:order-none">
                                     <div class="p-5 flex items-center justify-between border-b border-gray-100">
-                                        <h3 class="font-semibold text-[15px] text-[#303030]">Recommend Apps</h3>
+                                        <h3 class="font-semibold text-[15px] text-[#303030]">Recommend apps</h3>
                                         <div class="flex items-center gap-2">
                                             <button id="appCarouselPrev" class="w-7 h-7 rounded-full border border-gray-300 bg-white flex items-center justify-center text-gray-600 hover:bg-gray-50 shadow-sm" aria-label="Previous apps"><i class="fas fa-chevron-left text-[10px]"></i></button>
                                             <button id="appCarouselNext" class="w-7 h-7 rounded-full border border-gray-300 bg-white flex items-center justify-center text-gray-600 hover:bg-gray-50 shadow-sm" aria-label="Next apps"><i class="fas fa-chevron-right text-[10px]"></i></button>
@@ -807,37 +802,25 @@
 
                                 <script>
                                 (function() {
-                                    var STORAGE_KEY = 'findter_highlight_items';
+                                    // v2: reduced to exactly the feature set that exists on the real
+                                    // Advanced Features page (advanced.html). Bumping the storage key
+                                    // forces a clean reseed instead of merging stale groups/items.
+                                    var STORAGE_KEY = 'findter_highlight_items_v2';
 
                                     var DEFAULT_ITEMS = [
-                                        { code: 'filter', parentCode: null, standalone: false, name: 'Filter', thumbnail: '', media: '', enabled: true, order: 0, navigateUrl: 'filter' },
-                                        { code: 'filter-merged-value-group', parentCode: 'filter', name: 'Merged Value Group', thumbnail: '', media: '', enabled: true, order: 0, navigateUrl: 'filter' },
-                                        { code: 'filter-multi-source', parentCode: 'filter', name: 'Multi Source', thumbnail: '', media: '', enabled: true, order: 1, navigateUrl: 'filter' },
-                                        { code: 'filter-by-tag', parentCode: 'filter', name: 'Filter by Tag', thumbnail: '', media: '', enabled: true, order: 2, navigateUrl: 'filter' },
-                                        { code: 'filter-by-metafield', parentCode: 'filter', name: 'Filter by Metafield', thumbnail: '', media: '', enabled: true, order: 3, navigateUrl: 'filter' },
-                                        { code: 'filter-by-variant-option', parentCode: 'filter', name: 'Filter by Variant Option', thumbnail: '', media: '', enabled: true, order: 4, navigateUrl: 'filter' },
-                                        { code: 'filter-price-range', parentCode: 'filter', name: 'Price Range Filter', thumbnail: '', media: '', enabled: true, order: 5, navigateUrl: 'filter' },
-                                        { code: 'filter-in-stock', parentCode: 'filter', name: 'In Stock Filter', thumbnail: '', media: '', enabled: true, order: 6, navigateUrl: 'filter' },
+                                        { code: 'filter', parentCode: null, standalone: false, name: 'Filter', thumbnail: '', media: '', enabled: true, order: 0, navigateUrl: 'advanced.html' },
+                                        { code: 'filter-by-metafields', parentCode: 'filter', name: 'Filter by Metafields', thumbnail: '', media: '', enabled: true, order: 0, navigateUrl: 'advanced.html', advancedFeatureId: 1 },
+                                        { code: 'image-swatches-filter', parentCode: 'filter', name: 'Image Swatches Filter', thumbnail: '', media: '', enabled: true, order: 1, navigateUrl: 'advanced.html', advancedFeatureId: 5 },
+                                        { code: 'multi-filters-one-source', parentCode: 'filter', name: 'Multi-Filters by One Source', thumbnail: '', media: '', enabled: true, order: 2, navigateUrl: 'advanced.html', advancedFeatureId: 6 },
 
-                                        { code: 'search', parentCode: null, standalone: false, name: 'Search', thumbnail: '', media: '', enabled: true, order: 1, navigateUrl: 'search' },
-                                        { code: 'search-synonyms', parentCode: 'search', name: 'Synonyms', thumbnail: '', media: '', enabled: true, order: 0, navigateUrl: 'search' },
-                                        { code: 'search-partial-search', parentCode: 'search', name: 'Partial Search', thumbnail: '', media: '', enabled: true, order: 1, navigateUrl: 'search' },
-                                        { code: 'search-in-collection', parentCode: 'search', name: 'Search in Collection', thumbnail: '', media: '', enabled: true, order: 2, navigateUrl: 'search' },
-                                        { code: 'search-in-filter', parentCode: 'search', name: 'Search in Filter', thumbnail: '', media: '', enabled: true, order: 3, navigateUrl: 'search' },
-                                        { code: 'search-instant-autocomplete', parentCode: 'search', name: 'Instant Autocomplete', thumbnail: '', media: '', enabled: true, order: 4, navigateUrl: 'search' },
-                                        { code: 'search-typo-tolerance', parentCode: 'search', name: 'Typo Tolerance', thumbnail: '', media: '', enabled: true, order: 5, navigateUrl: 'search' },
-                                        { code: 'search-suggestions', parentCode: 'search', name: 'Search Suggestions', thumbnail: '', media: '', enabled: true, order: 6, navigateUrl: 'search' },
-                                        { code: 'search-recent', parentCode: 'search', name: 'Recent Searches', thumbnail: '', media: '', enabled: true, order: 7, navigateUrl: 'search' },
+                                        { code: 'year-make-model', parentCode: null, standalone: true, name: 'Year Make Model', thumbnail: '', media: '', enabled: true, order: 1, navigateUrl: 'advanced.html', advancedFeatureId: 'sample-ymm' },
 
-                                        { code: 'year-make-model', parentCode: null, standalone: true, name: 'Year Make Model', thumbnail: '', media: '', enabled: true, order: 2, navigateUrl: 'advanced' },
+                                        { code: 'market', parentCode: null, standalone: false, name: 'Market', thumbnail: '', media: '', enabled: true, order: 2, navigateUrl: 'advanced.html' },
+                                        { code: 'local-currency-adaptation', parentCode: 'market', name: 'Local Currency Adaptation', thumbnail: '', media: '', enabled: true, order: 0, navigateUrl: 'advanced.html', advancedFeatureId: 4 },
 
-                                        { code: 'market', parentCode: null, standalone: false, name: 'Market', thumbnail: '', media: '', enabled: true, order: 3, navigateUrl: 'advanced' },
-                                        { code: 'market-auto-translate', parentCode: 'market', name: 'Auto Translate', thumbnail: '', media: '', enabled: true, order: 0, navigateUrl: 'advanced' },
-                                        { code: 'market-local-currency-adaption', parentCode: 'market', name: 'Local Currency Adaption', thumbnail: '', media: '', enabled: true, order: 1, navigateUrl: 'advanced' },
-
-                                        { code: 'merchandising', parentCode: null, standalone: false, name: 'Merchandising', thumbnail: '', media: '', enabled: true, order: 4, navigateUrl: 'advanced' },
-                                        { code: 'merchandising-boost-in-stock', parentCode: 'merchandising', name: 'Boost In Stock Product', thumbnail: '', media: '', enabled: true, order: 0, navigateUrl: 'advanced' },
-                                        { code: 'merchandising-hide-out-of-stock', parentCode: 'merchandising', name: 'Hide Out of Stock Product', thumbnail: '', media: '', enabled: true, order: 1, navigateUrl: 'advanced' }
+                                        { code: 'merchandising', parentCode: null, standalone: false, name: 'Merchandising', thumbnail: '', media: '', enabled: true, order: 3, navigateUrl: 'advanced.html' },
+                                        { code: 'boost-in-stock-products', parentCode: 'merchandising', name: 'Boost In-Stock Products', thumbnail: '', media: '', enabled: true, order: 0, navigateUrl: 'advanced.html', advancedFeatureId: 2 },
+                                        { code: 'hide-out-of-stock-products', parentCode: 'merchandising', name: 'Hide Out-of-Stock Products', thumbnail: '', media: '', enabled: true, order: 1, navigateUrl: 'advanced.html', advancedFeatureId: 3 }
                                     ];
 
                                     function getAll() {
@@ -924,27 +907,130 @@
 
                                 <script>
                                 (function() {
-                                    var tabsEl = document.getElementById('feature-highlight-tabs');
-                                    var bodyEl = document.getElementById('feature-highlight-body');
-                                    if (!tabsEl || !bodyEl) return;
+                                    // Bridges Highlight Feature "Click to Enable" state to the real
+                                    // Advanced Features page (advanced.html), which owns the actual
+                                    // enabled/locked status per feature (matched by numeric/string id).
+                                    // Same-origin only: works when both pages are served from the same
+                                    // host (e.g. a local dev server), since that's the only way two
+                                    // separate HTML documents can share localStorage.
+                                    var ADV_STORAGE_KEY = 'findter_features_v6';
+                                    var ADV_ACTIVATED_KEY = ADV_STORAGE_KEY + '_activated';
+                                    var OVERRIDE_KEY = 'findter_highlight_adv_override';
+
+                                    function getAdvFeatures() {
+                                        try {
+                                            var raw = localStorage.getItem(ADV_STORAGE_KEY);
+                                            if (!raw) return null;
+                                            var parsed = JSON.parse(raw);
+                                            return Array.isArray(parsed) ? parsed : null;
+                                        } catch (e) { return null; }
+                                    }
+
+                                    function getActivatedMap() {
+                                        try {
+                                            var raw = localStorage.getItem(ADV_ACTIVATED_KEY);
+                                            return raw ? JSON.parse(raw) : {};
+                                        } catch (e) { return {}; }
+                                    }
+
+                                    function getOverrideMap() {
+                                        try {
+                                            var raw = localStorage.getItem(OVERRIDE_KEY);
+                                            return raw ? JSON.parse(raw) : {};
+                                        } catch (e) { return {}; }
+                                    }
+
+                                    function isEnabled(advId) {
+                                        var override = getOverrideMap();
+                                        if (override[String(advId)]) return true;
+                                        var list = getAdvFeatures();
+                                        if (list) {
+                                            var f = list.filter(function(x) { return String(x.id) === String(advId); })[0];
+                                            if (f) return String(f.status || 'Locked').toLowerCase() === 'enabled';
+                                        }
+                                        return false;
+                                    }
+
+                                    function isEverActivated(advId) {
+                                        var override = getOverrideMap();
+                                        if (override[String(advId)]) return true;
+                                        var map = getActivatedMap();
+                                        return !!map[String(advId)];
+                                    }
+
+                                    function markEnabled(advId) {
+                                        var list = getAdvFeatures();
+                                        if (list) {
+                                            // advanced.html already has real data on this origin — update it
+                                            // in place so opening that page reflects the same enabled state.
+                                            list = list.map(function(f) {
+                                                return String(f.id) === String(advId) ? Object.assign({}, f, { status: 'Enabled' }) : f;
+                                            });
+                                            localStorage.setItem(ADV_STORAGE_KEY, JSON.stringify(list));
+                                            var activatedMap = getActivatedMap();
+                                            activatedMap[String(advId)] = true;
+                                            localStorage.setItem(ADV_ACTIVATED_KEY, JSON.stringify(activatedMap));
+                                        } else {
+                                            // advanced.html hasn't seeded its own storage yet — remember the
+                                            // enable locally so this page reflects it until that happens.
+                                            var override = getOverrideMap();
+                                            override[String(advId)] = true;
+                                            localStorage.setItem(OVERRIDE_KEY, JSON.stringify(override));
+                                        }
+                                    }
+
+                                    window.AdvancedFeaturesBridge = {
+                                        isEnabled: isEnabled,
+                                        isEverActivated: isEverActivated,
+                                        markEnabled: markEnabled
+                                    };
+                                })();
+                                </script>
+
+                                <script>
+                                window.__highlightWidgets = window.__highlightWidgets || [];
+
+                                window.refreshAllHighlightWidgets = function() {
+                                    window.__highlightWidgets.forEach(function(w) { if (w && w.refresh) w.refresh(); });
+                                };
+                                // Kept for backward compatibility with older call sites.
+                                window.refreshHighlightFeaturedSection = window.refreshAllHighlightWidgets;
+
+                                window.createHighlightFeaturedWidget = function(config) {
+                                    var tabsEl = document.getElementById(config.tabsElId);
+                                    var bodyEl = document.getElementById(config.bodyElId);
+                                    if (!tabsEl || !bodyEl) return null;
+
+                                    var autoplayOn = !!config.autoplay;
+                                    var autoplayTimer = null;
+                                    var flatSequence = [];
+                                    var flatIndex = 0;
+                                    var selectedParent = null;
+                                    var selectedSub = null;
 
                                     function getFeatureTree() {
                                         var items = (window.HighlightStore ? window.HighlightStore.getAll() : []).filter(function(i) { return i.enabled; });
                                         var parents = items.filter(function(i) { return !i.parentCode; }).sort(function(a, b) { return a.order - b.order; });
                                         return parents.map(function(p) {
-                                            return {
-                                                code: p.code,
-                                                name: p.name,
-                                                thumbnail: p.thumbnail,
-                                                media: p.media,
+                                            return Object.assign({}, p, {
                                                 subs: items.filter(function(i) { return i.parentCode === p.code; }).sort(function(a, b) { return a.order - b.order; })
-                                            };
+                                            });
                                         });
                                     }
 
-                                    var initialTree = getFeatureTree();
-                                    var selectedParent = initialTree.length ? initialTree[0].code : null;
-                                    var selectedSub = null;
+                                    function buildFlatSequence(tree) {
+                                        var seq = [];
+                                        tree.forEach(function(p) {
+                                            if (p.subs.length === 0) {
+                                                seq.push({ parent: p.code, sub: null });
+                                            } else {
+                                                p.subs.forEach(function(s) {
+                                                    seq.push({ parent: p.code, sub: s.code });
+                                                });
+                                            }
+                                        });
+                                        return seq;
+                                    }
 
                                     function mediaBlockHtml(item) {
                                         var src = item.media || item.thumbnail;
@@ -962,11 +1048,22 @@
 
                                     function placeholderBlock(item) {
                                         var indexingComplete = window.isIndexingComplete ? window.isIndexingComplete() : true;
-                                        if (!indexingComplete) return mediaBlockHtml(item);
-                                        return mediaBlockHtml(item) +
-                                            '<div class="flex justify-end mt-4">' +
-                                                '<button type="button" class="feature-view-btn bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors" data-feature-view-code="' + item.code + '">View Feature Now</button>' +
-                                            '</div>';
+                                        var media = mediaBlockHtml(item);
+                                        if (!indexingComplete && !config.alwaysShowActions) return media;
+
+                                        var isEnabled = item.advancedFeatureId != null
+                                            ? !!(window.AdvancedFeaturesBridge && window.AdvancedFeaturesBridge.isEnabled(item.advancedFeatureId))
+                                            : !!item.unlocked;
+
+                                        var actionHtml;
+                                        if (isEnabled) {
+                                            actionHtml = '<button type="button" class="feature-view-btn bg-[#303030] text-white rounded-[6px] px-3 sm:px-4 py-2 text-[12px] sm:text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors" data-feature-view-code="' + item.code + '">View Feature Now</button>';
+                                        } else {
+                                            actionHtml = '<button type="button" class="feature-enable-btn bg-[#303030] text-white rounded-[6px] px-3 sm:px-4 py-2 text-[12px] sm:text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors" data-feature-enable-code="' + item.code + '">Click to Enable</button>';
+                                        }
+
+                                        return media +
+                                            '<div class="flex flex-wrap items-center justify-end gap-3 mt-4">' + actionHtml + '</div>';
                                     }
 
                                     function renderTabs() {
@@ -974,8 +1071,8 @@
                                         var html = '';
                                         tree.forEach(function(item) {
                                             var active = selectedParent === item.code;
-                                            html += '<button type="button" class="feature-tab-btn flex-1 px-3 py-2.5 text-[13px] font-semibold text-center transition-colors ' +
-                                                (active ? 'bg-[#303030] text-white' : 'bg-white text-[#303030] hover:bg-gray-50') +
+                                            html += '<button type="button" class="feature-tab-btn whitespace-nowrap px-3 py-2 rounded-lg border text-[12px] sm:text-[13px] font-semibold text-center transition-colors ' +
+                                                (active ? 'bg-[#303030] text-white border-[#303030]' : 'bg-white text-[#303030] border-gray-200 hover:bg-gray-50') +
                                                 '" data-parent="' + item.code + '">' + item.name + '</button>';
                                         });
                                         tabsEl.innerHTML = html;
@@ -991,7 +1088,7 @@
                                         }
 
                                         if (item.subs.length === 0) {
-                                            bodyEl.className = 'p-5';
+                                            bodyEl.className = 'p-4 sm:p-5';
                                             bodyEl.innerHTML = placeholderBlock(item);
                                             return;
                                         }
@@ -1003,10 +1100,10 @@
                                         var leftHtml = '';
                                         item.subs.forEach(function(sub) {
                                             var active = selectedSub === sub.code;
-                                            leftHtml += '<div class="feature-sub-row px-5 py-3 cursor-pointer border-b border-gray-50 ' +
+                                            leftHtml += '<div class="feature-sub-row shrink-0 md:shrink whitespace-nowrap md:whitespace-normal px-4 sm:px-5 py-2.5 sm:py-3 cursor-pointer border-b md:border-b-0 border-gray-50 ' +
                                                 (active ? 'bg-gray-100' : 'hover:bg-gray-50') +
                                                 '" data-sub="' + sub.code + '">' +
-                                                    '<div class="text-[14px] font-semibold text-[#303030]">' + sub.name + '</div>' +
+                                                    '<div class="text-[13px] sm:text-[14px] font-semibold text-[#303030]">' + sub.name + '</div>' +
                                                 '</div>';
                                         });
 
@@ -1014,13 +1111,67 @@
 
                                         bodyEl.className = 'flex flex-col md:flex-row';
                                         bodyEl.innerHTML =
-                                            '<div class="w-full md:w-[38%] border-b md:border-b-0 md:border-r border-gray-100 py-2">' + leftHtml + '</div>' +
-                                            '<div class="w-full md:w-[62%] p-5">' + placeholderBlock(selectedItem) + '</div>';
+                                            '<div class="w-full md:w-[38%] flex md:block overflow-x-auto md:overflow-visible border-b md:border-b-0 md:border-r border-gray-100 py-1 md:py-2">' + leftHtml + '</div>' +
+                                            '<div class="w-full md:w-[62%] p-4 sm:p-5">' + placeholderBlock(selectedItem) + '</div>';
+                                    }
+
+                                    function syncSelectionToFlat() {
+                                        var entry = flatSequence[flatIndex];
+                                        if (!entry) { selectedParent = null; selectedSub = null; return; }
+                                        selectedParent = entry.parent;
+                                        selectedSub = entry.sub;
+                                    }
+
+                                    function renderAll() {
+                                        var tree = getFeatureTree();
+                                        flatSequence = buildFlatSequence(tree);
+
+                                        if (flatSequence.length === 0) {
+                                            selectedParent = null;
+                                            selectedSub = null;
+                                            renderTabs();
+                                            renderBody();
+                                            return;
+                                        }
+
+                                        var stillValid = selectedParent && tree.some(function(f) { return f.code === selectedParent; });
+                                        if (!stillValid) {
+                                            flatIndex = 0;
+                                            syncSelectionToFlat();
+                                        } else {
+                                            var idx = -1;
+                                            for (var i = 0; i < flatSequence.length; i++) {
+                                                if (flatSequence[i].parent === selectedParent && flatSequence[i].sub === selectedSub) { idx = i; break; }
+                                            }
+                                            flatIndex = idx === -1 ? 0 : idx;
+                                        }
+
+                                        renderTabs();
+                                        renderBody();
+                                    }
+
+                                    function stopAutoplay() {
+                                        if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
+                                        autoplayOn = false;
+                                    }
+
+                                    function advanceAutoplay() {
+                                        if (flatSequence.length === 0) return;
+                                        flatIndex = (flatIndex + 1) % flatSequence.length;
+                                        syncSelectionToFlat();
+                                        renderTabs();
+                                        renderBody();
+                                    }
+
+                                    function startAutoplay() {
+                                        if (!config.autoplay || !autoplayOn || autoplayTimer) return;
+                                        autoplayTimer = setInterval(advanceAutoplay, 5000);
                                     }
 
                                     tabsEl.addEventListener('click', function(e) {
                                         var tabBtn = e.target.closest('[data-parent]');
                                         if (!tabBtn) return;
+                                        stopAutoplay();
                                         selectedParent = tabBtn.getAttribute('data-parent');
                                         selectedSub = null;
                                         renderTabs();
@@ -1028,8 +1179,10 @@
                                     });
 
                                     bodyEl.addEventListener('click', function(e) {
+                                        stopAutoplay();
                                         var viewBtn = e.target.closest('[data-feature-view-code]');
                                         if (viewBtn) {
+                                            stopAutoplay();
                                             var code = viewBtn.getAttribute('data-feature-view-code');
                                             var item = (window.HighlightStore ? window.HighlightStore.getAll() : []).filter(function(i) { return i.code === code; })[0];
                                             if (window.viewFeatureNowForHighlight) {
@@ -1037,28 +1190,52 @@
                                             }
                                             return;
                                         }
+
+                                        var enableBtn = e.target.closest('[data-feature-enable-code]');
+                                        if (enableBtn) {
+                                            stopAutoplay();
+                                            var ecode = enableBtn.getAttribute('data-feature-enable-code');
+                                            var eitem = (window.HighlightStore ? window.HighlightStore.getAll() : []).filter(function(i) { return i.code === ecode; })[0];
+                                            if (eitem && eitem.advancedFeatureId != null && window.AdvancedFeaturesBridge && window.AdvancedFeaturesBridge.isEverActivated(eitem.advancedFeatureId)) {
+                                                // Already enabled at least once before (just currently toggled
+                                                // off in Advanced Features) — skip the chat confirmation and
+                                                // flip straight back to enabled.
+                                                window.AdvancedFeaturesBridge.markEnabled(eitem.advancedFeatureId);
+                                                window.refreshAllHighlightWidgets();
+                                            } else if (eitem && window.requestEnableFeatureChat) {
+                                                window.requestEnableFeatureChat(eitem, function() {
+                                                    window.refreshAllHighlightWidgets();
+                                                });
+                                            }
+                                            return;
+                                        }
+
                                         var subRow = e.target.closest('[data-sub]');
                                         if (subRow) {
+                                            stopAutoplay();
                                             selectedSub = subRow.getAttribute('data-sub');
                                             renderBody();
                                         }
                                     });
 
-                                    window.refreshHighlightFeaturedSection = function() {
-                                        var tree = getFeatureTree();
-                                        if (!selectedParent || !tree.some(function(f) { return f.code === selectedParent; })) {
-                                            selectedParent = tree.length ? tree[0].code : null;
-                                            selectedSub = null;
-                                        }
-                                        renderTabs();
-                                        renderBody();
-                                    };
+                                    bodyEl.addEventListener('play', function() { stopAutoplay(); }, true);
 
-                                    window.refreshHighlightFeaturedSection();
-                                })();
+                                    renderAll();
+                                    startAutoplay();
+
+                                    var widget = { refresh: renderAll, stopAutoplay: stopAutoplay };
+                                    window.__highlightWidgets.push(widget);
+                                    return widget;
+                                };
+
+                                window.createHighlightFeaturedWidget({
+                                    tabsElId: 'feature-highlight-tabs',
+                                    bodyElId: 'feature-highlight-body',
+                                    autoplay: false
+                                });
                                 </script>
 
-                                <div id="data-insight-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-9 lg:order-none">
+                                <div id="data-insight-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden order-10 lg:order-none">
                                     <div class="p-5 flex items-center justify-between border-b border-gray-100">
                                         <div class="flex items-center gap-3"><h3 class="font-semibold text-[15px] text-[#303030]">Data insight</h3><button class="border border-gray-300 rounded-[6px] px-2.5 py-1 text-[13px] font-medium text-[#303030] flex items-center gap-2 hover:bg-gray-50 shadow-sm"><i class="far fa-calendar text-gray-500 text-sm"></i> Last 30 days</button></div>
                                         <button class="border border-gray-300 rounded-[6px] w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-50 shadow-sm"><i class="fas fa-chart-bar text-sm"></i></button>
@@ -1069,36 +1246,46 @@
                                     </div>
                                 </div>
 
-                                <div id="master-shortcut-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-10 lg:order-none"><h3 class="font-semibold text-[15px] text-[#303030] mb-3">Master</h3><p class="text-[12px] text-gray-500 mb-3">Manage the Highlight Features shown on this homepage.</p><button id="master-shortcut-btn" class="border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 shadow-sm">Go to Master</button></div>
+                                <div id="master-shortcut-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-11 lg:order-none"><h3 class="font-semibold text-[15px] text-[#303030] mb-3">Master</h3><p class="text-[12px] text-gray-500 mb-3">Manage the Highlight Features shown on this homepage.</p><button id="master-shortcut-btn" class="border border-gray-300 rounded-[6px] px-3 py-1.5 text-[13px] font-medium text-[#303030] hover:bg-gray-50 shadow-sm">Go to Master</button></div>
                             </div>
 
                             <div class="homepage-column homepage-right">
                                 <!-- FEEDBACK BANNER -->
-                                <div id="feedback-banner" class="feedback-banner-glow relative rounded-[8px] border p-5 pt-8 order-2 lg:order-none">
-                                    <button id="feedback-banner-close" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 hover:bg-white/60 rounded-full w-6 h-6 flex items-center justify-center transition-colors z-10" aria-label="Dismiss">
-                                        <i class="fas fa-times text-xs"></i>
-                                    </button>
-
-                                    <div id="feedback-banner-prompt" class="text-center">
-                                        <p id="feedback-banner-prompt-text" class="text-[14px] font-semibold text-white mb-5">How was your experience with Findter so far?</p>
+                                <div id="feedback-banner" class="rounded-[8px] shadow-sm overflow-hidden order-3 lg:order-none">
+                                    <div class="bg-blue-50 px-5 py-4 relative">
+                                        <button id="feedback-banner-close" class="absolute top-3 right-3 text-blue-400 hover:text-blue-600 hover:bg-blue-100 rounded-full w-6 h-6 flex items-center justify-center transition-colors z-10" aria-label="Dismiss">
+                                            <i class="fas fa-times text-xs"></i>
+                                        </button>
+                                        <h3 id="feedback-banner-prompt-text" class="text-[14px] font-semibold text-blue-900 pr-8">How was your experience with Findter so far?</h3>
+                                    </div>
+                                    <div id="feedback-banner-prompt" class="bg-white px-5 py-5 text-center">
                                         <div class="flex items-center justify-center gap-10">
-                                            <button type="button" id="feedback-thumbs-down" class="feedback-thumb-btn transition-all duration-150 hover:scale-125" aria-label="Thumbs down">
-                                                <img src="slightly_frowning_face_3d.png" alt="Thumbs down" class="w-10 h-10 drop-shadow-[0_6px_10px_rgba(0,0,0,0.6)]">
+                                            <button type="button" id="feedback-thumbs-down" class="feedback-thumb-btn text-gray-400 hover:text-red-500 text-3xl transition-all duration-150 hover:scale-125" aria-label="Thumbs down">
+                                                <i class="far fa-thumbs-down"></i>
                                             </button>
-                                            <button type="button" id="feedback-thumbs-up" class="feedback-thumb-btn transition-all duration-150 hover:scale-125" aria-label="Thumbs up">
-                                                <img src="smiling_face_with_smiling_eyes_3d.png" alt="Thumbs up" class="w-10 h-10 drop-shadow-[0_6px_10px_rgba(0,0,0,0.6)]">
+                                            <button type="button" id="feedback-thumbs-up" class="feedback-thumb-btn text-gray-400 hover:text-blue-600 text-3xl transition-all duration-150 hover:scale-125" aria-label="Thumbs up">
+                                                <i class="far fa-thumbs-up"></i>
                                             </button>
                                         </div>
                                     </div>
-
-                                    <div id="feedback-banner-thanks" class="hidden text-center">
-                                        <img src="partying_face_3d.png" alt="Thank you" class="w-10 h-10 mx-auto mb-2 drop-shadow-[0_6px_10px_rgba(0,0,0,0.6)]">
-                                        <p id="feedback-banner-thanks-text" class="text-[14px] font-semibold text-white">Thank you so much for your valuable feedback!</p>
-                                    </div>
                                 </div>
 
-                                <div id="findter-status-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-3 lg:order-none">
-                                    <h3 class="font-semibold text-[15px] text-[#303030] mb-4"><strong>Findter App Status</strong></h3>
+                                <!-- FEEDBACK MINI BOX (shown after a thumbs-up review) -->
+                                <div id="feedback-mini-box" class="hidden bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-3 lg:order-none">
+                                    <button type="button" id="feedback-mini-box-btn" class="w-full flex items-center gap-3 text-left">
+                                        <div class="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                                            <i class="far fa-comment-dots"></i>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-[13px] font-semibold text-[#303030]">Have feedback for us?</p>
+                                            <p class="text-[12px] text-gray-500">Let us know how we can improve Findter.</p>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                                    </button>
+                                </div>
+
+                                <div id="findter-status-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-4 lg:order-none">
+                                    <h3 class="font-semibold text-[15px] text-[#303030] mb-4"><strong>Findter app status</strong></h3>
                                     <div class="space-y-3">
                                         <div class="flex items-center justify-between text-[13px] text-[#303030]">
                                             <span class="font-medium">Plan</span>
@@ -1125,7 +1312,7 @@
                                 </div>
 
                                 <div id="help-support-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden p-5 order-8 lg:order-none">
-                                    <h3 class="font-semibold text-[15px] text-[#303030] mb-3">Help & Support</h3>
+                                    <h3 class="font-semibold text-[15px] text-[#303030] mb-3">Help & support</h3>
                                     <p class="text-[13px] text-[#303030] mb-3 leading-relaxed">Find out more User Guidelines <a href="#" class="text-blue-600 hover:underline">here</a>.</p>
                                     <div class="text-[13px] text-[#303030] space-y-1 mb-4">
                                         <p class="font-medium">If you struggling with:</p>
@@ -1188,7 +1375,7 @@
 
                 <div id="page-design" class="page-view">
                     <div class="max-w-[1040px] mx-auto">
-                        <div class="mb-6"><h1 class="text-[22px] font-bold text-[#303030]">Filter & Product Grid Design</h1></div>
+                        <div class="mb-6"><h1 class="text-[22px] font-bold text-[#303030]">Filter & product grid design</h1></div>
                         <div id="unified-banner-design" class="mb-5 hidden"></div>
                         <div id="design-page-content"></div>
                     </div>
@@ -1204,7 +1391,7 @@
 
                 <div id="page-advanced" class="page-view">
                     <div class="max-w-[1040px] mx-auto">
-                        <div class="mb-6"><h1 class="text-[22px] font-bold text-[#303030]">Advanced Features</h1></div>
+                        <div class="mb-6"><h1 class="text-[22px] font-bold text-[#303030]">Advanced features</h1></div>
                         <div id="unified-banner-advanced" class="mb-5 hidden"></div>
                         <div id="advanced-page-content"></div>
                     </div>
@@ -1215,6 +1402,24 @@
                         <div class="mb-6"><h1 class="text-[22px] font-bold text-[#303030]">Master</h1></div>
                         <div id="master-tabs" class="flex gap-2 border-b border-gray-200 mb-5"></div>
                         <div id="master-tab-content"></div>
+                    </div>
+                </div>
+
+                <div id="page-highlight-feature" class="page-view">
+                    <div class="max-w-[700px] mx-auto">
+                        <div id="hf-banner-container" class="mb-5"></div>
+
+                        <div id="hf-highlight-featured-card" class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">
+                            <div class="p-4 sm:p-5 border-b border-gray-100">
+                                <h3 class="font-semibold text-[15px] text-[#303030] mb-4">Highlight features</h3>
+                                <div id="hf-feature-highlight-tabs" class="flex flex-wrap justify-center gap-2"></div>
+                            </div>
+                            <div id="hf-feature-highlight-body" class="flex flex-col md:flex-row"></div>
+                        </div>
+
+                        <div id="hf-continue-container" class="hidden mt-4 flex justify-end">
+                            <button type="button" id="hf-continue-to-home-btn" class="bg-[#303030] text-white rounded-[6px] px-6 py-2.5 text-[14px] font-medium hover:bg-[#4a4a4a] transition-colors">Continue to Homepage</button>
+                        </div>
                     </div>
                 </div>
 
@@ -1271,7 +1476,7 @@
                         <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600">
                             <i class="fas fa-lock text-lg"></i>
                         </div>
-                        <h3 class="text-[16px] font-semibold text-[#303030]">Access Restricted</h3>
+                        <h3 class="text-[16px] font-semibold text-[#303030]">Access restricted</h3>
                     </div>
                     <button type="button" id="close-restricted-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
                         <i class="fas fa-times text-lg"></i>
@@ -1316,16 +1521,16 @@
     <div id="theme-picker-modal" class="modal-wrapper fixed inset-0 hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="theme-picker-modal-overlay"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
-            <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm pointer-events-auto max-h-[55vh] flex flex-col relative modal-content">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-md pointer-events-auto max-h-[55vh] flex flex-col relative modal-content">
                 <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 shrink-0">
-                    <h3 class="text-[16px] font-semibold text-[#303030]">Choose Your Theme</h3>
+                    <h3 class="text-[16px] font-semibold text-[#303030]">Choose your theme</h3>
                     <button type="button" id="close-theme-picker-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
                         <i class="fas fa-times text-lg"></i>
                     </button>
                 </div>
-                <div class="grid grid-cols-[1fr_140px] gap-3 px-6 py-2.5 border-b border-gray-200 bg-gray-50 shrink-0">
+                <div class="grid grid-cols-[1fr_170px] gap-3 px-6 py-2.5 border-b border-gray-200 bg-gray-50 shrink-0">
                     <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Your theme</span>
-                    <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Compatibility</span>
+                    <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide text-center">Compatibility</span>
                 </div>
                 <div id="theme-picker-list" class="overflow-y-auto flex-1"></div>
             </div>
@@ -1338,7 +1543,7 @@
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
             <div class="bg-white rounded-xl shadow-2xl w-full max-w-[980px] pointer-events-auto max-h-[90vh] flex flex-col relative modal-content">
                 <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-[16px] font-semibold text-[#303030]">Enable App Embed</h3>
+                    <h3 class="text-[16px] font-semibold text-[#303030]">Enable app embed</h3>
                     <button type="button" id="close-editor-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
                         <i class="fas fa-times text-lg"></i>
                     </button>
@@ -1404,7 +1609,7 @@
                 <div id="feedback-form-body" class="px-6 py-5 space-y-4">
                     <p class="text-[13px] text-gray-500 leading-relaxed">Fill in the details below and our support team will respond directly in the chat</p>
                     <div>
-                        <label class="block text-[13px] font-semibold text-gray-700 mb-1.5">Category</label>
+                        <label class="block text-[13px] font-semibold text-gray-700 mb-1.5">Category <span class="text-red-500">*</span></label>
                         <select id="feedback-category" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px] outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 bg-white">
                             <option value="Something isn't working">Something isn't working</option>
                             <option value="I can't find what I'm looking for">I can't find what I'm looking for</option>
@@ -1419,7 +1624,7 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[13px] font-semibold text-gray-700 mb-1.5">Tell us more</label>
+                        <label class="block text-[13px] font-semibold text-gray-700 mb-1.5">Tell us more <span class="text-gray-400 font-normal">(optional)</span></label>
                         <textarea id="feedback-comment" rows="4" placeholder="Please describe your issue or feedback as much detail as possible. The more you share, the better help we can do!" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-[13px] outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"></textarea>
                     </div>
                     <div>
@@ -1447,13 +1652,85 @@
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
             <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl pointer-events-auto relative modal-content">
-                <img src="welcome-banner.png" alt="Enjoy 14-day free trial with unlimited features" class="w-full h-auto rounded-t-xl block">
+                <div id="welcome-carousel" class="relative overflow-hidden rounded-t-xl aspect-[2/1] bg-gray-100">
+                    <div id="welcome-carousel-track" class="flex h-full transition-transform duration-500 ease-in-out">
+                        <img src="welcome-banner.png" alt="Enjoy 14-day free trial with unlimited features" class="w-full h-full object-cover shrink-0">
+                        <img src="Image2.png" alt="Smart Search Suggestions" class="w-full h-full object-cover shrink-0">
+                    </div>
+                    <button type="button" id="welcome-carousel-prev" class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center text-gray-700 transition-colors" aria-label="Previous slide">
+                        <i class="fas fa-chevron-left text-sm"></i>
+                    </button>
+                    <button type="button" id="welcome-carousel-next" class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center text-gray-700 transition-colors" aria-label="Next slide">
+                        <i class="fas fa-chevron-right text-sm"></i>
+                    </button>
+                    <div id="welcome-carousel-dots" class="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2"></div>
+                </div>
                 <div class="flex items-center justify-end px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
                     <button type="button" id="welcome-gate-continue-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">Continue</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+    (function() {
+        var track = document.getElementById('welcome-carousel-track');
+        var dotsContainer = document.getElementById('welcome-carousel-dots');
+        var prevBtn = document.getElementById('welcome-carousel-prev');
+        var nextBtn = document.getElementById('welcome-carousel-next');
+        var carousel = document.getElementById('welcome-carousel');
+        if (!track || !dotsContainer || !prevBtn || !nextBtn || !carousel) return;
+
+        var slides = track.children;
+        var current = 0;
+        var autoTimer = null;
+
+        function renderDots() {
+            dotsContainer.innerHTML = '';
+            for (var i = 0; i < slides.length; i++) {
+                var dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = 'welcome-carousel-dot h-2 rounded-full transition-all duration-300 ' +
+                    (i === current ? 'w-5 bg-white' : 'w-2 bg-white/50 hover:bg-white/80');
+                dot.setAttribute('data-index', i);
+                dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function goToSlide(index) {
+            current = (index + slides.length) % slides.length;
+            track.style.transform = 'translateX(-' + (current * 100) + '%)';
+            renderDots();
+        }
+
+        function nextSlide() { goToSlide(current + 1); }
+        function prevSlide() { goToSlide(current - 1); }
+
+        function startAutoSlide() {
+            stopAutoSlide();
+            if (slides.length > 1) autoTimer = setInterval(nextSlide, 5000);
+        }
+        function stopAutoSlide() {
+            if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+        }
+
+        nextBtn.addEventListener('click', function() { nextSlide(); startAutoSlide(); });
+        prevBtn.addEventListener('click', function() { prevSlide(); startAutoSlide(); });
+        dotsContainer.addEventListener('click', function(e) {
+            var dot = e.target.closest('.welcome-carousel-dot');
+            if (!dot) return;
+            goToSlide(parseInt(dot.getAttribute('data-index'), 10));
+            startAutoSlide();
+        });
+
+        carousel.addEventListener('mouseenter', stopAutoSlide);
+        carousel.addEventListener('mouseleave', startAutoSlide);
+
+        goToSlide(0);
+        startAutoSlide();
+    })();
+    </script>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -1485,6 +1762,7 @@
             LAST_ENABLED_THEME: 'findter_last_enabled_theme',
             FIRST_ENABLE_DONE: 'findter_first_enable_done',
             REVIEW_SUBMITTED: 'findter_review_submitted',
+            FEEDBACK_STATE: 'findter_feedback_state',
             HAS_ONBOARDED: 'findter_has_onboarded'
         };
 
@@ -1559,14 +1837,6 @@
         const goToFilterBtn = document.getElementById('go-to-filter-btn');
         const filterLockHint = document.getElementById('filter-lock-hint');
 
-        const welcomeBox = document.getElementById('welcome-box');
-        const dataInsightCard = document.getElementById('data-insight-card');
-        const recommendAppsCard = document.getElementById('recommend-apps-card');
-        const masterShortcutCard = document.getElementById('master-shortcut-card');
-        const findterStatusCard = document.getElementById('findter-status-card');
-        const helpSupportCard = document.getElementById('help-support-card');
-        const syncUpdatesCard = document.getElementById('sync-updates-card');
-        const feedbackBannerCard = document.getElementById('feedback-banner');
 
         const closeRestrictedModalBtn = document.getElementById('close-restricted-modal-btn');
         const restrictedModalOverlay = document.getElementById('restricted-modal-overlay');
@@ -1934,9 +2204,9 @@
             'filter': 'Filter',
             'search': 'Search',
             'metafield': 'Metafield',
-            'design': 'Filter & Product Grid Design',
+            'design': 'Filter & product grid design',
             'analytics-app': 'Analytics',
-            'advanced': 'Advanced Features'
+            'advanced': 'Advanced features'
         };
 
         function navigateToPage(pageId) {
@@ -1957,13 +2227,17 @@
 
                 if (pageId === 'master') {
                     renderMasterPage();
-                } else {
+                } else if (pageId !== 'highlight-feature') {
                     renderSubPageContent(pageId);
                 }
-                if (pageId === 'home' && window.refreshHighlightFeaturedSection) {
-                    window.refreshHighlightFeaturedSection();
+                if ((pageId === 'home' || pageId === 'highlight-feature') && window.refreshAllHighlightWidgets) {
+                    window.refreshAllHighlightWidgets();
                 }
-                updateAllBanners();
+                if (pageId === 'highlight-feature') {
+                    updateHighlightFeaturePageBanner();
+                } else {
+                    updateAllBanners();
+                }
 
             }
         }
@@ -1985,7 +2259,7 @@
                 navigateToPage(pageId);
                 return;
             }
-            if (/^https?:\/\//i.test(url)) {
+            if (/^https?:\/\//i.test(url) || /\.html?($|#)/i.test(url)) {
                 window.open(url, '_blank');
                 return;
             }
@@ -2021,8 +2295,8 @@
         function generatePlaceholderCards(isPreview) {
             var cards = [
                 { title: 'Configuration', icon: 'cog', desc: 'Main settings' },
-                { title: 'Display Options', icon: 'palette', desc: 'Visual customization' },
-                { title: 'Advanced Settings', icon: 'sliders-h', desc: 'Fine-tuning options' }
+                { title: 'Display options', icon: 'palette', desc: 'Visual customization' },
+                { title: 'Advanced settings', icon: 'sliders-h', desc: 'Fine-tuning options' }
             ];
             
             var html = '';
@@ -2058,6 +2332,15 @@
                 e.preventDefault();
                 var page = this.getAttribute('data-page');
                 if (!page) return;
+
+                // Advanced Features now lives on the real advanced.html page (which
+                // also owns the Highlight Feature enable/lock state via
+                // AdvancedFeaturesBridge), so hand off there instead of rendering
+                // the old internal placeholder.
+                if (page === 'advanced') {
+                    window.open('advanced.html', '_blank');
+                    return;
+                }
 
                 navigateToPage(page);
             });
@@ -2114,30 +2397,35 @@
         }
 
         function updateHomepageIndexingVisibility() {
-            var indexing = !AppState.indexingComplete;
-            // The stripped-down "pre-app" screen (only the Collecting data banner +
-            // Highlight Features) is shown for the very first indexing run only.
-            // After the user has completed onboarding once, a Manual sync / Reset
-            // Indexing keeps the full homepage and just surfaces the indexing banner.
-            var preApp = indexing && !AppState.hasOnboarded;
+            // The stripped-down first-run onboarding experience now lives on its own
+            // dedicated "Highlight Feature" page (see updateHighlightFeaturePageBanner);
+            // the homepage itself always renders in full once it's reachable.
+            if (window.refreshAllHighlightWidgets) window.refreshAllHighlightWidgets();
+        }
 
-            if (welcomeBox) welcomeBox.style.display = preApp ? 'none' : '';
+        function updateHighlightFeaturePageBanner() {
+            var bannerContainer = document.getElementById('hf-banner-container');
+            var continueContainer = document.getElementById('hf-continue-container');
+            if (!bannerContainer || !continueContainer) return;
 
-            var hideDuringIndexing = [
-                onboardingGuideCard, dataInsightCard, recommendAppsCard, masterShortcutCard,
-                feedbackBannerCard, findterStatusCard, helpSupportCard, syncUpdatesCard
-            ];
-            hideDuringIndexing.forEach(function(el) {
-                if (el) el.classList.toggle('hidden', preApp);
-            });
-
-            var homepageGridEl = document.getElementById('homepage-grid');
-            if (homepageGridEl) homepageGridEl.classList.toggle('indexing-mode', preApp);
-
-            var unifiedStatusBannerEl = document.getElementById('unified-status-banner');
-            if (unifiedStatusBannerEl) unifiedStatusBannerEl.classList.toggle('indexing-centered', preApp);
-
-            if (window.refreshHighlightFeaturedSection) window.refreshHighlightFeaturedSection();
+            if (!AppState.indexingComplete) {
+                bannerContainer.innerHTML = getSimpleIndexingBannerHTML();
+                continueContainer.classList.add('hidden');
+            } else {
+                bannerContainer.innerHTML =
+                    '<div class="unified-status-banner complete-state rounded-lg p-4 border border-amber-300">' +
+                        '<div class="flex items-start gap-3">' +
+                            '<div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 shrink-0 mt-0.5">' +
+                                '<i class="fas fa-check-circle text-sm"></i>' +
+                            '</div>' +
+                            '<div class="flex-1">' +
+                                '<p class="text-[14px] font-semibold text-green-800 mb-1">Data indexing is completed.</p>' +
+                                '<p class="text-[13px] text-amber-700 leading-relaxed">Take a look at what Findter can do for your store below, then continue to your homepage whenever you\'re ready.</p>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
+                continueContainer.classList.remove('hidden');
+            }
         }
 
         function showIndexingInProgress() {
@@ -2151,6 +2439,7 @@
             manualSyncBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
             updateHomepageIndexingVisibility();
+            updateHighlightFeaturePageBanner();
             updateAllBanners();
             updateEditorModalBanner();
         }
@@ -2181,6 +2470,7 @@
             manualSyncBtn.classList.remove('opacity-50', 'cursor-not-allowed');
 
             updateHomepageIndexingVisibility();
+            updateHighlightFeaturePageBanner();
             updateRestrictedModalContent();
             updateEditorModalBanner();
             checkAndUnlockFeatures();
@@ -2589,6 +2879,92 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
+        function addChatChoicePrompt(text, choices) {
+            var div = document.createElement('div');
+            div.className = 'flex gap-2';
+
+            var buttonsHtml = choices.map(function(c, i) {
+                return '<button type="button" class="chat-choice-btn border border-gray-300 bg-white hover:bg-gray-50 text-[#303030] text-[12px] font-medium px-3 py-1.5 rounded-full transition-colors" data-choice-index="' + i + '">' + c.label + '</button>';
+            }).join('');
+
+            div.innerHTML =
+                '<div class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center text-red-600 shrink-0">' +
+                    '<i class="fas fa-robot text-xs"></i>' +
+                '</div>' +
+                '<div class="flex flex-col gap-2 max-w-[85%]">' +
+                    '<div class="bg-gray-100 rounded-lg rounded-tl-none px-3 py-2 text-[13px] text-gray-700">' + text + '</div>' +
+                    '<div class="flex flex-wrap gap-2">' + buttonsHtml + '</div>' +
+                '</div>';
+
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            var btnEls = div.querySelectorAll('.chat-choice-btn');
+            btnEls.forEach(function(btn, i) {
+                btn.addEventListener('click', function() {
+                    btnEls.forEach(function(b) {
+                        b.disabled = true;
+                        b.classList.add('opacity-50', 'cursor-not-allowed');
+                    });
+                    btn.classList.remove('opacity-50');
+                    btn.classList.add('bg-[#303030]', 'text-white', 'border-[#303030]');
+                    choices[i].onClick();
+                });
+            });
+        }
+
+        window.requestEnableFeatureChat = function(item, onEnabled) {
+            if (!item) return;
+            var name = item.name;
+
+            chatBubble.classList.add('active');
+            if (chatBadge) chatBadge.classList.add('hidden');
+
+            addMessageToChat('Please confirm you want to enable this ' + name + '.', false);
+
+            setTimeout(function() {
+                addChatChoicePrompt('Enable ' + name + '?', [
+                    {
+                        label: 'Yes, enable it',
+                        onClick: function() {
+                            setTimeout(function() {
+                                addMessageToChat('Great! Please give me a moment while I activate ' + name + ' on your account.', false);
+                                setTimeout(function() {
+                                    if (item.advancedFeatureId != null && window.AdvancedFeaturesBridge) {
+                                        window.AdvancedFeaturesBridge.markEnabled(item.advancedFeatureId);
+                                    } else {
+                                        var items = window.HighlightStore.getAll();
+                                        var target = items.filter(function(i) { return i.code === item.code; })[0];
+                                        if (target) {
+                                            target.unlocked = true;
+                                            target.active = true;
+                                            window.HighlightStore.save(items);
+                                        }
+                                    }
+                                    addMessageToChat('Great news! ' + name + ' has been successfully enabled!', false);
+                                    setTimeout(function() {
+                                        addMessageToChat("You can now use this feature immediately. Enjoy!", false);
+                                        if (onEnabled) onEnabled();
+                                    }, 900);
+                                }, 1200);
+                            }, 500);
+                        }
+                    },
+                    {
+                        label: 'No, thanks',
+                        onClick: function() {
+                            setTimeout(function() {
+                                addMessageToChat("No problem! We won't enable " + name + " for now. You can always come back and enable it whenever you're ready.", false);
+                                setTimeout(function() {
+                                    addMessageToChat('May I know if the app meet your expectation so far?', false);
+                                }, 900);
+                            }, 500);
+                        }
+                    }
+                ]);
+            }, 500);
+        };
+
         floatingChatBtn.addEventListener('click', function() { chatBubble.classList.toggle('active'); });
         closeChatBubble.addEventListener('click', function() { chatBubble.classList.remove('active'); });
 
@@ -2637,14 +3013,14 @@
                 var selected = AppState.selectedTheme === theme;
                 var compatible = isThemeCompatible(theme);
                 html +=
-                    '<div class="grid grid-cols-[1fr_140px] items-center py-2.5 border-b border-gray-50 ' +
+                    '<div class="grid grid-cols-[1fr_170px] items-center py-2.5 border-b border-gray-50 ' +
                         (selected ? 'bg-blue-50' : '') +
                     '" ' + (compatible ? 'data-theme="' + theme + '"' : '') + '>' +
                         '<div class="pl-6 pr-3 text-[14px] font-medium text-[#303030] ' + (compatible ? 'hover:text-black cursor-pointer' : '') + '">' + theme + '</div>' +
                         '<div class="pl-3 pr-6 flex justify-center">' +
                             (compatible
                                 ? '<span class="w-fit px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">Compatible</span>'
-                                : '<button type="button" class="w-fit border border-gray-300 bg-white text-[#303030] text-[11px] font-medium px-2 py-1 rounded-md hover:bg-gray-100 transition-colors" data-howto-theme="' + theme + '">How to</button>') +
+                                : '<button type="button" class="w-fit whitespace-nowrap border border-gray-300 bg-white text-[#303030] text-[11px] font-medium px-2 py-1 rounded-md hover:bg-gray-100 transition-colors" data-howto-theme="' + theme + '">Make compatible</button>') +
                         '</div>' +
                     '</div>';
             });
@@ -2841,6 +3217,7 @@
                     welcomeGateModal.classList.add('hidden');
                 }
                 document.body.style.overflow = '';
+                navigateToPage('highlight-feature');
                 startFreshReindexAfterWelcomeGate();
             });
         }
@@ -2849,7 +3226,23 @@
             welcomeGateModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         } else {
+            navigateToPage('highlight-feature');
             startFreshReindexAfterWelcomeGate();
+        }
+
+        // ========== HIGHLIGHT FEATURE PAGE (post-welcome onboarding screen) ==========
+        window.createHighlightFeaturedWidget({
+            tabsElId: 'hf-feature-highlight-tabs',
+            bodyElId: 'hf-feature-highlight-body',
+            autoplay: true,
+            alwaysShowActions: true
+        });
+
+        var hfContinueToHomeBtn = document.getElementById('hf-continue-to-home-btn');
+        if (hfContinueToHomeBtn) {
+            hfContinueToHomeBtn.addEventListener('click', function() {
+                navigateToPage('home');
+            });
         }
 
         // ========== MASTER SHORTCUT & ADVANCED LOCKED CALLOUT ==========
@@ -2963,7 +3356,7 @@
             masterContentEl.innerHTML =
                 '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">' +
                     '<div class="p-5 flex items-center justify-between border-b border-gray-100">' +
-                        '<h3 class="font-semibold text-[15px] text-[#303030]">Highlight Feature</h3>' +
+                        '<h3 class="font-semibold text-[15px] text-[#303030]">Highlight feature</h3>' +
                         '<button type="button" id="add-group-btn" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">Add Group</button>' +
                     '</div>' +
                     '<div class="overflow-x-auto">' +
@@ -3151,7 +3544,7 @@
                 '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">' +
                     '<div class="p-5 border-b border-gray-100 flex items-center justify-between">' +
                         '<button type="button" id="highlight-form-back-btn" class="text-[13px] text-gray-500 hover:text-[#303030] inline-flex items-center gap-1"><i class="fas fa-arrow-left text-xs"></i> Back</button>' +
-                        '<h3 class="font-semibold text-[15px] text-[#303030]">' + (isNew ? 'Add Group' : 'Edit Group') + '</h3>' +
+                        '<h3 class="font-semibold text-[15px] text-[#303030]">' + (isNew ? 'Add group' : 'Edit group') + '</h3>' +
                     '</div>' +
                     '<div class="p-5 space-y-3 border-b border-gray-100">' +
                         '<div class="flex items-end justify-between gap-3">' +
@@ -3212,7 +3605,10 @@
                         media: mediaInput ? mediaInput.value.trim() : (draft.media || ''),
                         enabled: draft.enabled,
                         order: isNew ? siblingOrder : draft.order,
-                        navigateUrl: navigateInput ? navigateInput.value.trim() : (draft.navigateUrl || '')
+                        navigateUrl: navigateInput ? navigateInput.value.trim() : (draft.navigateUrl || ''),
+                        unlocked: draft.unlocked || false,
+                        active: draft.active !== false,
+                        advancedFeatureId: draft.advancedFeatureId
                     };
 
                     window.HighlightStore.upsert(finalItem);
@@ -3244,7 +3640,7 @@
                 '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">' +
                     '<div class="p-5 border-b border-gray-100 flex items-center justify-between">' +
                         '<button type="button" id="highlight-form-back-btn" class="text-[13px] text-gray-500 hover:text-[#303030] inline-flex items-center gap-1"><i class="fas fa-arrow-left text-xs"></i> Back</button>' +
-                        '<h3 class="font-semibold text-[15px] text-[#303030]">' + (isNew ? 'Add Feature — ' : 'Edit Feature — ') + group.name + '</h3>' +
+                        '<h3 class="font-semibold text-[15px] text-[#303030]">' + (isNew ? 'Add feature — ' : 'Edit feature — ') + group.name + '</h3>' +
                     '</div>' +
                     '<div class="p-5 space-y-3 border-b border-gray-100">' +
                         '<div class="flex items-end justify-between gap-3">' +
@@ -3297,7 +3693,10 @@
                         media: mediaInput.value.trim(),
                         enabled: draft.enabled,
                         order: isNew ? siblingOrder : draft.order,
-                        navigateUrl: navigateInput.value.trim()
+                        navigateUrl: navigateInput.value.trim(),
+                        unlocked: draft.unlocked || false,
+                        active: draft.active !== false,
+                        advancedFeatureId: draft.advancedFeatureId
                     };
 
                     window.HighlightStore.upsert(finalItem);
@@ -3324,7 +3723,7 @@
                 '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">' +
                     '<div class="p-5 border-b border-gray-100 flex items-center justify-between">' +
                         '<button type="button" id="highlight-form-back-btn" class="text-[13px] text-gray-500 hover:text-[#303030] inline-flex items-center gap-1"><i class="fas fa-arrow-left text-xs"></i> Back</button>' +
-                        '<h3 class="font-semibold text-[15px] text-[#303030]">Add Feature</h3>' +
+                        '<h3 class="font-semibold text-[15px] text-[#303030]">Add feature</h3>' +
                     '</div>' +
                     '<div class="p-5 space-y-3 border-b border-gray-100">' +
                         '<div>' +
@@ -3414,7 +3813,9 @@
                         media: mediaInput.value.trim(),
                         navigateUrl: navigateInput.value.trim(),
                         enabled: draft.enabled,
-                        order: siblingOrder
+                        order: siblingOrder,
+                        unlocked: false,
+                        active: true
                     });
 
                     renderHighlightList();
@@ -3532,40 +3933,57 @@
             });
         }
 
-        // ========== FEEDBACK BANNER: close + reopen ==========
+        // ========== FEEDBACK BANNER: state machine (default / mini / hidden) ==========
         var feedbackBanner = document.getElementById('feedback-banner');
         var feedbackBannerCloseBtn = document.getElementById('feedback-banner-close');
         var showFeedbackBannerBtn = document.getElementById('show-feedback-banner-btn');
-        var feedbackBannerPrompt = document.getElementById('feedback-banner-prompt');
-        var feedbackBannerThanks = document.getElementById('feedback-banner-thanks');
+        var feedbackMiniBox = document.getElementById('feedback-mini-box');
+        var feedbackMiniBoxBtn = document.getElementById('feedback-mini-box-btn');
 
-        function resetFeedbackBanner() {
-            if (feedbackBannerPrompt) feedbackBannerPrompt.classList.remove('hidden');
-            if (feedbackBannerThanks) feedbackBannerThanks.classList.add('hidden');
+        function getFeedbackState() {
+            return localStorage.getItem(STORAGE_KEYS.FEEDBACK_STATE) || 'default';
         }
 
-        var feedbackThanksTimer = null;
-        function showFeedbackThanks() {
-            if (feedbackBanner) feedbackBanner.classList.remove('hidden');
-            if (feedbackBannerPrompt) feedbackBannerPrompt.classList.add('hidden');
-            if (feedbackBannerThanks) feedbackBannerThanks.classList.remove('hidden');
-            if (feedbackThanksTimer) clearTimeout(feedbackThanksTimer);
-            feedbackThanksTimer = setTimeout(function() {
-                resetFeedbackBanner();
-                feedbackThanksTimer = null;
-            }, 10000);
+        function renderFeedbackBannerState() {
+            var state = getFeedbackState();
+            if (state === 'hidden') {
+                if (feedbackBanner) feedbackBanner.classList.add('hidden');
+                if (feedbackMiniBox) feedbackMiniBox.classList.add('hidden');
+            } else if (state === 'mini') {
+                if (feedbackBanner) feedbackBanner.classList.add('hidden');
+                if (feedbackMiniBox) feedbackMiniBox.classList.remove('hidden');
+            } else {
+                if (feedbackBanner) feedbackBanner.classList.remove('hidden');
+                if (feedbackMiniBox) feedbackMiniBox.classList.add('hidden');
+            }
         }
+
+        function setFeedbackState(state) {
+            localStorage.setItem(STORAGE_KEYS.FEEDBACK_STATE, state);
+            renderFeedbackBannerState();
+        }
+
+        // Always start fresh on reload — state only persists within the
+        // current session so a full page reload re-shows the thumbs prompt.
+        localStorage.removeItem(STORAGE_KEYS.FEEDBACK_STATE);
+        renderFeedbackBannerState();
 
         if (feedbackBannerCloseBtn && feedbackBanner) {
             feedbackBannerCloseBtn.addEventListener('click', function() {
                 feedbackBanner.classList.add('hidden');
             });
         }
-        if (showFeedbackBannerBtn && feedbackBanner) {
+        if (showFeedbackBannerBtn) {
             showFeedbackBannerBtn.addEventListener('click', function() {
-                feedbackBanner.classList.remove('hidden');
-                resetFeedbackBanner();
-                feedbackBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Debug/test trigger in the header — resets back to the default
+                // prompt view so this flow can be re-tested from scratch.
+                setFeedbackState('default');
+                if (feedbackBanner) feedbackBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        }
+        if (feedbackMiniBoxBtn) {
+            feedbackMiniBoxBtn.addEventListener('click', function() {
+                openFeedbackModal();
             });
         }
 
@@ -3586,16 +4004,12 @@
             if (reviewSubmitPending) {
                 reviewSubmitPending = false;
                 localStorage.setItem(STORAGE_KEYS.REVIEW_SUBMITTED, 'true');
-                showFeedbackThanks();
+                setFeedbackState('mini');
             }
         });
 
         if (feedbackThumbsUpBtn) {
             feedbackThumbsUpBtn.addEventListener('click', function() {
-                if (localStorage.getItem(STORAGE_KEYS.REVIEW_SUBMITTED) === 'true') {
-                    showFeedbackThanks();
-                    return;
-                }
                 reviewSubmitPending = true;
                 window.open(APP_STORE_REVIEW_URL, '_blank');
             });
@@ -3642,15 +4056,15 @@
             var comment = feedbackComment ? feedbackComment.value.trim() : '';
             var fileCount = feedbackFiles && feedbackFiles.files ? feedbackFiles.files.length : 0;
 
-            if (!comment) {
-                if (feedbackComment) feedbackComment.focus();
+            if (!category) {
+                if (feedbackCategory) feedbackCategory.focus();
                 return;
             }
 
             var attachmentsText = fileCount > 0 ? fileCount + ' file(s) attached' : 'None';
             var summary = '📋 <strong>New Support Ticket</strong><br>' +
                 'Category: ' + category + '<br>' +
-                'Message: ' + comment + '<br>' +
+                'Message: ' + (comment || '(none)') + '<br>' +
                 'Attachments: ' + attachmentsText;
 
             chatBubble.classList.add('active');
@@ -3664,9 +4078,12 @@
             if (feedbackModalFooter) feedbackModalFooter.classList.add('hidden');
             if (feedbackSuccessBody) feedbackSuccessBody.classList.remove('hidden');
 
+            // Thumbs-down + submitted feedback = the review banner is done for
+            // good; thumbs-up (not this modal) is the only path to the mini box.
+            setFeedbackState('hidden');
+
             setTimeout(function() {
                 closeFeedbackModal();
-                showFeedbackThanks();
             }, 1600);
         }
 
