@@ -1042,7 +1042,7 @@
                                         }
                                         return '<div class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex flex-col items-center justify-center text-gray-400" style="aspect-ratio: 16 / 9;">' +
                                                 '<i class="fas fa-photo-video text-2xl mb-2"></i>' +
-                                                '<span class="text-[12px] font-medium px-4 text-center">' + item.name + ' — image/video coming soon</span>' +
+                                                '<span class="text-[12px] font-medium px-4 text-center">' + item.name + ': image/video coming soon</span>' +
                                             '</div>';
                                     }
 
@@ -1763,6 +1763,8 @@
             FIRST_ENABLE_DONE: 'findter_first_enable_done',
             REVIEW_SUBMITTED: 'findter_review_submitted',
             FEEDBACK_STATE: 'findter_feedback_state',
+            THEME_COMPAT_PENDING: 'findter_theme_compat_pending',
+            THEME_COMPAT_RESOLVED: 'findter_theme_compat_resolved',
             HAS_ONBOARDED: 'findter_has_onboarded'
         };
 
@@ -3004,6 +3006,44 @@
             return NOT_COMPATIBLE_THEMES.indexOf(theme) === -1;
         }
 
+        function getThemeCompatMap(key) {
+            try {
+                var raw = localStorage.getItem(key);
+                return raw ? JSON.parse(raw) : {};
+            } catch (e) { return {}; }
+        }
+
+        function isThemeResolved(theme) {
+            return !!getThemeCompatMap(STORAGE_KEYS.THEME_COMPAT_RESOLVED)[theme];
+        }
+
+        function isThemePending(theme) {
+            return !!getThemeCompatMap(STORAGE_KEYS.THEME_COMPAT_PENDING)[theme];
+        }
+
+        function markThemePending(theme) {
+            var map = getThemeCompatMap(STORAGE_KEYS.THEME_COMPAT_PENDING);
+            map[theme] = true;
+            localStorage.setItem(STORAGE_KEYS.THEME_COMPAT_PENDING, JSON.stringify(map));
+        }
+
+        function markThemeResolved(theme) {
+            var pendingMap = getThemeCompatMap(STORAGE_KEYS.THEME_COMPAT_PENDING);
+            delete pendingMap[theme];
+            localStorage.setItem(STORAGE_KEYS.THEME_COMPAT_PENDING, JSON.stringify(pendingMap));
+
+            var resolvedMap = getThemeCompatMap(STORAGE_KEYS.THEME_COMPAT_RESOLVED);
+            resolvedMap[theme] = true;
+            localStorage.setItem(STORAGE_KEYS.THEME_COMPAT_RESOLVED, JSON.stringify(resolvedMap));
+        }
+
+        // 'compatible' | 'pending' | 'incompatible'
+        function getThemeCompatState(theme) {
+            if (isThemeCompatible(theme) || isThemeResolved(theme)) return 'compatible';
+            if (isThemePending(theme)) return 'pending';
+            return 'incompatible';
+        }
+
         function renderThemeDropdown() {
             var label = AppState.selectedTheme ? AppState.selectedTheme : '-- No theme selected --';
             if (guideThemeDropdownLabel) guideThemeDropdownLabel.textContent = label;
@@ -3011,24 +3051,36 @@
             var html = '';
             THEMES.forEach(function(theme) {
                 var selected = AppState.selectedTheme === theme;
-                var compatible = isThemeCompatible(theme);
+                var state = getThemeCompatState(theme);
+                var compatible = state === 'compatible';
+                var statusHtml;
+                if (state === 'compatible') {
+                    statusHtml = '<span class="w-fit px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">Compatible</span>';
+                } else if (state === 'pending') {
+                    statusHtml = '<span class="w-fit whitespace-nowrap border border-amber-200 bg-amber-50 text-amber-700 text-[11px] font-medium px-2 py-1 rounded-md inline-flex items-center gap-1.5"><i class="fas fa-circle-notch fa-spin text-[9px]"></i>Working on it</span>';
+                } else {
+                    statusHtml = '<button type="button" class="w-fit whitespace-nowrap border border-gray-300 bg-white text-[#303030] text-[11px] font-medium px-2 py-1 rounded-md hover:bg-gray-100 transition-colors" data-howto-theme="' + theme + '">Make compatible</button>';
+                }
                 html +=
                     '<div class="grid grid-cols-[1fr_170px] items-center py-2.5 border-b border-gray-50 ' +
                         (selected ? 'bg-blue-50' : '') +
                     '" ' + (compatible ? 'data-theme="' + theme + '"' : '') + '>' +
                         '<div class="pl-6 pr-3 text-[14px] font-medium text-[#303030] ' + (compatible ? 'hover:text-black cursor-pointer' : '') + '">' + theme + '</div>' +
-                        '<div class="pl-3 pr-6 flex justify-center">' +
-                            (compatible
-                                ? '<span class="w-fit px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">Compatible</span>'
-                                : '<button type="button" class="w-fit whitespace-nowrap border border-gray-300 bg-white text-[#303030] text-[11px] font-medium px-2 py-1 rounded-md hover:bg-gray-100 transition-colors" data-howto-theme="' + theme + '">Make compatible</button>') +
-                        '</div>' +
+                        '<div class="pl-3 pr-6 flex justify-center">' + statusHtml + '</div>' +
                     '</div>';
             });
 
             if (themePickerList) themePickerList.innerHTML = html;
         }
 
+        // How long the simulated "dev" takes to actually make a theme
+        // compatible after a request comes in through chat.
+        var THEME_COMPAT_RESOLVE_DELAY = 15000;
+
         function sendThemeCompatibilityRequest(theme) {
+            markThemePending(theme);
+            renderThemeDropdown();
+
             if (chatBubble) {
                 chatBubble.classList.add('active');
             }
@@ -3045,6 +3097,12 @@
                     false
                 );
             }, 800);
+
+            setTimeout(function() {
+                markThemeResolved(theme);
+                renderThemeDropdown();
+                addMessageToChat("Good news! " + theme + " is now compatible with Findter, you're all set to select it.", false);
+            }, THEME_COMPAT_RESOLVE_DELAY);
         }
 
         function openThemePickerModal() {
@@ -3350,7 +3408,7 @@
             });
 
             if (!rowsHtml) {
-                rowsHtml = '<tr><td colspan="5" class="px-3 py-6 text-center text-[13px] text-gray-500">No groups yet — click "Add Group" to create one.</td></tr>';
+                rowsHtml = '<tr><td colspan="5" class="px-3 py-6 text-center text-[13px] text-gray-500">No groups yet, click "Add Group" to create one.</td></tr>';
             }
 
             masterContentEl.innerHTML =
@@ -3553,7 +3611,7 @@
                         '</div>' +
                         '<label class="flex items-start gap-2 cursor-pointer">' +
                             '<input type="checkbox" id="highlight-standalone-input" ' + (draft.standalone ? 'checked' : '') + ' class="w-4 h-4 rounded border-gray-300 mt-0.5">' +
-                            '<span class="text-[13px] text-[#303030]">Standalone — tick if this Group is itself a Feature (e.g. Year Make Model)</span>' +
+                            '<span class="text-[13px] text-[#303030]">Standalone: tick if this Group is itself a Feature (e.g. Year Make Model)</span>' +
                         '</label>' +
                     '</div>' +
                     '<div id="standalone-fields" class="' + (draft.standalone ? '' : 'hidden') + '">' + featureFieldsHtml(draft) + '</div>' +
@@ -3640,7 +3698,7 @@
                 '<div class="bg-white rounded-[8px] shadow-sm border border-gray-200 overflow-hidden">' +
                     '<div class="p-5 border-b border-gray-100 flex items-center justify-between">' +
                         '<button type="button" id="highlight-form-back-btn" class="text-[13px] text-gray-500 hover:text-[#303030] inline-flex items-center gap-1"><i class="fas fa-arrow-left text-xs"></i> Back</button>' +
-                        '<h3 class="font-semibold text-[15px] text-[#303030]">' + (isNew ? 'Add feature — ' : 'Edit feature — ') + group.name + '</h3>' +
+                        '<h3 class="font-semibold text-[15px] text-[#303030]">' + (isNew ? 'Add feature: ' : 'Edit feature: ') + group.name + '</h3>' +
                     '</div>' +
                     '<div class="p-5 space-y-3 border-b border-gray-100">' +
                         '<div class="flex items-end justify-between gap-3">' +
