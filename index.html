@@ -362,6 +362,7 @@
                             <button type="button" data-days="7" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">7 days left</button>
                             <button type="button" data-days="3" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">3 days left</button>
                             <button type="button" data-days="1" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">1 day left</button>
+                            <button type="button" data-days="0" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">0 days left</button>
                         </div>
                     </div>
                     <button class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors"><i class="fas fa-ellipsis-h text-sm"></i></button>
@@ -452,9 +453,14 @@
                                     </div>
                                     <div class="bg-white px-5 py-4">
                                         <p id="trial-warning-text" class="text-[13px] text-gray-500 leading-relaxed mb-4">Your trial ends soon. Choose a plan to keep the app running without interruption.</p>
-                                        <button class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
-                                            Choose a plan
-                                        </button>
+                                        <div class="flex items-center gap-2">
+                                            <button id="trial-warning-cta-primary" class="bg-[#303030] text-white rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-[#4a4a4a] transition-colors inline-flex items-center gap-2">
+                                                Choose a plan
+                                            </button>
+                                            <button id="trial-warning-cta-secondary" class="hidden border border-gray-300 bg-white text-[#303030] rounded-[6px] px-4 py-2 text-[13px] font-semibold hover:bg-gray-50 transition-colors inline-flex items-center gap-2">
+                                                Chat with Us
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -2688,17 +2694,38 @@
         var trialWarningHeading = document.getElementById('trial-warning-heading');
         var trialWarningText = document.getElementById('trial-warning-text');
         var trialWarningCloseBtn = document.getElementById('trial-warning-close-btn');
+        var trialWarningCtaPrimary = document.getElementById('trial-warning-cta-primary');
+        var trialWarningCtaSecondary = document.getElementById('trial-warning-cta-secondary');
 
         var TRIAL_WARNING_COPY = {
-            '7': { heading: '7 Days Trial Left', text: 'Your trial ends soon. Choose a plan to keep the app running without interruption.' },
-            '3': { heading: '3 Days Trial Left', text: 'Your trial ends in 3 days. Choose a plan to keep the app running without interruption.' },
-            '1': { heading: '1 Day Trial Left', text: 'Your trial ends tomorrow. Choose a plan to keep the app running without interruption.' }
+            '7': {
+                heading: '7 Days Left in Your Trial',
+                text: "No charge yet, and you still have full access to all features. When you're ready, pick a plan to keep your filters running without any gap.",
+                primaryCta: 'View Plans'
+            },
+            '3': {
+                heading: '3 Days Left: Keep Your Filters Running',
+                text: "Your trial ends in 3 days. You haven't been charged and still have full access, upgrade now so your filters keep working without interruption.",
+                primaryCta: 'Choose a Plan'
+            },
+            '1': {
+                heading: 'Your Trial Ends Tomorrow',
+                text: 'This is your last day. Upgrade now to keep your filters running, or chat with us if you need more time, we can extend your trial by 14 days.',
+                primaryCta: 'Upgrade Now',
+                secondaryCta: 'Chat with Us'
+            }
         };
 
         // While non-zero and not yet elapsed, the next customer chat message gets
-        // an automatic "thanks for the feedback" reply. Set when a Warning option
-        // (7d / 1d) is picked; expires 5 minutes later.
+        // an automatic "thanks for reaching out" reply. Set whenever a trial
+        // milestone (7d / 1d / 0d) auto-sends its chat nudge; expires 5 minutes later.
         var trialFeedbackReplyUntil = 0;
+
+        var TRIAL_CHAT_MESSAGES = {
+            '7': "Hi! 👋 You've got a full week to explore Findter, how's it going so far? Is there anything not working the way you expected?",
+            '1': "Hi again! 👋 Your trial ends tomorrow, is there anything stopping you from upgrading? Whether it's pricing, timing, or a missing feature, just tell us and we'll help sort it out.",
+            '0': "Hi! 👋 Your trial just ended, did something not work out, or is there anything we can clarify before you decide on a plan?"
+        };
 
         if (warningTrialBtn && warningTrialMenu) {
             warningTrialBtn.addEventListener('click', function(e) {
@@ -2720,30 +2747,49 @@
             });
         }
 
+        if (trialWarningCtaPrimary) {
+            trialWarningCtaPrimary.addEventListener('click', function() {
+                if (pricingNoticeBanner) {
+                    pricingNoticeBanner.classList.remove('hidden');
+                    pricingNoticeBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        }
+
+        if (trialWarningCtaSecondary) {
+            trialWarningCtaSecondary.addEventListener('click', function() {
+                if (chatBubble) chatBubble.classList.add('active');
+                if (chatBadge) chatBadge.classList.add('hidden');
+            });
+        }
+
         document.querySelectorAll('.warning-trial-option').forEach(function(opt) {
             opt.addEventListener('click', function() {
                 var days = opt.getAttribute('data-days');
                 var copy = TRIAL_WARNING_COPY[days];
-                if (copy) {
-                    if (trialWarningHeading) trialWarningHeading.textContent = copy.heading;
-                    if (trialWarningText) trialWarningText.textContent = copy.text;
-                }
-                if (trialWarningBanner) {
-                    trialWarningBanner.classList.remove('hidden');
-                    trialWarningBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                // 0 days only triggers the chat nudge, no banner.
+                if (days !== '0') {
+                    if (copy) {
+                        if (trialWarningHeading) trialWarningHeading.textContent = copy.heading;
+                        if (trialWarningText) trialWarningText.textContent = copy.text;
+                        if (trialWarningCtaPrimary) trialWarningCtaPrimary.textContent = copy.primaryCta;
+                        if (trialWarningCtaSecondary) trialWarningCtaSecondary.classList.toggle('hidden', !copy.secondaryCta);
+                    }
+                    if (trialWarningBanner) {
+                        trialWarningBanner.classList.remove('hidden');
+                        trialWarningBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
                 }
                 if (warningTrialMenu) warningTrialMenu.classList.add('hidden');
 
-                // Only the 7-day and 1-day warnings also nudge the merchant for
-                // feedback in chat; the 3-day one just shows the banner.
-                if (days === '7' || days === '1') {
+                // The 7-day, 1-day, and 0-day milestones auto-send a chat nudge;
+                // the 3-day one just shows the banner.
+                var chatMessage = TRIAL_CHAT_MESSAGES[days];
+                if (chatMessage) {
                     if (chatBubble) chatBubble.classList.add('active');
                     if (chatBadge) chatBadge.classList.add('hidden');
-                    addMessageToChat(
-                        'Hi! 👋 How’s your experience with Findter so far?<br><br>' +
-                        'Have any feedback or feature requests? We’d love to hear them and make Findter even better for you! 💙',
-                        false
-                    );
+                    addMessageToChat(chatMessage, false);
                     trialFeedbackReplyUntil = Date.now() + 5 * 60 * 1000;
                 }
             });
@@ -2987,7 +3033,7 @@
             if (trialFeedbackReplyUntil && Date.now() <= trialFeedbackReplyUntil) {
                 trialFeedbackReplyUntil = 0;
                 setTimeout(function() {
-                    addMessageToChat('Thanks for sharing! 😊 We really appreciate your feedback. We’ll keep it in mind as we make Findter even better. If you have any other ideas or requests, we’d love to hear them!', false);
+                    addMessageToChat("Thanks for reaching out! 😊 We've received your message and our team is already on it, we'll get back to you as soon as possible.", false);
                 }, 700);
                 return;
             }
