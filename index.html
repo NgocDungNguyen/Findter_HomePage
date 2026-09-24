@@ -1669,8 +1669,8 @@
                     <button type="button" id="welcome-carousel-next" class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center text-gray-700 transition-colors" aria-label="Next slide">
                         <i class="fas fa-chevron-right text-sm"></i>
                     </button>
+                    <div id="welcome-carousel-dots" class="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2"></div>
                 </div>
-                <div id="welcome-carousel-dots" class="flex items-center justify-center gap-2 py-3 bg-white border-t border-gray-100"></div>
                 <div class="flex items-center justify-end px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
                     <button type="button" id="welcome-gate-continue-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">Continue</button>
                 </div>
@@ -1696,8 +1696,8 @@
             for (var i = 0; i < slides.length; i++) {
                 var dot = document.createElement('button');
                 dot.type = 'button';
-                dot.className = 'welcome-carousel-dot h-2 rounded-full transition-all duration-300 ' +
-                    (i === current ? 'w-5 bg-[#303030]' : 'w-2 bg-gray-300 hover:bg-gray-400');
+                dot.className = 'welcome-carousel-dot h-2 rounded-full transition-all duration-300 shadow ' +
+                    (i === current ? 'w-5 bg-white' : 'w-2 bg-white/50 hover:bg-white/80');
                 dot.setAttribute('data-index', i);
                 dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
                 dotsContainer.appendChild(dot);
