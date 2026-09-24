@@ -1658,10 +1658,10 @@
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
             <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl pointer-events-auto relative modal-content">
-                <div id="welcome-carousel" class="relative overflow-hidden rounded-t-xl aspect-[2/1] bg-gray-100">
+                <div id="welcome-carousel" class="relative overflow-hidden aspect-[2/1] bg-gray-100 rounded-t-xl select-none" style="touch-action: pan-y;">
                     <div id="welcome-carousel-track" class="flex h-full transition-transform duration-500 ease-in-out">
-                        <img src="welcome-banner.png" alt="Enjoy 14-day free trial with unlimited features" class="w-full h-full object-cover shrink-0">
-                        <img src="Image2.png" alt="Smart Search Suggestions" class="w-full h-full object-cover shrink-0">
+                        <img src="https://cdn.shopify.com/s/files/1/0765/0302/3847/files/welcom-banner_ae9cedd4-0385-4d08-b179-2dda6d7801b5.png?v=1789554422" alt="Real Banner" class="w-full h-full object-cover shrink-0 pointer-events-none" draggable="false">
+                        <img src="welcome-banner.png" alt="Enjoy 14-day free trial with unlimited features" class="w-full h-full object-cover shrink-0 pointer-events-none" draggable="false">
                     </div>
                     <button type="button" id="welcome-carousel-prev" class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center text-gray-700 transition-colors" aria-label="Previous slide">
                         <i class="fas fa-chevron-left text-sm"></i>
@@ -1669,8 +1669,8 @@
                     <button type="button" id="welcome-carousel-next" class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center text-gray-700 transition-colors" aria-label="Next slide">
                         <i class="fas fa-chevron-right text-sm"></i>
                     </button>
-                    <div id="welcome-carousel-dots" class="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2"></div>
                 </div>
+                <div id="welcome-carousel-dots" class="flex items-center justify-center gap-2 py-3 bg-white border-t border-gray-100"></div>
                 <div class="flex items-center justify-end px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
                     <button type="button" id="welcome-gate-continue-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">Continue</button>
                 </div>
@@ -1697,7 +1697,7 @@
                 var dot = document.createElement('button');
                 dot.type = 'button';
                 dot.className = 'welcome-carousel-dot h-2 rounded-full transition-all duration-300 ' +
-                    (i === current ? 'w-5 bg-white' : 'w-2 bg-white/50 hover:bg-white/80');
+                    (i === current ? 'w-5 bg-[#303030]' : 'w-2 bg-gray-300 hover:bg-gray-400');
                 dot.setAttribute('data-index', i);
                 dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
                 dotsContainer.appendChild(dot);
@@ -1732,6 +1732,56 @@
 
         carousel.addEventListener('mouseenter', stopAutoSlide);
         carousel.addEventListener('mouseleave', startAutoSlide);
+
+        // ========== TOUCH / DRAG SWIPE ==========
+        var isDragging = false;
+        var dragStartX = 0;
+        var dragDeltaX = 0;
+        var carouselWidth = 0;
+
+        function onDragStart(e) {
+            if (slides.length < 2) return;
+            isDragging = true;
+            dragDeltaX = 0;
+            dragStartX = e.clientX;
+            carouselWidth = carousel.getBoundingClientRect().width || 1;
+            track.style.transition = 'none';
+            stopAutoSlide();
+            if (carousel.setPointerCapture) {
+                try { carousel.setPointerCapture(e.pointerId); } catch (err) {}
+            }
+        }
+
+        function onDragMove(e) {
+            if (!isDragging) return;
+            dragDeltaX = e.clientX - dragStartX;
+            var basePercent = -(current * 100);
+            var dragPercent = (dragDeltaX / carouselWidth) * 100;
+            track.style.transform = 'translateX(' + (basePercent + dragPercent) + '%)';
+        }
+
+        function onDragEnd() {
+            if (!isDragging) return;
+            isDragging = false;
+            track.style.transition = '';
+
+            var threshold = carouselWidth * 0.15;
+            if (dragDeltaX <= -threshold) {
+                nextSlide();
+            } else if (dragDeltaX >= threshold) {
+                prevSlide();
+            } else {
+                goToSlide(current);
+            }
+            dragDeltaX = 0;
+            startAutoSlide();
+        }
+
+        carousel.addEventListener('pointerdown', onDragStart);
+        carousel.addEventListener('pointermove', onDragMove);
+        carousel.addEventListener('pointerup', onDragEnd);
+        carousel.addEventListener('pointercancel', onDragEnd);
+        carousel.addEventListener('pointerleave', function() { if (isDragging) onDragEnd(); });
 
         goToSlide(0);
         startAutoSlide();
