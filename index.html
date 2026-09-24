@@ -135,6 +135,7 @@
             bottom: 80px;
             right: 24px;
             width: 340px;
+            max-width: calc(100vw - 32px);
             max-height: 420px;
             background: white;
             border-radius: 16px;
@@ -268,6 +269,13 @@
     </style>
 </head>
 <body class="bg-[#f1f2f4] h-screen flex flex-col overflow-hidden text-[#303030]">
+    <script>
+        // Auto-collapse the sidebar on mobile before first paint, so it doesn't
+        // flash open and push the layout wide on small screens.
+        if (window.innerWidth < 1024) {
+            document.body.classList.add('sidebar-collapsed');
+        }
+    </script>
     <!-- Header -->
     <header class="h-14 bg-[#1a1a1a] text-gray-300 flex items-center justify-between px-4 shrink-0">
         <div class="flex items-center gap-4">
@@ -351,18 +359,20 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button id="show-pricing-notice-btn" class="border border-blue-300 bg-blue-50 text-blue-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-blue-100 transition-colors shadow-sm whitespace-nowrap">Plan Update</button>
-                    <button id="show-limit-reached-btn" class="border border-yellow-300 bg-yellow-50 text-yellow-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-yellow-100 transition-colors shadow-sm whitespace-nowrap">Store Limit</button>
-                    <button id="show-feedback-banner-btn" class="border border-emerald-300 bg-emerald-50 text-emerald-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-emerald-100 transition-colors shadow-sm whitespace-nowrap">Feedback</button>
-                    <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">Reset Indexing</button>
-                    <button id="end-index-btn" class="border border-green-300 bg-green-50 text-green-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-green-100 transition-colors shadow-sm whitespace-nowrap">End Index Now</button>
-                    <div class="relative">
-                        <button id="warning-trial-btn" class="border border-red-300 bg-red-50 text-red-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-red-100 transition-colors shadow-sm whitespace-nowrap">Warning</button>
-                        <div id="warning-trial-menu" class="hidden absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-20">
-                            <button type="button" data-days="7" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">7 days left</button>
-                            <button type="button" data-days="3" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">3 days left</button>
-                            <button type="button" data-days="1" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">1 day left</button>
-                            <button type="button" data-days="0" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">0 days left</button>
+                    <div class="hidden lg:flex items-center gap-2">
+                        <button id="show-pricing-notice-btn" class="border border-blue-300 bg-blue-50 text-blue-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-blue-100 transition-colors shadow-sm whitespace-nowrap">Plan Update</button>
+                        <button id="show-limit-reached-btn" class="border border-yellow-300 bg-yellow-50 text-yellow-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-yellow-100 transition-colors shadow-sm whitespace-nowrap">Store Limit</button>
+                        <button id="show-feedback-banner-btn" class="border border-emerald-300 bg-emerald-50 text-emerald-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-emerald-100 transition-colors shadow-sm whitespace-nowrap">Feedback</button>
+                        <button id="reset-indexing-btn" class="border border-orange-300 bg-orange-50 text-orange-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-orange-100 transition-colors shadow-sm whitespace-nowrap">Reset Indexing</button>
+                        <button id="end-index-btn" class="border border-green-300 bg-green-50 text-green-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-green-100 transition-colors shadow-sm whitespace-nowrap">End Index Now</button>
+                        <div class="relative">
+                            <button id="warning-trial-btn" class="border border-red-300 bg-red-50 text-red-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-red-100 transition-colors shadow-sm whitespace-nowrap">Warning</button>
+                            <div id="warning-trial-menu" class="hidden absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-20">
+                                <button type="button" data-days="7" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">7 days left</button>
+                                <button type="button" data-days="3" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">3 days left</button>
+                                <button type="button" data-days="1" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">1 day left</button>
+                                <button type="button" data-days="0" class="warning-trial-option w-full text-left px-3 py-1.5 text-[13px] text-[#303030] hover:bg-gray-50">0 days left</button>
+                            </div>
                         </div>
                     </div>
                     <button class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors"><i class="fas fa-ellipsis-h text-sm"></i></button>
@@ -1697,7 +1707,7 @@
                 var dot = document.createElement('button');
                 dot.type = 'button';
                 dot.className = 'welcome-carousel-dot h-2 rounded-full transition-all duration-300 shadow ' +
-                    (i === current ? 'w-5 bg-white' : 'w-2 bg-white/50 hover:bg-white/80');
+                    (i === current ? 'w-5 bg-black' : 'w-2 bg-black/50 hover:bg-black/80');
                 dot.setAttribute('data-index', i);
                 dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
                 dotsContainer.appendChild(dot);
