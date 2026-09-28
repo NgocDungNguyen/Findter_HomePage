@@ -1711,9 +1711,9 @@
     <div id="welcome-gate-modal" class="modal-wrapper fixed inset-0 hidden">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
-            <div class="bg-white rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto pointer-events-auto relative modal-content">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto flex flex-col pointer-events-auto relative modal-content">
                 <!-- Desktop version: multi-slide carousel, sm breakpoint and up -->
-                <div id="welcome-carousel" class="hidden sm:block relative overflow-hidden aspect-[1672/941] bg-gray-100 rounded-t-xl select-none" style="touch-action: pan-y;">
+                <div id="welcome-carousel" class="hidden sm:block shrink-0 relative overflow-hidden aspect-[1672/941] bg-gray-100 rounded-t-xl select-none" style="touch-action: pan-y; max-height: calc(90vh - 88px);">
                     <div id="welcome-carousel-track" class="flex h-full transition-transform duration-500 ease-in-out">
                         <img src="https://cdn.shopify.com/s/files/1/0765/0302/3847/files/welcom-banner_ae9cedd4-0385-4d08-b179-2dda6d7801b5.png?v=1789554422" alt="Real Banner" class="w-full h-full object-cover shrink-0 pointer-events-none" draggable="false">
                         <img src="welcome-banner.png" alt="Enjoy 14-day free trial with unlimited features" class="w-full h-full object-cover shrink-0 pointer-events-none" draggable="false">
@@ -1727,12 +1727,12 @@
                     <div id="welcome-carousel-dots" class="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2"></div>
                 </div>
 
-                <!-- Mobile version: dedicated image (real asset is 1219x2638), scales with the screen, no separate carousel controls -->
-                <div id="welcome-mobile-banner" class="sm:hidden relative overflow-hidden aspect-[1219/2638] bg-gray-100 rounded-t-xl">
-                    <img src="Findter Welcome Banner – Mobile.png" alt="Enjoy 14-day free trial with unlimited features" class="w-full h-full object-cover">
+                <!-- Mobile version: dedicated image (real asset is 1219x2638), pre-capped so it always leaves room for the Continue button below without scrolling -->
+                <div id="welcome-mobile-banner" class="sm:hidden shrink-0 flex items-center justify-center bg-gray-100 rounded-t-xl overflow-hidden">
+                    <img src="Findter Welcome Banner – Mobile.png" alt="Enjoy 14-day free trial with unlimited features" class="max-w-full object-contain" style="max-height: calc(90vh - 88px);">
                 </div>
 
-                <div class="flex items-center justify-end px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
+                <div class="shrink-0 flex items-center justify-end px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
                     <button type="button" id="welcome-gate-continue-btn" class="bg-[#303030] text-white rounded-[6px] px-5 py-2 text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors">Continue</button>
                 </div>
             </div>
