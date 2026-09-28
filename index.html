@@ -78,7 +78,12 @@
             }
         }
         .app-rec-card {
-            width: calc((100% - 12px) / 2);
+            width: 100%;
+        }
+        @media (min-width: 640px) {
+            .app-rec-card {
+                width: calc((100% - 12px) / 2);
+            }
         }
         /* The sidebar is a fixed overlay drawer, not a flex sibling, so
            opening it never pushes or resizes the main app content. */
@@ -98,6 +103,34 @@
         }
         body:not(.sidebar-collapsed) #sidebar-overlay {
             display: block;
+        }
+        /* Mobile "more" dropdown for the header's dev/test buttons */
+        @media (max-width: 1023px) {
+            #header-dev-menu.mobile-menu-open {
+                display: flex !important;
+                position: absolute;
+                right: 0;
+                top: 2.75rem;
+                width: 16rem;
+                flex-direction: column;
+                align-items: stretch;
+                background: white;
+                border: 1px solid #e5e7eb;
+                border-radius: 0.5rem;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+                padding: 0.75rem;
+                gap: 0.5rem;
+                z-index: 30;
+            }
+            #header-dev-menu.mobile-menu-open .relative {
+                width: 100%;
+            }
+            #header-dev-menu.mobile-menu-open #warning-trial-menu {
+                position: static;
+                width: 100%;
+                margin-top: 0.5rem;
+                box-shadow: none;
+            }
         }
         .step-checkbox {
             transition: all 0.2s ease;
@@ -369,8 +402,8 @@
                     <h1 class="font-semibold text-[18px] text-[#303030]">Findter filter & search</h1>
                     </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <div class="hidden lg:flex items-center gap-2">
+                <div class="flex items-center gap-2 relative">
+                    <div id="header-dev-menu" class="hidden lg:flex items-center gap-2">
                         <button id="show-pricing-notice-btn" class="border border-blue-300 bg-blue-50 text-blue-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-blue-100 transition-colors shadow-sm whitespace-nowrap">Plan Update</button>
                         <button id="show-limit-reached-btn" class="border border-yellow-300 bg-yellow-50 text-yellow-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-yellow-100 transition-colors shadow-sm whitespace-nowrap">Store Limit</button>
                         <button id="show-feedback-banner-btn" class="border border-emerald-300 bg-emerald-50 text-emerald-700 rounded-[6px] px-3 py-1.5 text-[12px] font-medium hover:bg-emerald-100 transition-colors shadow-sm whitespace-nowrap">Feedback</button>
@@ -386,7 +419,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors"><i class="fas fa-ellipsis-h text-sm"></i></button>
+                    <button id="header-more-btn" class="lg:hidden text-gray-500 hover:bg-gray-200 p-1.5 rounded transition-colors"><i class="fas fa-ellipsis-h text-sm"></i></button>
                 </div>
             </div>
 
@@ -634,7 +667,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Smart AI agent: complementing your filters with instant support, product recommendations</p>
-                                                <a href="https://apps.shopify.com/judgeme" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/judgeme" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-white text-black border border-gray-300 text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-gray-100 transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-row items-center gap-2 min-w-0">
@@ -645,7 +678,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Display product reviews</p>
-                                                <a href="https://apps.shopify.com/yotpo-social-reviews" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/yotpo-social-reviews" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-white text-black border border-gray-300 text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-gray-100 transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-row items-center gap-2 min-w-0">
@@ -656,7 +689,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">200+ premium drag-and-drop sections, templates &amp; blocks for any store</p>
-                                                <a href="https://apps.shopify.com/ot-theme-sections-store-page-builder" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/ot-theme-sections-store-page-builder" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-white text-black border border-gray-300 text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-gray-100 transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-row items-center gap-2 min-w-0">
@@ -667,7 +700,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Conversion-focused theme with mega menus, pop-ups &amp; unlimited product badges</p>
-                                                <a href="https://themes.shopify.com/themes/eurus/presets/eurus" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
+                                                <a href="https://themes.shopify.com/themes/eurus/presets/eurus" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-white text-black border border-gray-300 text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-gray-100 transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-row items-center gap-2 min-w-0">
@@ -678,7 +711,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Speed-optimized B2B theme for 500+ SKU catalogs with smart search &amp; mega menus</p>
-                                                <a href="https://themes.shopify.com/themes/maximize/presets/maximize" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
+                                                <a href="https://themes.shopify.com/themes/maximize/presets/maximize" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-white text-black border border-gray-300 text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-gray-100 transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-row items-center gap-2 min-w-0">
@@ -689,7 +722,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Infinite product options with text, swatches, file uploads &amp; price addons</p>
-                                                <a href="https://apps.shopify.com/product-options-by-bss" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/product-options-by-bss" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-white text-black border border-gray-300 text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-gray-100 transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-row items-center gap-2 min-w-0">
@@ -700,7 +733,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Visual color/image swatches with combined listings &amp; variant image automator</p>
-                                                <a href="https://apps.shopify.com/optis-color-swatch-variants" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/optis-color-swatch-variants" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-white text-black border border-gray-300 text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-gray-100 transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-row items-center gap-2 min-w-0">
@@ -711,7 +744,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">AI-generated labels/badges with translations, stock &amp; discount-based display rules</p>
-                                                <a href="https://apps.shopify.com/product-labels-by-bss" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/product-labels-by-bss" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-white text-black border border-gray-300 text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-gray-100 transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-row items-center gap-2 min-w-0">
@@ -722,7 +755,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Announcement bars, countdown timers, popups &amp; multi-banner sliders</p>
-                                                <a href="https://apps.shopify.com/bss-banner-pop-up" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/bss-banner-pop-up" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-white text-black border border-gray-300 text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-gray-100 transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-row items-center gap-2 min-w-0">
@@ -733,7 +766,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Preorders with deposits, back-in-stock alerts, waitlists &amp; presale campaigns</p>
-                                                <a href="https://apps.shopify.com/dotsy-preorder-presale" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/dotsy-preorder-presale" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-white text-black border border-gray-300 text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-gray-100 transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-row items-center gap-2 min-w-0">
@@ -744,7 +777,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Request quotes, bulk orders via CSV upload &amp; easy reorder from history</p>
-                                                <a href="https://apps.shopify.com/b2b-customer-portal-quick-order" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/b2b-customer-portal-quick-order" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-white text-black border border-gray-300 text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-gray-100 transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-row items-center gap-2 min-w-0">
@@ -755,7 +788,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Custom pricing, volume discounts, price lists, net terms &amp; tax control</p>
-                                                <a href="https://apps.shopify.com/b2b-solution-custom-pricing" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/b2b-solution-custom-pricing" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-white text-black border border-gray-300 text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-gray-100 transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-row items-center gap-2 min-w-0">
@@ -766,7 +799,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Customer-specific pricing, bulk orders, MOQ, net terms &amp; quick order page</p>
-                                                <a href="https://apps.shopify.com/b2bridge-b2b-all-in-one" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/b2bridge-b2b-all-in-one" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-white text-black border border-gray-300 text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-gray-100 transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-row items-center gap-2 min-w-0">
@@ -777,7 +810,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">BOGO, Buy X Get Y, free gifts with purchase &amp; cart upsell offers</p>
-                                                <a href="https://apps.shopify.com/salepify" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/salepify" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-white text-black border border-gray-300 text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-gray-100 transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-row items-center gap-2 min-w-0">
@@ -788,7 +821,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">Session replays, revenue heatmaps &amp; AI insights to fix UX friction</p>
-                                                <a href="https://apps.shopify.com/mida-session-recording-replay" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/mida-session-recording-replay" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-white text-black border border-gray-300 text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-gray-100 transition-colors">View App</a>
                                             </div>
                                             <div class="app-rec-card border border-gray-200 rounded-[8px] p-3 flex flex-col hover:shadow-sm transition-shadow shrink-0">
                                                 <div class="flex flex-row items-center gap-2 min-w-0">
@@ -799,7 +832,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed flex-1">24/7 AI chatbot with product browsing, live chat handover &amp; smart follow-ups</p>
-                                                <a href="https://apps.shopify.com/chizy-ai-chatbot" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-[rgb(70,150,230)] text-[rgb(255,255,255)] text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-[rgb(50,120,200)] transition-colors">View App</a>
+                                                <a href="https://apps.shopify.com/chizy-ai-chatbot" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-1 bg-white text-black border border-gray-300 text-[11px] font-semibold px-2 py-1.5 rounded-[6px] hover:bg-gray-100 transition-colors">View App</a>
                                             </div>
                                         </div>
                                     </div>
@@ -814,7 +847,7 @@
                                     var index = 0;
                                     function move(dir) {
                                         var cards = track.children;
-                                        var visible = 2;
+                                        var visible = window.matchMedia('(min-width: 640px)').matches ? 2 : 1;
                                         var maxIndex = Math.max(0, cards.length - visible);
                                         index = Math.max(0, Math.min(index + dir, maxIndex));
                                         var card = cards[0];
@@ -1944,6 +1977,8 @@
         const appHeaderTitle = document.getElementById('app-header-title');
         const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
         const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const headerMoreBtn = document.getElementById('header-more-btn');
+        const headerDevMenu = document.getElementById('header-dev-menu');
         const resetIndexingBtn = document.getElementById('reset-indexing-btn');
         const endIndexBtn = document.getElementById('end-index-btn');
 
@@ -2455,6 +2490,23 @@
                 document.body.classList.add('sidebar-collapsed');
             });
         });
+
+        // Mobile "more" menu: reveals the same dev/test buttons the desktop
+        // header shows inline (Plan Update, Store Limit, Feedback, Reset
+        // Indexing, End Index Now, Warning) as a dropdown.
+        if (headerMoreBtn && headerDevMenu) {
+            headerMoreBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                headerDevMenu.classList.toggle('mobile-menu-open');
+            });
+            document.addEventListener('click', function(e) {
+                if (headerDevMenu.classList.contains('mobile-menu-open') &&
+                    !headerDevMenu.contains(e.target) &&
+                    !headerMoreBtn.contains(e.target)) {
+                    headerDevMenu.classList.remove('mobile-menu-open');
+                }
+            });
+        }
 
         if (appHeaderTitle) {
             appHeaderTitle.addEventListener('click', function(e) {
