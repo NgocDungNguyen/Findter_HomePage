@@ -4,7 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopify App Dashboard - Findter Filter & Search</title>
+    <style>
+        /* Tailwind loads via a runtime CDN script that scans the DOM and
+           injects styles after the page starts parsing. On a slow/throttled
+           connection that gap is visible: raw, unstyled (but still
+           Tailwind-class-laden) HTML paints first, causing exactly the
+           misaligned/oversized layout reported on mobile. Hide the page
+           until Tailwind has actually finished, instead of racing it. */
+        body { opacity: 0; }
+        body.tailwind-ready { opacity: 1; transition: opacity 0.15s ease; }
+    </style>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        var revealed = false;
+        function revealPage() {
+            if (revealed) return;
+            revealed = true;
+            document.body.classList.add('tailwind-ready');
+        }
+        window.addEventListener('DOMContentLoaded', function() {
+            // Give Tailwind's observer a couple of paint cycles to flush its
+            // compiled styles before revealing the page.
+            requestAnimationFrame(function() {
+                requestAnimationFrame(revealPage);
+            });
+        });
+        // Safety net: never leave the page invisible if Tailwind's CDN is
+        // slow, blocked, or errors out for any reason.
+        setTimeout(revealPage, 2000);
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
