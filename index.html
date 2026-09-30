@@ -2256,6 +2256,10 @@
                 AppState.firstEnableDone = true;
             }
 
+            // Saved requests would turn the test themes Compatible and hide the Make compatible cases.
+            localStorage.removeItem(STORAGE_KEYS.THEME_COMPAT_PENDING);
+            localStorage.removeItem(STORAGE_KEYS.THEME_COMPAT_RESOLVED);
+
             if (localStorage.getItem(STORAGE_KEYS.HAS_ONBOARDED) === 'true') {
                 AppState.hasOnboarded = true;
             }
@@ -3641,8 +3645,12 @@
         });
 
         // ========== THEME PICKER MODAL ==========
-        var THEMES = ['Allure', 'Atelier', 'Be Yours', 'Broadcast', 'Colorblock', 'Concept', 'Craft', 'Crave', 'Dawn', 'Dwell', 'Enterprise', 'Eurus', 'Expanse', 'Fabric', 'Flawless', 'Focal', 'Heritage', 'Horizon', 'Hyper', 'Ignite', 'Impulse', 'Next', 'Noom', 'Origin', 'Pipeline', 'Pitch', 'Publisher', 'Refresh', 'Ride', 'Rise', 'Ritual', 'Savor', 'Sense', 'Sleek', 'Spotlight', 'Stiletto', 'Studio', 'Taste', 'Tinker', 'Trade', 'Vessel', 'Vivid', 'Wonder', 'Xtra'];
-        var NOT_COMPATIBLE_THEMES = ['Be Yours', 'Colorblock', 'Crave', 'Flawless', 'Hyper', 'Noom', 'Pitch', 'Ritual', 'Sense', 'Stiletto', 'Taste', 'Tinker', 'Vessel', 'Xtra'];
+        var THEME_CATALOG = ['Allure', 'Atelier', 'Be Yours', 'Broadcast', 'Colorblock', 'Concept', 'Craft', 'Crave', 'Dawn', 'Dwell', 'Enterprise', 'Eurus', 'Expanse', 'Fabric', 'Flawless', 'Focal', 'Heritage', 'Horizon', 'Hyper', 'Ignite', 'Impulse', 'Next', 'Noom', 'Origin', 'Pipeline', 'Pitch', 'Publisher', 'Refresh', 'Ride', 'Rise', 'Ritual', 'Savor', 'Sense', 'Sleek', 'Spotlight', 'Stiletto', 'Studio', 'Taste', 'Tinker', 'Trade', 'Vessel', 'Vivid', 'Wonder', 'Xtra'];
+        var NOT_COMPATIBLE_THEMES = ['Be Yours', 'Colorblock', 'Sense', 'Crave', 'Flawless', 'Hyper', 'Noom', 'Pitch', 'Ritual', 'Stiletto', 'Taste', 'Tinker', 'Vessel', 'Xtra'];
+        var THEME_TEST_ORDER = ['Allure', 'Be Yours', 'Colorblock', 'Atelier', 'Broadcast', 'Sense'];
+        var THEMES = THEME_TEST_ORDER.concat(THEME_CATALOG.filter(function(theme) {
+            return THEME_TEST_ORDER.indexOf(theme) === -1;
+        }));
 
         function isThemeCompatible(theme) {
             return NOT_COMPATIBLE_THEMES.indexOf(theme) === -1;
