@@ -1768,6 +1768,7 @@
                     <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Your theme</span>
                     <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide text-center">Compatibility</span>
                 </div>
+                <p id="theme-request-notice" class="hidden mx-6 mt-3 rounded-lg border border-[#f0d488] bg-[#fff7df] px-3 py-2 text-[13px] text-[#8a6412]" role="status"></p>
                 <div id="theme-picker-list" class="overflow-y-auto flex-1"></div>
             </div>
         </div>
@@ -2218,6 +2219,8 @@
             FEEDBACK_STATE: 'findter_feedback_state',
             THEME_COMPAT_PENDING: 'findter_theme_compat_pending',
             THEME_COMPAT_RESOLVED: 'findter_theme_compat_resolved',
+            CRISP_REQUESTS: 'findter_crisp_requests',
+            COLLAB_CODE_RECEIVED: 'findter_collab_code_received',
             HAS_ONBOARDED: 'findter_has_onboarded',
             WELCOME_SEEN: 'findter_welcome_seen_install'
         };
@@ -2255,10 +2258,6 @@
             if (storedFirstEnable === 'true') {
                 AppState.firstEnableDone = true;
             }
-
-            // Saved requests would turn the test themes Compatible and hide the Make compatible cases.
-            localStorage.removeItem(STORAGE_KEYS.THEME_COMPAT_PENDING);
-            localStorage.removeItem(STORAGE_KEYS.THEME_COMPAT_RESOLVED);
 
             if (localStorage.getItem(STORAGE_KEYS.HAS_ONBOARDED) === 'true') {
                 AppState.hasOnboarded = true;
@@ -3609,24 +3608,40 @@
         closeChatBubble.addEventListener('click', function() { chatBubble.classList.remove('active'); });
 
         var awaitingCollabCode = false;
+        var collabAskShown = false;
+        var themeAwaitingCode = null;
+        var CRISP_COOLDOWN_MS = 60 * 1000;
+        var CRISP_DAILY_LIMIT = 3;
+        var CRISP_WINDOW_MS = 24 * 60 * 60 * 1000;
+
+        function isFourDigitCollabCode(msg) {
+            var digitGroups = msg.match(/\d+/g) || [];
+            return digitGroups.length === 1 && digitGroups[0].length === 4;
+        }
 
         sendChatBtn.addEventListener('click', function() {
             var msg = chatInput.value.trim();
             if (!msg) return;
             addMessageToChat(msg, true);
             chatInput.value = '';
-            if (awaitingCollabCode) {
-                var digitGroups = msg.match(/\d+/g) || [];
-                var validCollabCode = digitGroups.length === 1 && digitGroups[0].length === 4;
-                if (!validCollabCode) {
-                    setTimeout(function() {
-                        addMessageToChat("Please check your code again. It needs to be 4 digits.", false);
-                    }, 700);
-                    return;
-                }
+            if (isFourDigitCollabCode(msg) && themeAwaitingCode) {
+                var confirmedTheme = themeAwaitingCode;
+                themeAwaitingCode = null;
                 awaitingCollabCode = false;
+                localStorage.setItem(STORAGE_KEYS.COLLAB_CODE_RECEIVED, 'true');
                 setTimeout(function() {
                     addMessageToChat("Thanks for providing the information. Our team has received your request and will get back to you as soon as possible.", false);
+                }, 700);
+                setTimeout(function() {
+                    markThemeResolved(confirmedTheme);
+                    renderThemeDropdown();
+                    addMessageToChat("Good news! " + confirmedTheme + " is now compatible with Findter, you're all set to select it.", false);
+                }, 4000);
+                return;
+            }
+            if (awaitingCollabCode) {
+                setTimeout(function() {
+                    addMessageToChat("Please check your code again. It needs to be 4 digits.", false);
                 }, 700);
                 return;
             }
@@ -3687,10 +3702,54 @@
             localStorage.setItem(STORAGE_KEYS.THEME_COMPAT_RESOLVED, JSON.stringify(resolvedMap));
         }
 
+        function getCrispRequests() {
+            try {
+                var raw = localStorage.getItem(STORAGE_KEYS.CRISP_REQUESTS);
+                var list = raw ? JSON.parse(raw) : [];
+                var now = Date.now();
+                return list.filter(function(item) {
+                    return item && item.theme && now - item.ts < CRISP_WINDOW_MS;
+                });
+            } catch (e) { return []; }
+        }
+
+        function themeAlreadyRequested(theme) {
+            return getCrispRequests().some(function(item) { return item.theme === theme; });
+        }
+
+        function crispBlockReason(theme) {
+            var recent = getCrispRequests();
+            if (recent.some(function(item) { return item.theme === theme; })) return 'same_theme';
+            var lastTs = recent.reduce(function(max, item) { return Math.max(max, item.ts); }, 0);
+            if (lastTs && Date.now() - lastTs < CRISP_COOLDOWN_MS) return 'cooldown';
+            var themes = {};
+            recent.forEach(function(item) { themes[item.theme] = true; });
+            if (Object.keys(themes).length >= CRISP_DAILY_LIMIT) return 'daily_limit';
+            return '';
+        }
+
+        function recordCrispRequest(theme) {
+            var list = getCrispRequests();
+            list.push({ theme: theme, ts: Date.now() });
+            localStorage.setItem(STORAGE_KEYS.CRISP_REQUESTS, JSON.stringify(list));
+        }
+
+        function showThemeRequestNotice(message) {
+            var notice = document.getElementById('theme-request-notice');
+            if (!notice) return;
+            notice.textContent = message;
+            notice.classList.remove('hidden');
+        }
+
+        function hideThemeRequestNotice() {
+            var notice = document.getElementById('theme-request-notice');
+            if (notice) notice.classList.add('hidden');
+        }
+
         // 'compatible' | 'pending' | 'incompatible'
         function getThemeCompatState(theme) {
             if (isThemeCompatible(theme) || isThemeResolved(theme)) return 'compatible';
-            if (isThemePending(theme)) return 'pending';
+            if (isThemePending(theme) || themeAlreadyRequested(theme)) return 'pending';
             return 'incompatible';
         }
 
@@ -3725,12 +3784,9 @@
             if (themePickerList) themePickerList.innerHTML = html;
         }
 
-        // How long the simulated "dev" takes to actually make a theme
-        // compatible after a request comes in through chat.
-        var THEME_COMPAT_RESOLVE_DELAY = 15000;
-
         function sendThemeCompatibilityRequest(theme) {
             markThemePending(theme);
+            recordCrispRequest(theme);
             renderThemeDropdown();
 
             if (chatBubble) {
@@ -3738,27 +3794,26 @@
             }
             if (chatBadge) chatBadge.classList.add('hidden');
             addMessageToChat("Hi! I'd love to use Findter with the " + theme + " theme, could you help make it compatible?", true);
-            awaitingCollabCode = true;
-            setTimeout(function() {
-                addMessageToChat(
-                    "We've received your request to support the " + theme + " theme.<br>" +
-                    "To proceed, please send us your collaborator code. You can find it by going to:<br>" +
+
+            var agentHtml = "We've received your request to support the " + theme + " theme.";
+            var codeAlreadyReceived = localStorage.getItem(STORAGE_KEYS.COLLAB_CODE_RECEIVED) === 'true';
+            if (!collabAskShown && !codeAlreadyReceived) {
+                collabAskShown = true;
+                awaitingCollabCode = true;
+                agentHtml += "<br><br>To proceed, please send us your collaborator code. You can find it by going to:<br>" +
                     "Shopify Admin &rarr; Settings &rarr; Users and permissions &rarr; Security &rarr; Store security &rarr; Collaborators &mdash; your code will be displayed there.<br><br>" +
                     "Once we receive your code, we&rsquo;ll send a collaboration request. Please grant us access when it arrives.<br><br>" +
-                    "For your safety, we will duplicate your live theme and apply all fixes to the duplicated version, ensuring your live store remains unaffected",
-                    false
-                );
-            }, 800);
-
+                    "For your safety, we will duplicate your live theme and apply all fixes to the duplicated version, ensuring your live store remains unaffected";
+            }
             setTimeout(function() {
-                markThemeResolved(theme);
-                renderThemeDropdown();
-                addMessageToChat("Good news! " + theme + " is now compatible with Findter, you're all set to select it.", false);
-            }, THEME_COMPAT_RESOLVE_DELAY);
+                addMessageToChat(agentHtml, false);
+            }, 800);
+            themeAwaitingCode = theme;
         }
 
         function openThemePickerModal() {
             if (themePickerModal) {
+                hideThemeRequestNotice();
                 themePickerModal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
                 renderThemeDropdown();
@@ -3795,7 +3850,23 @@
             themePickerList.addEventListener('click', function(e) {
                 var howtoBtn = e.target.closest('[data-howto-theme]');
                 if (howtoBtn) {
-                    sendThemeCompatibilityRequest(howtoBtn.getAttribute('data-howto-theme'));
+                    var theme = howtoBtn.getAttribute('data-howto-theme');
+                    var blockReason = crispBlockReason(theme);
+                    if (blockReason === 'cooldown') {
+                        showThemeRequestNotice('Wait a minute before requesting another theme.');
+                        return;
+                    }
+                    if (blockReason === 'daily_limit') {
+                        showThemeRequestNotice('You can request up to 3 themes a day.');
+                        return;
+                    }
+                    if (blockReason === 'same_theme') {
+                        markThemePending(theme);
+                        renderThemeDropdown();
+                        return;
+                    }
+                    hideThemeRequestNotice();
+                    sendThemeCompatibilityRequest(theme);
                     closeThemePickerModal();
                     return;
                 }
