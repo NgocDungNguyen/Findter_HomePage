@@ -137,8 +137,14 @@ a.bg-\[\#303030\]:hover,
 }
 
 #floating-chat-btn,
-#chat-bubble {
+#chat-widget #chat-bubble {
   border-radius: 999px !important;
+}
+
+/* Support window. #chat-bubble is the panel on the homepage, not the launcher. */
+#chat-bubble.chat-bubble,
+#chat-window {
+  border-radius: 16px !important;
 }
 
 .text-\[\#008060\],
