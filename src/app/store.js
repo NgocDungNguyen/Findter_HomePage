@@ -63,6 +63,9 @@ export function loadPersistedState() {
 
   if (AppState.indexingComplete) {
     AppState.hasOnboarded = true;
+    if (!localStorage.getItem(STORAGE_KEYS.HIGHLIGHT_INDEX_COMPLETED_AT)) {
+      localStorage.setItem(STORAGE_KEYS.HIGHLIGHT_INDEX_COMPLETED_AT, String(Date.now()));
+    }
   }
 }
 

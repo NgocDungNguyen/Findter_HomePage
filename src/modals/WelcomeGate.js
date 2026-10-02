@@ -1,5 +1,7 @@
 import { STORAGE_KEYS } from '../app/storageKeys.js';
 import { navigateToPage } from '../app/router.js';
+import { enterAppAfterWelcome } from '../services/highlightEntry.js';
+import { resetHighlightScreenToFirst } from '../services/highlightWidget.js';
 import { startFreshReindexAfterWelcomeGate } from '../services/indexing.js';
 import { closeModal, isModalOpen, openModal } from './modal.js';
 import { initWelcomeCarousel } from './welcomeTracking.js';
@@ -27,8 +29,9 @@ export function dismissWelcomeGate(method) {
   tracking.onDismiss(method || 'close_button');
   localStorage.setItem(STORAGE_KEYS.WELCOME_SEEN, 'true');
   closeModal(welcomeGateModal);
-  navigateToPage('highlight-feature');
   startFreshReindexAfterWelcomeGate();
+  resetHighlightScreenToFirst();
+  navigateToPage('highlight-feature');
 }
 
 export function isWelcomeGateOpen() {
@@ -54,8 +57,5 @@ export function mountWelcomeGate() {
 
 export function initWelcomeFlow() {
   if (modalEl() && !isWelcomeSuppressed()) openWelcomeGate();
-  else {
-    navigateToPage('highlight-feature');
-    startFreshReindexAfterWelcomeGate();
-  }
+  else enterAppAfterWelcome();
 }

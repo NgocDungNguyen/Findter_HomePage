@@ -1,4 +1,6 @@
 import { canAccessFeatures } from '../../app/store.js';
+import { getHighlightFocus } from '../../services/highlightFocus.js';
+import { escapeHtml } from '../../utils/escape.js';
 
 export const pageNames = {
   home: 'Homepage',
@@ -46,9 +48,31 @@ function generatePlaceholderCards(isPreview) {
   )).join('');
 }
 
+function renderAdvancedFocus(container, focus) {
+  const name = escapeHtml(focus.name);
+  container.innerHTML =
+    '<article id="advanced-feature-focus" tabindex="-1" class="bg-white rounded-[8px] shadow-sm border border-[#303030] p-8 outline-none focus:ring-2 focus:ring-[#303030]">' +
+      '<p class="text-[12px] font-semibold text-[#616161] mb-2">Advanced features</p>' +
+      '<h2 class="text-[18px] font-semibold text-[#303030]">' + name + '</h2>' +
+      '<p class="text-[13px] text-[#616161] mt-2">This feature is in focus from Highlight Features.</p>' +
+    '</article>';
+  const card = container.querySelector('#advanced-feature-focus');
+  if (card) {
+    card.focus({ preventScroll: true });
+    card.scrollIntoView({ block: 'center' });
+  }
+}
+
 export function renderSubPageContent(pageId) {
   const container = document.getElementById(pageId + '-page-content');
   if (!container) return;
+  if (pageId === 'advanced') {
+    const focus = getHighlightFocus();
+    if (focus) {
+      renderAdvancedFocus(container, focus);
+      return;
+    }
+  }
   const showPreview = !canAccessFeatures();
   const tone = toneClasses(showPreview);
   const icon = PAGE_ICONS[pageId] || 'file';

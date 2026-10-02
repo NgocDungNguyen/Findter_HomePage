@@ -29,6 +29,7 @@ import { mountEnableEmbed } from './modals/EnableEmbed.js';
 import { mountAccessRestricted } from './modals/AccessRestricted.js';
 import { mountFeedback } from './modals/Feedback.js';
 import { initWelcomeFlow, mountWelcomeGate } from './modals/WelcomeGate.js';
+import { mountHighlightBack } from './services/highlightEntry.js';
 import { mountKeyboard } from './modals/keyboard.js';
 
 function boot() {
@@ -55,6 +56,7 @@ function boot() {
     tabsElId: 'feature-highlight-tabs',
     bodyElId: 'feature-highlight-body',
     autoplay: false,
+    source: 'homepage',
   });
 
   loadPersistedState();
@@ -63,8 +65,9 @@ function boot() {
   updateSearchSuggestionGuideStatus();
   updateFindterStatus();
   if (shouldCollapseOnboardingOnReload()) collapseOnboardingGuide();
-  initWelcomeFlow();
   mountHighlightFeature();
+  mountHighlightBack();
+  initWelcomeFlow();
   mountWhatsNew();
   mountHomeBanners();
   resetFeedbackStateForLoad();

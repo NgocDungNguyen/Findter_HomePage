@@ -1,4 +1,5 @@
 import { navigateToPage } from '../../app/router.js';
+import { recordHighlightContinue } from '../../services/highlightEntry.js';
 import { createHighlightFeaturedWidget } from '../../services/highlightWidget.js';
 import { goToOnboarding } from '../home/onboarding.js';
 import { highlightFeatureHtml } from './markup.js';
@@ -13,9 +14,15 @@ export function mountHighlightFeature() {
     bodyElId: 'hf-feature-highlight-body',
     autoplay: true,
     alwaysShowActions: true,
+    source: 'highlight_page',
   });
   const continueBtn = document.getElementById('hf-continue-to-home-btn');
-  if (continueBtn) continueBtn.addEventListener('click', () => navigateToPage('home'));
+  if (continueBtn) {
+    continueBtn.addEventListener('click', () => {
+      recordHighlightContinue();
+      navigateToPage('home');
+    });
+  }
   const viewBtn = document.getElementById('hf-view-features-btn');
   if (viewBtn) {
     viewBtn.addEventListener('click', () => {

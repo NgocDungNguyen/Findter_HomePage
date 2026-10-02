@@ -1,10 +1,9 @@
 import { on } from '../app/bus.js';
 import { AppState } from '../app/store.js';
 import { escapeAttr, escapeHtml } from '../utils/escape.js';
-import { isEnabled, isEverActivated, markEnabled } from './advancedFeatures.js';
 import { getAll } from './highlightStore.js';
-import { findHighlightItem, viewFeatureNow } from './highlightNavigation.js';
-import { requestEnableFeatureChat } from './crisp.js';
+import { findHighlightItem, viewFeature } from './highlightNavigation.js';
+import { trackHighlight } from './highlightTracking.js';
 
 const widgets = [];
 
@@ -64,11 +63,8 @@ export function createHighlightFeaturedWidget(config) {
   function placeholderBlock(item) {
     const media = mediaBlockHtml(item);
     if (!AppState.indexingComplete && !config.alwaysShowActions) return media;
-    const enabled = item.advancedFeatureId != null ? !!isEnabled(item.advancedFeatureId) : !!item.unlocked;
     const code = escapeAttr(item.code);
-    const actionHtml = enabled
-      ? '<button type="button" class="feature-view-btn bg-[#303030] text-white rounded-[6px] px-3 sm:px-4 py-2 text-[12px] sm:text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors" data-feature-view-code="' + code + '">View Feature Now</button>'
-      : '<button type="button" class="feature-enable-btn bg-[#303030] text-white rounded-[6px] px-3 sm:px-4 py-2 text-[12px] sm:text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors" data-feature-enable-code="' + code + '">Click to Enable</button>';
+    const actionHtml = '<button type="button" class="feature-view-btn inline-flex items-center justify-center min-h-[44px] bg-[#303030] text-white rounded-[6px] px-3 sm:px-4 py-2 text-[12px] sm:text-[13px] font-medium hover:bg-[#4a4a4a] transition-colors" data-feature-view-code="' + code + '">View Feature</button>';
     return media + '<div class="flex flex-wrap items-center justify-end gap-3 mt-4">' + actionHtml + '</div>';
   }
 
@@ -157,59 +153,112 @@ export function createHighlightFeaturedWidget(config) {
     syncSelectionToFlat();
     renderTabs();
     renderBody();
+    const current = flatSequence[flatIndex];
+    trackHighlight('highlight_feature_slide_changed', {
+      slide_reason: 'auto_slide',
+      source: 'highlight_page',
+      feature_code: current && (current.sub || current.parent),
+    });
   }
 
   function startAutoplay() {
     if (!config.autoplay || !autoplayOn || autoplayTimer) return;
-    autoplayTimer = setInterval(advanceAutoplay, 5000);
+    autoplayTimer = setInterval(advanceAutoplay, 7000);
+  }
+
+  function restartAutoplay() {
+    if (!config.autoplay) return;
+    if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
+    autoplayOn = true;
+    startAutoplay();
   }
 
   tabsEl.addEventListener('click', (e) => {
     const tabBtn = e.target.closest('[data-parent]');
     if (!tabBtn) return;
-    stopAutoplay();
     selectedParent = tabBtn.getAttribute('data-parent');
     selectedSub = null;
     renderTabs();
     renderBody();
+    restartAutoplay();
   });
 
   bodyEl.addEventListener('click', (e) => {
-    stopAutoplay();
     const viewBtn = e.target.closest('[data-feature-view-code]');
     if (viewBtn) {
-      stopAutoplay();
-      viewFeatureNow(findHighlightItem(viewBtn.getAttribute('data-feature-view-code')));
-      return;
-    }
-    const enableBtn = e.target.closest('[data-feature-enable-code]');
-    if (enableBtn) {
-      stopAutoplay();
-      const item = findHighlightItem(enableBtn.getAttribute('data-feature-enable-code'));
-      if (item && item.advancedFeatureId != null && isEverActivated(item.advancedFeatureId)) {
-        markEnabled(item.advancedFeatureId);
-        refreshAllHighlightWidgets();
-      } else if (item) {
-        requestEnableFeatureChat(item, () => refreshAllHighlightWidgets());
-      }
+      viewFeature(findHighlightItem(viewBtn.getAttribute('data-feature-view-code')), config.source);
       return;
     }
     const subRow = e.target.closest('[data-sub]');
     if (subRow) {
-      stopAutoplay();
       selectedSub = subRow.getAttribute('data-sub');
       renderBody();
+      restartAutoplay();
     }
   });
 
-  bodyEl.addEventListener('play', () => { stopAutoplay(); }, true);
+  function resetToFirst() {
+    flatIndex = 0;
+    syncSelectionToFlat();
+    renderTabs();
+    renderBody();
+    restartAutoplay();
+  }
+
+  function restoreFeature(code) {
+    if (config.source !== 'highlight_page') return false;
+    const items = getAll();
+    const match = items.filter((item) => item.code === code)[0];
+    if (!match) return false;
+    const parentCode = match.parentCode || match.code;
+    const subCode = match.parentCode ? match.code : null;
+    const idx = flatSequence.findIndex((entry) => entry.parent === parentCode && entry.sub === subCode);
+    if (idx === -1) return false;
+    flatIndex = idx;
+    syncSelectionToFlat();
+    renderTabs();
+    renderBody();
+    restartAutoplay();
+    return true;
+  }
+
   renderAll();
-  startAutoplay();
+  const highlightPage = document.getElementById('page-highlight-feature');
+  if (highlightPage && highlightPage.classList.contains('active')) startAutoplay();
+  function pauseAutoplay() {
+    if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
+  }
+
   const widget = { refresh: renderAll, stopAutoplay };
+  if (config.source === 'highlight_page') {
+    widget.resetToFirst = resetToFirst;
+    widget.restoreFeature = restoreFeature;
+    widget.pauseAutoplay = pauseAutoplay;
+    widget.resumeAutoplay = restartAutoplay;
+  }
   widgets.push(widget);
   return widget;
 }
 
+export function restoreHighlightFeature(code) {
+  let restored = false;
+  widgets.forEach((widget) => {
+    if (widget.restoreFeature && widget.restoreFeature(code)) restored = true;
+  });
+  return restored;
+}
+
+export function resetHighlightScreenToFirst() {
+  widgets.forEach((widget) => {
+    if (widget.resetToFirst) widget.resetToFirst();
+  });
+}
+
 on('navigate', (pageId) => {
   if (pageId === 'home' || pageId === 'highlight-feature') refreshAllHighlightWidgets();
+  widgets.forEach((widget) => {
+    if (!widget.pauseAutoplay) return;
+    if (pageId === 'highlight-feature') widget.resumeAutoplay();
+    else widget.pauseAutoplay();
+  });
 });

@@ -8,6 +8,7 @@ import { updateRestrictedModalContent } from '../modals/AccessRestricted.js';
 import { updateFindterStatus } from '../screens/home/plan.js';
 import { updateGuideStep1Status, updateProgressAndMessages } from '../screens/home/onboarding.js';
 import { updateHighlightFeaturePageBanner } from '../screens/highlight-feature/banner.js';
+import { clearHighlightScreenFlags } from './highlightEntry.js';
 import { renderSubPageContent } from '../screens/placeholders/content.js';
 
 export function getCurrentTimestamp() {
@@ -59,6 +60,9 @@ export function showIndexingComplete() {
     AppState.indexingInterval = null;
   }
   localStorage.setItem(STORAGE_KEYS.INDEXING_COMPLETE, 'true');
+  if (!localStorage.getItem(STORAGE_KEYS.HIGHLIGHT_INDEX_COMPLETED_AT)) {
+    localStorage.setItem(STORAGE_KEYS.HIGHLIGHT_INDEX_COMPLETED_AT, String(Date.now()));
+  }
   if (!AppState.hasOnboarded) {
     AppState.hasOnboarded = true;
     localStorage.setItem(STORAGE_KEYS.HAS_ONBOARDED, 'true');
@@ -131,6 +135,7 @@ export function resetIndexing() {
   localStorage.removeItem(STORAGE_KEYS.SELECTED_THEME);
   localStorage.removeItem(STORAGE_KEYS.LAST_ENABLED_THEME);
   localStorage.removeItem(STORAGE_KEYS.FIRST_ENABLE_DONE);
+  clearHighlightScreenFlags();
   startIndexingSimulation();
   updateLockStates();
   const step1Initial = document.getElementById('step1-initial');
@@ -155,6 +160,7 @@ export function startFreshReindexAfterWelcomeGate() {
   AppState.indexingComplete = false;
   AppState.isIndexing = true;
   localStorage.removeItem(STORAGE_KEYS.INDEXING_COMPLETE);
+  clearHighlightScreenFlags();
   updateFindterStatus();
   startIndexingSimulation();
 }

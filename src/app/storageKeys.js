@@ -13,7 +13,14 @@ export const STORAGE_KEYS = {
   COLLAB_CODE_RECEIVED: 'findter_collab_code_received',
   HAS_ONBOARDED: 'findter_has_onboarded',
   WELCOME_SEEN: 'findter_welcome_seen_install',
+  HIGHLIGHT_CONTINUE: 'findter_highlight_continue_clicked',
+  HIGHLIGHT_VIEW_FEATURE: 'findter_highlight_view_feature',
+  HIGHLIGHT_INDEX_COMPLETED_AT: 'findter_highlight_index_completed_at',
+  HIGHLIGHT_EXPIRED: 'findter_highlight_screen_expired',
 };
+
+export const HIGHLIGHT_SESSION_HIDE = 'findter_highlight_session_hide';
+export const HIGHLIGHT_BACK_TARGET = 'findter_highlight_back_target';
 
 export const HIGHLIGHT_STORAGE_KEY = 'findter_highlight_items_v2';
 export const ADV_STORAGE_KEY = 'findter_features_v6';
